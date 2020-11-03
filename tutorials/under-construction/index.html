@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    
+    
+    <title>Under Construction! | Cyanilux</title>
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="cyanilux.github.io">
+			<img class="logo" src="/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="cyanilux.github.io">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="cyanilux.github.io/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="cyanilux.github.io/recent-posts/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Under Construction!</h1>
+
+
+
+
+
+
+<time datetime="2020-11-03">&#128337 Nov 3, 2020</time>
+
+
+
+<h2 id="intro">Intro</h2>
+<p>Just a test, random things below. Working on copying over content from wordpress, also editing/improving posts.</p>
+<h2 id="breakdown">Breakdown</h2>
+<h3 id="reconstruct-world-position-from-depth">Reconstruct World Position from Depth</h3>
+<p>We&rsquo;ll first create a <b class="node">View Direction</b> node set to <strong>World</strong> space. In URP this is not normalised, which in this case is what we want. We&rsquo;ll now <b class="node">Divide</b> it by the object’s depth (from the <strong>W/A</strong> component of the <b class="node">Split</b> node from earlier) and <b class="node">Multiply</b> it by the output from the <b class="node">Scene Depth</b> node.</p>
+<p>While this gives us a position in the scene, it&rsquo;s currently still relative to the camera. To fix this, we&rsquo;ll create a <b class="node">Camera</b> node, and take the <strong>Position</strong> output and <b class="node">Subtract</b> our result.</p>
+<h3 id="c-syntax-highlighted-code-block-test">C# Syntax Highlighted Code Block Test</h3>
+<p>(From Jellyfish Breakdown)</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="display:block;width:100%;background-color:#3c3d38"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span></span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="display:block;width:100%;background-color:#3c3d38"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></span><span style="display:block;width:100%;background-color:#3c3d38"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></span><span style="display:block;width:100%;background-color:#3c3d38"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span></span><span style="display:block;width:100%;background-color:#3c3d38"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">using</span> UnityEngine;
+ 
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Jellyfish</span> : MonoBehaviour { 
+ 
+    <span style="color:#66d9ef">public</span> Transform followTransform;
+ 
+<span style="display:block;width:100%;background-color:#3c3d38">    <span style="color:#66d9ef">void</span> Update() { 
+</span>        <span style="color:#75715e">// Move &amp; Rotate towards Follow Transform
+</span><span style="color:#75715e"></span>        Vector3 followVector = followTransform.position - transform.position;
+        <span style="color:#66d9ef">float</span> magnitude = followVector.magnitude;
+        <span style="color:#66d9ef">if</span> (magnitude &gt; <span style="color:#ae81ff">0.01f</span>) {
+<span style="display:block;width:100%;background-color:#3c3d38">            transform.up = followVector;
+</span><span style="display:block;width:100%;background-color:#3c3d38">            transform.position += followVector / magnitude
+</span><span style="display:block;width:100%;background-color:#3c3d38">                    * Mathf.Abs(Mathf.Sin(<span style="color:#ae81ff">1.5f</span>*Time.time))
+</span><span style="display:block;width:100%;background-color:#3c3d38">                    * Time.deltaTime;
+</span>        }
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+</p>
+</br>
+    </body>
+</html>
