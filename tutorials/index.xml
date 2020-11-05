@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tutorials on Cyanilux</title>
-    <link>https://cyanilux.github.io/tutorials/</link>
+    <link>https://www.cyanilux.com/tutorials/</link>
     <description>Recent content in Tutorials on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Tue, 03 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://cyanilux.github.io/tutorials/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 03 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tutorials/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Under Construction!</title>
-      <link>https://cyanilux.github.io/tutorials/under-construction/</link>
+      <link>https://www.cyanilux.com/tutorials/under-construction/</link>
       <pubDate>Tue, 03 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://cyanilux.github.io/tutorials/under-construction/</guid>
+      <guid>https://www.cyanilux.com/tutorials/under-construction/</guid>
       <description>test</description>
     </item>
     

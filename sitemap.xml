@@ -3,40 +3,40 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://cyanilux.github.io/</loc>
+    <loc>https://www.cyanilux.com/</loc>
     <lastmod>2020-11-03T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cyanilux.github.io/tutorials/</loc>
+    <loc>https://www.cyanilux.com/tutorials/</loc>
     <lastmod>2020-11-03T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cyanilux.github.io/tutorials/under-construction/</loc>
+    <loc>https://www.cyanilux.com/tutorials/under-construction/</loc>
     <lastmod>2020-11-03T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cyanilux.github.io/contents/</loc>
+    <loc>https://www.cyanilux.com/contents/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cyanilux.github.io/recent-posts/</loc>
+    <loc>https://www.cyanilux.com/recent-posts/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cyanilux.github.io/tags/</loc>
+    <loc>https://www.cyanilux.com/tags/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
