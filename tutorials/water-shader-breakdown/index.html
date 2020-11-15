@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Water Shader Breakdown">
+<meta itemprop="description" content="A water shader that uses the scene color to produce distortion/refractions and reconstructs a position from the scene depth to project caustics on underwater objects">
+<meta itemprop="datePublished" content="2019-06-10T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-06-10T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1698">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.cyanilux.com/Preview.png"/>
+
+<meta name="twitter:title" content="Water Shader Breakdown"/>
+<meta name="twitter:description" content="A water shader that uses the scene color to produce distortion/refractions and reconstructs a position from the scene depth to project caustics on underwater objects"/>
+
+	<meta property="og:title" content="Water Shader Breakdown" />
+<meta property="og:description" content="A water shader that uses the scene color to produce distortion/refractions and reconstructs a position from the scene depth to project caustics on underwater objects" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/water-shader-breakdown/" />
+<meta property="og:image" content="https://www.cyanilux.com/Preview.png" />
+<meta property="article:published_time" content="2019-06-10T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-06-10T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Water Shader Breakdown | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/water-shader-breakdown/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Water Shader Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-06-10">&#128337 Jun 10, 2019</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eHey! Wanted to use the \u0026#39;Scene Color\u0026#39; and \u0026#39;Scene Depth\u0026#39; nodes a bit, which developed into this water shader. It\u0026#39;s all drawn to the plane so the camera can\u0026#39;t go below the surface, but it looks cool. 🌊\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/VFX?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#VFX\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/VFXFriday?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#VFXFriday\u003c/a\u003e \u003ca href=\"https://t.co/laRjwMXmFk\"\u003epic.twitter.com/laRjwMXmFk\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan 🎃 (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1134420880891809793?ref_src=twsrc%5Etfw\"\u003eMay 31, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1134420880891809793\">https://twitter.com/Cyanilux/status/1134420880891809793</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>This water shader is based on using the camera’s colour and depth textures to create transparent water with distortions/refraction. It also samples Voronoi using UVs of world space coordinates reconstructed from the depth value, to add some water caustics on underwater objects.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This is an <strong>Unlit</strong> shader, applied to a flat plane. Note that everything is rendered to this plane so the camera cannot go underwater or the affect will disappear.</li>
+<li>The water distortion/refraction is based off this <a href="https://catlikecoding.com/unity/tutorials/flow/looking-through-water/">Catlike coding tutorial</a>.</li>
+<li>In order to produce nice looking water caustics I’m using a technique I saw in a <a href="https://www.youtube.com/watch?v=Vg0L9aCRWPE">Brackeys video</a> (Which was based off of <a href="https://www.youtube.com/watch?v=jBmBb-je4Lg">this video</a>), but rather than sampling the <b class="node">Voronoi</b> using object UVs, I’m basing it off the X and Z components of world space positions reconstructed from depth.</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<p>We’ll first create a <b class="node">Scene Color</b> node. This node will allow us to sample a texture of opaque objects the camera renders and we can offset the <strong>UVs</strong> put into this by some noise to create distortions. For this node to work properly, we need to click the cog on the <b class="node">Master</b> node and set the surface mode to <strong>Transparent</strong>. You will also need to enable the Opaque Texture (and Depth Texture for later) options on the URP/LWRP Asset. For more information see the <a href="%22/tutorials/scene-color%22">Scene Color</a> post.</p>
+<p>So we can add some colour to our water, take the output of the <b class="node">Scene Color</b> node and put it into the <strong>B</strong> input on a <b class="node">Lerp</b> node. Then create a <b class="node">Color</b> node with a blue/cyan colour and put this into the <strong>A</strong> input. We can then plug a <b class="node">Vector1</b> value into the <strong>T</strong> input in order to control the visibility of our water. I’m using a value of <strong>0.6</strong> for this. You may also want to convert it to a <strong>Vector1 property</strong> so it can be edited from the material inspector. We’ll put the output of this <b class="node">Lerp</b> into the <strong>Color</strong> input on the <b class="node">Master</b> node.</p>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<p>If we set up a scene with a plane using this shader, we should see a transparent-looking plane which is slightly tinted blue/cyan. (I say transparent-looking, because we aren’t actually using &ldquo;alpha&rdquo; transparency – we’re just using the <b class="node">Scene Color</b> node to render what is behind to the plane itself).</p>
+<p>So far this isn’t very impressive, so next we’ll add the distortion/refraction. Currently the <b class="node">Scene Color</b> node uses a default input, which is equal to the output of a <b class="node">Screen Position</b> node. So we can offset the position, we’ll create that node and put it into the <strong>A</strong> input of a <b class="node">Subtract</b> (or <b class="node">Add</b>, doesn’t really matter which as we’ll be offsetting using noise in a -1 to 1 range). We’ll leave the second input as <strong>0</strong> for now, and put it into the <b class="node">Scene Color</b> node.</p>
+<p>We will be using plane’s UVs for the distortion/refraction noise. By doing this, when we look through the water straight down it will be a uniform distortion, but when we look diagonally the noise will be squashed vertically and more distant parts will appear to be distorted more.</p>
+<p>Create a <b class="node">UV</b> node, <b class="node">Split</b> the output and put the <strong>R</strong> and <strong>G</strong> components into a <b class="node">Vector2</b>. (Note that because we are using UVs, the object scale will affect the distortion. If you don’t want this you can <b class="node">Multiply</b> this by the <strong>XZ</strong> components of the object’s scale from the <b class="node">Object</b> node).</p>
+<p>To animate the distortion we’ll create a <b class="node">Time</b> node, <b class="node">Multiply</b> the <strong>Time</strong> output by <strong>0.1</strong> then <b class="node">Add</b> the output of this and the output of the <b class="node">Vector2</b> together. We can use this as the <strong>UV</strong> input into a <b class="node">Simple Noise</b> node with a <strong>Scale</strong> input of <strong>100</strong> to generate noise. Put this into a <b class="node">Remap</b> node, with an <strong>In Min Max</strong> of <strong>0, 1</strong> and <strong>Out Min Max</strong> of <strong>-1, 1</strong>, to change the range of the noise. We can <b class="node">Multiply</b> this by a small value such as <strong>0.02</strong>, which will control the strength of the offset, and then put this into the second input of the <b class="node">Subtract</b> (or <b class="node">Add</b>) node we created earlier.</p>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-center"></a>
+<p>Now we have some distortion, but you may notice an issue… Opaque objects that are above/in-front of the water plane will also be distorted. In order to fix this we will determine whether our distorted scene pixel is above or below the water’s surface. If it is above, we can just use the undistorted pixel instead. This won’t be a perfect fix, but we have no way of knowing what the pixel colour should be behind those objects.</p>
+<p>To do this, we need to use the <b class="node">Scene Depth</b> node set to the sampling mode of <strong>Eye</strong>, using the same <strong>UV</strong> input as the <b class="node">Scene Color</b> (our distorted screen position). This obtains the linear depth value of scene objects at the distorted pixel in terms of world/view space units.</p>
+<p>Next create a <b class="node">Screen Position</b> node set to <strong>Raw</strong> mode. If we <b class="node">Split</b> it, the <strong>W/A</strong> component of this is the depth to the fragment / water&rsquo;s surface. Why? – It’s due to how 3D object positions are converted to screen coordinates by the model-view-projection matrix. Using the Raw mode is important because in the Default mode, each component will be divided by this <strong>W/A</strong> component, meaning it becomes <strong>1</strong>. This is usually referred to as the “perspective divide” – it converts the clip space coordinates (obtained after applying the model-view-projection matrix) into normalised screen coordinates, displaying the 3D perspective to the 2D screen. The Raw mode won’t do this division, so allows us access to that <strong>W/A depth</strong> value.</p>
+<p>We can take the <b class="node">Scene Depth</b> output and <b class="node">Subtract</b> the <strong>water surface depth</strong> (that <strong>W/A</strong> component), then put this into a <b class="node">Comparison</b> node with a second input of <strong>0</strong> and mode of <strong>Less</strong>. (You could also just compare the two depth values directly instead). This returns a <strong>Boolean</strong> which will be <strong>true</strong> if the <strong>scene depth is smaller than the surface depth</strong>, (meaning the scene depth is closer to the camera, aka above the surface).</p>
+<p>We’ll plug the boolean into the <strong>Predicate</strong> input of a <b class="node">Branch</b> node. Then set the <strong>True</strong> input to a <b class="node">Screen Position</b> node (set to Default mode, not the Raw one) and set the <b class="node">False</b> input to our <strong>distorted screen position</strong> (from the <b class="node">Subtract</b>). Then replace the <strong>UV</strong> input of the <b class="node">Scene Color</b> node with the output of this Branch.</p>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png" class="img-center"></a>
+<p>Next we’ll add the caustics effect. To do this we will use a <b class="node">Voronoi</b> node, with the <strong>Cell Density</strong> set to <strong>1</strong>. This node produces Voronoi noise, (also referred to as Cellular noise and Worley noise). If you want to know how this noise is generated, this Book Of Shaders page has a good explanation, also see my <a href="%22/tutorials/voronoi%22">Voronoi</a> post.</p>
+<p>To animate it, create a <b class="node">Time</b> node and put the <strong>Time</strong> output into a <b class="node">Multiply</b> with a value of <strong>4</strong>, then put this into the <strong>Angle Offset</strong> input of the <b class="node">Voronoi</b>. We can then take the output and put it into a <b class="node">Power</b> node with a second input of <strong>5</strong>. We’ll then <b class="node">Multiply</b> this by <strong>0.5</strong>, <b class="node">Add</b> it to the output of our <b class="node">Scene Color</b> node, then replace the <strong>B</strong> input into the <b class="node">Lerp</b> with the output.</p>
+<p>This is the basis of the caustics effect, but rather than having it on the surface of the water, we want it projected onto everything underwater. In order to do this, we’ll reconstruct the world position from the <b class="node">Scene Depth</b> value we sampled earlier and use the <strong>X</strong> and <strong>Z</strong> components of the world position as the <strong>UVs</strong> input for the <b class="node">Voronoi</b>.</p>
+<p>In order to <strong>reconstruct the world position from the depth</strong> we first need to create a <b class="node">View Direction</b> node set to <strong>World</strong> space. In URP this obtains a vector from the fragment to the camera position, aka pixel on the water’s surface. The magnitude of this vector is the distance (between the camera and fragment), but this is not the same as depth. The depth is a distance from the fragment position to a <strong>plane that is perpendicular to the camera</strong>, not the camera position itself. This creates a triangle as shown in the image. (Note, the View Direction vector/arrow should be going in the opposite direction, but it shouldn’t matter that much).</p>
+<a href="https://www.cyanilux.com/ReconstructWorldPosFromSceneDepth.png" target="_blank" rel="noopener noreferrer"><img src="https://www.cyanilux.com/ReconstructWorldPosFromSceneDepth.png" class="img-center"></a>
+<p>We need to extend this vector to the position in the scene behind the surface. To do this, we <b class="node">Divide</b> the <b class="node">View Direction</b> by the <strong>Raw Screen Position W/A depth</strong> and then <b class="node">Multiply</b> by the <b class="node">Scene Depth</b>. This works because the scene position we want creates another triangle as shown in the image, and this is the scale factor of that triangle compared to the other.</p>
+<p>Currently this position moves with the camera&rsquo;s position so we now need to <b class="node">Subtract</b> the camera’s world <strong>Position</strong> from the <b class="node">Camera</b> node to get the actual scene world position. We’ll then <b class="node">Split</b> it, put the <strong>X/R</strong> and <strong>Z/B</strong> components into a <b class="node">Vector2</b> node, then into the <strong>UV</strong> input on the <b class="node">Voronoi</b> node.</p>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png" class="img-center"></a>
+<p>And that’s it! I also originally had a slight gradient applied to the depth at the surface, but I’m leaving the shader here as although it helped show the distortion more, it didn’t entirely make sense to have it and I feel it wasn’t implemented very well. To improve this water shader further you could apply fog by basing the water visibility on the depth or make deeper parts darker, and also add some specular parts to the water surface.</p>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

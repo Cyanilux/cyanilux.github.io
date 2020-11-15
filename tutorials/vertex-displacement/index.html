@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Vertex Displacement">
+<meta itemprop="description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies">
+<meta itemprop="datePublished" content="2019-06-14T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-06-14T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1520">
+
+
+
+<meta itemprop="keywords" content="Shader Graph," />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Vertex Displacement"/>
+<meta name="twitter:description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies"/>
+
+	<meta property="og:title" content="Vertex Displacement" />
+<meta property="og:description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/vertex-displacement/" />
+<meta property="article:published_time" content="2019-06-14T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-06-14T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Vertex Displacement | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/vertex-displacement/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Vertex Displacement</h1>
+
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-06-14">&#128337 Jun 14, 2019</time>
+
+
+
+<h2 id="shader-stages">Shader Stages</h2>
+<p>While fragment shaders provide colours for each <strong>fragment/pixel</strong>, we can use vertex shaders to offset the <strong>vertices of the mesh</strong>. In Shader Graph, nodes that are connected to the <b class="node">Master</b> node&rsquo;s <strong>Vertex</strong> ports are written to this vertex shader stage.</p>
+<p>When attempting to connect a node between the vertex and fragment stages, they sometimes may not connect. It is usually a good idea to keep the two parts as separate as possible. Sometimes, disconnecting the <strong>Vertex</strong> ports in the <b class="node">Master</b> node/stack temporarily can help.</p>
+<p>Note that there are also certain nodes that won&rsquo;t work in the <strong>Vertex</strong> stage, and will cause the graph not to connect. This is most common whe using the <b class="node">Sample Texture 2D</b> node. If you need to sample a texture in the vertex stage you must use the <b class="node">Sample Texture 2D LOD</b> node instead! (This is due to the LOD/mip map level being calculated automatically in the first one, by using partial screen space derivatives, a.k.a the <b class="node">DDX</b>, <b class="node">DDY</b>, <b class="node">DDXY</b> nodes which will only work in the fragment shader)</p>
+<p>I believe the <b class="node">Is Front Face</b> node is another that will only work in the fragment stage - which makes sense, as a face is made up of multiple vertices so wouldn&rsquo;t be available in a per-vertex situation.</p>
+<h2 id="vertex-displacement">Vertex Displacement</h2>
+<p>The process of offsetting vertices is usually referred to as <strong>Vertex Displacement</strong>. The <strong>Vertex Position</strong> port on the Master node/stack requires the position to be defined in <strong>Object</strong> space as it will handle conversions to other spaces automatically.</p>
+<p>To offset the vertices we create a <b class="node">Position</b> node set to <strong>Object</strong> space. This returns a <strong>Vector3</strong> of our vertex position that we can then manipulate. For <strong>offsetting</strong>, we can use <b class="node">Add</b> or <b class="node">Subtract</b> nodes, but we can also <strong>scale</strong> the position, which pulls or pushes it from the origin (0,0,0), by using <b class="node">Multiply</b> or <b class="node">Divide</b> nodes.</p>
+<p>Scaling should usually be done first, assuming you want to keep the offset in terms of object space units rather than the scaled space. We can scale/offset each vertex by connecting a <b class="node">Vector3</b> node and set each component separately, or use a <strong>Vector3 property</strong> to control it from the inspector, or a C# Script (via materialReference.SetVector(“_Ref”, vector), where _Ref is the reference string of the property in the shadergraph blackboard).</p>
+<p>You can also <b class="node">Split</b> and offset/scale each component separately then recombine in a <b class="node">Combine</b> or <b class="node">Vector3</b> node, however this very quickly causes the graph to get messy with overlapping wires. I suggest using the Vector3 node/property approach instead.</p>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<p>Here is another example if you wanted to scale both the <strong>X</strong> and <strong>Z</strong> with the same <strong>Vector1 property</strong>. Since we use a <b class="node">Multiply</b> to adjust scale, we set the <strong>Y</strong> value to <strong>1</strong> so there is no change. (With offsetting we would use a value of <strong>0</strong> for no change)</p>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-center"></a>
+<p>We can also use a <b class="node">Time</b> node to animate the offset over <strong>Time</strong> (or <strong>Sine Time</strong>, etc). There will be more examples later in the post including a swaying effect for grass/plants and animating fish or butterflies.</p>
+<h2 id="bounds">Bounds</h2>
+<p>Shaders run on the <strong>GPU</strong>, so it&rsquo;s important to understand that it will not actually update the CPU-side mesh vertices, mesh bounds or affect colliders. If the camera goes outside the original bounds, the mesh renderer will be culled, which can sometimes be a problem if our displaced vertices are outisde of these bounds. We either need to keep scaling/offsetting small, or override the bounds on the mesh. e.g.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">Mesh mesh = GetComponent&lt;MeshFilter&gt;().mesh;
+mesh.bounds = <span style="color:#66d9ef">new</span> Bounds(origin, size);
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>Note that this creates a new mesh instance, see <a href="https://docs.unity3d.com/ScriptReference/MeshFilter-mesh.html">MeshFilter.mesh</a>. You are responsible for cleanup, so be sure to Destroy(mesh) in the MonoBehaviour.OnDestroy function! You&rsquo;d usually use .sharedMesh instead if you don’t want to create a mesh instance. However then all objects that use that mesh will share those bounds, (and I&rsquo;m unsure if you can even edit the bounds of a mesh from an imported model?)</p>
+<p>As a tip for knowing what origin/size to use, add a <strong>Box Collider</strong> to the object, resize it, and use the center/size values, or just GetComponent&lt;BoxCollider&gt;().bounds.</p>
+<p>If you&rsquo;re interested in updating colliders, maybe consider moving the vertex displacement to the CPU. See the <a href="https://docs.unity3d.com/ScriptReference/Mesh.html">Mesh</a> class, <a href="https://docs.unity3d.com/ScriptReference/Mesh-vertices.html">mesh.vertices</a> or mesh.<a href="https://docs.unity3d.com/ScriptReference/Mesh.GetVertices.html">GetVertices</a> / <a href="https://docs.unity3d.com/ScriptReference/Mesh.SetVertices.html">SetVertices</a>.</p>
+<h2 id="uses">Uses</h2>
+<p>Some uses of vertex displacement:</p>
+<ul>
+<li>Adding detail to a mesh using displacement textures along with tessellation (which can’t be done in shadergraph yet as far as I know, at least not in URP).</li>
+<li>Animating vertices on a water plane to simulate waves. (See this <a href="https://catlikecoding.com/unity/tutorials/flow/waves/">catlikecoding tutorial</a> for a good example)</li>
+<li>Creating various effects such as melting and wobbling. (I&rsquo;ve done a melting candle effect before, shared on twitter <a href="https://twitter.com/Cyanilux/status/1180084819906220032">here</a>)</li>
+<li>Simulating wind on grass, plants and trees, see example below.</li>
+<li>Adding simple animation to regular meshes, instead of using skinned meshes. See below for examples of the motion of swimming fish and flapping butterfly/bird wings, which are fairly simple to simulate. The game ABZÛ also uses this a lot, see this <a href="https://www.youtube.com/watch?v=l9NX06mvp2E">ABZÛ GDC Talk</a>.</li>
+<li>It&rsquo;s also possible to bake actual skinned mesh animations to textures, and use the Vertex ID (SV_VertexID) to read the texture. While I haven&rsquo;t used it, I am aware of <a href="https://github.com/ryanslikesocool/Mecanim2Texture">this
+Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking Vertex IDs into a UV channel (as shader graph can&rsquo;t use SV_VertexID yet), and some custom nodes for playback of the animations.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<h3 id="swaying-grass">Swaying Grass</h3>
+<a href="GraphSwayGrass.png" target="_blank" rel="noopener noreferrer"><img src="GraphSwayGrass.png" class="img-center"></a>
+<p>Right Note : By using the Position set to World space, we ensure that the offsetting will always occur in the X world space axis, regardless of the transform’s rotation. The input on the master needs to be in Object space though, so we use a Transform node.</p>
+<p>Want the sway on a different axis? Change the Vector3 node inputs. Plug it into both X and Z for some diagonal movement. Or put the Vector3 into a Rotate About Axis node if you want a more specific rotation. (Use axis as 0,1,0, for rotating about the Y axis)</p>
+<p>Left Note : Use UVs.y for Quads. Use Position.y (object space) for Models. If origin is not at base of model, use Add to offset. If model doesn’t use y as up, use a different output on the Split.</p>
+<h3 id="fish">Swimming Motion (Fish)</h3>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eContinuing with vertex displacement stuff, made some simple fish and butterfly shaders. New blog post of this is also up, see thread for link! (And yes, Animal Crossing themed) 😀 \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://t.co/hb90roIaoM\"\u003epic.twitter.com/hb90roIaoM\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1139493685073252359?ref_src=twsrc%5Etfw\"\u003eJune 14, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1139493685073252359\">https://twitter.com/Cyanilux/status/1139493685073252359</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<p>A simple way to create a swimming motion for a fish, is to offset the <strong>R/X</strong> <b class="node">Position</b> of the fish (left/right) by a <b class="node">Sine</b> wave based on <b class="node">Time</b> added with the position along the fish (forward/back, which is actually <strong>G/Y</strong> for the model I’m using). This can then be multiplied with a mask created from the <strong>G/Y</strong> position so vertices at the front of the fish move less.</p>
+<a href="GraphFish.png" target="_blank" rel="noopener noreferrer"><img src="GraphFish.png" class="img-center"></a>
+<p>In terms of code, this would be something along the lines of :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">vertex.x += sin(vertex.y * <span style="color:#ae81ff">2</span> + _Time.y * <span style="color:#ae81ff">4</span>) * (vertex.y - <span style="color:#ae81ff">1</span>) * <span style="color:#ae81ff">0.25</span>;
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>Note that values may vary based on the scale of the fish mesh. This was based on a model with 2 units length, with the origin being in the center.</p>
+<h3 id="butterfly">Wings Motion (Butterfly, or Bird)</h3>
+<p>For the motion of wings for a butterfly (see tweet in fish example above), we first create a mask based on the <strong>R/X</strong> (left/right) axis of the <b class="node">Position</b> to determine how we offset the wings, which uses an <b class="node">Absolute</b> so that we offset both wings in the same <strong>B/Z</strong> direction (which is up/down for this model).</p>
+<p>We can then offset the <strong>B/Z</strong> position by a <b class="node">Sine</b> wave based just on <b class="node">Time</b> which will make the wings move linearly. If we want the wings to bend (which would be better for a bird) we can <b class="node">Add</b> the mask to the <b class="node">Time</b> output and put this into the <b class="node">Sine</b> node instead.</p>
+<p>We can also offset the <strong>R/X</strong> (left/right) a little, so as the wings go upwards they also move slightly inwards, which will reduce stretching and make the motion feel more realistic.</p>
+<a href="GraphButterfly.png" target="_blank" rel="noopener noreferrer"><img src="GraphButterfly.png" class="img-center"></a>
+<p>In terms of code, this would be something along the lines of :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">float</span> mask = abs(vertex.x) - <span style="color:#ae81ff">0.2</span>;
+<span style="color:#66d9ef">float</span> s = sin(_Time.y * <span style="color:#ae81ff">15.0</span>); <span style="color:#75715e">// for butterfly
+</span><span style="color:#75715e">// or : float s = sin(_Time.y * 10.0 + mask) // for bird
+</span><span style="color:#75715e"></span>vertex.x += saturate(s * <span style="color:#ae81ff">0.6</span>) * saturate(mask) * -<span style="color:#ae81ff">1.0</span> * sign(vertex.x);
+vertex.z += (s + <span style="color:#ae81ff">0.5</span>) * <span style="color:#ae81ff">0.75</span> * mask;
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>Note that values may vary based on the scale of the butterfly mesh. This was based on a model of 2 by 2 units, with the origin being in the center.</p>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

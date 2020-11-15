@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Sprite Stencil Overlay Breakdown">
+<meta itemprop="description" content="An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer)">
+<meta itemprop="datePublished" content="2020-02-24T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-02-24T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1459">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.cyanilux.com/Preview.png"/>
+
+<meta name="twitter:title" content="Sprite Stencil Overlay Breakdown"/>
+<meta name="twitter:description" content="An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer)"/>
+
+	<meta property="og:title" content="Sprite Stencil Overlay Breakdown" />
+<meta property="og:description" content="An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer)" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/" />
+<meta property="og:image" content="https://www.cyanilux.com/Preview.png" />
+<meta property="article:published_time" content="2020-02-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-02-24T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Sprite Stencil Overlay Breakdown | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Sprite Stencil Overlay Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2020-02-24">&#128337 Feb 24, 2020</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eHelped someone out on the Unity discord, with a Stencil-based effect for sprites, using the Forward Renderer \u0026quot;RenderObjects\u0026quot; feature.\u003cbr\u003e\u003cbr\u003eThought I might as well write it up as a blog post, so enjoy!\u003ca href=\"https://twitter.com/hashtag/Unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#Unity3D\u003c/a\u003e (partly \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e)\u003cbr\u003e\u003cbr\u003e🔗 \u003ca href=\"https://t.co/DHMnFUMMC2\"\u003ehttps://t.co/DHMnFUMMC2\u003c/a\u003e \u003ca href=\"https://t.co/545KjqbRJ9\"\u003epic.twitter.com/545KjqbRJ9\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1231963278622052358?ref_src=twsrc%5Etfw\"\u003eFebruary 24, 2020\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1231963278622052358\">https://twitter.com/Cyanilux/status/1231963278622052358</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>Hey! I recently helped someone out with an effect they wanted to create, which involved creating an dithering-like overlay effect when the character is behind other sprites, (similar to the example shown in the tweet above). I thought this might provide a nice example of how to use the Universal RP’s Forward Renderer to override Stencil values.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This uses an <strong>Unlit Sprite</strong> shader for the checkboard overlay, but it&rsquo;s main focus is on URP&rsquo;s <strong>Forward Renderer</strong> and the <strong>RenderObjects</strong> feature.</li>
+<li>This example is for <strong>2D/Sprites</strong>, but a similar approach would work for 3D and opaque geometry too, however the set up may need to be different. You can also achieve a similar effect in 3D using the depth overrides instead of stencil, as shown in this <a href="https://www.youtube.com/watch?v=szsWx9IQVDI">Brackeys video</a>.</li>
+<li>While I’m using sprites, this is <strong>not compatible</strong> with the URP 2D Renderer (which gives you access to the 2D Lighting system), as it doesn’t have renderer features (yet?). If you require using the 2D Renderer you would have to use a different approach, e.g. writing Stencil operations in the shaders directly (see <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil docs page</a>), or use the <a href="https://docs.unity3d.com/Manual/class-SpriteMask.html">Sprite Mask component</a>, but it may be a little tedious to set up depending on how many objects will be in-front of the player.</li>
+<li>Also, something to be aware of – Due to the way the <strong>RenderObjects</strong> feature works, the objects on the Infront layer and Player overlay will always render on top of everything else transparent, regardless of the SpriteRenderer’s sorting layers / order in layer, and/or material’s Render Queue. If you want to render something after this effect you might need to set up an additional layer and create another RenderObjects feature after the other two, to render that layer on top (and also excluding that layer from the default layer mask to prevent it rendering twice).</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<h3 id="layer-setup">Layer Setup</h3>
+<p>To start with this effect, our <strong>Player</strong> GameObject (with the SpriteRenderer) needs to be assigned to a new Layer, which we will call “Player”.</p>
+<p>Objects that are in-front of the player (where the overlay will appear) will also be assigned to another layer, named “Infront” (or “Foreground”, the name isn’t too important).</p>
+<a href="Image1.png" target="_blank" rel="noopener noreferrer"><img src="Image1.png" class="img-center"></a>
+<h3 id="example-overlay-shader">Example Overlay Shader</h3>
+<p>Next we need to write a shader for the overlay effect. I’ve created a new Shader Graph using the 2D <b class="node">Sprite Unlit Master</b> node. I’d like to create a dithering-like effect which could be achieved using the <b class="node">Dither</b> node. I don’t want it too small though and it uses screenspace pixels, and the “pixels” in my sprites are actually made up of multiple screen pixels. Therefore, I’ll be using a checker-board approach instead. There is a <b class="node">Checkerboard</b> node, however this is anti-aliased, so will have transparent parts, which may not be the intended result if using a pixel perfect approach. Instead, I’m creating the checker pattern by using a combination of <b class="node">Fraction</b>, <b class="node">Step</b> and <b class="node">Lerp</b> nodes – (but play around with each approach and see which suits your project best!)</p>
+<a href="Graph.png" target="_blank" rel="noopener noreferrer"><img src="Graph.png" class="img-center"></a>
+<p>Can use <b class="node">Position</b> set to <strong>World</strong> rather than <strong>UVs</strong> if you don’t want the effect being stretched &amp; scaled by UVs. (Note, the twitter gif also uses <b class="node">Add</b> <strong>0.5</strong> after the <b class="node">Lerp</b>).</p>
+<p>To use the sprite from the SpriteRenderer component, we use the texture property with the <strong>_MainTex</strong> reference. Since this is just for an overlay, I only need the alpha component of the texture, which is multiplied with the checkboard effect to ensure it stays within the bounds of the sprite.</p>
+<p>We need to create a new <strong>Material</strong> using this graph. We’ll be overlaying this material on top of the player sprite, but only when it is hidden behind objects in the Infront/Foreground layer. This can be achieved by using the <strong>Stencil overrides</strong> on the Forward Renderer&rsquo;s <strong>RenderObjects</strong> feature.</p>
+<h3 id="forward-renderer">Forward Renderer</h3>
+<a href="Image2.png" target="_blank" rel="noopener noreferrer"><img src="Image2.png" class="img-center"></a>
+<p>Before going into the stencil overrides, we need to make sure the Forward Renderer is set up correctly. You should have a <strong>Universal Render Pipeline Asset</strong> object, somewhere in your Assets. If you used the URP button when creating the project, there may be multiple pipeline assets, named like “UniversalRP-HighQuality” under the <strong>Settings</strong> folder, you’ll want to make sure each quality setting is using the same <strong>Forward Renderer</strong>. If you don’t have these, you’ll want to go through the URP set up as shown in the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@7.2/manual/InstallingAndConfiguringURP.html">docs</a>.</p>
+<p>The <strong>Forward Renderer</strong> has a box to add <strong>Renderer Features</strong> to the pipeline. Unity provides a feature known as <strong>RenderObjects</strong>, which re-renders any objects specified by the Filters on the feature, but also allowing certain things to be overriden, such as Depth, Stencil and Camera projection. We’ll only be focusing on the Stencil overrides.</p>
+<p>As we don’t want to render the <strong>Infront</strong> layer objects twice however, we should also exclude them from the <strong>Default Layer Mask</strong> (split into Opaque and Transparent Layer Masks in newer versions), at the top of the Forward Renderer. This means we won’t render objects normally on that layer, so in the scene/game view those objects should disappear. But we can then add a <strong>RenderObjects</strong> feature to render them, specifying the additional overrides (We&rsquo;ll be going over this in a bit).</p>
+<p>For the <strong>Player</strong> layer, we want to render it twice so should keep it in the default mask. This is because we will be overriding the material to create the overlay and still want the normal sprite/material to show.</p>
+<a href="Image3.png" target="_blank" rel="noopener noreferrer"><img src="Image3.png" class="img-center"></a>
+<h3 id="stencil-overrides">Stencil Overrides</h3>
+<p>The <strong>Stencil overrides</strong> allow us to write a value to the <strong>Stencil buffer</strong> (for shaders this is usually an 8 bit integer value which is <strong>0 to 255</strong>, however the Stencil Value slider only allows values of <strong>0 to 15</strong>… for some reason. We only need to use a single value for the effect anyway though).</p>
+<p>We can also test against the value currently in the buffer at the same time, based on operations like <strong>Less</strong>, <strong>Greater</strong>, <strong>Equal</strong>, <strong>Not Equal</strong>, etc. If the test <strong>fails</strong>, it <strong>discards</strong> the pixel, and the <strong>Pass</strong>, <strong>Fail</strong> and <strong>Z Fail</strong> settings show what happens to the <strong>value in the buffer</strong> when the test passes or fails (e.g. <strong>Keep</strong> the current value in the buffer, add/remove 1 from the current value, or <strong>Replace</strong> it entirely with the value that was tested).</p>
+<p>For more information on the stencil buffer and operations, see the <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil docs page</a>, (note that it is for code-written shaders but still applies).</p>
+<a href="Image4.png" target="_blank" rel="noopener noreferrer"><img src="Image4.png" class="img-center"></a>
+<h3 id="render-infront-objects">Render Infront Objects</h3>
+<p>So in order to create our overlay effect, we first need to have our <strong>Infront</strong> layer objects write a value of <strong>1</strong> into the <strong>Stencil buffer</strong>. The full <strong>RenderObjects</strong> feature is as shown :</p>
+<p>Note that all objects are currently using the default sprite material, which places them into the <strong>Transparent</strong> render queue. We need to specify this in the <strong>Queue</strong> under the <strong>Filters</strong> on the feature.</p>
+<a href="Image5.png" target="_blank" rel="noopener noreferrer"><img src="Image5.png" class="img-center"></a>
+<ul>
+<li>Name : Render Infront Objects</li>
+<li>Event : After Rendering Transparents</li>
+<li>Filters
+<ul>
+<li>Queue : Transparent</li>
+<li>Layer Mask : Infront (/Foreground)</li>
+</ul>
+</li>
+<li>Overrides
+<ul>
+<li>Stencil : enabled
+<ul>
+<li>Value : 1</li>
+<li>Compare Function : Always (or Disabled).</li>
+<li>Pass : Replace</li>
+<li>(Fail settings don’t matter, as Always and Disabled will always pass)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="render-player-overlay">Render Player Overlay</h3>
+<p>Then, we need to render the <strong>Player</strong> (again, since the Default Layer Mask includes that layer too), using another <strong>RenderObjects</strong> feature. This time testing against the value in the buffer, and overriding the material to show our overlay :</p>
+<a href="Image6.png" target="_blank" rel="noopener noreferrer"><img src="Image6.png" class="img-center"></a>
+<ul>
+<li>Name : Render Player Overlay</li>
+<li>Event : After Rendering Transparents</li>
+<li>Filters
+<ul>
+<li>Queue : Transparent</li>
+<li>Layer Mask : Player</li>
+</ul>
+</li>
+<li>Overrides
+<ul>
+<li>Material : SpriteOverlay Material</li>
+<li>Stencil : enabled
+<ul>
+<li>Value : 1</li>
+<li>Compare Function : Equal</li>
+<li>(Stencil writing settings (Pass/Fail) don’t matter here, as we aren’t doing any stencil testing after this)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>By using the <strong>Equal</strong> comparison function, we test for the value of <strong>1</strong> in the stencil buffer, which we wrote in the previous RenderObjects feature.</p>
+<p>If the stencil buffer contains a value of <strong>1</strong>, the test <strong>passes</strong>, so <strong>renders the pixel</strong>. If it <strong>fails</strong>, it <strong>discards the pixel</strong>.</p>
+<p>We’ve also overridden the <strong>Material</strong> used for rendering, to use our <strong>SpriteOverlay material</strong> which is using the checkerboard Shader Graph example from earlier. This produces the final result as shown below and in the tweet at the start.</p>
+<a href="Preview.png" target="_blank" rel="noopener noreferrer"><img src="Preview.png" class="img-center"></a>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

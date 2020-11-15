@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Fire Shader Breakdown">
+<meta itemprop="description" content="A shader which distorts the UVs with noise for sampling a fire texture or shape generated using ellipse nodes">
+<meta itemprop="datePublished" content="2020-08-04T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-08-04T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1656">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.cyanilux.com/Preview.png"/>
+
+<meta name="twitter:title" content="Fire Shader Breakdown"/>
+<meta name="twitter:description" content="A shader which distorts the UVs with noise for sampling a fire texture or shape generated using ellipse nodes"/>
+
+	<meta property="og:title" content="Fire Shader Breakdown" />
+<meta property="og:description" content="A shader which distorts the UVs with noise for sampling a fire texture or shape generated using ellipse nodes" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/fire-shader-breakdown/" />
+<meta property="og:image" content="https://www.cyanilux.com/Preview.png" />
+<meta property="article:published_time" content="2020-08-04T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-08-04T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Fire Shader Breakdown | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/fire-shader-breakdown/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Fire Shader Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2020-08-04">&#128337 Aug 4, 2020</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eHey! Wrote a breakdown of a fire shader that uses noise for a distortion effect (similar to the stylised fire in RiME). I\u0026#39;ve had this shader for a while but never got around to a proper breakdown, until now! 🔥🔥 \u003ca href=\"https://twitter.com/hashtag/Unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#Unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e\u003cbr\u003e\u003cbr\u003e🔗 \u003ca href=\"https://t.co/qDK4BkdXI7\"\u003ehttps://t.co/qDK4BkdXI7\u003c/a\u003e \u003ca href=\"https://t.co/eDHyRYOJo2\"\u003epic.twitter.com/eDHyRYOJo2\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1290620434967334912?ref_src=twsrc%5Etfw\"\u003eAugust 4, 2020\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1290620434967334912\">https://twitter.com/Cyanilux/status/1290620434967334912</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>A fairly common method of creating fire is to use a particle system, however many transparent quads produces overdraw which can affect performance, especially for VR and mobile platforms.</p>
+<p>When rendering <strong>Opaque</strong> geometry, Unity renders objects <strong>front-to-back</strong> (objects closer are rendered first). This allows <strong>z-testing</strong> to take place, where objects further away can discard fragments from being rendered if they will be covered by a closer object to avoid unnecessary calculations. However in the <strong>Transparent</strong> queue, Unity has to render those objects <strong>back-to-front</strong> instead in order to achieve the correct alpha blending. Rendering many objects on top of each other, like transparent quads from the particle system, is what is meant by overdraw – and this happens with UI and post-processing effects too.</p>
+<p>Rather than using a particle system, a different approach to fire is a quad which faces the camera, where a noise texture is used to warp the UVs for sampling another texture (or generated ellipse / teardrop-like shape). This is a technique that I first saw from <a href="https://www.youtube.com/watch?v=fwKQyDZ4ark">RiME</a>.</p>
+<p>I’ve had a version of this shader for a while but never got around to writing a proper breakdown. It’s a bit different from the RiME talk and I’m also using the <b class="node">Simple Noise</b> node, but a seamless noise texture could work just as well and might be more performant for VR/mobile. (I don’t really work with those platforms though, so test &amp; profile!)</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This is an <strong>Unlit</strong> shader. <strong>Transparent</strong> surface mode with either <strong>Alpha</strong> or <strong>Additive</strong> blending depending on what result you want.</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<p>In order to create the scrolling (aka moving) noise needed for the effect, we’ll use the <b class="node">Time</b> node and <b class="node">Multiply</b> it by a value to control the speed of the scrolling. (I’ve hardcoded this as <strong>0.5</strong>, but you could use a <strong>Vector1 property</strong> if you want to be able to control it from the material inspector). Since we want it to scroll upwards we need to <b class="node">Negate</b> this and put it into the <strong>Y</strong> input on a <b class="node">Vector2</b> node, leaving <strong>X</strong> as <strong>0</strong>. This is used as the <strong>Offset</strong> input to a <b class="node">Tiling And Offset</b> node.</p>
+<p>We’ll also provide a <strong>Vector2 property</strong> to control the <strong>Noise Scale</strong>, which will be put into the <strong>Tiling</strong> input – allowing us to change the scale of our UVs per-axis. The output from our <b class="node">Tiling And Offset</b> will then be put into a <b class="node">Simple Noise</b> node with a <strong>Scale</strong> of <strong>30</strong>-ish.</p>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<p>This noise will be used to offset the UVs for effects later. Unlike offsetting by a constant value or time (which changes, but is the same value for every UV coordinate), we are shifting each UV coordinate by a different value, which produces a distortion (aka warping) effect. We also should <b class="node">Subtract</b> <strong>0.5</strong>, so the distortion is centered and doesn’t offset more in one direction than the other.</p>
+<p><b class="node">Multiply</b> this with a <strong>Vector1 property</strong> named <strong>Distortion Strength</strong>. We also want the top of the fire to be distorted more than the bottom, so we also <b class="node">Multiply</b> with the <strong>Y</strong> axis of the <b class="node">UV</b> (<strong>G</strong> output from <b class="node">Split</b>). We put this result into the <strong>Y</strong> axis of a <b class="node">Vector2</b>, then into the <strong>Offset</strong> input on a <b class="node">Tiling And Offset</b> node to apply our distortion, only in the vertical direction.</p>
+<p>The distortion will mean our UVs could go outside of the 0-1 range, so parts of the texture/ellipse later could be cut-off by the size of the quad. To help fix this, we’ll also include a <strong>Vector1 property</strong> called <strong>Y Scale</strong> and put it into the <strong>Y</strong> of a <b class="node">Vector2</b>, with <strong>X</strong> as <strong>1</strong>, into the <strong>Tiling</strong> input. This will allow us to scale down the effect in the vertical direction, to try to keep the fire contained to the quad.</p>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-center"></a>
+<p>From here, I’m splitting the graph into <strong>two versions</strong> – a stylised version that uses <b class="node">Ellipse</b> nodes to create a fireball shape, and another simpler version which uses a <strong>texture</strong>, specifically a flame texture from <a href="https://www.kenney.nl/assets/particle-pack">Kenney’s Particle Pack</a>, which is a bit more realistic looking (though could probably look equally as stylised with an effect like <b class="node">Posterize</b> also applied). With a texture it’s a bit easier to control the shape of the effect, but I’ve also used the ellipse method before so felt like sharing it too.</p>
+<p>We could also go further and provide a <b class="node">Flipbook</b> to animate the fire if we had an appropriate spritesheet-like texture, or maybe sample two different fire textures and <b class="node">Lerp</b> between them with something like <strong>Sine Time</strong> (from <b class="node">Time</b> node), remapped into the 0-1 range. I won’t be doing any of that here, but maybe that provides some examples if the fire texture is a bit too static.</p>
+<p>Be sure to also check after both versions below for a section about producing a <strong>Billboarding effect</strong>.</p>
+<h3 id="texture-version">Texture Version</h3>
+<p>For the texture version, we mainly only need a <b class="node">Sample Texture 2D</b> node. As the texture I’m using is greyscale I’m taking the <strong>R</strong> output and <b class="node">Multiply</b> it by <strong>10</strong> so it’s a bit brighter. We then can <b class="node">Multiply</b> with a <strong>Color property</strong> to apply the fire colour (which is also set to <strong>HDR</strong> mode and has an <strong>Intensity</strong> of <strong>1.5</strong>, so it&rsquo;ll glow a bit with Bloom post processing, but that can be expensive on mobile).</p>
+<p>This is put into the <strong>Color</strong> input on the <b class="node">Unlit Master</b> node which should also be set to <strong>Transparent</strong> via the small cog on the node. You can also choose which blending type you prefer, e.g. <strong>Alpha/Additive</strong>.</p>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png" class="img-center"></a>
+<h3 id="ellipse-version">Ellipse Version</h3>
+<p>Another approach is generating a shape from math. Shader Graph provides an <b class="node">Ellipse</b> node which helps with this.</p>
+<p>While we could take our <strong>UVs</strong> and directly put them into an <b class="node">Ellipse</b> node, I’d like to apply a bit more offset first, to warp it into a more tear-drop, or candle-flame like shape. There might be a few ways to achieve this, but I’m taking the <strong>Y</strong> axis (<strong>G</strong> output from a <b class="node">Split</b>), using <b class="node">One Minus</b> to flip it upside-down and putting the result into a <b class="node">Power</b> node with a <strong>B</strong> value of <strong>2</strong>. (I guess this could also just be a <b class="node">Multiply</b>, not sure if the compiler is clever enough to optimise this automatically or not). The next <b class="node">One Minus</b> flips the vertical component back, but since the ellipse is centered and symmetrical it shouldn’t really matter.</p>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png" class="img-center"></a>
+<p>With our edited <strong>UVs</strong>, we’ll put them into two <b class="node">Ellipse</b> nodes. The first with a <strong>Width</strong> of <strong>0.7</strong> and <strong>Height</strong> of <strong>0.5</strong>, and the other with <strong>1</strong> and <strong>1</strong>.</p>
+<p>We’ll also take the output from the <b class="node">Power</b> in the previous step, <b class="node">Add</b> <strong>0.3</strong>, <b class="node">Multiply</b> by <strong>1.5</strong> and put the result into a <b class="node">Posterize</b> with <strong>3 Steps</strong>. These values were mostly trial and error to ensure the fire had a nice amount of coloured bands, to help with a more stylised look.</p>
+<p>This is added with the smaller <b class="node">Ellipse</b> output, then we can tint the fire by multiplying with a <strong>Color property</strong> (which is also set to <strong>HDR</strong> mode and has an <strong>Intensity</strong> of <strong>1.5</strong>) and plug the result into the <strong>Color</strong> input on the <b class="node">Unlit Master</b> node. Be sure to also set the surface type to <strong>Transparent</strong> via the small cog on the node.</p>
+<p>The larger <b class="node">Ellipse</b> is used as the <strong>Alpha</strong> input on the <b class="node">Master</b> node if using <strong>Alpha</strong> blending. If you prefer <strong>Additive</strong> blending, <b class="node">Multiply</b> this with the current colour result and use that as the <strong>Color</strong> input instead, as black areas will show as transparent.</p>
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer"><img src="Graph5.png" class="img-center"></a>
+<h3 id="billboard">Billboard</h3>
+<p>For a 2D game this shader will work, but when applied to a flat quad in a 3D game the fire is obviously two dimensional if the player can walk around the side of it. One way to fix this is to have the quad always face the camera, which is known as billboarding. We could do this in a C# using <strong>Transform.LookAt</strong> in the <strong>Update/LateUpdate</strong> method, but we can also handle it inside the shader instead.</p>
+<p>The following graph is based off <a href="https://forum.unity.com/threads/unity-matrix-p-and-matrix-mv-equlivant.692932/#post-4638028">this forum answer by bgolus</a>, and can be put into the <strong>Vertex Position</strong> input on the <b class="node">Master</b> node to produce the billboard effect.</p>
+<a href="GraphBillboard.png" target="_blank" rel="noopener noreferrer"><img src="GraphBillboard.png" class="img-center"></a>
+<p>Alternatively the shader could be used together with the <strong>Particle System component</strong>, as a way to apply a distortion effect on the existing particles - which already handle a billboarding effect. You’d also likely want to swap the <strong>Color property</strong> out for the <b class="node">Vertex Color</b> node if you do that.</p>
+<p>I’ve also applied the shader to a <strong>Line/Trail Renderer</strong> before which again already does a billboarding effect for you, that was for a fireball spell effect. I believe I also had to use a <b class="node">Rotate</b> node somewhere in the graph for this, to rotate the UVs 90 degrees as that is what the line/trail expects. (Wow this is an old tweet!) :</p>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eAdded a Fireball spell! This is using the fire shader I updated a few weeks ago on a object with a Trail Renderer component. 🔥\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/lowpoly?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#lowpoly\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/gamedev?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#gamedev\u003c/a\u003e \u003ca href=\"https://t.co/mZv5Awzu5G\"\u003epic.twitter.com/mZv5Awzu5G\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1103978039426334720?ref_src=twsrc%5Etfw\"\u003eMarch 8, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1103978039426334720\">https://twitter.com/Cyanilux/status/1103978039426334720</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

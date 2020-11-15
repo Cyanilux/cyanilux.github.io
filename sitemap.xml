@@ -4,21 +4,182 @@
   
   <url>
     <loc>https://www.cyanilux.com/</loc>
-    <lastmod>2020-11-03T00:00:00+00:00</lastmod>
+    <lastmod>2020-11-12T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/posts/</loc>
+    <lastmod>2020-11-12T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/scene-color/</loc>
+    <lastmod>2020-11-12T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/scene-depth/</loc>
+    <lastmod>2020-11-12T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tags/shader-graph/</loc>
+    <lastmod>2020-11-12T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tags/</loc>
+    <lastmod>2020-11-12T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.cyanilux.com/tutorials/</loc>
-    <lastmod>2020-11-03T00:00:00+00:00</lastmod>
+    <lastmod>2020-11-12T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://www.cyanilux.com/tutorials/under-construction/</loc>
-    <lastmod>2020-11-03T00:00:00+00:00</lastmod>
+    <loc>https://www.cyanilux.com/tutorials/breakdowns/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/fire-shader-breakdown/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tags/urp/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/sprite-glow/outline-shader-breakdown/</loc>
+    <lastmod>2020-03-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/</loc>
+    <lastmod>2020-02-24T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/dissolve-shader-breakdown/</loc>
+    <lastmod>2020-02-04T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/toon-glass-shader-breakdown/</loc>
+    <lastmod>2020-01-03T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/</loc>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/cloud-shader-breakdown/</loc>
+    <lastmod>2019-09-25T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/</loc>
+    <lastmod>2019-09-04T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/forcefield-shader-breakdown-simple/</loc>
+    <lastmod>2019-09-03T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/jellyfish-shader-breakdown/</loc>
+    <lastmod>2019-06-17T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/vertex-displacement/</loc>
+    <lastmod>2019-06-14T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/water-shader-breakdown/</loc>
+    <lastmod>2019-06-10T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/whirlpool-shader-breakdown/</loc>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/hologram-shader-breakdown/</loc>
+    <lastmod>2019-05-20T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/polar-coordinates/</loc>
+    <lastmod>2019-05-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/portal-shader-breakdown/</loc>
+    <lastmod>2019-05-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tutorials/liquid-shader-breakdown/</loc>
+    <lastmod>2019-05-06T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -30,13 +191,13 @@
   </url>
   
   <url>
-    <loc>https://www.cyanilux.com/recent-posts/</loc>
+    <loc>https://www.cyanilux.com/cookies/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://www.cyanilux.com/tags/</loc>
+    <loc>https://www.cyanilux.com/recent/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

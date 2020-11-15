@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Forcefield Shader Breakdown (Simple)">
+<meta itemprop="description" content="A simple version of a forcefield shader, using fresnel effect for glowing edges and scene depth for intersections with objects in the scene">
+<meta itemprop="datePublished" content="2019-09-03T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-09-03T00:00:00+00:00" />
+<meta itemprop="wordCount" content="591">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.cyanilux.com/Preview.png"/>
+
+<meta name="twitter:title" content="Forcefield Shader Breakdown (Simple)"/>
+<meta name="twitter:description" content="A simple version of a forcefield shader, using fresnel effect for glowing edges and scene depth for intersections with objects in the scene"/>
+
+	<meta property="og:title" content="Forcefield Shader Breakdown (Simple)" />
+<meta property="og:description" content="A simple version of a forcefield shader, using fresnel effect for glowing edges and scene depth for intersections with objects in the scene" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown-simple/" />
+<meta property="og:image" content="https://www.cyanilux.com/Preview.png" />
+<meta property="article:published_time" content="2019-09-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-09-03T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Forcefield Shader Breakdown (Simple) | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown-simple/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Forcefield Shader Breakdown (Simple)</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-09-03">&#128337 Sep 3, 2019</time>
+
+
+
+<a href="Preview.png" target="_blank" rel="noopener noreferrer"><img src="Preview.png" class="img-center"></a>
+<h2 id="intro">Intro</h2>
+<p>This shader uses a rim / fresnel and the camera&rsquo;s depth texture to produce a simple forcefield (or energy shield) that has glowing edges and intersections with objects in the scene. We could also add scrolling textures to make the glow and sides of the forcefield more interesting although we won’t be going through that in this post.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This is an <strong>Unlit</strong> shader. <strong>Transparent</strong> surface mode and <strong>Alpha</strong> blending.</li>
+<li>For a more advanced forcefield effect, with distortion and rippling effects, see the <a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown">Forcefield Shader Breakdown</a>.</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<p>We’ll first create a <b class="node">Color</b> node and put it into the <strong>Color</strong> input on the <b class="node">Master</b> node. Set it to <strong>HDR</strong> mode and use a blue colour with an <strong>Intensity</strong> of <strong>2</strong>. Having a more intense colour will allow us to also use Post Processing effects such as Bloom in order to make the forcefield glow more. Note that bloom can be quite expensive though, especially if targetting mobile platforms.</p>
+<p>We also need to click the small cog on our <b class="node">Master</b> node and set the shader to use <strong>Transparent</strong> rendering, <strong>Alpha</strong> blending and enable <strong>Two Sided</strong>.</p>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<p>Next, create a <b class="node">Fresnel Effect</b> node. This will output a value based on the normal and view direction. This produces what looks like a “glow” around the edge of the object. We can increase the <strong>Power</strong> input to make this glow closer to the edges – I’m using a value of <strong>8</strong>. For more info about this node see : <a href="https://www.cyanilux.com/tutorials/fresnel-effect">Fresnel Effect Post</a>.</p>
+<p>We’ll be using this as the <strong>Alpha</strong> input on the <b class="node">Master</b> node, to have areas on the edges of our object appear, but have areas in the middle (where the Fresnel returns 0) to be transparent. However, for our back faces this node will output 1 as the normals of those vertices are facing away from the view direction. To prevent this, we can first put the <b class="node">Fresnel Effect</b> output into the <strong>True</strong> input on a <b class="node">Branch</b> node, with the <strong>Predicate</strong> set to the <b class="node">Is Front Face</b> node. We can then leave the <strong>False</strong> input as <strong>0</strong>, so we are only using the fresnel result for the front faces.</p>
+<p>We’ll take the output of the <b class="node">Branch</b> node and <b class="node">Multiply</b> it by <strong>2</strong> and then put it into an <b class="node">Add</b> node with a value of <strong>0.02</strong>. This allows us to tint the forcefield alpha, so it is slightly less transparent.</p>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-center"></a>
+<p>We next need to handle the intersection effect with scene objects. To do this, we’ll create a <b class="node">Screen Position</b> node with the mode set to <strong>Raw</strong> and put it into a <b class="node">Split</b>. This gives us the <strong>depth</strong> of the pixel/fragment on the surface of the object in the <strong>W/A</strong> component.</p>
+<p>We can then create a <b class="node">Scene Depth</b> node set to the <strong>Eye</strong> sampling mode, put it into the first input on a <b class="node">Subtract</b> node, and take the <strong>W/A</strong> component from the <b class="node">Split</b> and put it into the second input. By subtracting these two things, we obtain the difference in depth between the scene and object. We can then put this into a <b class="node">Saturate</b> node to clamp it between 0 and 1, then put it into a <b class="node">One Minus</b> node. We can then put this into a <b class="node">Power</b> node with a value of <strong>15</strong>, <b class="node">Add</b> it to our previous alpha value and then put it into the <strong>Alpha</strong> input on the <b class="node">Master</b> node.</p>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png" class="img-center"></a>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

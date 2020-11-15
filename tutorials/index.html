@@ -4,25 +4,152 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-	<link rel="manifest" href="/site.webmanifest">
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Tutorials">
+<meta itemprop="description" content="">
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Tutorials"/>
+<meta name="twitter:description" content=""/>
+
+	<meta property="og:title" content="Tutorials" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/" />
+<meta property="og:updated_time" content="2020-11-12T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
     
     
     <title>Tutorials | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/" />
+	
 </head>
     <body>
         
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="/logo-small.png"/>
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -33,13 +160,13 @@
 	<nav id="nav">
 	<ul>
 		
-		<li><b><a class="nav-link" href="/contents/">
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
 		
 		Contents
 		</a></b>
 		</li>
 		
-		<li><b><a class="nav-link" href="/recent-posts/">
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
 		</a></b>
@@ -56,19 +183,24 @@
 	
 	
 	
-	<div class="card" onclick="location.href=&#34;/tutorials/under-construction/&#34;;" style="cursor: pointer;">
-		
-		
-		<div class="card-text">
-			<h2 class="title-no-margin"><a class="link-plain" href="/tutorials/under-construction/">Under Construction!</a></h2>
-			<p>test</p>
+	<div class="card" onclick="location.href=&#34;/tutorials/breakdowns/&#34;;" style="cursor: pointer;"><div class="card-text">
+			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/breakdowns/">Breakdowns</a></h2>
+			<p></p>
 			
 
 
 
 
 
-<time datetime="2020-11-03">&#128337 Nov 3, 2020</time>
+		</div>
+	</div>
+	
+	<div class="card" onclick="location.href=&#34;/tutorials/posts/&#34;;" style="cursor: pointer;"><div class="card-text">
+			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/posts/">Posts</a></h2>
+			<p></p>
+			
+
+
 
 
 
@@ -82,6 +214,23 @@
         </br>
 <p class="footer">
 <a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
 </p>
 </br>
     </body>

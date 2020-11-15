@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Polar Coordinates">
+<meta itemprop="description" content="A post explaining the Polar Coordinates node">
+<meta itemprop="datePublished" content="2019-05-13T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-05-13T00:00:00+00:00" />
+<meta itemprop="wordCount" content="525">
+
+
+
+<meta itemprop="keywords" content="Shader Graph," />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Polar Coordinates"/>
+<meta name="twitter:description" content="A post explaining the Polar Coordinates node"/>
+
+	<meta property="og:title" content="Polar Coordinates" />
+<meta property="og:description" content="A post explaining the Polar Coordinates node" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/polar-coordinates/" />
+<meta property="article:published_time" content="2019-05-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-05-13T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Polar Coordinates | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/polar-coordinates/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Polar Coordinates</h1>
+
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-05-13">&#128337 May 13, 2019</time>
+
+
+
+<p>When using UVs you are usually using the <strong>Cartesian coordinate system</strong>, or something similar to it at least. Pixels along the X or U axis start at 0 and increase to 1 horizontally, and the same goes for the Y or V axis but vertically. We can then offset (<b class="node">Add</b> or <b class="node">Subtract</b>) and scale (<b class="node">Multiply</b> or <b class="node">Divide</b>) these UVs to manipulate how a texture is sampled.</p>
+<p>We can use the <b class="node">Polar Coordinates</b> node to convert these Cartesian coordinates into a <strong>Polar coordinate system</strong>.</p>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<p>In the <a href="https://en.wikipedia.org/wiki/Polar_coordinate_system">Polar Coordinates system</a> each point is defined by a <strong>distance from a reference point</strong>, and an <strong>angle from a reference direction</strong>. In Shader Graph this reference point is the <strong>Center</strong> input on the node, and the reference direction is always downwards, which can been seen on the preview of the node where the green gradient stops.</p>
+<p>If you are interested in the maths used to convert between these spaces, this is the generated code for the node:</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">void</span> Unity_PolarCoordinates_float(float2 UV, float2 Center, 
+		<span style="color:#66d9ef">float</span> RadialScale, <span style="color:#66d9ef">float</span> LengthScale, <span style="color:#66d9ef">out</span> float2 Out) {
+    float2 delta = UV - Center;
+    <span style="color:#66d9ef">float</span> radius = length(delta) * <span style="color:#ae81ff">2</span> * RadialScale;
+    <span style="color:#66d9ef">float</span> angle = atan2(delta.x, delta.y) * <span style="color:#ae81ff">1.0</span>/<span style="color:#ae81ff">6.28</span> * LengthScale;
+    Out = float2(radius, angle);
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-right"></a>
+<p>If we put the output of the <b class="node">Polar Coordinates</b> node into a <b class="node">Split</b> node, the <strong>R</strong> output will give us the <strong>distance</strong> from the <strong>Center</strong>.</p>
+<ul>
+<li>
+<p>The <b class="node">Preview</b> node shows this as the center point is black (0), and as points get further away it increases showing red.</p>
+</li>
+<li>
+<p>In this image I’m using a circles to represent the values of 0.5 of 1.</p>
+</li>
+</ul>
+<p>The <strong>G</strong> output will give us the <strong>angle</strong> from the downwards direction.</p>
+<ul>
+<li>
+<p>In the range of <strong>-0.5 to 0.5</strong>, increasing clockwise which can be seen via the green part of the preview.</p>
+</li>
+<li>
+<p>Note that previews won&rsquo;t display negative numbers any differently from 0, but they are there! You could use an <b class="node">Absolute</b> or <b class="node">Negate</b> node temporarily to help visualise them.</p>
+</li>
+</ul>
+<p class="img-clearfix"></p>
+<h3 id="example">Example</h3>
+<p>One thing that we can do with these new coordinates is use them as new <strong>UVs</strong> to sample textures. Here I’m using a <b class="node">Sample Texture 2D</b> node to sample a noise texture. Rather than it being flat (like in the other node) it’s become warped around the center point. Note that the texture used here is <strong>seamless</strong> so it repeats without any noticeable seams. (Note, if you are using a seamless texture but are getting flickering seams – turn off Mip Maps for the texture, or use the <b class="node">Sample Texture 2D LOD</b> node set to 0).</p>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png" class="img-center"></a>
+<p>This is great for a portal/wormhole or whirlpool effect. And we can also animate it by using a <b class="node">Time</b> node and offsetting the values using <b class="node">Add</b> or <b class="node">Subtract</b> nodes! If you are trying to learn Shader Graph, this might be a good exercise to attempt.</p>
+<p>You can learn more about <b class="node">Polar Coordinates</b> in the following breakdowns :</p>
+<ul>
+<li><a href="https://www.cyanilux.com/tutorials/portal-shader-breakdown/">Portal Shader Breakdown</a></li>
+<li><a href="https://www.cyanilux.com/tutorials/whirlpool-shader-breakdown/">Whirlpool Shader Breakdown</a></li>
+</ul>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

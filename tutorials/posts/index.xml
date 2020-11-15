@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Cyanilux</title>
+    <link>https://www.cyanilux.com/tutorials/posts/</link>
+    <description>Recent content in Posts on Cyanilux</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Thu, 12 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tutorials/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Scene Color</title>
+      <link>https://www.cyanilux.com/tutorials/scene-color/</link>
+      <pubDate>Thu, 12 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/scene-color/</guid>
+      <description>Sorry this post is under construction.
+For now, refer to https://cyangamedev.wordpress.com/2019/06/01/scene-color-depth-nodes/</description>
+    </item>
+    
+    <item>
+      <title>Scene Depth</title>
+      <link>https://www.cyanilux.com/tutorials/scene-depth/</link>
+      <pubDate>Thu, 12 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/scene-depth/</guid>
+      <description>Sorry this post is under construction.
+For now, refer to https://cyangamedev.wordpress.com/2019/06/01/scene-color-depth-nodes/</description>
+    </item>
+    
+    <item>
+      <title>Vertex Displacement</title>
+      <link>https://www.cyanilux.com/tutorials/vertex-displacement/</link>
+      <pubDate>Fri, 14 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/vertex-displacement/</guid>
+      <description>Shader Stages While fragment shaders provide colours for each fragment/pixel, we can use vertex shaders to offset the vertices of the mesh. In Shader Graph, nodes that are connected to the Master node&amp;rsquo;s Vertex ports are written to this vertex shader stage.
+When attempting to connect a node between the vertex and fragment stages, they sometimes may not connect. It is usually a good idea to keep the two parts as separate as possible.</description>
+    </item>
+    
+    <item>
+      <title>Polar Coordinates</title>
+      <link>https://www.cyanilux.com/tutorials/polar-coordinates/</link>
+      <pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/polar-coordinates/</guid>
+      <description>When using UVs you are usually using the Cartesian coordinate system, or something similar to it at least. Pixels along the X or U axis start at 0 and increase to 1 horizontally, and the same goes for the Y or V axis but vertically. We can then offset (Add or Subtract) and scale (Multiply or Divide) these UVs to manipulate how a texture is sampled.
+We can use the Polar Coordinates node to convert these Cartesian coordinates into a Polar coordinate system.</description>
+    </item>
+    
+  </channel>
+</rss>

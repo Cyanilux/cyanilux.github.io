@@ -5,25 +5,152 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-	<link rel="manifest" href="/site.webmanifest">
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Home">
+<meta itemprop="description" content="">
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Home"/>
+<meta name="twitter:description" content=""/>
+
+	<meta property="og:title" content="Home" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.cyanilux.com/" />
+<meta property="og:updated_time" content="2020-11-12T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
     
     
     <title>Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/" />
+	
 </head>
     <body>
         
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="/logo-small.png"/>
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -34,13 +161,13 @@
 	<nav id="nav">
 	<ul>
 		
-		<li><b><a class="nav-link" href="/contents/">
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
 		
 		Contents
 		</a></b>
 		</li>
 		
-		<li><b><a class="nav-link" href="/recent-posts/">
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
 		</a></b>
@@ -53,7 +180,17 @@
         
 	<div id="content">
 		<h1 id="welcome">Welcome</h1>
-<p>Under Construction</p>
+<p>Hey! This is my new blog, replacing my <a href="https://cyangamedev.wordpress.com/">wordpress</a> one (which is still available but won&rsquo;t be updated with new posts - they&rsquo;ll be here instead!)</p>
+<p>I put this together so I can share info &amp; tutorials about various shader effects I&rsquo;ve shared on my twitter, <a href="https://twitter.com/Cyanilux">@Cyanilux</a>. I mostly use <strong>Unity3D</strong>, <strong>Universal Render Pipeline</strong> and <strong>Shader Graph</strong>, but the concepts might still translate well to other engines and forms of shader creation.</p>
+<p>The tutorials are all completely free to read and mainly come in two forms, &ldquo;posts&rdquo; which go over <strong>general shader topics</strong> or <strong>shadergraph nodes</strong>, and &ldquo;breakdowns&rdquo; which break down creating a <strong>specific shader effect</strong>. Images in posts can be clicked to show a fullscreen version.</p>
+<p>Check out the Contents or Recent Pages in the Navigation bar above to start reading/learning!</p>
+<p>~ Cyan</p>
+<hr>
+<h3 id="license">License / Usage</h3>
+<p>Content is made for learning purposes and might not optimised and game-ready.</p>
+<p>Shader code, Shader graphs and C# code within these posts is released under the CC0 license unless another license is present within the post. This means you may freely use it for any use, including commercial, without needing attribution/credit (although it would be <strong>greatly</strong> appreciated if you found these posts useful!)</p>
+<p>I do however ask that content is not uploaded to the Unity Asset Store, (it goes against their guidelines to upload public tutorial content too).</p>
+<p>Of course this license also does not apply to content that the post mentions is from another source. You should check that source before using it to see whether their license allows it to be used.</p>
 
 	</div>
 
@@ -61,6 +198,23 @@
         </br>
 <p class="footer">
 <a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
 </p>
 </br>
     </body>

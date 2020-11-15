@@ -11,7 +11,7 @@
 	margin: auto;
 	width: 50%;
 	min-width : 600px;
-	padding: 10px;
+	padding: 0px;
 	text-align: center;
 }
 
@@ -103,6 +103,7 @@ a:active {
 	width: 100%;
 	height: 300px;
 	border-radius: 10px 10px 0px 0px;
+	margin : 0px;
 	object-fit: cover;
 }
 
@@ -110,7 +111,7 @@ a:active {
 	//height: 100%;
 	border-radius: 10px 0px 0px 10px;
 	object-fit: cover;
-	
+	margin : 5px;
     //float:left;
 }
 
@@ -120,6 +121,10 @@ a:active {
 	//border: 3px solid #151515;
 	//display: inline-block;
     overflow: hidden;
+}
+
+.card-text h2 {
+	line-height: 100%;
 }
 
 .card-text time {
@@ -239,7 +244,7 @@ video {
 .pagination {
 	list-style-type: none;
 	margin: auto;
-	padding: 0px;
+	margin-top : 5px;
 	overflow: hidden;
 	background-color: #202020;
 	float: right;
@@ -250,10 +255,11 @@ video {
   	border: 2px solid #303030;
 	border-radius : 10px;
 	margin : 3px;
-	padding : 3px;
-	width : 20px;
-	height : 20px;
+	margin-top : 10px;
+	width : 25px;
+	height : 25px;
 	text-align: center;
+	line-height: 150%;
 }
 
 .page-item.active {
@@ -274,3 +280,55 @@ video {
 	text-decoration: none;
 }
 
+/* Cookie Container */
+
+.cookie-container {
+  position: fixed;
+  bottom: -100%;
+  left: 0;
+  right: 0;
+  background: #161616;
+  color: #00aabb;
+  padding: 0 32px;
+  box-shadow: 0 -2px 16px rgba(47, 54, 64, 0.39);
+  text-align: center;
+  font-size: 14px;
+  
+  transition: 400ms;
+}
+
+.cookie-container.active {
+  bottom: 0;
+}
+
+.cookie-refuse-btn {
+	background: #606060;
+	border: 0;
+	color: #151515;
+	padding: 10px 25px;
+	margin-left : 5px;
+	font-size: 15px;
+	margin-bottom: 16px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.cookie-refuse-btn:hover {
+	background: #707070;
+}
+
+.cookie-accept-btn {
+	background: #00aabb;
+	border: 0;
+	color: #151515;
+	padding: 10px 25px;
+	margin-right : 5px;
+	font-size: 15px;
+	margin-bottom: 16px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.cookie-accept-btn:hover {
+	background: #11bbcc;
+}

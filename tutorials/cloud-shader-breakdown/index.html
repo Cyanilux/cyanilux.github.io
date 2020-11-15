@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Cloud Shader Breakdown">
+<meta itemprop="description" content="A shader applied to a flat subdivided plane where vertices are offset vertically based on layered noise, moving at different rates, to create a cloud effect. Also uses scene depth to produce a softer transition with intersecting game objects">
+<meta itemprop="datePublished" content="2019-09-25T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-09-25T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1683">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.cyanilux.com/Preview.png"/>
+
+<meta name="twitter:title" content="Cloud Shader Breakdown"/>
+<meta name="twitter:description" content="A shader applied to a flat subdivided plane where vertices are offset vertically based on layered noise, moving at different rates, to create a cloud effect. Also uses scene depth to produce a softer transition with intersecting game objects"/>
+
+	<meta property="og:title" content="Cloud Shader Breakdown" />
+<meta property="og:description" content="A shader applied to a flat subdivided plane where vertices are offset vertically based on layered noise, moving at different rates, to create a cloud effect. Also uses scene depth to produce a softer transition with intersecting game objects" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/cloud-shader-breakdown/" />
+<meta property="og:image" content="https://www.cyanilux.com/Preview.png" />
+<meta property="article:published_time" content="2019-09-25T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-09-25T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Cloud Shader Breakdown | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/cloud-shader-breakdown/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Cloud Shader Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-09-25">&#128337 Sep 25, 2019</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eSaw a few others doing cloud shaders last week, so I might as well join in! Really happy with how this turned out. ☁️🌥️☁️ (See thread for \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e + info) \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/LfUDykwtix\"\u003epic.twitter.com/LfUDykwtix\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1172472087673393152?ref_src=twsrc%5Etfw\"\u003eSeptember 13, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1172472087673393152\">https://twitter.com/Cyanilux/status/1172472087673393152</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>This shader is applied to a flat subdivided plane where vertices are offset vertically based on layered noise to create a cloud effect. Each layer of noise is offset by time at a different rate to simulate the clouds changing shape over time. It also uses the depth buffer to fade the alpha where there are intersections with other scene objects, which helps give the clouds a much softer appearance.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This is an <strong>Unlit</strong> shader. <strong>Transparent</strong> surface mode and <strong>Alpha</strong> blending.</li>
+<li>Intended more for an &ldquo;above the clouds&rdquo; feeling, but the plane could be turned upside-down for clouds in the sky instead. You may want to remove the &ldquo;depth intersection&rdquo; part if objects aren&rsquo;t going to intersect with the clouds to make the shader more performant.</li>
+<li>As we are writing this in Shader Graph, we are (currently) unable to add any tessellation to the shader, so instead we are using a custom plane mesh that has already been subdivided a lot to ensure the vertex manipulation is smooth. Depending on the camera angle required it might also be possible to have a disc or pizza-slice shape, subdivided more at the center and move the position/rotation along with the camera, rather than having multiple planes to make up the clouds.</li>
+<li>Since we are offsetting vertices it can cause geometry to overlap and this can cause sorting issues with transparent objects. If the shader writes to the depth buffer it would fix this, however there is currently no way in Shader Graph to override this for a transparent shader. We can either rely on the overrides on the RenderObjects feature on the Forward Renderer to render the clouds, or edit the code generated by Shader Graph.</li>
+<li>Universal Render Pipeline verisons prior to v7.1.1 (technically named Lightweight Render Pipeline (LWRP) back then) had a bug where the <b class="node">Screen Position</b> result is based off the initial vertex position instead of the offset one, which causes the scene depth to not be properly aligned. This is fixed for versions higher than v7.1.1. If you are on a version before that, I&rsquo;d recommend updating (you may also need to update Unity version for higher LWRP/URP package versions to become available). If you can&rsquo;t update, this can also be fixed by editing the generated code. See the end of the post.</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<p>To begin we’ll set up the noise for our clouds. We’ll be using a mixture of <b class="node">Gradient Noise</b> and <b class="node">Simple Noise</b> nodes to do this – although you may also want to think about replacing some layers of noise with a seamless texture as a cheaper alternative.</p>
+<p>In order to ensure we can use multiple plane objects and have no seams between them, we can set the <strong>UVs</strong> of the noise to be based on the <b class="node">Position</b> node set to <strong>World</strong> space. That gives us a <strong>Vector3</strong> but the <strong>UVs</strong> are a <strong>Vector2</strong> so we also need to <b class="node">Split</b> it and take the <strong>X/R</strong> and <strong>Z/B</strong> coordinates to make our noise be based horizontally along the plane.</p>
+<p>We can use a <b class="node">Time</b> node to offset this position so the noise moves slowly over <strong>Time</strong>, with a <b class="node">Multiply</b> node to control the speed at which the noise scrolls at. We’ll also add an overall speed multiplier as a <strong>Vector1 property</strong> so we can control the cloud scroll speed from the inspector.</p>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<p>We’ll use parts of this noise setup 3 times, one for the <b class="node">Gradient Noise</b> and two <b class="node">Simple Noise</b> nodes, all moving at slightly different rates as shown in the image below.</p>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-center"></a>
+<p>I’ve used a mixture of <b class="node">Add</b> and <b class="node">Multiply</b> to combine these layers of noise. We could take an average of all three (by adding them together and dividing by 3), but having a multiply in there made the layered noise output a bit more interesting, in my opinion at least.</p>
+<p>We can now use our layered noise output to offset the vertex position. In order to ensure this is only a vertical offset, we’ll first put it into the <strong>Y</strong> input on a <b class="node">Vector3</b> node, with the other two inputs set to <strong>0</strong>. We can then <b class="node">Multiply</b> this by a value to control the scaling – I’m using the object’s scale for this, so that we can easily change it by adjusting the <strong>Y</strong> scale of the plane rather than having a separate property – But if you want to be able to apply this to meshes other than a plane, you might want to use a property instead.</p>
+<p>Also note that we are offsetting the <strong>World</strong> space vertex position here, but the <b class="node">Master</b> node wants a <strong>Object</strong> space position, so we need to use a <b class="node">Transform</b> node to convert it (from <strong>World</strong>, to <strong>Object</strong>).</p>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png" class="img-center"></a>
+<p>Next we’ll handle the cloud colour as it’s currently hard to see anything we’ve done with the shader being a solid colour. I’m using the same output from our layered noise – giving the higher parts of the clouds a different colour to the lower parts. We can do this by putting the layered noise into the <strong>T</strong> input on a <b class="node">Lerp</b> node, and set the <strong>A</strong> and <strong>B</strong> inputs to two <strong>Color properties</strong>. This creates a linear interpolation between the two colours, creating a gradient. At T=0 it outputs A, and at T=1 it outputs B.</p>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png" class="img-center"></a>
+<p>So we can control how much cloud cover there is, we can add a <b class="node">Smoothstep</b> based on the layered noise output and use this as the <strong>Alpha</strong> input on the <b class="node">Master</b> node. The <b class="node">Smoothstep</b> is similar to a <b class="node">Step</b> node, but provides a smoother transition where we specify two <strong>Edge</strong> inputs. If the <strong>In</strong> input is less than the first <strong>Edge</strong> it outputs 0 and if it is larger than the second <strong>Edge</strong> it outputs 1. Anything inbetween is an interpolation between 0 and 1, but it is not linear – it instead smoothly eases in and out.</p>
+<p>I’m using a property to control the two <strong>Edge</strong> inputs. It outputs 1 if the <strong>Cloud Cover property</strong> is 0, as all noise values will be larger than 0, but as it gets larger the <b class="node">Smoothstep</b> outputs 0 for the lower noise values, leaving only the higher parts behind. Also the falloff (which is controlled by <strong>Edge2</strong>) also increases, so the clouds also get softer, and we have an <strong>Additional Falloff property</strong> to control this further if required.</p>
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer"><img src="Graph5.png" class="img-center"></a>
+<p>Finally, I wanted to add a depth intersection effect, so that objects fade into the clouds rather than having a harsh transition. We subtract the <strong>Object Depth</strong> from the <strong>Scene Depth</strong>, which we can then multiply by a value to control how it fades, aka the Density of the clouds. In order to obtain the <strong>Object Depth</strong>, we use the <strong>W/A</strong> component from the <b class="node">Screen Position</b> node set to <strong>Raw</strong> mode. We can then <b class="node">Multiply</b> this with the previous alpha affect to combine them.</p>
+<p>This is a common technique to have effects where there are intersections with scene objects, such as with forcefields or shoreline effects on water shaders. Note however that this will only work in a Perspective camera projection. Also, on the (Lightweight / Universal) Render Pipeline Asset, the <strong>Depth Texture</strong> option needs to be enabled for the <b class="node">Scene Depth</b> node to work.</p>
+<p>If you aren’t going to have any objects intersecting with the clouds you’ll likely want to leave this part out for better performance.</p>
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer"><img src="Graph6.png" class="img-center"></a>
+<p>Note : Also make sure the <strong>Alpha Clip Threshold</strong> on the <b class="node">Master</b> node to <strong>0</strong> for URP. In older versions of LWRP the value would do nothing unless a node was connected but this has been changed. You may want to use an additional property to control this threshold in order to correctly render shadows if required, but this will create a hard-cutoff. If you don&rsquo;t want to affect the normal visuals, you can create a <strong>Boolean Keyword</strong> with the reference of SHADERPASS_SHADOWCASTER to output different values when that is true, or use a <b class="node">Custom Function</b> containing something like :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#ifdef SHADERPASS_SHADOWCASTER
+</span><span style="color:#75715e"></span>	Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5</span>; <span style="color:#75715e">// or maybe pass a Vector1 property in
+</span><span style="color:#75715e"></span><span style="color:#75715e">#else
+</span><span style="color:#75715e"></span>	Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+<span style="color:#75715e">#endif</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="fixing-issues">Fixing Issues</h3>
+<p>That’s the Shader Graph complete – But before we finish the post we’ve got to tackle the issues I mentioned in the notes at the start of the post.</p>
+<ul>
+<li>Issue 1: We need the shader to write to the depth buffer but still be transparent. This isn&rsquo;t possible in Shader Graph so we&rsquo;ll need to edit the generated code, (or rely on rendering the object with the RenderObjects feature on the Forward Renderer asset, which also has Overrides for writing depth).</li>
+</ul>
+<p>In order to fix this, we need to locate &ldquo;ZWRITE&rdquo; at the top of our shader and set this to &ldquo;On&rdquo; instead of &ldquo;Off&rdquo;.</p>
+<ul>
+<li>Issue 2: Universal Render Pipeline verisons prior to v7.1.1 (technically named Lightweight Render Pipeline (LWRP) back then) had a bug where the <b class="node">Screen Position</b> result is based off the initial vertex position instead of the offset one. This causes the scene depth to not be properly aligned.</li>
+</ul>
+<p>We can fix this either by updating to <strong>URP v7.1.1 or higher</strong> (may also need to update Unity version), or editing the generated code like so :</p>
+<ul>
+<li>Scroll through the generated code until we reach the &ldquo;vert&rdquo; function.</li>
+<li>From there, we should see a float4 ScreenPosition variable. Copy that line, without the &ldquo;float4&rdquo;, and paste it below the &ldquo;v.vertex.xyz = vd.Position&rdquo; line as seen in the image below.</li>
+</ul>
+<a href="ScreenPosFix.png" target="_blank" rel="noopener noreferrer"><img src="ScreenPosFix.png" class="img-center"></a>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

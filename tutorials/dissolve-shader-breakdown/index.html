@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Dissolve Shader Breakdown">
+<meta itemprop="description" content="A shader which uses noise and step functions to discard pixels to create a dissolving effect. Also provides examples for dissolving based on height / Y and using view space position as UVs to avoid seams">
+<meta itemprop="datePublished" content="2020-02-04T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-02-04T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1861">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.cyanilux.com/Preview.png"/>
+
+<meta name="twitter:title" content="Dissolve Shader Breakdown"/>
+<meta name="twitter:description" content="A shader which uses noise and step functions to discard pixels to create a dissolving effect. Also provides examples for dissolving based on height / Y and using view space position as UVs to avoid seams"/>
+
+	<meta property="og:title" content="Dissolve Shader Breakdown" />
+<meta property="og:description" content="A shader which uses noise and step functions to discard pixels to create a dissolving effect. Also provides examples for dissolving based on height / Y and using view space position as UVs to avoid seams" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/dissolve-shader-breakdown/" />
+<meta property="og:image" content="https://www.cyanilux.com/Preview.png" />
+<meta property="article:published_time" content="2020-02-04T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-02-04T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Dissolve Shader Breakdown | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/dissolve-shader-breakdown/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Dissolve Shader Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2020-02-04">&#128337 Feb 4, 2020</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003ePlaying around with dissolve shader effects. ✨\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://t.co/BoZb5Avimv\"\u003epic.twitter.com/BoZb5Avimv\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1223248180281774091?ref_src=twsrc%5Etfw\"\u003eJanuary 31, 2020\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1223248180281774091\">https://twitter.com/Cyanilux/status/1223248180281774091</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>This shader effect uses noise and step functions to discard pixels (and for colouring edges) to create a dissolve effect. We can also have the dissolve based off other values, such as the fragment/pixel position to dissolve across the Y axis of the mesh for example. I’m also using a view space position based UVs to avoid seams in the noise.</p>
+<p>(Note, this post focuses on the cube’s dissolve effect in the tweet above. For the character, an additional line-based noise/offset is used, as well as different colours, and remap values since the model is larger)</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This is an <strong>Unlit</strong> shader (but should work fine as Lit / PBR Master too). Note : If you’re using a Sprite Lit/Unlit Master, the alpha component is the 4th component of the Color input, unlike the other master nodes which use a Vector3 for the Color/Albedo input).</li>
+<li>Uses <strong>Opaque</strong> surface mode (and <strong>Alpha</strong> blending). We also want to set the <strong>AlphaClipThreshold</strong> to 0.5, as we want to discard pixels below this value for the dissolve effect.</li>
+<li>For the cube example in the tweet, the effect is also <strong>Two Sided</strong>, so that back faces are not culled.</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<p>In order to make a dissolve shader we first need a noise input, either generated through the use of the <b class="node">Simple Noise</b> or <b class="node">Gradient Noise</b> nodes, or sampled through a texture. Sampling from a texture can be better for performance, especially when targeting mobile platforms, but for this post I’ll be using generated noise.</p>
+<p>We pass our noise output into a <b class="node">Step</b> function, which outputs 0 or 1 based on whether the input value is smaller or bigger (or equal) than the <strong>Edge</strong> input. For this <strong>Edge</strong> input, we use a <strong>Vector1 property</strong>, named <strong>Amount</strong> here, (Be sure to set the Reference for the property to “_Amount” too). We can then control the property through a C# Script or Animation. (I won’t be going through that in this post though as I’d like to focus on the shader itself – Might do a “Setting properties from script/animation” post in the future, but for now if you are unfamiliar with it you’ll have to use google, sorry! – For setting them via C#, look into <a href="https://docs.unity3d.com/ScriptReference/Material.SetFloat.html">Material.SetFloat</a>).</p>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<p>We can use this <b class="node">Step</b> output as the <strong>Alpha</strong> input on our <b class="node">Master</b> node. As long as our <strong>AlphaClipThreshold</strong> is larger than 0 (but smaller than 1, e.g. 0.5), we’ll now be discarding the black pixels shown in the <b class="node">Step</b> preview. This is the basis of the dissolve shader, but it isn’t very interesting yet.</p>
+<p>In order to add a glowing edge to the dissolve, we need to use another <b class="node">Step</b>, but with a slightly offset <strong>Edge</strong> input (<strong>Amount</strong> <b class="node">Add</b> a <strong>Vector1 “Edge Width” property</strong>, with a default value of <strong>0.05</strong>). Then <b class="node">Subtract</b> the <b class="node">Step</b> with the bigger <strong>Edge</strong> value, from the other.</p>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-center"></a>
+<p>For the <b class="node">PBR Master</b> node, we can now <b class="node">Multiply</b> the output of the <b class="node">Subtract</b> with a <b class="node">Color</b>, and use that as the <strong>Emission</strong> input. We can then use the <strong>Albedo</strong> input for the base object colour, which could be a sampled texture for example.</p>
+<p>However, for the <b class="node">Unlit Master</b> node, since it only has a <strong>Color</strong> input we should use a <b class="node">Lerp</b> so we can also have a base colour for the material. If you aren’t familiar with a Lerp : It linearly interpolates (blends) between two inputs, A and B, based on a third T input. When T=0 it outputs A, and when T=1 it outputs B. For any other input of T it will be an interpolation (blend) between the two inputs. In our case however the T input will only contain values of 0 and 1 exactly, so either output A or B. We could also instead use a <b class="node">Comparison</b> and <b class="node">Branch</b> node to achieve something similar.</p>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png" class="img-center"></a>
+<p>The output of our <b class="node">Subtract</b> is put into the <strong>T</strong> input on the <b class="node">Lerp</b> node, and a <b class="node">Color</b> for the dissolve edge into the <strong>B</strong> input. The <strong>A</strong> input is for the albedo/colour for the base material, e.g. a <b class="node">Sample Texture 2D</b> output, perhaps tinted with an additional colour property.</p>
+<p>In order to take the texture’s transparency/alpha into account, we also need to <b class="node">Multiply</b> the <b class="node">Step</b> (smaller edge, <strong>Amount</strong> input), with the <strong>A</strong> component from the <b class="node">Sample Texture 2D</b> node before putting it into the <strong>Alpha</strong> input on the <b class="node">Master</b> node.</p>
+<p>(If you are using a <b class="node">Sprite Lit/Unlit Master</b> node, you will want to sample the <strong>_MainTex texture</strong>, and tint with the <b class="node">Vertex Color</b> node for it to correctly take the SpriteRenderer into account. Also note that it doesn&rsquo;t have a dedicated alpha input, but it is included with the <strong>Color</strong> input as it is a Vector4, unlike the other master nodes which use a <strong>Vector3</strong> for the <strong>Color/Albedo</strong> input. If you make sure all other Color nodes/properties have an alpha of 1, you can <b class="node">Multiply</b> the <strong>Vector4</strong> output by a <b class="node">Vector4</b> node set to (1,1,1, with the <strong>W</strong> input as the <strong>A</strong> component from the texture sample)).</p>
+<p>Next to make our dissolve edge glow, we’ll want to be using a Bloom Post Processing effect and use <strong>HDR</strong> mode on the <b class="node">Color</b> node, with the colour having an <strong>Intensity</strong> of <strong>2</strong> (and enabling HDR under the Lightweight/Universal Render Pipeline asset). If you aren&rsquo;t familiar with how to set up post processing in URP, see <a href="https://www.cyanilux.com/tutorials/urp-post-processing">here</a>.</p>
+<h3 id="dissolve-based-on-height--y">Dissolve based on Height / Y</h3>
+<p>While our dissolve effect is certainly more interesting with the glowing edge, it dissolves uniformly across the mesh. For certain dissolve effects, we might want the dissolve to follow the mesh’s height.</p>
+<p>We can use the <b class="node">Position</b> node and <b class="node">Split</b> to obtain the <strong>Y/G</strong> value of the position, using <strong>Object</strong> space if we want the dissolve effect to stay fixed to that axis regardless of rotation &amp; scale. If we want it fixed to the worldspace Y axis instead, we should use <strong>World</strong> space, but also make it relative to the object’s origin by subtracting the <strong>Position</strong> output of the <b class="node">Object</b> node.</p>
+<p>We’ll <b class="node">Add</b> this onto the noise output, but first <b class="node">Multiply</b> it by <strong>-1</strong> (or use the <b class="node">Negate</b> node), to make sure the dissolve effect starts with an Amount of 0 at the highest point rather than the lowest.</p>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png" class="img-center"></a>
+<p>However, by adding these two things it shifts the range of the values. This will be a problem if we want to control the dissolve with the Amount property going only from 0 to 1. To fix this, we need to remap the values back into the 0-1 range before putting it into both our <b class="node">Step</b> nodes (also using a <b class="node">Preview</b> node in the image above, to organise the connections better).</p>
+<p>This remap can be done via the <b class="node">Inverse Lerp</b> node. (It can also be done with the <b class="node">Remap</b> node, which uses the same maths as an <b class="node">Inverse Lerp</b> directly into a <b class="node">Lerp</b>. That’s more useful if you want to specify the output range other than 0-1 though).</p>
+<p>For the <strong>A</strong> and <strong>B</strong> inputs on the <b class="node">Inverse Lerp</b>, we need to specify the range of values our <b class="node">Subtract</b> has. In order to do this I’m passing a <strong>Vector2 property</strong> in called <strong>MinMaxY</strong>. I currently have values of <strong>-0.6 and 1</strong>, which works well for a cube mesh with an <strong>Edge Width</strong> of <strong>0.05</strong>.</p>
+<p>We can do calculations to find the right <strong>MinMaxY</strong> values, but it can also be much easier to set the Amount to 0 and MinMaxY to (0, 1) in the material inspector. We can then adjust the X/Min until the object is fully visible, then change the Amount to 1 and adjust the Y/Max until it’s invisible.</p>
+<p>(If you want to try and calculate it instead, you need to know the position and noise ranges, e.g. for the Cube it is in a range of -0.5 to 0.5 as the cube’s origin is in the center and it is one unit wide at a scale of (1,1,1). The noise is roughly in a 0 to 1 range, which is multiplied by 0.5. Therefore when adding together the range is (-0.5+0) to (0.5+1*0.5) = -0.5 to 1. It also needs a little extra on the X/Min value, as we have to account for the Edge Width).</p>
+<h3 id="view-position-uvs">View Position UVs</h3>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-conversation=\"none\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eI\u0026#39;m using view or screen space based UVs for sampling the noise, to prevent seams like when using mesh UVs (left). It has the effect of moving when the object changes position on the screen (but that can also be fixed, by offsetting based on the transformed object origin). \u003ca href=\"https://t.co/v31EHDvbkL\"\u003epic.twitter.com/v31EHDvbkL\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1223278671529750528?ref_src=twsrc%5Etfw\"\u003eJanuary 31, 2020\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1223278671529750528\">https://twitter.com/Cyanilux/status/1223278671529750528</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<p>When using the model’s UVs it can cause some visible seams in the noise. This might be fine for some models and in some cases it might even be possible to hide any seams with particle effects depending on the use case.</p>
+<p>Other options are to either use <strong>Triplanar Mapping</strong> (if sampling a noise texture), or use the <b class="node">Position</b> node set to <strong>View</strong> space as the <strong>UV</strong> input (Since this is a <strong>Vector3</strong>, by connecting it to the <strong>UV</strong> input it will automatically be converted to a <strong>Vector2</strong>, using the <strong>RG/XY</strong> components). We can also use screen space coordinates, although that complicates things a bit more to achieve a very similar effect.</p>
+<p>By using this <strong>View</strong> space <strong>UV</strong> method it is still a single <b class="node">Sample Texture 2D</b> node (or <b class="node">Simple Noise</b> in this case as I’m generating the noise). However, when the camera moves or rotates the noise will follow, like the UVs/texture is projected from the camera.</p>
+<p>We can fix this a little by offsetting the <strong>View</strong> <b class="node">Position</b> with the object’s origin (<strong>Position</strong> output from the <b class="node">Object</b> node), transformed from <strong>World</strong> space to <strong>View</strong> space using the <b class="node">Transform</b> node, like so :</p>
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer"><img src="Graph5.png" class="img-center"></a>
+<p>Using this method will also mean every object shares the same set of noise however. I won’t be going through fixing this in detail – It’s better to just not use this dissolve shader for multiple objects on screen at the same time. However, if that’s not an option, you would want to look into having an additional <strong>Vector2 offset property</strong> which can be different per object. (Probably using the object’s start position or Object.GetInstanceID as a seed to generate a random offset, and set either by using an instanced material at runtime (material = GetComponent<!-- raw HTML omitted -->().<a href="https://docs.unity3d.com/ScriptReference/Renderer-material.html">material</a>; will do this, be sure to cache &amp; destroy it when the object is destroyed too! (<a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnDestroy.html">OnDestroy</a>)), and set via <a href="https://docs.unity3d.com/ScriptReference/Material.SetVector.html">material.SetVector</a>.</p>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

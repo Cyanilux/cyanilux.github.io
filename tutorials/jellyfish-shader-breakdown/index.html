@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Jellyfish Shader Breakdown">
+<meta itemprop="description" content="A shader that displaces vertices based on sine waves in order to animate a Jellyfish mesh">
+<meta itemprop="datePublished" content="2019-06-17T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-06-17T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2491">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.cyanilux.com/Preview.png"/>
+
+<meta name="twitter:title" content="Jellyfish Shader Breakdown"/>
+<meta name="twitter:description" content="A shader that displaces vertices based on sine waves in order to animate a Jellyfish mesh"/>
+
+	<meta property="og:title" content="Jellyfish Shader Breakdown" />
+<meta property="og:description" content="A shader that displaces vertices based on sine waves in order to animate a Jellyfish mesh" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/jellyfish-shader-breakdown/" />
+<meta property="og:image" content="https://www.cyanilux.com/Preview.png" />
+<meta property="article:published_time" content="2019-06-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-06-17T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Jellyfish Shader Breakdown | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/jellyfish-shader-breakdown/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Jellyfish Shader Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-06-17">&#128337 Jun 17, 2019</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eHey! This week I\u0026#39;ve been making Jellyfish, animated using vertex displacement in the shader. Inspired by the amazing work by \u003ca href=\"https://twitter.com/ZappForThat?ref_src=twsrc%5Etfw\"\u003e@ZappForThat\u003c/a\u003e! 🤩 \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://t.co/NQH2wb5X3O\"\u003epic.twitter.com/NQH2wb5X3O\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan 🎃 (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1136953667477757953?ref_src=twsrc%5Etfw\"\u003eJune 7, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1136953667477757953\">https://twitter.com/Cyanilux/status/1136953667477757953</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>This shader displaces vertices based on Sine waves in order to animate a Jellyfish mesh. This is a useful alternative to animating using bones, especially for meshes which would require a large number of bones to achieve a similar looking animation. In the second section we will also add some simple movement and rotation to the Jellyfish GameObject. We will be sending an angle and rotation axis into the shader in order to rotate the vertices of the tentacles to better simulate the jellyfish’s motion, and so that the entire mesh isn’t just rotating on the spot.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This is an <strong>Unlit</strong> shader. Transparent surface mode and Additive blending.</li>
+<li>You will need a mesh of a Jellyfish if you plan on recreating this shader, with the tentacles hanging straight down, and with enough vertices to make the displacement smooth. An important note is that the mesh I’m using has a scale of 2 units wide and about 5 units tall. The origin being at the base of the head of the jellyfish (or more technically, the umbrella/bell) which has a height of 1 unit, leaving 4 units of tentacles below the origin. If your mesh has a different scale or origin you may need to use different values in some of the nodes to achieve the same effect.</li>
+<li>If you are interested in a few simpler examples, look at the <a href="https://www.cyanilux.com/tutorials/vertex-displacement/">Vertex Displacement Post</a>, which includes a brief description and graph to animate a Fish and Butterfly.</li>
+<li>This shader was inspired by the amazing work by <a href="https://twitter.com/ZappForThat/status/1127296464130994176">@ZappForThat</a> :</li>
+</ul>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003e// A beacon for the living,\u003cbr\u003e// Atonement yet to be,\u003cbr\u003e// All adrift in this troubled sea.\u003cbr\u003e.\u003cbr\u003e.\u003cbr\u003e.\u003cbr\u003eAll animation done in shader~~~\u003cbr\u003e.\u003ca href=\"https://twitter.com/hashtag/indiedev?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#indiedev\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/gameart?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#gameart\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/gamedev?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#gamedev\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/art?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#art\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/animation?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#animation\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/MadeWithUnity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#MadeWithUnity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/amplify?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#amplify\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/DeepSea?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#DeepSea\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/MarineLife?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#MarineLife\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/b3d?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#b3d\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/blender3d?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#blender3d\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/screenshotsaturday?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#screenshotsaturday\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/unity3d?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3d\u003c/a\u003e \u003ca href=\"https://t.co/LGs5l69fYi\"\u003epic.twitter.com/LGs5l69fYi\u003c/a\u003e\u003c/p\u003e\u0026mdash; Steve Z (@ZappForThat) \u003ca href=\"https://twitter.com/ZappForThat/status/1134973836586246144?ref_src=twsrc%5Etfw\"\u003eJune 2, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1134973836586246144\">https://twitter.com/Cyanilux/status/1134973836586246144</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="breakdown">Breakdown</h2>
+<p>We will be offsetting vertices using a Sine wave based on the jellyfish’s Y (up/down) axis to scale the X and Z parts of each vertex, pushing vertices in and out without affecting their Y position. We’ll also mask this based on the Y axis, clamped between 1 and 3, allowing the tentacles to move slightly more than the top of the jellyfish.</p>
+<p>To begin, create a <b class="node">Position</b> node set to <strong>Object</strong> space and <b class="node">Split</b> it. Create a <b class="node">Time</b> node, take the <strong>Time</strong> output and <b class="node">Multiply</b> it by a <strong>time-scaling value/property</strong> of <strong>3</strong>. Then take the <strong>Y/G</strong> output of the <b class="node">Split</b> (which should corrospond to the vertical position along the jellyfish) and <b class="node">Multiply</b> this by a value to control the frequency of our wave, we’ll also set this to <strong>3</strong>. We can then <b class="node">Add</b> the output of these two nodes together and put it into a <b class="node">Sine</b> node.</p>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<p>To mask this so the tentacles can move more than the top of the jellyfish, we’ll take the <strong>Y/G</strong> output again, <b class="node">Subtract</b> <strong>1</strong> and then put this into an <b class="node">Absolute</b> node. We can then put this into a <b class="node">Clamp</b> node with a <strong>Min</strong> of <strong>1</strong> and Max of <strong>3</strong>. This will give us an output of 1 at and above the origin, while 1 unit below outputs a value of 2, and at and more than 2 units downwards will output values of 3. We can <b class="node">Multiply</b> this by our <b class="node">Sine</b> node output in order to increase the amplitude, or strength of the offset, on the tentacles.</p>
+<p>In order to use this to offset the vertices, <b class="node">Multiply</b> this by a value such as <strong>0.2</strong> to control the strength of the offset, then <b class="node">Add</b> <strong>1</strong>. Put this into the <strong>X</strong> and <strong>Z</strong> components of a <b class="node">Vector3</b> node, and set the Y component to <strong>1</strong>. We can then <b class="node">Multiply</b> this with the output from the <b class="node">Position</b> node.</p>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-center"></a>
+<p>To make the vertex displacement a little more interesting, I also added some Sine rotation around the Y axis, making the jellyfish sway back and forth a bit. To do this put the output of our vertex displacement into the <strong>In</strong> input of a <b class="node">Rotate About Axis</b> node, setting the <strong>Axis</strong> to <strong>(0, 1, 0)</strong>. Add the <strong>Time</strong> output from the <b class="node">Time</b> node we created earlier with the <strong>Y/G</strong> output of the <b class="node">Split</b>, then put this into a <b class="node">Sine</b> node, and use this as the <strong>Rotation</strong> input, with the <strong>Unit</strong> set to <strong>Radians</strong>. Take the output of this and put it into the <strong>Position</strong> input on the <b class="node">Master</b> node.</p>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png" class="img-center"></a>
+<p>Finally we can also add some colour to the Jellyfish. To do this I’m using a simple gradient between two colours created via a <b class="node">Lerp</b> node. We’ll take the <strong>Y/G</strong> output again and put it into a <b class="node">Remap</b> node with an <strong>In Min Max</strong> of <strong>-1 and 0.5</strong> and an <strong>Out Min Max</strong> of <strong>0 and 1</strong>, then put this into a <b class="node">Saturate</b> node to clamp the values between 0 and 1. Put this into the <strong>T</strong> input on a <b class="node">Lerp</b> node, and create two <b class="node">Color</b> nodes (or properties) and put them into the <strong>A</strong> and <strong>B</strong> inputs.</p>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png" class="img-center"></a>
+<p>We can also <b class="node">Multiply</b> the colour output with a <b class="node">Fresnel Effect</b> node to create a more jelly-like look before putting it into the <strong>Color</strong> input on the <b class="node">Master</b> node. Also set it to use the <strong>Transparent</strong> rendering mode and <strong>Additive</strong> blending by clicking the cog icon. I’m also setting it to be <strong>double-sided</strong>, as the tentacles are only single-sided on the mesh I’m using and we won’t be able to see them from behind otherwise.</p>
+<p>You may notice however there are some slight issues. Firstly, as we are rotating vertices, we also need to rotate the <strong>Normals</strong> put into the <b class="node">Fresnel Effect</b> node to make it output the intended values. You can do this by putting a <b class="node">Normal Vector</b> node into the <strong>In</strong> input of another <b class="node">Rotate About Axis</b> node, having the other inputs the same as the one from before. Secondly, the back faces have normals facing away from us, so for all back faces the <b class="node">Fresnel Effect</b> is outputting 1. We can fix this by flipping the normals for back faces. Create a <b class="node">Branch</b> node with the <strong>Predicate</strong> set to use the <b class="node">Is Front Face</b> node, and put the rotated normal into the <strong>True</strong> input, as well as into a <b class="node">Negate</b> node for the <strong>False</strong> input.</p>
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer"><img src="Graph5.png" class="img-center"></a>
+<p>Now we have a nice looking Jellyfish. In the next section, we’ll look at extending this further so that the jellyfish can move, with tentacles that can bend when the jellyfish turns in order to make the motion feel more realistic.</p>
+<h2 id="movement--reacting-to-rotation">Movement &amp; Reacting to Rotation</h2>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-conversation=\"none\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eAlso did some movement stuff. Wanted to give some bending to the tentacles when turning. I\u0026#39;ll be doing a breakdown of the shader + movement at some point, (probably for Mon 17th June). \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://t.co/m7hysZZQ7d\"\u003epic.twitter.com/m7hysZZQ7d\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan 🎃 (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1136953670392827904?ref_src=twsrc%5Etfw\"\u003eJune 7, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1136953670392827904\">https://twitter.com/Cyanilux/status/1136953670392827904</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<p>In order to make the Jellyfish move and rotate, I’m using the following C# Script :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">using</span> UnityEngine;
+ 
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Jellyfish</span> : MonoBehaviour { 
+ 
+    <span style="color:#66d9ef">public</span> Transform followTransform;
+ 
+    <span style="color:#66d9ef">void</span> Update() { 
+        <span style="color:#75715e">// Move &amp; Rotate towards Follow Transform
+</span><span style="color:#75715e"></span>        Vector3 followVector = followTransform.position - transform.position;
+        <span style="color:#66d9ef">float</span> magnitude = followVector.magnitude;
+        <span style="color:#66d9ef">if</span> (magnitude &gt; <span style="color:#ae81ff">0.01f</span>) {
+            transform.up = followVector;
+            transform.position += followVector / magnitude
+                    * Mathf.Abs(Mathf.Sin(<span style="color:#ae81ff">1.5f</span>*Time.time))
+                    * Time.deltaTime;
+        }
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>In short, I’m moving and rotating the the jellyfish transform towards another Transform (via the followTransform field). This is set up as an empty GameObject which is then dragged into the field in the inspector. I’m multiplying the movement vector by the Absolute of a Sine wave that is moving over time in order to simulate jellyfish-like movement. Note that changing the transform directly means it will ignore collisions. You may want to look into using Rigidbody movement instead if you require collisions.</p>
+<p>Currently however if we use this script, when the jellyfish rotates, the entire mesh rotates – which looks very unnatural. Jellyfish only really move their main body, the umbrella/bell part, with the tentacles following behind. Since the entire mesh is already rotating we need to instead rotate the tentacles back to their original position to fix this.</p>
+<p>As a quick disclaimer, I don’t know if this is an efficient way of achieving this or whether there is a better way, but this is how I am handling it :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">using</span> UnityEngine;
+<span style="color:#a6e22e"> 
+</span><span style="color:#a6e22e">[RequireComponent(typeof(Renderer))]</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Jellyfish</span> : MonoBehaviour {
+    <span style="color:#66d9ef">public</span> Transform followTransform;
+    <span style="color:#66d9ef">private</span> Vector3 tentaclesPosition;
+    <span style="color:#66d9ef">private</span> Material material;
+ 
+    <span style="color:#66d9ef">void</span> OnEnable() {
+        <span style="color:#75715e">// Create instance of Material, so each Jellyfish can have different rotations
+</span><span style="color:#75715e"></span>        material = GetComponent&lt;Material&gt;().material;
+        tentaclesPosition = transform.position - <span style="color:#66d9ef">new</span> Vector3(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>);
+    }
+ 
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> OnDestroy() {
+        <span style="color:#75715e">// Cleanup Material
+</span><span style="color:#75715e"></span>        Destroy(material);
+    }
+ 
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> OnDrawGizmos() {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(tentaclesPosition, <span style="color:#ae81ff">0.1f</span>);
+    }
+ 
+    <span style="color:#66d9ef">void</span> Update() {
+        <span style="color:#66d9ef">if</span> (material == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span>;
+ 
+        <span style="color:#75715e">// Move Tentacles Position Closer if it gets more than 1 unit away
+</span><span style="color:#75715e"></span>        Vector3 diff = tentaclesPosition - transform.position;
+        <span style="color:#66d9ef">if</span> (diff.sqrMagnitude &gt; <span style="color:#ae81ff">1</span>) {
+            tentaclesPosition -= diff * Time.deltaTime;
+        }
+ 
+        <span style="color:#75715e">// Move &amp; Rotate towards Follow Transform
+</span><span style="color:#75715e"></span>        Vector3 followVector = followTransform.position - transform.position;
+        <span style="color:#66d9ef">float</span> magnitude = followVector.magnitude;
+        <span style="color:#66d9ef">if</span> (magnitude &gt; <span style="color:#ae81ff">0.01f</span>) {
+            transform.up = followVector;
+            transform.position += followVector / magnitude
+                    * Mathf.Abs(Mathf.Sin(<span style="color:#ae81ff">1.5f</span>*Time.time))
+                    * Time.deltaTime;
+        }
+ 
+        <span style="color:#75715e">// Obtain Angle &amp; Axis of Rotation
+</span><span style="color:#75715e"></span>        Vector3 tentaclesVector = transform.position - tentaclesPosition;
+        <span style="color:#66d9ef">float</span> angle = Vector3.Angle(tentaclesVector, transform.up);
+        Vector3 axis = Vector3.Cross(tentaclesVector, transform.up);
+        <span style="color:#66d9ef">if</span> (axis.sqrMagnitude &lt; <span style="color:#ae81ff">0.0001f</span>) {
+            <span style="color:#75715e">// If RotationAxis is 0,0,0, change it to 0,1,0
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// as it seems to cause vertices to completely disappear
+</span><span style="color:#75715e"></span>            axis = Vector3.up;
+            angle = <span style="color:#ae81ff">0</span>;
+        }
+ 
+        <span style="color:#75715e">// Set Material Properties, using the same Property References as in the Shader
+</span><span style="color:#75715e"></span>        material.SetVector(<span style="color:#e6db74">&#34;_RotAxis&#34;</span>, axis.normalized);
+        material.SetFloat(<span style="color:#e6db74">&#34;_RotAngle&#34;</span>, -angle);
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>We simulate a Vector3 position, named tentaclesPosition, that follows the jellyfish transform. If it gets more than 1 unit away, it moves towards the jellyfish. This keeps track of where the tentacles are meant to be.</p>
+<p>We obtain the vector from our tentaclesPosition to the jellyfish’s position, named tentaclesVector. We can then compare this with the jellyfish’s transform.up vector, which is the direction the jellyfish is facing. We can get the angle between the two vectors by using Vector3.Angle, and obtain the cross product by using Vector3.Cross. The cross product returns another vector, which is perpendicular to both of the other vectors.</p>
+<p>In other words, we’ve obtained the angle and axis of rotation which allows us to rotate the tentaclesVector to make it equal to the transform.up vector. Of course this is useless to do as we already have the transform.up vector, but we can instead send the angle and axis into the shader, where we can use them to rotate vertices based on how far along the tentacles they are. We’ll also need to negate the rotation angle to make sure it is in the correct direction.</p>
+<p>This method won’t be perfect, but it will allow us to add some bending to the tentacles which should look fine for small rotations. And it will look a lot better than the entire mesh just rotating on the spot. We might be able to improve it further by adding another tentaclesPosition point or two, following each other in a chain, however I haven’t tested it. It would also require more properties to allow it to be sent into the shader, and every rotation will affect the whole mesh, so it needs to be masked to the correct areas in the shader. For now, we’ll stick to the single point.</p>
+<h3 id="back-to-shader-graph">Back to Shader Graph</h3>
+<p>Going back to the shadergraph to implement this, we need to set up two Properties in the blackboard. We’ll set up a <strong>Vector3 propery</strong> for the <strong>Rotation Axis</strong>, with the reference set to “_RotAxis”, and a <strong>Float/Vector1 property</strong> for the <strong>Rotation Angle</strong>, with the reference set to “_RotAngle”. (You could also combine these into a <strong>Vector4</strong>, and then <b class="node">Split</b> it to obtain the last value on it’s own, so you are only setting a single property, but for this example I’ll be using two).</p>
+<p>We’ll take the output from the <b class="node">Rotate About Axis</b> node we used to rotate the vertex position before, and put it into the <strong>In</strong> input of another <b class="node">Rotate About Axis</b> node, with the axis set to the <strong>Rotation Axis</strong>. If we set the rotation to use the <strong>Rotation Angle</strong> however, we’ll be rotating every vertex with the same amount. We first need to mask it so we are only rotating the tentacles.</p>
+<p>To do this, take the <strong>Y/G</strong> output, put it into a <b class="node">Negate</b> node then <b class="node">Multiply</b> it by <strong>0.25</strong>. This flips our values to keep the tentacles in a range of positive values and means that a value of 1 is obtained about 4 units downwards, at the very end of the tentacles in the mesh I’m using. We put this into a <b class="node">Saturate</b> node, <b class="node">Multiply</b> it with our <strong>Rotation Angle</strong> property and put it into the <strong>Rotation</strong> input with the <strong>Unit</strong> set to <strong>Degrees</strong> (as the Vector3.Angle gave us the angle in degrees rather than radians). This means that the rotation will be 0 at the jellyfish’s position, while 4 units along the tentacles is the full rotation angle. Finally, put the output of this into the <strong>Position</strong> input on the <b class="node">Master</b> node.</p>
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer"><img src="Graph6.png" class="img-center"></a>
+<p>As mentioned before this won’t be perfect, but should provide a bit of bending to the mesh when the jellyfish rotates to make the motion a little more realistic. The fact we are using quite a few <b class="node">Rotate About Axis</b> nodes might make the shader a bit expensive though.</p>
+<p>Finally, here’s an image showing the entire graph.</p>
+<a href="GraphFull.png" target="_blank" rel="noopener noreferrer"><img src="GraphFull.png" class="img-center"></a>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

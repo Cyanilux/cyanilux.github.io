@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Breakdowns">
+<meta itemprop="description" content="">
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Breakdowns"/>
+<meta name="twitter:description" content=""/>
+
+	<meta property="og:title" content="Breakdowns" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/breakdowns/" />
+<meta property="og:updated_time" content="2020-08-04T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Breakdowns | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/breakdowns/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+	<h1>Breakdowns</h1>
+	
+	
+	
+	
+	
+	<div class="card" onclick="location.href=&#34;/tutorials/fire-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image" src="https://www.cyanilux.com/tutorials/fire-shader-breakdown/Preview.png"/><div class="card-text">
+			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/fire-shader-breakdown/">Fire Shader Breakdown</a></h2>
+			<p>A shader which distorts the UVs with noise for sampling a fire texture or shape generated using ellipse nodes</p>
+			
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2020-08-04">&#128337 Aug 4, 2020</time>
+
+
+
+		</div>
+	</div>
+	
+	<div class="card" onclick="location.href=&#34;/tutorials/sprite-glow/outline-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image" src="https://www.cyanilux.com/tutorials/sprite-glow/outline-shader-breakdown/Preview.png"/><div class="card-text">
+			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/sprite-glow/outline-shader-breakdown/">Sprite Glow/Outline Shader Breakdown</a></h2>
+			<p>A shader which uses a signed distance field stored in the sprite texture&#39;s alpha channel to create an outline/glow (and inner-glow) effect, with control over the colour and thickness</p>
+			
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2020-03-13">&#128337 Mar 13, 2020</time>
+
+
+
+		</div>
+	</div>
+	
+	<div class="card" onclick="location.href=&#34;/tutorials/sprite-stencil-overlay-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image" src="https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/Preview.png"/><div class="card-text">
+			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/">Sprite Stencil Overlay Breakdown</a></h2>
+			<p>An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer)</p>
+			
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2020-02-24">&#128337 Feb 24, 2020</time>
+
+
+
+		</div>
+	</div>
+	
+	<div class="card" onclick="location.href=&#34;/tutorials/dissolve-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image" src="https://www.cyanilux.com/tutorials/dissolve-shader-breakdown/Preview.png"/><div class="card-text">
+			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/dissolve-shader-breakdown/">Dissolve Shader Breakdown</a></h2>
+			<p>A shader which uses noise and step functions to discard pixels to create a dissolving effect. Also provides examples for dissolving based on height / Y and using view space position as UVs to avoid seams</p>
+			
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2020-02-04">&#128337 Feb 4, 2020</time>
+
+
+
+		</div>
+	</div>
+	
+	<div class="card" onclick="location.href=&#34;/tutorials/toon-glass-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image" src="https://www.cyanilux.com/tutorials/toon-glass-shader-breakdown/Preview.png"/><div class="card-text">
+			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/toon-glass-shader-breakdown/">Toon Glass Shader Breakdown</a></h2>
+			<p>A shader which produces solid diagonal lines across a quad&#39;s surface that moves with the camera position to simulate toon-like glass reflections</p>
+			
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2020-01-03">&#128337 Jan 3, 2020</time>
+
+
+
+		</div>
+	</div>
+	
+	<div class="card" onclick="location.href=&#34;/tutorials/fog-plane-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image" src="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/Preview.png"/><div class="card-text">
+			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/">Fog Plane Shader Breakdown</a></h2>
+			<p>Two examples of vertical fog effects produced using the depth texture (scene depth)</p>
+			
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-12-05">&#128337 Dec 5, 2019</time>
+
+
+
+		</div>
+	</div>
+	
+	<div class="card" onclick="location.href=&#34;/tutorials/cloud-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image" src="https://www.cyanilux.com/tutorials/cloud-shader-breakdown/Preview.png"/><div class="card-text">
+			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/cloud-shader-breakdown/">Cloud Shader Breakdown</a></h2>
+			<p>A shader applied to a flat subdivided plane where vertices are offset vertically based on layered noise, moving at different rates, to create a cloud effect. Also uses scene depth to produce a softer transition with intersecting game objects</p>
+			
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-09-25">&#128337 Sep 25, 2019</time>
+
+
+
+		</div>
+	</div>
+	
+	<div class="card" onclick="location.href=&#34;/tutorials/forcefield-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image" src="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/Preview.png"/><div class="card-text">
+			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/">Forcefield Shader Breakdown</a></h2>
+			<p>A forcefield shader using fresnel effect for glowing edges, scene depth for object intersections and scene colour to produce ripples/distortion</p>
+			
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-09-04">&#128337 Sep 4, 2019</time>
+
+
+
+		</div>
+	</div>
+	
+	<div class="card" onclick="location.href=&#34;/tutorials/forcefield-shader-breakdown-simple/&#34;;" style="cursor: pointer;"><img class="card-image" src="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown-simple/Preview.png"/><div class="card-text">
+			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown-simple/">Forcefield Shader Breakdown (Simple)</a></h2>
+			<p>A simple version of a forcefield shader, using fresnel effect for glowing edges and scene depth for intersections with objects in the scene</p>
+			
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-09-03">&#128337 Sep 3, 2019</time>
+
+
+
+		</div>
+	</div>
+	
+	<div class="card" onclick="location.href=&#34;/tutorials/jellyfish-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image" src="https://www.cyanilux.com/tutorials/jellyfish-shader-breakdown/Preview.png"/><div class="card-text">
+			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/jellyfish-shader-breakdown/">Jellyfish Shader Breakdown</a></h2>
+			<p>A shader that displaces vertices based on sine waves in order to animate a Jellyfish mesh</p>
+			
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-06-17">&#128337 Jun 17, 2019</time>
+
+
+
+		</div>
+	</div>
+	
+	
+<ul class="pagination">
+<li class="page-item disabled">
+    <div aria-label="Previous"><span aria-hidden="true">&#10094;</span></div>
+  </li><li class="page-item active">
+        <div class="page-link" href="https://www.cyanilux.com/tutorials/breakdowns/">1</div>
+      </li><li class="page-item" onclick="location.href=&#34;/tutorials/breakdowns/2/&#34;;" style="cursor: pointer;">
+        <a class="page-link" href="https://www.cyanilux.com/tutorials/breakdowns/2/">2</a>
+      </li><li class="page-item" onclick="location.href=&#34;/tutorials/breakdowns/2/&#34;;" style="cursor: pointer;">
+    <a href="https://www.cyanilux.com/tutorials/breakdowns/2/" class="page-link" aria-label="Next"><span aria-hidden="true">&#10095;</span></a>
+  </li></ul>
+</br>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

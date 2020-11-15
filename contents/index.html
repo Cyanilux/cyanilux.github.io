@@ -4,25 +4,164 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-	<link rel="manifest" href="/site.webmanifest">
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Contents">
+<meta itemprop="description" content="Most of the tutorials below are for the Universal Render Pipeline (URP), but content may still work in the High Definition Render Pipeline (HDRP) too. It may need adjusting in some places due to HDRP using Camera-Relative rendering which makes World space relative to the camera position. Also note that the View Direction node is normalised in HDRP but not in URP.
+Sections :
+ Tutorial Breakdowns Tutorial Posts Twitter Threads   Tutorial Breakdowns (Tutorials breaking down how to create specific shader effects)">
+
+<meta itemprop="wordCount" content="832">
+
+
+
+<meta itemprop="keywords" content="" />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Contents"/>
+<meta name="twitter:description" content="Most of the tutorials below are for the Universal Render Pipeline (URP), but content may still work in the High Definition Render Pipeline (HDRP) too. It may need adjusting in some places due to HDRP using Camera-Relative rendering which makes World space relative to the camera position. Also note that the View Direction node is normalised in HDRP but not in URP.
+Sections :
+ Tutorial Breakdowns Tutorial Posts Twitter Threads   Tutorial Breakdowns (Tutorials breaking down how to create specific shader effects)"/>
+
+	<meta property="og:title" content="Contents" />
+<meta property="og:description" content="Most of the tutorials below are for the Universal Render Pipeline (URP), but content may still work in the High Definition Render Pipeline (HDRP) too. It may need adjusting in some places due to HDRP using Camera-Relative rendering which makes World space relative to the camera position. Also note that the View Direction node is normalised in HDRP but not in URP.
+Sections :
+ Tutorial Breakdowns Tutorial Posts Twitter Threads   Tutorial Breakdowns (Tutorials breaking down how to create specific shader effects)" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/contents/" />
+
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
     
     
     <title>Contents | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/contents/" />
+	
 </head>
     <body>
         
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="/logo-small.png"/>
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -33,13 +172,13 @@
 	<nav id="nav">
 	<ul>
 		
-		<li><b><a class="nav-link" href="/contents/">
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
 		
 		Contents
 		</a></b>
 		</li>
 		
-		<li><b><a class="nav-link" href="/recent-posts/">
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
 		</a></b>
@@ -58,31 +197,425 @@
 
 
 
+<p>Most of the tutorials below are for the <strong>Universal Render Pipeline</strong> (URP), but content may still work in the <strong>High Definition Render Pipeline</strong> (HDRP) too. It may need adjusting in some places due to HDRP using <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">Camera-Relative rendering</a> which makes <strong>World</strong> space relative to the camera position. Also note that the <b class="node">View Direction</b> node is normalised in HDRP but not in URP.</p>
 <p>Sections :</p>
 <ul>
 <li><a href="#tutorial-breakdowns">Tutorial Breakdowns</a></li>
 <li><a href="#tutorial-posts">Tutorial Posts</a></li>
 <li><a href="#twitter-threads">Twitter Threads</a></li>
 </ul>
-<p>Or filter posts by <a href="/tags">Tag</a></p>
 <hr>
 <h2 id="tutorial-breakdowns">Tutorial Breakdowns</h2>
-<p><em><p class="small-text">(Tutorials breaking down how to create specific shader effects)</p></em>
+<p><em><p class="small-text">(Tutorials breaking down how to create specific shader effects)</p></em></p>
+<p>Also still working on copying content from my old <a href="https://cyangamedev.wordpress.com/contents/">Wordpress blog</a>. For now you can find the following breakdowns there :</p>
+<ul>
+<li><a href="https://cyangamedev.wordpress.com/2020/10/06/watercolour-shader-experiments/">Watercolour Shader Experiments</a></li>
+<li><a href="https://cyangamedev.wordpress.com/2020/09/10/retro-crt-shader-breakdown/">Retro CRT Shader Breakdown</a></li>
+</ul>
+<div class="card-compact" onclick="location.href=&#34;/tutorials/fire-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/fire-shader-breakdown/Preview_hu8d844fdd760c1ad821f573e2a276a230_172823_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/fire-shader-breakdown/">Fire Shader Breakdown</a></h2>
+				<p>A shader which distorts the UVs with noise for sampling a fire texture or shape generated using ellipse nodes</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
 
 
-	Failed to load, "/tutorials/breakdowns" does not exist! :(
-</p>
+
+
+
+<time datetime="2020-08-04">&#128337 Aug 4, 2020</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/sprite-glow/outline-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/sprite-glow/outline-shader-breakdown/Preview_hu95333c5808caa79130e03d349e1e0b55_154026_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/sprite-glow/outline-shader-breakdown/">Sprite Glow/Outline Shader Breakdown</a></h2>
+				<p>A shader which uses a signed distance field stored in the sprite texture&#39;s alpha channel to create an outline/glow (and inner-glow) effect, with control over the colour and thickness</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2020-03-13">&#128337 Mar 13, 2020</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/sprite-stencil-overlay-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/Preview_hue1787a2a9d10bfbd9baf906b3d3276da_24683_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/">Sprite Stencil Overlay Breakdown</a></h2>
+				<p>An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer)</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2020-02-24">&#128337 Feb 24, 2020</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/dissolve-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/dissolve-shader-breakdown/Preview_hubdc8d572a34ebff6ad8f9a2626780dd4_87954_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/dissolve-shader-breakdown/">Dissolve Shader Breakdown</a></h2>
+				<p>A shader which uses noise and step functions to discard pixels to create a dissolving effect. Also provides examples for dissolving based on height / Y and using view space position as UVs to avoid seams</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2020-02-04">&#128337 Feb 4, 2020</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/toon-glass-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/toon-glass-shader-breakdown/Preview_hu13fdcc92cc8054528d2b72c8ee63f693_65821_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/toon-glass-shader-breakdown/">Toon Glass Shader Breakdown</a></h2>
+				<p>A shader which produces solid diagonal lines across a quad&#39;s surface that moves with the camera position to simulate toon-like glass reflections</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2020-01-03">&#128337 Jan 3, 2020</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/fog-plane-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/Preview_hu4186ede643289d7e4280576ff06d315e_148888_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/">Fog Plane Shader Breakdown</a></h2>
+				<p>Two examples of vertical fog effects produced using the depth texture (scene depth)</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-12-05">&#128337 Dec 5, 2019</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/cloud-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/cloud-shader-breakdown/Preview_huff08291ea9b5d6f575503c6af16bbb4c_186481_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/cloud-shader-breakdown/">Cloud Shader Breakdown</a></h2>
+				<p>A shader applied to a flat subdivided plane where vertices are offset vertically based on layered noise, moving at different rates, to create a cloud effect. Also uses scene depth to produce a softer transition with intersecting game objects</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-09-25">&#128337 Sep 25, 2019</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/forcefield-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/Preview_hu9518f429c5b34d578ded09b3a10a63fe_199944_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/">Forcefield Shader Breakdown</a></h2>
+				<p>A forcefield shader using fresnel effect for glowing edges, scene depth for object intersections and scene colour to produce ripples/distortion</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-09-04">&#128337 Sep 4, 2019</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/forcefield-shader-breakdown-simple/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown-simple/Preview_hue925580fa0486493eb7feb2c652e1a63_202155_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown-simple/">Forcefield Shader Breakdown (Simple)</a></h2>
+				<p>A simple version of a forcefield shader, using fresnel effect for glowing edges and scene depth for intersections with objects in the scene</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-09-03">&#128337 Sep 3, 2019</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/jellyfish-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/jellyfish-shader-breakdown/Preview_hudb89e9dc505963020eed54a7e459b979_216044_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/jellyfish-shader-breakdown/">Jellyfish Shader Breakdown</a></h2>
+				<p>A shader that displaces vertices based on sine waves in order to animate a Jellyfish mesh</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-06-17">&#128337 Jun 17, 2019</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/water-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/water-shader-breakdown/Preview_hu9856ae9046ef1bb676aff9b2eba81a99_131651_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/water-shader-breakdown/">Water Shader Breakdown</a></h2>
+				<p>A water shader that uses the scene color to produce distortion/refractions and reconstructs a position from the scene depth to project caustics on underwater objects</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-06-10">&#128337 Jun 10, 2019</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/whirlpool-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/whirlpool-shader-breakdown/Preview_huf06986e5fa32608ff5e4893f291e47d4_156941_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/whirlpool-shader-breakdown/">Whirlpool Shader Breakdown</a></h2>
+				<p>A shader that discards pixels above a certain Y position and renders back faces to fake the top surface of the liquid</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-05-27">&#128337 May 27, 2019</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/hologram-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/hologram-shader-breakdown/Preview_hu6222fbf406f8a82dd2f5c1c0bdec303f_162287_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/hologram-shader-breakdown/">Hologram Shader Breakdown</a></h2>
+				<p>A hologram shader based on sine/fraction nodes to produce repeating horizontal lines and fresnel effect</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-05-20">&#128337 May 20, 2019</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/portal-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/portal-shader-breakdown/Preview_hu0600fd952bf589e134ca9a2261981909_189277_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/portal-shader-breakdown/">Portal Shader Breakdown</a></h2>
+				<p>A portal/wormhole shader on manipulating polar coordinates to create a spiralling effect</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-05-13">&#128337 May 13, 2019</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/liquid-shader-breakdown/&#34;;" style="cursor: pointer;"><img class="card-image-small" src="https://www.cyanilux.com/tutorials/liquid-shader-breakdown/Preview_hu13d9d02e21b7a40bd76d314fd636cedb_109286_200x0_resize_box_2.png"/><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/liquid-shader-breakdown/">Liquid Shader Breakdown</a></h2>
+				<p>A shader that discards pixels above a certain Y position and renders back faces to fake the top surface of the liquid</p>
+				
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-05-06">&#128337 May 6, 2019</time>
+
+
+
+			</div>
+		</div>
 <h2 id="tutorial-posts">Tutorial Posts</h2>
 <p><em><p class="small-text">(Posts explaining general shader-related topics or shader graph nodes.)</p></em>
+<div class="card-compact" onclick="location.href=&#34;/tutorials/vertex-displacement/&#34;;" style="cursor: pointer;"><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/vertex-displacement/">Vertex Displacement</a></h2>
+				<p>A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies</p>
+				
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
 
 
-	Failed to load, "/tutorials/posts" does not exist! :(
-</p>
+
+
+
+<time datetime="2019-06-14">&#128337 Jun 14, 2019</time>
+
+
+
+			</div>
+		</div><div class="card-compact" onclick="location.href=&#34;/tutorials/polar-coordinates/&#34;;" style="cursor: pointer;"><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/polar-coordinates/">Polar Coordinates</a></h2>
+				<p>A post explaining the Polar Coordinates node</p>
+				
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-05-13">&#128337 May 13, 2019</time>
+
+
+
+			</div>
+		</div></p>
+<p>Also still working on copying content from my old <a href="https://cyangamedev.wordpress.com/contents/">Wordpress blog</a>, so you might be able to find some more stuff there, mainly :</p>
+<ul>
+<li><a href="https://cyangamedev.wordpress.com/2020/03/05/orthographic-depth/">Orthographic Depth</a></li>
+<li><a href="https://cyangamedev.wordpress.com/2020/07/19/custom-vertex-streams/">Passing Particle System Data into Shader Graph</a></li>
+<li><a href="https://cyangamedev.wordpress.com/2020/06/22/urp-post-processing/">Post Processing in URP</a></li>
+<li><a href="https://cyangamedev.wordpress.com/2019/06/01/scene-color-depth-nodes/">Scene Color &amp; Scene Depth Nodes</a></li>
+<li><a href="https://cyangamedev.wordpress.com/2020/01/14/uv-based-nodes/">UV-Based Nodes</a></li>
+<li><a href="https://cyangamedev.wordpress.com/2019/07/16/voronoi/">Voronoi</a></li>
+<li><a href="https://cyangamedev.wordpress.com/2020/01/28/worldspace-uvs-triplanar-mapping/">Worldspace UVs &amp; Triplanar Mapping</a></li>
+<li><a href="https://cyangamedev.wordpress.com/2020/06/05/urp-shader-code/">Writing Shader Code for URP</a></li>
+</ul>
 <h2 id="twitter-threads">Twitter Threads</h2>
 <p><em><p class="small-text">(Links to shader-related twitter threads that I’ve made. I haven’t turned any of these into proper posts/breakdowns but they might still be useful!)</p></em></p>
 <ul>
-<li><a href="https://cyangamedev.wordpress.com/contents/">Old Blog Link</a></li>
 <li><a href="https://twitter.com/Cyanilux/status/1255870774558232582">Grass Geometry Shader</a> &amp; <a href="https://github.com/Cyanilux/URP_GrassGeometryShader">Github</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1190253359703482369">Waterfall Shader</a> (With sphere interaction)</li>
+<li><a href="https://twitter.com/Cyanilux/status/1193513267534151680">Impossible Cube</a> (Stencil shader effects)</li>
+<li><a href="https://twitter.com/Cyanilux/status/1192127324793327616">Fireball sphere</a> (Particle System, Dissolve based on noise &amp; Fresnel effect)</li>
+<li><a href="https://twitter.com/Cyanilux/status/1252298028607774721">Animal Crossing Shoreline Shader Mini Breakdown</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1251916279205814272">Animal Crossing Style World Bending</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1272162240725221378">Post Processing based Water</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1259584907329908737">Terrain Splatmap in Shader Graph</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1117818466688540672">Interior Mapping</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1119599987170709504">Alien Rune Cube</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1122456470422020096">Hourglass</a> (Taking the <a href="https://www.cyanilux.com/tutorials/liquid-shader-breakdown">Liquid Shader</a> further)</li>
+<li><a href="https://twitter.com/Cyanilux/status/1237426107885985792">Colour Picker</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1190705752308174849">Depth Mask Boat</a> (&amp; <a href="https://twitter.com/Cyanilux/status/1191002367069753345">Render Texture Foam Trails</a>)</li>
+<li><a href="https://twitter.com/Cyanilux/status/1144561747648536581">Render Texture Puddles</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1188793194449899521">SDF Pumpkin</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1180084819906220032">Melting Candles</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1142028421431734272">Ice Shader</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1089496954822946816">Lava Bubbles</a> (Particle System with bubble mesh, Dissolve based on lifetime)</li>
+<li><a href="https://twitter.com/Cyanilux/status/1304737773715365890">Resizable Dashed Arrow</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1317566458558353408">Replicating Quantum Conundrum&rsquo;s Dimension-Switching effect</a></li>
 </ul>
 
 
@@ -90,6 +623,23 @@
         </br>
 <p class="footer">
 <a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
 </p>
 </br>
     </body>

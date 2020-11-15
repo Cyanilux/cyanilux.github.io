@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Forcefield Shader Breakdown">
+<meta itemprop="description" content="A forcefield shader using fresnel effect for glowing edges, scene depth for object intersections and scene colour to produce ripples/distortion">
+<meta itemprop="datePublished" content="2019-09-04T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-09-04T00:00:00+00:00" />
+<meta itemprop="wordCount" content="3074">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.cyanilux.com/Preview.png"/>
+
+<meta name="twitter:title" content="Forcefield Shader Breakdown"/>
+<meta name="twitter:description" content="A forcefield shader using fresnel effect for glowing edges, scene depth for object intersections and scene colour to produce ripples/distortion"/>
+
+	<meta property="og:title" content="Forcefield Shader Breakdown" />
+<meta property="og:description" content="A forcefield shader using fresnel effect for glowing edges, scene depth for object intersections and scene colour to produce ripples/distortion" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/" />
+<meta property="og:image" content="https://www.cyanilux.com/Preview.png" />
+<meta property="article:published_time" content="2019-09-04T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-09-04T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Forcefield Shader Breakdown | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Forcefield Shader Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-09-04">&#128337 Sep 4, 2019</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eHey! This week I\u0026#39;ve been making Jellyfish, animated using vertex displacement in the shader. Inspired by the amazing work by \u003ca href=\"https://twitter.com/ZappForThat?ref_src=twsrc%5Etfw\"\u003e@ZappForThat\u003c/a\u003e! 🤩 \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://t.co/NQH2wb5X3O\"\u003epic.twitter.com/NQH2wb5X3O\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan 🎃 (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1136953667477757953?ref_src=twsrc%5Etfw\"\u003eJune 7, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1136953667477757953\">https://twitter.com/Cyanilux/status/1136953667477757953</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>This post is a more advanced version of the <a href="https://www.cyanilux.com/tutorials/simple-forcefield-breakdown">Simple Forcefield Breakdown</a>. You don’t have to read that one first, but it might help with understanding this one further. This shader uses a rim / fresnel effect along with the camera&rsquo;s colour and depth textures to produce a spherical (or hemispherical (dome-shaped)) forcefield (or energy shield) that distorts the view through it, with glowing edges and intersections with objects in the scene. We will also add the ability to produce distortion ripples at points of collision with scene objects, through the use of a custom function.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This is an <strong>Unlit</strong> shader. <strong>Transparent</strong> surface mode and <strong>Alpha</strong> blending (but alpha will always be set to 1!)</li>
+<li>If you are looking to make a forcefield without any distortion to visuals – you should follow the simple version instead (linked above).</li>
+<li>The distortion is created using the <b class="node">Scene Color</b> node, which in the URP (/LWRP if using older versions) only shows opaque objects (not sure about HDRP). Because of this, transparent objects will not be visible through the forcefield.</li>
+<li>This may not be the most efficient way to achieve a forcefield effect with distortion. One of the main issues I encountered was trying to get both the front and back faces to be visible through the forcefield. Without distortion this is pretty easy as we can just use transparency, however when we add distortion through the use of the <b class="node">Scene Color</b> node we will need to only render the front faces. If we want back faces to be visible too, we would have to fake them entirely by assuming the shader is always going to be applied to a hemisphere. This is what I’ll be doing in this post, but there may be alternatives – such as using a multi-camera setup to render the scene, including the back faces of the forcefield, to a texture which can be sampled instead of using the <b class="node">Scene Color</b> node. Another alternative is to have the distortion completely separate on a post processing effect – but you’ll need another camera (or renderer feature) to render a specific layer of the scene to describe which parts should be distorted and in what direction (similar to this <a href="https://www.youtube.com/watch?v=xH5uUfeB2Go">Makin’ Stuff Look Good video</a>).</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<p>Before we start, we need to click on the small cog on our <b class="node">Master</b> node and switch to <strong>Transparent</strong> rendering mode, with <strong>Alpha</strong> blending and keeping it to <strong>Single Sided</strong>. These will be important, as we will be using the <b class="node">Scene Color</b> and <b class="node">Scene Depth</b> nodes. If you aren&rsquo;t familiar with these you can read about them here : <a href="https://www.cyanilux.com/tutorials/scene-color">Scene Color</a> post, <a href="https://www.cyanilux.com/tutorials/scene-depth">Scene Depth</a> post.</p>
+<p>We’ll first create a <b class="node">Fresnel Effect</b> node. This will output a value based on the mesh’s surface normal and view direction, producing what looks like a “glow” around the edge of the object. We can increase the <strong>Power</strong> input to make this glow closer to the edges – I’m using a value of <strong>8</strong>. For more info about this node see the <a href="https://www.cyanilux.com/tutorials/fresnel-effect">Fresnel Effect</a> post. I’m also putting this into a <b class="node">Multiply</b> with a value of <strong>2</strong> to make it a bit brighter.</p>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<p>Next we’ll handle the intersection effect with scene objects. To do this, we’ll create a <b class="node">Screen Position</b> node with the mode set to <strong>Raw</strong> and put it into a <b class="node">Split</b>. This gives us the <strong>depth</strong> of the pixel/fragment on the surface of the object in the <strong>W/A</strong> component. We will also need to create a <b class="node">Scene Depth</b> node set to the <strong>Eye</strong> sampling mode.</p>
+<p>Because we want this shader to support distortion later, this will be different from the intersection effect made in the simple version of this shader – as we cannot use the <strong>Two Sided</strong> mode but still want the intersection to show for both front and back faces. The method I’m using for this is similar to what was done in the <a href="https://www.cyanilux.com/tutorials/water-shader-breakdown">Water Shader Breakdown</a> for the caustics effect. By knowing the position, object depth and the scene depth we can reconstruct the world position in the scene for that fragment, which we can then use to test if the fragment is on the edge of a hemisphere.</p>
+<p>To reconstruct this world position based on depth, create a <b class="node">View Direction</b> node set to <strong>World</strong> space, and <b class="node">Divide</b> it by the object’s depth from the <strong>W/A</strong> component of the <b class="node">Split</b> node from earlier. Then <b class="node">Multiply</b> it by the output from the <b class="node">Scene Depth</b> node. Create a <b class="node">Camera</b> node, and take the <strong>Position</strong> output and <b class="node">Subtract</b> the output from our <b class="node">Multiply</b>. If you aren’t sure about how this works, see the water breakdown linked above.</p>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-center"></a>
+<p>With this, we can do an intersection effect by comparing the distance from this position to the center of the forcefield (which will be at the object’s origin). Take the output of our worldspace scene position and put it into the <strong>A</strong> input on a <b class="node">Distance</b> node. In order to get the object’s worldspace origin we’ll create an <b class="node">Object</b> node and take the <strong>Position</strong> output and put that into the <strong>B</strong> input.</p>
+<p>Currently this gives us values of 0 close to the forcefield origin, while the further parts has a higher output. Since we want to draw the intersection effect on the edge of the forcefield we need to take the output from the <b class="node">Distance</b> and <b class="node">Subtract</b> a value from it (I’ll come back to what value in a second), then take the <b class="node">Absolute</b>. This will push those distance values of 0 into negatives then uses the absolute to “flip” them into the positive again.</p>
+<p>The value in that <b class="node">Subtract</b> should be based on the forcefield scale. We can obtain this by taking the <strong>Scale</strong> output from the <b class="node">Object</b> node. This is a <strong>Vector3</strong> however, and we only want a <strong>Vector1</strong> so we’ll put it into a <b class="node">Split</b> node and take the <strong>X/R</strong> component. You may also need to <b class="node">Multiply</b> this by an additional scaling value if the scale of the mesh doesn’t have a radius of 1 (aka 2 units wide).</p>
+<p>We’ll then take the output from the <b class="node">Absolute</b> and put it into a <b class="node">One Minus</b> node as we want values of 1 on the forcefield edge instead of 0, then put it into a <b class="node">Saturate</b> node and a <b class="node">Power</b> node with a second value of <strong>15</strong>. Then <b class="node">Add</b> the output of our fresnel’s <b class="node">Multiply</b> to this. We will then <b class="node">Multiply</b> by a <b class="node">Color</b> node (or property if you want to be able to edit it from the inspector), to tint the forcefield to a blue colour. I&rsquo;m also using <strong>HDR</strong> mode with an <strong>Intensity</strong> of <strong>2</strong>.</p>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png" class="img-center"></a>
+<p>If you temporarily put this into the <strong>Color</strong> input on the <b class="node">Master</b> node you should see that the forcefield is black, but you can see the blue edges where it intersects with objects in the scene. Unlike in the simple version of this we won’t be making the forcefield actually transparent as we want to add distortion. To do this we will use the <b class="node">Scene Color</b> node, which is a texture of all the opaque objects the camera has rendered. Before sampling this texture, we can offset the coordinates slightly to create distortions.</p>
+<p>Create a <b class="node">Screen Position</b> node and put it into an <b class="node">Add</b> node in order to handle this offset, leaving the other input empty for now. Then put the output of this into a <b class="node">Scene Color</b> node. We’ll then take the output of that and put it into the <strong>A</strong> input on a <b class="node">Lerp</b> node. Put the forcefield <b class="node">Color</b> node we used earlier into the <strong>B</strong> input and put a <b class="node">Vector1</b> node with a value of <strong>0.02</strong> in the <strong>T</strong> input. This will allow us to interpolate between the scene colour and the forcefield colour based on a value which will control the visibility. Due to the forcefield colour being quite intense, we will want to keep this value very small. We can now take the <b class="node">Lerp</b> output and <b class="node">Add</b> it with our other colour (the output of the <b class="node">Multiply</b> node from earlier) and put that into the <strong>Colour</strong> input on the <b class="node">Master</b> node. We should now see the scene through the forcefield, but it isn’t distorted yet.</p>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png" class="img-center"></a>
+<p>Going back to the <b class="node">Screen Position</b> node from before, we need to offset it in order to create the distortion. We’ll use a <b class="node">Gradient Noise</b> node to do this, with a <strong>Scale</strong> value of <strong>25</strong>. As the output of this is between 0 and 1, we will want to <b class="node">Subtract</b> <strong>0.5</strong> to move it into the range of <strong>-0.5 to 0.5</strong> so we are distorting the view evenly in each direction. We can then <b class="node">Multiply</b> it by a small value such as <strong>0.01</strong>, to control the strength of the distortion, and put it into the second input on the <b class="node">Add</b> node (the one with the <b class="node">Screen Position</b> going into it).</p>
+<p>We can also offset the <strong>UVs</strong> over time so that the distortion moves. Create a <b class="node">Time</b> node and take the <strong>Time</strong> output and <b class="node">Multiply</b> by a value of <strong>0.1</strong> to control the speed of the scrolling noise. Then put it into an <b class="node">Add</b> node with a <b class="node">Position</b> node set to <strong>View</strong> space. Put the output of this into the <strong>UV</strong> input on the <b class="node">Gradient Noise</b> node.</p>
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer"><img src="Graph5.png" class="img-center"></a>
+<h2 id="ripples">Ripples</h2>
+<p>So far we have a nice forcefield effect, but one of the things I wanted to add was a rippling reaction with projectiles that are fired at the forcefield as seen in the GIF in the original tweet. In order to do this we need to use a <b class="node">Custom Function</b> node, as we need access to a couple things that aren’t yet supported in shadergraph normally. This function will output a <strong>Vector3 distortion direction</strong> which we will use to further offset the <b class="node">Screen Position</b> going into the <b class="node">Scene Color</b> node. It will also output a <strong>Vector1</strong> value which will allow us to colour the ripple slightly to make it more obvious. Note that I’m focusing on the front faces only here – it may be possible to extend it to the back faces too, however I won’t be going through that in this post.</p>
+<p>In order to allow for multiple ripples to be handled at the same time, we will need an <strong>array</strong> to store the positions of the origin of each ripple. We will then also need another value to control the lifetime of the ripple. To send these points into the shader we will need a <strong>C# Script</strong>, which will also control updating the lifetime and removing the point when it reaches a lifetime larger than 1. Since we have 4 values, we could use a <strong>Vector4/float4</strong> array for this – but as we might want to add more values to control further things (such as power/scale, perhaps even a different colour for each ripple) I will be using a <strong>float array</strong>.</p>
+<p>It is possible to have arrays in shaders. Although shadergraph doesn’t support them normally we can still use a <b class="node">Custom Function</b> node to declare the array and loop through it. We will need to be using the <strong>File</strong> mode in order to do this, as it needs to be specified outside of the function itself (which can&rsquo;t be done using the <strong>String</strong> mode).</p>
+<p>When defining the array we also need to specify a fixed length. We’ll be allowing our shader to store up to 6 ripple points, each having 4 components (3 of which are the XYZ position, and the final being the lifetime, as mentioned before), this means we need an array of length <strong>6*4</strong>. We’ll come back to the actual shader function later.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">uniform <span style="color:#66d9ef">float</span> _Points[<span style="color:#ae81ff">6</span>*<span style="color:#ae81ff">4</span>];
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>If you want more information about arrays in shaders see this article by <a href="https://www.alanzucconi.com/2016/10/24/arrays-shaders-unity-5-4/">Alan Zucconi</a>.</p>
+<p>In order to initialise the array it has to be done externally, via a <strong>C# Script</strong> using <strong>Material.SetFloatArray(array)</strong>.</p>
+<p>The script I’m using looks like the following :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">using</span> UnityEngine;
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">[ExecuteInEditMode]</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ArrayTest</span> : MonoBehaviour {
+ 
+    <span style="color:#66d9ef">public</span> Material material;
+ 
+    <span style="color:#75715e">// Initalize Array
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// This should have the same length as in the shader!
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">float</span>[] points = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">float</span>[] {
+        <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.1f</span>,
+        <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.2f</span>,
+        <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0.4f</span>,
+        -<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.5f</span>,
+        <span style="color:#ae81ff">0</span>, -<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.6f</span>,
+        <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, -<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0.8f</span>,
+    };
+	<span style="color:#75715e">// These values here are used for testing purposes to see if it&#39;s working.
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// Basically a ripple in each axis direction, each with a different radius.
+</span><span style="color:#75715e"></span> 
+    <span style="color:#66d9ef">void</span> Update(){
+        <span style="color:#66d9ef">if</span> (material == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span>;
+ 
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; points.Length; i += <span style="color:#ae81ff">4</span>) {
+            <span style="color:#66d9ef">float</span> t = points[i + <span style="color:#ae81ff">3</span>];
+            t += Time.deltaTime;
+            <span style="color:#66d9ef">if</span> (t &gt; <span style="color:#ae81ff">1</span>) {
+                <span style="color:#75715e">// Lifetime Complete
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// Create a new random point
+</span><span style="color:#75715e"></span>                t = <span style="color:#ae81ff">0</span>;
+                Vector3 sphere = Random.onUnitSphere;
+                 
+                <span style="color:#75715e">// Keep it in the top hemisphere - leave this out for a sphere!
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> (sphere.y &lt; <span style="color:#ae81ff">0</span>) sphere.y = -sphere.y;
+ 
+                <span style="color:#75715e">// Set position
+</span><span style="color:#75715e"></span>                points[i] = sphere.x;
+                points[i + <span style="color:#ae81ff">1</span>] = sphere.y;
+                points[i + <span style="color:#ae81ff">2</span>] = sphere.z;
+            }
+ 
+            <span style="color:#75715e">// Set lifetime
+</span><span style="color:#75715e"></span>            points[i + <span style="color:#ae81ff">3</span>] = t;
+        }
+ 
+        material.SetFloatArray(<span style="color:#e6db74">&#34;_Points&#34;</span>, points);
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>This script is just replacing the points in the array with random points when they reach the lifetime of 1 – so we get constant rippling effects for testing purposes. I won’t be going through the script for actual gameplay mechanics, but you would want to be able to:</p>
+<ul>
+<li>Add points based on collisions (e.g. MonoBehaviour.OnCollisionEnter/OnTriggerEnter). If there are no spaces for new points (if there are more than 6 collisions at once) but we want to add one, we would likely want to loop through the array and find the one with the largest lifetime and replace it with the new point.</li>
+<li>“Remove” points when they reach their lifetime of 1. Note : It’s important that the array length stays fixed and data is present when sending it to the shader so it can replace it correctly – so for removing points you will need to specify the values still, giving { 0, 0, 0, 2 } or something, where in the loop if the lifetime is 2 we know it’s a space for a new point, and our shader function should be outputting 0 to prevent anything being rendered for that point.</li>
+</ul>
+<p>The following is the shader function used by the <b class="node">Custom Function</b> node :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">uniform <span style="color:#66d9ef">float</span> _Points[<span style="color:#ae81ff">6</span>*<span style="color:#ae81ff">4</span>];
+ 
+<span style="color:#66d9ef">void</span> Test_float(float3 position, <span style="color:#66d9ef">out</span> float3 direction, <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">float</span> strength){
+    float3 directionOutput = <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">float</span> strengthOutput = <span style="color:#ae81ff">0</span>;
+<span style="color:#a6e22e">     
+</span><span style="color:#a6e22e">    [unroll]</span>
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; <span style="color:#ae81ff">6</span>*<span style="color:#ae81ff">4</span>; i += <span style="color:#ae81ff">4</span>){
+        float3 p = float3(_Points[i], _Points[i+<span style="color:#ae81ff">1</span>], _Points[i+<span style="color:#ae81ff">2</span>]); <span style="color:#75715e">// Position
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">float</span> t = _Points[i+<span style="color:#ae81ff">3</span>]; <span style="color:#75715e">// Lifetime
+</span><span style="color:#75715e"></span>         
+        <span style="color:#75715e">// Ripple Shape :
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">float</span> rippleSize = <span style="color:#ae81ff">1</span>;
+        <span style="color:#66d9ef">float</span> gradient = smoothstep(t/<span style="color:#ae81ff">3</span>, t, distance(position, p) / rippleSize);
+         
+        <span style="color:#75715e">// frac means it will have a sharp edge, while sine makes it more &#34;soft&#34;
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">//float ripple = frac(gradient);
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">float</span> ripple = saturate(sin(<span style="color:#ae81ff">5</span> * (gradient)));
+         
+        <span style="color:#75715e">// Distortion Direction &amp; Strength :
+</span><span style="color:#75715e"></span>        float3 rippleDirection = normalize(position-p);
+         
+        <span style="color:#66d9ef">float</span> lifetimeFade = saturate(<span style="color:#ae81ff">1</span>-t); <span style="color:#75715e">// Goes from 1 at t=0, to 0 at t=1
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">float</span> rippleStrength = lifetimeFade * ripple;
+         
+        directionOutput += rippleDirection * rippleStrength * <span style="color:#ae81ff">0.2</span>;
+        strengthOutput += rippleStrength;
+    }
+     
+    direction = directionOutput;
+    strength = strengthOutput;
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>We specify the function inside the “void Test_float”, where the name of the function has to match the one given in the <b class="node">Custom Function</b> node, in this case it was named <strong>“Test”</strong> – (But you can call it whatever you want)</p>
+<p>We create some variables to hold the outputs, then loop through the array with the same length of <strong>6*4</strong> with “i += 4” so we can obtain all 4 values for each point in each iteration of the loop. We read the position and lifetime from the array via “_Points[i+n]” then set up the shape of the ripple based on the distance from the fragment’s position we passed in, and the point’s position.</p>
+<p>This function needs to be saved in a <strong>HLSL File</strong> (in this case I saved in under “test2.hlsl”, but call it whatever you want). Set the file as the source on the <b class="node">Custom Function</b> node by clicking the cog icon on it. We also need to make sure we have a <strong>Vector3</strong> input, and the <strong>Vector3</strong> and <strong>Vector1</strong> outputs defined on the node (I’ve named these Position, Direction and Ripple, they don’t have to match the same names as the function code – but they do have to be in the correct order).</p>
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer"><img src="Graph6.png" class="img-center"></a>
+<p>We next need to take the <strong>Direction</strong> output from our <b class="node">Custom Function</b> node and put it into a <b class="node">Transform</b> node from <strong>World</strong> to <strong>View</strong> space in <strong>Direction</strong> mode. We can then take the output of that and <b class="node">Add</b> it to where we are offsetting the <b class="node">Screen Position</b> into the <b class="node">Scene Color</b> node.</p>
+<p>Also, take the <strong>Ripple</strong> output from the <b class="node">Custom Function</b>, <b class="node">Multiply</b> it by <strong>0.4</strong> then <b class="node">Add</b> it to the colour output right before the <b class="node">Multiply</b> with the forcefield colour.</p>
+<a href="Graph7.png" target="_blank" rel="noopener noreferrer"><img src="Graph7.png" class="img-center"></a>
+<p>We should also take the distorted screen position output (from the <b class="node">Add</b> node, before going into the <b class="node">Scene Color</b>) and put it into the input of the <b class="node">Scene Depth</b> node we made earlier. This will make sure we sample the distorted depth value so the intersection effect will be accurate to what is being viewed through the forcefield. I haven’t put these nodes close together so this will put a long line across our graph, hence why I’ve left this last to prevent confusion with other node connections.</p>
+<p>Here’s a final image of the full graph, also showing that connection :</p>
+<a href="GraphFull.png" target="_blank" rel="noopener noreferrer"><img src="GraphFull.png" class="img-center"></a>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

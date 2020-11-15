@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Portal Shader Breakdown">
+<meta itemprop="description" content="A portal/wormhole shader on manipulating polar coordinates to create a spiralling effect">
+<meta itemprop="datePublished" content="2019-05-13T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-05-13T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1156">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.cyanilux.com/Preview.png"/>
+
+<meta name="twitter:title" content="Portal Shader Breakdown"/>
+<meta name="twitter:description" content="A portal/wormhole shader on manipulating polar coordinates to create a spiralling effect"/>
+
+	<meta property="og:title" content="Portal Shader Breakdown" />
+<meta property="og:description" content="A portal/wormhole shader on manipulating polar coordinates to create a spiralling effect" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/portal-shader-breakdown/" />
+<meta property="og:image" content="https://www.cyanilux.com/Preview.png" />
+<meta property="article:published_time" content="2019-05-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-05-13T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Portal Shader Breakdown | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/portal-shader-breakdown/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Portal Shader Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-05-13">&#128337 May 13, 2019</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eMade a portal/wormhole effect! 🌀\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/gamedev?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#gamedev\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/VFXFriday?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#VFXFriday\u003c/a\u003e \u003ca href=\"https://t.co/8OKtK0pGyz\"\u003epic.twitter.com/8OKtK0pGyz\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan 🎃 (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1124280282285248512?ref_src=twsrc%5Etfw\"\u003eMay 3, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1124280282285248512\">https://twitter.com/Cyanilux/status/1124280282285248512</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>This portal/wormhole shader is based on manipulating polar coordinates to create a spiralling effect. It also discards some pixels based on distance and offset by noise for a wobbling circular shape.</p>
+<p>I&rsquo;ve seen some portal shaders use the <b class="node">Twirl</b> node, but I find that using <b class="node">Polar Coordinates</b> produces a nicer swirling inwards effect.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This is an <strong>Unlit</strong> shader applied to a simple flat quad.</li>
+<li>You’ll need a seamless/tileable noise texture in order to create this effect. The exact type of noise doesn’t really matter, play around with a few different noise textures and see which works best.</li>
+<li>The shader created in this post is based off the original one in the tweet above but they do share some differences. I won’t discuss the scrolling star effect in this post so if you want to see how that was done check the original tweet’s graph <a href="https://twitter.com/Cyanilux/status/1124280286236295171">here</a>.</li>
+<li>I have also made some improvements since that last shader to make the graph clearer and more optimised. The previous one used maths based on the <b class="node">Ellipse</b> node to obtain the circular shape, while this one just uses the distance straight from the polar coordinates in order to achieve basically the same effect.</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<p>In order to create a portal/wormhole effect we are going to sample a seamless noise texture using <b class="node">Polar Coordinates</b>. If you aren’t familiar with this I wrote a blog post explaining the node which you should read first : <a href="https://www.cyanilux.com/tutorials/polar-coordinates/">Polar Coordinates Post</a>.</p>
+<p>By putting the <b class="node">Polar Coordinates</b> node into a <b class="node">Split</b> we can obtain the <strong>distance (R)</strong> and <strong>angle (G)</strong> that define the coordinates and manipulate the values before sampling the texture.</p>
+<p>In order to have the effect be sucked inwards we need to offset the distance part by time. We’ll create a <b class="node">Time</b> node, take the <strong>Time</strong> output along with the <strong>distance (R)</strong> output from the <b class="node">Split</b> and put these into an <b class="node">Add</b> node. The output of this can be put into the <strong>X</strong> input on a <b class="node">Vector2</b> node so we can use it as <strong>UVs</strong> for a <b class="node">Sample Texture 2D</b> node. (As a note, if you see some flickering seams when sampling your texture, turn off Mip Maps for the texture in the Unity editor, or use the <b class="node">Sample Texture 2D LOD</b> node set to 0 instead).</p>
+<p>To add a spiralling effect we can now offset the angle. If we offset it by the same value for every pixel though it will just rotate the whole thing rather than creating a spiral. We need to offset it based on the distance, so that points further away are rotated more than points closer to the center. This is as simple as putting both the <strong>angle (G)</strong> and <strong>distance (R)</strong> outputs into an <b class="node">Add</b> node. This can then be put into the <strong>Y</strong> input on that <b class="node">Vector2</b> node.</p>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<p>The image above shows what we’ve created so far but I’ve added some <b class="node">Multiply</b> nodes before the <b class="node">Add</b> nodes to change the speed at which it sucks inwards, and scale the amount of spiralling. I’m keeping both of these at <strong>1</strong>, but you can adjust these if you want to, or connect some <strong>Vector1 properties</strong> so you can change these values from outside the shadergraph.</p>
+<p>Next we can make the portal round by discarding some pixels. To do this we can again take the <strong>distance (R)</strong> from our <b class="node">Split</b> and put this into the <strong>Edge</strong> input of a <b class="node">Step</b> node, with the other input set to <strong>1</strong>. This node returns 1 if the In input is greater than or equal to the edge input, otherwise it returns 0. The output of this can be put into the <strong>Alpha</strong> input on the <b class="node">Master</b> node.</p>
+<p>We can then set the <strong>AlphaClipThreshold</strong> input on the <b class="node">Master</b> node to <strong>0.5</strong>, in order to tell the shader to discard pixels that are below that threshold.</p>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-center"></a>
+<p>This should now mean our portal is a circle, and you can simply resize the quad the shader/material is applied to if you want a more oval shape. We can also offset the <strong>distance (R)</strong> value by some noise before putting it into the <b class="node">Step</b> to add a wobbling effect to the portal. To do this we will create one of the noise nodes (<b class="node">Simple Noise</b> or <b class="node">Gradient Noise</b> depending on which type of noise you wish to use, or we could sample a noise texture). As the output of these is roughly between <strong>0</strong> and <strong>1</strong>, we should <b class="node">Multiply</b> by a small value so we aren’t offsetting it too much (e.g. <strong>0.1</strong>). Then put this into an <b class="node">Add</b> node with the distance and then into the <b class="node">Step</b> node from before.</p>
+<p>So we can animate the noise, we’ll create a <b class="node">UV</b> node and <b class="node">Split</b> it, and recombine it into a <b class="node">Vector2</b> node. This isn’t required but I’d rather work with a Vector2 instead of the Vector4. I’m just going to offset both with the same value, so I’ll use an <b class="node">Add</b> node to add the <strong>Time</strong> output from a <b class="node">Time</b> node to this Vector2 value we created. This can all be seen in the image above.</p>
+<p>The last thing left to do is give the effect some colour. Create a <b class="node">Color</b> node and <b class="node">Multiply</b> it by the output of the <b class="node">Sample Texture 2D</b> node (when I’m using a grey-scale texture I usually just use the red output. Depending on the compression type I think green can be better though). You can use a combination of maths nodes (such as <b class="node">Power</b>, <b class="node">Add</b>, <b class="node">Multiply</b>), as well as artistic nodes like the <b class="node">Contrast</b> node, to adjust the texture output if required (or just adjust the texture itself in an image editing program to avoid additional calculations).</p>
+<p>I’m going to put it into a <b class="node">Power</b> node, with a value of <strong>3</strong>. I’m also setting the <b class="node">Color</b> node to use <strong>HDR mode</strong> and setting the <strong>Intensity</strong> of the colour to <strong>3</strong> (via the colour picker popup). With a Bloom post processing effect this will cause the portal to glow more but note that bloom can be expensive.</p>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png" class="img-center"></a>
+<p>I think that’s a good place to leave this effect. You can play around with different seamless textures to customise how the portal looks. My original shader also had a sort of scrolling parallax stars effect but I’m not going to explain that here. If you are interested in how I did that you can check the original tweet’s graph <a href="https://twitter.com/Cyanilux/status/1124280286236295171">here</a>.</p>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

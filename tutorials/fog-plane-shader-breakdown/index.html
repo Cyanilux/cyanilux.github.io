@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Fog Plane Shader Breakdown">
+<meta itemprop="description" content="Two examples of vertical fog effects produced using the depth texture (scene depth)">
+<meta itemprop="datePublished" content="2019-12-05T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-12-05T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1486">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.cyanilux.com/Preview.png"/>
+
+<meta name="twitter:title" content="Fog Plane Shader Breakdown"/>
+<meta name="twitter:description" content="Two examples of vertical fog effects produced using the depth texture (scene depth)"/>
+
+	<meta property="og:title" content="Fog Plane Shader Breakdown" />
+<meta property="og:description" content="Two examples of vertical fog effects produced using the depth texture (scene depth)" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/" />
+<meta property="og:image" content="https://www.cyanilux.com/Preview.png" />
+<meta property="article:published_time" content="2019-12-05T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-12-05T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Fog Plane Shader Breakdown | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	<h4 class="title-no-margin">
+		<div class="logo-subtext">Game Dev Blog &amp; Tutorials</a>
+	</h4>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Fog Plane Shader Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2019-12-05">&#128337 Dec 5, 2019</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eWorking on a new \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e blog post / tutorial that uses depth to produce a fog shader effect. 👀 \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/ggQfff9GE0\"\u003epic.twitter.com/ggQfff9GE0\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1202301115808833538?ref_src=twsrc%5Etfw\"\u003eDecember 4, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1202301115808833538\">https://twitter.com/Cyanilux/status/1202301115808833538</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>This post includes two examples to produce fog shader effects. In both cases, the shader is applied to a flat plane or quad where the alpha of the surface is altered based on depth values to produce a fog effect. As shown in the tweet above, It can be used to produce a vertical fog effect or used in doorways or cave exits/entrances to fade into white/black (or any other colour).</p>
+<p>The first example is simpler, but seems to have some inaccuracies at very shallow angles (between the camera’s view direction and plane surface) where the fog can look squashed / more dense. The second example is more complicated but doesn’t have this issue, so looks better if the camera can get close to the fog effect. Note however, in both examples the camera cannot pass through the quad/plane, or the fog effect will disappear, so it is best for 3rd person / top-down / fixed camera angles.</p>
+<p>The graphs provided will also only work in a <strong>Perspective</strong> camera projection. For <strong>Orthographic</strong>, a slightly different method will be required. See the <a href="https://www.cyanilux.com/tutorials/orthographic-depth">Orthographic Depth</a> post.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This is an <strong>Unlit</strong> shader. <strong>Transparent</strong> surface mode and <strong>Alpha</strong> blending.</li>
+<li><strong>AlphaClipThreshold</strong> should be set to 0 as we don&rsquo;t want to discard any pixels.</li>
+<li>On the Universal Render Pipeline Asset, the <strong>Depth Texture</strong> option needs to be enabled for the <b class="node">Scene Depth</b> node to work (and make sure it is not overriden on the Camera).</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<p>In order to create these fog effects, we need to sample the depth texture from the camera. Shadergraph has a <b class="node">Scene Depth</b> node which will handle this as well as the conversions for us. By using the <strong>Eye</strong> sampling mode it will output the linear depth in terms of eye (aka view) space units. If you aren&rsquo;t familiar with the node, you can read more on the <a href="https://www.cyanilux.com/tutorials/scene-depth">Scene Depth</a> post.</p>
+<p>Next we need the depth to the surface of the plane. To do this we can take the <strong>alpha/w</strong> component of the <b class="node">Screen Position</b> node set to <strong>Raw</strong> mode.</p>
+<p>It’s not too important to know why this is the object’s depth, but it’s due to how 3D object positions are converted to screen coordinates by the model-view-projection matrix. It is important that we set the node to Raw however, as in the Default mode each component is divided by this alpha/w value, including the alpha/w component itself meaning it&rsquo;ll just be 1. This is usually referred to as the “perspective divide” – it converts the clip space coordinates (obtained after applying the model-view-projection matrix) into normalised screen coordinates, displaying the 3D perspective to the 2D screen.</p>
+<p>(I believe we could also use the <b class="node">Position</b> node set to <strong>View</strong> Space, and <b class="node">Negate</b> the <strong>Z/B</strong> output from a <b class="node">Split</b> node to obtain this object depth. I&rsquo;m used to using the other approach instead though).</p>
+<p>With these to depth values, we can now move onto producing the fog shaders.</p>
+<h3 id="example-1-simple">Example 1 (Simple)</h3>
+<p>We can <b class="node">Subtract</b> the two depth values to obtain the difference in depth between the object’s surface and the scene depth. The further apart these two depth values are, the larger the output value is, producing a fog effect.</p>
+<p>Before we plug that into the alpha, it would be good if we could control the density of the fog somehow. We can do this by using a <b class="node">Multiply</b> node (or <b class="node">Divide</b>, if you prefer to use density values like 2 or 3 instead of 0.5 and 0.33). We should also put the output into a <b class="node">Saturate</b> node, to clamp values to be between 0 and 1, as values larger than 1 may produce very bright artifacts – especially when using bloom post processing.</p>
+<p>Finally, in order to change the colour of the fog, we create a <strong>Color property</strong> to use as the <strong>Color</strong> input on the <b class="node">Master</b> node. I’m also taking the alpha component of our property and multiplying it with the saturated output so the alpha value of our colour is taken into account.</p>
+<p>IMPORTANT :</p>
+<ul>
+<li>Make sure to set the alpha component of the <strong>Fog Colour</strong> in the shadergraph blackboard (AND in the material inspector!) to <strong>1</strong> (or 255 if using the 0-255 range), otherwise the effect will be invisible. Shadergraph defaults to (0,0,0,0)! For most effects I leave the alpha at 1, as fog is usually fully opaque at a distance, but I allowed the alpha to be changed in this case. If you don’t want the alpha of the colour to be taken into account you can remove the alpha <b class="node">Multiply</b>.</li>
+</ul>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<h3 id="example-2-accurate">Example 2 (Accurate)</h3>
+<p>For a more accurate fog, we can calculate the world position of the scene depth coordinate and use that to produce the fog instead, using the normal direction of the plane/quad to have the fog in the correct direction. Note that this will likely be less performant than the simpler version.</p>
+<p>Create a <b class="node">View Direction</b>* node set to **World** space. This obtains a vector from the pixel/fragment position to the camera. The magnitude of this vector is the distance (between the camera and fragment), but this is not the same as depth – The depth is a distance from the fragment position to a plane that is perpendicular to the camera, not the camera position itself. This creates a triangle as shown in the image.</p>
+<p>*Note, <b class="node">View Direction</b> is <strong>not normalised</strong> in URP, but is in HDRP. If you are using HDRP you will likely need to use the <b class="node">Position</b> node in <strong>World</strong> space instead as we need it non-normalised. That might need also need negating? (Could also use <b class="node">Position</b> node in <strong>Absolute World</strong> space, <b class="node">Subtract</b> the <b class="node">Camera</b> node <strong>Position</strong>, but that should just be the same thing as ”World” space in HDRP due to it’s <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">Camera-Relative rendering</a>).</p>
+<a href="https://www.cyanilux.com/ReconstructWorldPosFromSceneDepth.png" target="_blank" rel="noopener noreferrer"><img src="https://www.cyanilux.com/ReconstructWorldPosFromSceneDepth.png" class="img-center"></a>
+<p>In order to reconstruct the world position we need to scale this vector to the scene position, behind the quad/plane. The <b class="node">Scene Depth</b> and position we want creates another triangle as shown in the image. We can use the scale factor of the two triangles to obtain the vector to the scene position, which can be achieved by dividing the <b class="node">View Direction</b> by the <strong>Raw Screen Position W/A depth</strong> and then multiplying by the <b class="node">Scene Depth</b>. We can then <b class="node">Subtract</b> the camera’s world <strong>Position</strong> from the <b class="node">Camera</b> node to get the scene world position.</p>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-center"></a>
+<p>With this scene world position, we can now handle the fog. To make sure the fog is in the correct direction, we can <b class="node">Transform</b> the position to <strong>Object</strong> space and take the <b class="node">Dot Product</b> between it and the normalized <b class="node">Normal Vector</b> in <strong>Object</strong> space. Since the normal vector points outwards from the plane though, we also need to <b class="node">Negate</b> the result of the <b class="node">Dot Product</b> (or negate the normal vector going into the dot product).</p>
+<p>A side effect of using the <b class="node">Transform</b> to <strong>Object</strong> space, is that we don’t need a property to control the density of the fog like in the first example. We can change it by just scaling the quad/plane in the normal’s direction instead.</p>
+<p>We then <b class="node">Saturate</b> our output to clamp values above 1, as values larger than 1 may produce very bright artifacts – especially when using bloom post processing.</p>
+<p>Finally, in order to change the colour of the fog, we create a <strong>Color property</strong> to use as the <strong>Color</strong> input on the <b class="node">Master</b> node. I’m also taking the alpha component of our property and multiplying it with the saturated output so the alpha value of our colour is taken into account.</p>
+<p>IMPORTANT :</p>
+<ul>
+<li>Make sure to set the alpha component of the <strong>Fog Colour</strong> in the shadergraph blackboard (AND in the material inspector!) to <strong>1</strong> (or 255 if using the 0-255 range), otherwise the effect will be invisible. Shadergraph defaults to (0,0,0,0)! For most effects I leave the alpha at 1, as fog is usually fully opaque at a distance, but I allowed the alpha to be changed in this case. If you don’t want the alpha of the colour to be taken into account you can remove the alpha <b class="node">Multiply</b>.</li>
+<li>To control the density of the fog, adjust the <strong>Y</strong> scale of the plane. Unlike the simpler version we use a <b class="node">Transform</b> to <strong>Object</strong> space, which as a result allows us to use the object’s scale to control the density rather than using an additional property.</li>
+</ul>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png" class="img-center"></a>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>
