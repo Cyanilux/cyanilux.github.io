@@ -24,13 +24,6 @@
   </url>
   
   <url>
-    <loc>https://www.cyanilux.com/tutorials/scene-depth/</loc>
-    <lastmod>2020-11-12T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://www.cyanilux.com/tags/shader-graph/</loc>
     <lastmod>2020-11-12T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -73,7 +66,7 @@
   </url>
   
   <url>
-    <loc>https://www.cyanilux.com/tutorials/sprite-glow/outline-shader-breakdown/</loc>
+    <loc>https://www.cyanilux.com/tutorials/sprite-outline-shader-breakdown/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
