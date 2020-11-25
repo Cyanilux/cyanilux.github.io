@@ -210,9 +210,15 @@
 <p>To offset the vertices we create a <b class="node">Position</b> node set to <strong>Object</strong> space. This returns a <strong>Vector3</strong> of our vertex position that we can then manipulate. For <strong>offsetting</strong>, we can use <b class="node">Add</b> or <b class="node">Subtract</b> nodes, but we can also <strong>scale</strong> the position, which pulls or pushes it from the origin (0,0,0), by using <b class="node">Multiply</b> or <b class="node">Divide</b> nodes.</p>
 <p>Scaling should usually be done first, assuming you want to keep the offset in terms of object space units rather than the scaled space. We can scale/offset each vertex by connecting a <b class="node">Vector3</b> node and set each component separately, or use a <strong>Vector3 property</strong> to control it from the inspector, or a C# Script (via materialReference.SetVector(“_Ref”, vector), where _Ref is the reference string of the property in the shadergraph blackboard).</p>
 <p>You can also <b class="node">Split</b> and offset/scale each component separately then recombine in a <b class="node">Combine</b> or <b class="node">Vector3</b> node, however this very quickly causes the graph to get messy with overlapping wires. I suggest using the Vector3 node/property approach instead.</p>
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<p class="img-text"></p>
+</div>
 <p>Here is another example if you wanted to scale both the <strong>X</strong> and <strong>Z</strong> with the same <strong>Vector1 property</strong>. Since we use a <b class="node">Multiply</b> to adjust scale, we set the <strong>Y</strong> value to <strong>1</strong> so there is no change. (With offsetting we would use a value of <strong>0</strong> for no change)</p>
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-center"></a>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<p class="img-text"></p>
+</div>
 <p>We can also use a <b class="node">Time</b> node to animate the offset over <strong>Time</strong> (or <strong>Sine Time</strong>, etc). There will be more examples later in the post including a swaying effect for grass/plants and animating fish or butterflies.</p>
 <h2 id="bounds">Bounds</h2>
 <p>Shaders run on the <strong>GPU</strong>, so it&rsquo;s important to understand that it will not actually update the CPU-side mesh vertices, mesh bounds or affect colliders. If the camera goes outside the original bounds, the mesh renderer will be culled, which can sometimes be a problem if our displaced vertices are outisde of these bounds. We either need to keep scaling/offsetting small, or override the bounds on the mesh. e.g.</p>
@@ -243,7 +249,10 @@ Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking
 </ul>
 <h2 id="examples">Examples</h2>
 <h3 id="swaying-grass">Swaying Grass</h3>
-<a href="GraphSwayGrass.png" target="_blank" rel="noopener noreferrer"><img src="GraphSwayGrass.png" class="img-center"></a>
+<div class="img-center">
+<a href="GraphSwayGrass.png" target="_blank" rel="noopener noreferrer"><img src="GraphSwayGrass.png"></a>
+<p class="img-text"></p>
+</div>
 <p>Right Note : By using the Position set to World space, we ensure that the offsetting will always occur in the X world space axis, regardless of the transform’s rotation. The input on the master needs to be in Object space though, so we use a Transform node.</p>
 <p>Want the sway on a different axis? Change the Vector3 node inputs. Plug it into both X and Z for some diagonal movement. Or put the Vector3 into a Rotate About Axis node if you want a more specific rotation. (Use axis as 0,1,0, for rotating about the Y axis)</p>
 <p>Left Note : Use UVs.y for Quads. Use Position.y (object space) for Models. If origin is not at base of model, use Add to offset. If model doesn’t use y as up, use a different output on the Split.</p>
@@ -261,7 +270,10 @@ Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking
 	}
 </script>
 <p>A simple way to create a swimming motion for a fish, is to offset the <strong>R/X</strong> <b class="node">Position</b> of the fish (left/right) by a <b class="node">Sine</b> wave based on <b class="node">Time</b> added with the position along the fish (forward/back, which is actually <strong>G/Y</strong> for the model I’m using). This can then be multiplied with a mask created from the <strong>G/Y</strong> position so vertices at the front of the fish move less.</p>
-<a href="GraphFish.png" target="_blank" rel="noopener noreferrer"><img src="GraphFish.png" class="img-center"></a>
+<div class="img-center">
+<a href="GraphFish.png" target="_blank" rel="noopener noreferrer"><img src="GraphFish.png"></a>
+<p class="img-text"></p>
+</div>
 <p>In terms of code, this would be something along the lines of :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -277,7 +289,10 @@ Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking
 <p>For the motion of wings for a butterfly (see tweet in fish example above), we first create a mask based on the <strong>R/X</strong> (left/right) axis of the <b class="node">Position</b> to determine how we offset the wings, which uses an <b class="node">Absolute</b> so that we offset both wings in the same <strong>B/Z</strong> direction (which is up/down for this model).</p>
 <p>We can then offset the <strong>B/Z</strong> position by a <b class="node">Sine</b> wave based just on <b class="node">Time</b> which will make the wings move linearly. If we want the wings to bend (which would be better for a bird) we can <b class="node">Add</b> the mask to the <b class="node">Time</b> output and put this into the <b class="node">Sine</b> node instead.</p>
 <p>We can also offset the <strong>R/X</strong> (left/right) a little, so as the wings go upwards they also move slightly inwards, which will reduce stretching and make the motion feel more realistic.</p>
-<a href="GraphButterfly.png" target="_blank" rel="noopener noreferrer"><img src="GraphButterfly.png" class="img-center"></a>
+<div class="img-center">
+<a href="GraphButterfly.png" target="_blank" rel="noopener noreferrer"><img src="GraphButterfly.png"></a>
+<p class="img-text"></p>
+</div>
 <p>In terms of code, this would be something along the lines of :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">

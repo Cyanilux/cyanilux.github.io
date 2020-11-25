@@ -3,6 +3,20 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.cyanilux.com/tutorials/depth/</loc>
+    <lastmod>2020-11-12T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.cyanilux.com/tags/hlsl/</loc>
+    <lastmod>2020-11-12T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://www.cyanilux.com/</loc>
     <lastmod>2020-11-12T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>

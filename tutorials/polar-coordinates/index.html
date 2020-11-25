@@ -202,7 +202,10 @@
 
 <p>When using UVs you are usually using the <strong>Cartesian coordinate system</strong>, or something similar to it at least. Pixels along the X or U axis start at 0 and increase to 1 horizontally, and the same goes for the Y or V axis but vertically. We can then offset (<b class="node">Add</b> or <b class="node">Subtract</b>) and scale (<b class="node">Multiply</b> or <b class="node">Divide</b>) these UVs to manipulate how a texture is sampled.</p>
 <p>We can use the <b class="node">Polar Coordinates</b> node to convert these Cartesian coordinates into a <strong>Polar coordinate system</strong>.</p>
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<p class="img-text"></p>
+</div>
 <p>In the <a href="https://en.wikipedia.org/wiki/Polar_coordinate_system">Polar Coordinates system</a> each point is defined by a <strong>distance from a reference point</strong>, and an <strong>angle from a reference direction</strong>. In Shader Graph this reference point is the <strong>Center</strong> input on the node, and the reference direction is always downwards, which can been seen on the preview of the node where the green gradient stops.</p>
 <p>If you are interested in the maths used to convert between these spaces, this is the generated code for the node:</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
@@ -226,7 +229,10 @@
 </code></pre></td></tr></table>
 </div>
 </div>
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-right"></a>
+<div class="img-right">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<p class="img-text"></p>
+</div>
 <p>If we put the output of the <b class="node">Polar Coordinates</b> node into a <b class="node">Split</b> node, the <strong>R</strong> output will give us the <strong>distance</strong> from the <strong>Center</strong>.</p>
 <ul>
 <li>
@@ -248,7 +254,10 @@
 <p class="img-clearfix"></p>
 <h3 id="example">Example</h3>
 <p>One thing that we can do with these new coordinates is use them as new <strong>UVs</strong> to sample textures. Here I’m using a <b class="node">Sample Texture 2D</b> node to sample a noise texture. Rather than it being flat (like in the other node) it’s become warped around the center point. Note that the texture used here is <strong>seamless</strong> so it repeats without any noticeable seams. (Note, if you are using a seamless texture but are getting flickering seams – turn off Mip Maps for the texture, or use the <b class="node">Sample Texture 2D LOD</b> node set to 0).</p>
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png" class="img-center"></a>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<p class="img-text"></p>
+</div>
 <p>This is great for a portal/wormhole or whirlpool effect. And we can also animate it by using a <b class="node">Time</b> node and offsetting the values using <b class="node">Add</b> or <b class="node">Subtract</b> nodes! If you are trying to learn Shader Graph, this might be a good exercise to attempt.</p>
 <p>You can learn more about <b class="node">Polar Coordinates</b> in the following breakdowns :</p>
 <ul>

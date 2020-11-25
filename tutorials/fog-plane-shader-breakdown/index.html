@@ -18,7 +18,7 @@
 <meta itemprop="description" content="Two examples of vertical fog effects produced using the depth texture (scene depth)">
 <meta itemprop="datePublished" content="2019-12-05T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-12-05T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1488">
+<meta itemprop="wordCount" content="1505">
 <meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 
 
@@ -223,7 +223,7 @@
 <h2 id="intro">Intro</h2>
 <p>This post includes two examples to produce fog shader effects. In both cases, the shader is applied to a flat plane or quad where the alpha of the surface is altered based on depth values to produce a fog effect. As shown in the tweet above, It can be used to produce a vertical fog effect or used in doorways or cave exits/entrances to fade into white/black (or any other colour).</p>
 <p>The first example is simpler, but seems to have some inaccuracies at very shallow angles (between the camera’s view direction and plane surface) where the fog can look squashed / more dense. The second example is more complicated but doesn’t have this issue, so looks better if the camera can get close to the fog effect. Note however, in both examples the camera cannot pass through the quad/plane, or the fog effect will disappear, so it is best for 3rd person / top-down / fixed camera angles.</p>
-<p>The graphs provided will also only work in a <strong>Perspective</strong> camera projection. For <strong>Orthographic</strong>, a slightly different method will be required. See the <a href="https://www.cyanilux.com/tutorials/orthographic-depth">Orthographic Depth</a> post.</p>
+<p>The graphs provided will also only work in a <strong>Perspective</strong> camera projection. For <strong>Orthographic</strong>, a slightly different method will be required. See the <strong>Depth Difference</strong> and <strong>Reconstruct World Pos from Depth</strong> sections in the <a href="https://www.cyanilux.com/tutorials/depth">Depth</a> post for some insight on how to handle that.</p>
 <h2 id="notes">Notes</h2>
 <ul>
 <li>This is an <strong>Unlit</strong> shader. <strong>Transparent</strong> surface mode and <strong>Alpha</strong> blending.</li>
@@ -231,7 +231,7 @@
 <li>On the Universal Render Pipeline Asset, the <strong>Depth Texture</strong> option needs to be enabled for the <b class="node">Scene Depth</b> node to work (and make sure it is not overriden on the Camera).</li>
 </ul>
 <h2 id="breakdown">Breakdown</h2>
-<p>In order to create these fog effects, we need to sample the depth texture from the camera. Shadergraph has a <b class="node">Scene Depth</b> node which will handle this as well as the conversions for us. By using the <strong>Eye</strong> sampling mode it will output the linear depth in terms of eye (aka view) space units. If you aren&rsquo;t familiar with the node, you can read more on the <a href="https://www.cyanilux.com/tutorials/scene-depth">Scene Depth</a> post.</p>
+<p>In order to create these fog effects, we need to sample the depth texture from the camera. Shadergraph has a <b class="node">Scene Depth</b> node which will handle this as well as the conversions for us. By using the <strong>Eye</strong> sampling mode it will output the linear depth in terms of eye (aka view) space units. If you aren&rsquo;t familiar with the node, you can read more in the <a href="https://www.cyanilux.com/tutorials/depth/#scene-depth-node">Depth</a> post.</p>
 <p>Next we need the depth to the surface of the plane. To do this we can take the <strong>alpha/w</strong> component of the <b class="node">Screen Position</b> node set to <strong>Raw</strong> mode.</p>
 <p>It’s not too important to know why this is the object’s depth, but it’s due to how 3D object positions are converted to screen coordinates by the model-view-projection matrix. It is important that we set the node to Raw however, as in the Default mode each component is divided by this alpha/w value, including the alpha/w component itself meaning it&rsquo;ll just be 1. This is usually referred to as the “perspective divide” – it converts the clip space coordinates (obtained after applying the model-view-projection matrix) into normalised screen coordinates, displaying the 3D perspective to the 2D screen.</p>
 <p>(I believe we could also use the <b class="node">Position</b> node set to <strong>View</strong> Space, and <b class="node">Negate</b> the <strong>Z/B</strong> output from a <b class="node">Split</b> node to obtain this object depth. I&rsquo;m used to using the other approach instead though).</p>
@@ -244,14 +244,23 @@
 <ul>
 <li>Make sure to set the alpha component of the <strong>Fog Colour</strong> in the shadergraph blackboard (AND in the material inspector!) to <strong>1</strong> (or 255 if using the 0-255 range), otherwise the effect will be invisible. Shadergraph defaults to (0,0,0,0)! For most effects I leave the alpha at 1, as fog is usually fully opaque at a distance, but I allowed the alpha to be changed in this case. If you don’t want the alpha of the colour to be taken into account you can remove the alpha <b class="node">Multiply</b>.</li>
 </ul>
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<p class="img-text"></p>
+</div>
 <h3 id="example-2-accurate">Example 2 (Accurate)</h3>
 <p>For a more accurate fog, we can calculate the world position of the scene depth coordinate and use that to produce the fog instead, using the normal direction of the plane/quad to have the fog in the correct direction. Note that this will likely be less performant than the simpler version.</p>
 <p>Create a <b class="node">View Direction</b> node set to <strong>World</strong> space. This obtains a vector from the pixel/fragment position to the camera. The magnitude of this vector is the distance (between the camera and fragment), but this is not the same as depth – The depth is a distance from the fragment position to a plane that is perpendicular to the camera, not the camera position itself. This creates a triangle as shown in the image.</p>
 <p>Note : <b class="node">View Direction</b> is <strong>not normalised</strong> in URP, but is in HDRP. If you are using HDRP you will likely need to use the <b class="node">Position</b> node in <strong>World</strong> space instead as we need it non-normalised. That might need also need negating? (Could also use <b class="node">Position</b> node in <strong>Absolute World</strong> space, <b class="node">Subtract</b> the <b class="node">Camera</b> node <strong>Position</strong>, but that should just be the same thing as ”World” space in HDRP due to it’s <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">Camera-Relative rendering</a>).</p>
-<a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer"><img src="https://www.cyanilux.com/ReconstructDepthWorldPos.png" class="img-center"></a>
+<div class="img-center">
+<a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer"><img src="https://www.cyanilux.com/ReconstructDepthWorldPos.png"></a>
+<p class="img-text"></p>
+</div>
 <p>In order to reconstruct the world position we need to scale this vector to the scene position, behind the quad/plane. The <b class="node">Scene Depth</b> and &ldquo;Scene Pos&rdquo; we want creates another triangle as shown in the image. We can use the scale factor of the two triangles to obtain the vector to the scene position, which can be achieved by dividing the <b class="node">View Direction</b> by the <strong>Raw Screen Position W/A depth</strong> and then multiplying by the <b class="node">Scene Depth</b>. We can then <b class="node">Subtract</b> the camera’s world <strong>Position</strong> from the <b class="node">Camera</b> node to get the scene world position.</p>
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-center"></a>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<p class="img-text"></p>
+</div>
 <p>With this scene world position, we can now handle the fog. To make sure the fog is in the correct direction, we can <b class="node">Transform</b> the position to <strong>Object</strong> space and take the <b class="node">Dot Product</b> between it and the normalized <b class="node">Normal Vector</b> in <strong>Object</strong> space. Since the normal vector points outwards from the plane though, we also need to <b class="node">Negate</b> the result of the <b class="node">Dot Product</b> (or negate the normal vector going into the dot product).</p>
 <p>A side effect of using the <b class="node">Transform</b> to <strong>Object</strong> space, is that we don’t need a property to control the density of the fog like in the first example. We can change it by just scaling the quad/plane in the normal’s direction instead.</p>
 <p>We then <b class="node">Saturate</b> our output to clamp values above 1, as values larger than 1 may produce very bright artifacts – especially when using bloom post processing.</p>
@@ -261,7 +270,10 @@
 <li>Make sure to set the alpha component of the <strong>Fog Colour</strong> in the shadergraph blackboard (AND in the material inspector!) to <strong>1</strong> (or 255 if using the 0-255 range), otherwise the effect will be invisible. Shadergraph defaults to (0,0,0,0)! For most effects I leave the alpha at 1, as fog is usually fully opaque at a distance, but I allowed the alpha to be changed in this case. If you don’t want the alpha of the colour to be taken into account you can remove the alpha <b class="node">Multiply</b>.</li>
 <li>To control the density of the fog, adjust the <strong>Y</strong> scale of the plane. Unlike the simpler version we use a <b class="node">Transform</b> to <strong>Object</strong> space, which as a result allows us to use the object’s scale to control the density rather than using an additional property.</li>
 </ul>
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png" class="img-center"></a>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<p class="img-text"></p>
+</div>
 <br><hr>
 <p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
 <p style="text-align:center;">~ Cyan</p>

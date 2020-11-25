@@ -8,6 +8,16 @@
     <language>en-gb</language>
     <lastBuildDate>Thu, 12 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Depth</title>
+      <link>https://www.cyanilux.com/tutorials/depth/</link>
+      <pubDate>Thu, 12 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/depth/</guid>
+      <description>Depth is a term used in computer graphics to refer to how far a fragment (a potential pixel) is from the camera. But it can be a bit complicated - as depth can come in different spaces/ranges, vary between platform, and vary between perspective and orthographic camera projections.
+(Image showing &#34;Linear01&#34; Depth)  This post goes over everything about depth that I&amp;rsquo;ve come across (so you could say it&amp;rsquo;s an in-depth post about depth!</description>
+    </item>
+    
+    <item>
       <title>Scene Color</title>
       <link>https://www.cyanilux.com/tutorials/scene-color/</link>
       <pubDate>Thu, 12 Nov 2020 00:00:00 +0000</pubDate>

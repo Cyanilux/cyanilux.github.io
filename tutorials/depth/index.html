@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Depth">
+<meta itemprop="description" content="A big post explaining everything about Depth : Depth Buffer, Depth Texture / Scene Depth node, SV_Depth, Reconstructing World Position from Depth, etc.">
+<meta itemprop="datePublished" content="2020-11-12T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-11-12T00:00:00+00:00" />
+<meta itemprop="wordCount" content="5335">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="Shader Graph,HLSL," />
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.cyanilux.com/Preview.png"/>
+
+<meta name="twitter:title" content="Depth"/>
+<meta name="twitter:description" content="A big post explaining everything about Depth : Depth Buffer, Depth Texture / Scene Depth node, SV_Depth, Reconstructing World Position from Depth, etc."/>
+
+	<meta property="og:title" content="Depth" />
+<meta property="og:description" content="A big post explaining everything about Depth : Depth Buffer, Depth Texture / Scene Depth node, SV_Depth, Reconstructing World Position from Depth, etc." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/depth/" />
+<meta property="og:image" content="https://www.cyanilux.com/Preview.png" />
+<meta property="article:published_time" content="2020-11-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-11-12T00:00:00+00:00" />
+
+	
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+	
+	
+    
+    
+    <title>Depth | Cyanilux</title>
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/depth/" />
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	
+	<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Depth</h1>
+
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+	<div class="tag" style="background-color:#108010;">
+	HLSL
+	</div>
+
+
+
+
+
+<time datetime="2020-11-12">&#128337 Nov 12, 2020</time>
+
+
+
+<p><strong>Depth</strong> is a term used in computer graphics to refer to how far a fragment (a potential pixel) is from the camera. But it can be a bit complicated - as depth can come in different spaces/ranges, vary between platform, and vary between perspective and orthographic camera projections.</p>
+<div class="img-center">
+<a href="Preview.png" target="_blank" rel="noopener noreferrer"><img src="Preview.png"></a>
+<p class="img-text">
+(Image showing "Linear01" Depth)
+</p>
+</div>
+<p>This post goes over everything about depth that I&rsquo;ve come across (so you could say it&rsquo;s an <em>in-depth</em> post about depth!), mainly focusing on <strong>Unity</strong> and the <strong>Universal RP</strong> (but also includes some High Definition RP stuff). Includes info for both <strong>Shader Graph</strong> and URP Shader Code (<strong>HLSL</strong>).</p>
+<h3 id="sections-">Sections :</h3>
+<ul>
+<li><a href="#depth">What is Depth?</a>
+<ul>
+<li><a href="#eye-depth">View space, Eye Depth</a></li>
+<li><a href="#z-buffer-depth">Clip &amp; NDC space, Z Buffer Depth</a></li>
+<li><a href="#non-linear">Why Non-Linear?</a></li>
+</ul>
+</li>
+<li><a href="#buffer-vs-texture">Depth Buffer vs Depth Texture</a>
+<ul>
+<li><a href="#depth-buffer">Depth Buffer, ZWrite &amp; ZTest</a></li>
+<li><a href="#depth-texture">Depth Texture</a></li>
+</ul>
+</li>
+<li><a href="#sv-depth">SV_Depth</a></li>
+<li><a href="#sample-depth-texture">Sampling the Depth Texture</a></li>
+<li><a href="#scene-depth-node">Scene Depth Node</a>
+<ul>
+<li><a href="#modes">Modes</a>
+<ul>
+<li><a href="#perspective-scene-depth">Perspective</a></li>
+<li><a href="#orthographic-scene-depth">Orthographic</a></li>
+</ul>
+</li>
+<li><a href="#notes-urp">Notes for URP</a></li>
+</ul>
+</li>
+<li><a href="#depth-difference">Depth Difference</a></li>
+<li><a href="#reconstruct-world-pos">Reconstruct Scene World Position from Depth</a>
+<ul>
+<li><a href="#mesh-perspective">Mesh (Perspective)</a></li>
+<li><a href="#mesh-orthographic">Mesh (Orthographic)</a></li>
+<li><a href="#blit-perspective">Blit (Perspective)</a></li>
+</ul>
+</li>
+</ul>
+<p>It&rsquo;s a big post! I&rsquo;ve tried to make everything here as correct as possible. Lots of re-reading, double-checking based on forum post answers and testing while switching between the Direct3D and OpenGL graphics APIs. If you spot any mistakes, let me know! Drop me a tweet <a href="https://twitter.com/Cyanilux">@Cyanilux</a> or join my <a href="https://discord.gg/2V93q9w">discord</a>.</p>
+<hr>
+<h2 id="what-is-depth">What is Depth?</h2>
+<h3 id="eye-depth">View space, Eye Depth</h3>
+<p>The easiest type of depth to understand is <strong>Eye/View-space Depth</strong> which refers to the distance between a position in the scene to a <strong>plane perpendicular to the camera&rsquo;s view</strong> - (Not the camera position itself).</p>
+<div class="img-center">
+<a href="EyeDepth.png" target="_blank" rel="noopener noreferrer"><img src="EyeDepth.png"></a>
+<p class="img-text">
+The red line corrosponds to the Eye Depth to the Position in the Scene. While the cyan line is the actual Euclidean distance.
+</p>
+</div>
+<p>During the vertex shader stage, the object space vertex positions in a mesh are converted to World space via the Model Matrix, then to <strong>View space</strong> via the <strong>View Matrix</strong>. Here in View space, positions are relative to the camera - which looks down the <strong>negative Z axis</strong>.</p>
+<p>By negating the Z value of a View space position it turns it back into a positive value (assuming the object was infront of the camera), which is the <strong>Eye Depth</strong>. A depth value of 0 is at the camera&rsquo;s position, 1 would be 1 unit away, 10 is 10 units, etc. Somewhat oddly, I&rsquo;ve also heard this depth value referred to as &ldquo;World&rdquo; space Depth, likely due to World and View both using the same unit scales - but personally I&rsquo;d stick to the View or Eye naming.</p>
+<p>The ranges of this depth is the same for all platforms. It&rsquo;s also the same for both othrographic and perspective projections too, since view space is before the projection is applied. You do need to be careful about how the eye depth is obtained though!</p>
+<p>In Shader Graph, we can obtain the Fragment&rsquo;s Eye Depth by either :</p>
+<ul>
+<li>Using the <b class="node">Position</b> node set to <strong>View</strong> space, <strong>Split</strong> and <strong>Negate</strong> the <strong>B/Z</strong> axis. This works in both Perspective and Orthographic projections.</li>
+<li>Or using the <b class="node">Screen Position</b> node set to <strong>Raw</strong> mode, <b class="node">Split</b> and take the <strong>A/W</strong> component. This only works in a <strong>Perspective</strong> projection though. For Orthographic, A/W is always 1.</li>
+</ul>
+<p>I&rsquo;m unsure if there is any difference in performance between the two for perspective projections. I usually use the second method personally. It&rsquo;s also a good idea to group the nodes and name them something like &ldquo;Object/Fragment (Eye) Depth&rdquo; to keep it similar to the <b class="node">Scene Depth</b> node naming but to make it clear this is the <strong>depth to the object/fragment being rendered</strong> rather than the scene behind it!</p>
+<div class="img-center">
+<a href="FragmentDepth.png" target="_blank" rel="noopener noreferrer"><img src="FragmentDepth.png"></a>
+<p class="img-text"></p>
+</div>
+<p>For Shader Code, the first method would be the equivalent of :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#75715e">// Vertex : (Should work in URP and HDRP?)
+</span><span style="color:#75715e"></span>float3 positionWS = TransformObjectToWorld(IN.positionOS.xyz);
+float3 positionVS = TransformWorldToView(positionWS);
+OUT.positionVS = positionVS;
+<span style="color:#75715e">// Fragment :
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> fragmentEyeDepth = -IN.positionVS.z;
+
+<span style="color:#75715e">// Also equivalent to : (even less pipeline specific)
+</span><span style="color:#75715e">// Vertex :
+</span><span style="color:#75715e"></span>float3 positionWS = mul(UNITY_MATRIX_M, float4(IN.positionOS.xyz, <span style="color:#ae81ff">1.0</span>)).xyz;
+float3 positionVS = mul(UNITY_MATRIX_V, float4(positionWS, <span style="color:#ae81ff">1.0</span>)).xyz;
+OUT.positionVS = positionVS;
+<span style="color:#75715e">// Fragment :
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> fragmentEyeDepth = -IN.positionVS.z;
+
+<span style="color:#75715e">// All would require the positionVS being included in the struct passed into the fragment
+</span><span style="color:#75715e">// using one of the TEXCOORDX semantics, assuming you don&#39;t just want the vertex&#39;s eye depth.
+</span><span style="color:#75715e">// Guess you also could just pass that z/depth through rather than the whole view position.
+</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>For obtaining the eye depth of <strong>objects in the scene</strong> (behind the fragment), we would instead sample a special texture that Unity generates for us known as the <strong>Depth Texture</strong> (aka the <b class="node">Scene Depth</b> node) - but more on that in the later <a href="#sample-depth-texture">Sampling the Depth Texture</a> and <a href="#scene-depth-node">Scene Depth</a> sections.</p>
+<p>You will also commonly see <strong>Linear01</strong> depth be used, which is just a remapped version of Eye (by dividing by the far plane value). It is still 0 at the camera position, but 1 at the far plane.</p>
+<h3 id="z-buffer-depth">Clip &amp; NDC space, Z Buffer Depth</h3>
+<p>View space positions also get converted to <strong>Clip space</strong> via the <strong>Projection Matrix</strong>. Usually transformations like this can&rsquo;t warp the space in a non-uniform way - which we need for a perspective projection, but the matrix is set up in a way that outputs the <strong>Eye Depth</strong> in the <strong>W component</strong> of the result. The vertex shader then outputs this Clip space position. For orthographic projections, the W component just ends up as 1.</p>
+<p>Between the vertex and fragment stages the clip space XYZ is <strong>remapped</strong> a bit and then <strong>divided</strong> by it&rsquo;s <strong>W component</strong> (known as the <strong>perspective divide</strong>). The remapping that occurs is the same as the <strong>ComputeScreenPos</strong> function, or positionNDC calculated in the VertexPositionInputs struct. In URP these are both found in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.hlsl">ShaderVariablesFunctions.hlsl</a> :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#75715e">// Clip Space Position (calculated for vertex shader SV_POSITION output)
+</span><span style="color:#75715e"></span>float4 positionCS 	= TransformWorldToHClip(input.positionOS.xyz);
+OUT.positionCS 		= positionCS;
+
+<span style="color:#75715e">// Remap, Handled automatically for the SV_POSITION semantic.
+</span><span style="color:#75715e">// Note that it&#39;s w (eye depth) component remains untouched, even when passed into the fragment.
+</span><span style="color:#75715e">// Other semantics (TEXCOORDX) passing clip space through would need to do this manually
+</span><span style="color:#75715e"></span>float4 positionNDC	= positionCS * <span style="color:#ae81ff">0.5f</span>;
+positionNDC.xy 		= float2(positionNDC.x, positionNDC.y * _ProjectionParams.x) + positionNDC.w;
+positionNDC.zw 		= positionCS.zw;
+OUT.positionNDC 	= positionNDC;
+<span style="color:#75715e">// or just
+</span><span style="color:#75715e">// OUT.positionNDC 	= ComputeScreenPos(positionCS);
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// Perspective Divide (handled in Fragment shader)
+</span><span style="color:#75715e"></span>float3 pd 			= IN.positionNDC.xyz / IN.positionNDC.w;
+float2 screenUV 	= pd.xy;
+<span style="color:#66d9ef">float</span> depth 		= pd.z; <span style="color:#75715e">// for OpenGL, also need * 0.5 + 0.5;
+</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>This gives us <strong>Normalised Device Coordinates</strong> (NDC), aka a screen position where the <strong>XY</strong> axis ranges from <strong>(0,0)</strong> in the <strong>bottom left corner</strong> and <strong>(1,1)</strong> in the <strong>top right</strong> - at least in Unity / URP. This is the same as the <b class="node">Screen Position</b> node in Shader Graph, using it&rsquo;s <strong>Default</strong> mode&hellip; but awkwardly the Z axis doesn&rsquo;t seem to be passed in when that mode? The Z axis can instead be obtained by using the <strong>Raw</strong> mode - but that is the Clip space Z/Depth. We then need to handle the <b class="node">Divide</b> <strong>Z</strong> by <strong>W</strong> to get the NDC Z/Depth.</p>
+<p>Note this depth is <strong>not linear in view space</strong> anymore due to changes made by the projection matrix, at least in a perspective projection. This is the value that ends up in the <strong>Depth Buffer</strong> and it is also the same value that would end up in the <strong>Depth Texture</strong>, or <strong>Raw</strong> <b class="node">Scene Depth</b> node.</p>
+<p>The ranges of this <strong>NDC.z / Z Buffer Depth</strong> is the same for both projections, but varies depending on the platform :</p>
+<ul>
+<li>Direct3D-like, Reversed Z Buffer : <strong>1</strong> at the near plane, <strong>0</strong> at the far plane</li>
+<li>OpenGL-like, Z Buffer : <strong>0</strong> at the near plane, <strong>1</strong> at the far plane</li>
+</ul>
+<p>In case it is of interest, the ranges of the <strong>Clip space Z</strong> (<strong>Raw</strong> <b class="node">Screen Position</b> <strong>Z</strong>) value are also as follows, though I&rsquo;m unsure if there&rsquo;s really any case where you&rsquo;d use this over the other depth values.</p>
+<p><strong>Perspective Projection</strong></p>
+<ul>
+<li>Direct3D-like : <strong>near</strong> plane value at near plane, <strong>0</strong> at far plane.</li>
+<li>OpenGL-like : <strong>-near</strong> plane distance at near plane, <strong>far</strong> plane distance at far plane.</li>
+</ul>
+<p><strong>Orthographic Projection</strong></p>
+<ul>
+<li>Direct3D-like	: <strong>1</strong> at near plane, <strong>0</strong> at far plane</li>
+<li>OpenGL-like : <strong>-1</strong> at near plane, <strong>1</strong> at far plane</li>
+</ul>
+<p>Note, I believe we could remap these for orthographic using the <strong>UNITY_NEAR_CLIP_VALUE</strong> and <strong>UNITY_RAW_FAR_CLIP_VALUE</strong> (from <a href="https://github.com/Unity-Technologies/Graphics/tree/master/com.unity.render-pipelines.core/ShaderLibrary/API">com.unity.render-pipelines.core/ShaderLibrary/API</a>) to convert the Direct3D-like or OpenGL-like ranges into the same range 0-1 range.</p>
+<h3 id="non-linear">Why Non-Linear?</h3>
+<p>The reason for making the depth buffer value non-linear (in view space), as well as the Reversed Z Buffer for Direct3D-like platforms, is for better precision. More information about how this works can be found in this <a href="https://developer.nvidia.com/content/depth-precision-visualized">NVIDIA article</a> and it can explain it a lot better than I can.</p>
+<div class="img-center">
+<a href="https://developer.nvidia.com/sites/default/files/akamai/gameworks/blog/Depthprecision/graph5.jpg" target="_blank" rel="noopener noreferrer"><img src="https://developer.nvidia.com/sites/default/files/akamai/gameworks/blog/Depthprecision/graph5.jpg"></a>
+<p class="img-text">
+Source : From the NVIDIA article linked below. "The quasi-logarithmic distribution of floating-point somewhat cancels the 1/z nonlinearity, giving us similar precision at the near plane to an integer depth buffer, and vastly improved precision everywhere else. The precision worsens only very slowly as you move farther out."
+</p>
+</div>
+<p>Here&rsquo;s an image to help show the comparison between this non-linear NDC / Z Buffer Depth (labelled &ldquo;raw&rdquo; here, as it&rsquo;s the raw value from the Depth Buffer and Depth Texture), and the Linear01 or Eye depth.</p>
+<div class="img-center">
+<a href="DepthComparison.png" target="_blank" rel="noopener noreferrer"><img src="DepthComparison.png"></a>
+<p class="img-text"></p>
+</div>
+<p>On the right, is the Linear01 value multiplied by 15 (the far plane value) - which is equal to the Eye depth, put through a frac function (aka <b class="node">Fraction</b> node) which makes the value repeat between 0 and 1. Each repeating value of 0-1 on the right is 1 unit. The width of each repeating section gets smaller as it approaches the far plane.</p>
+<p>On the left, we have the NDC Depth multiplied by 15 (far plane) and again put through a frac function. While this depth is non-linear in View space, it is actually <strong>linear in NDC/Screen space</strong> - the width of each repeating section varies based on the viewing angle, but it&rsquo;s always the same across the plane. I came across <a href="http://www.humus.name/index.php?ID=255">this article</a> which again confirms this and notes that it is useful for some hardware optimisations, as well as for post processing - such as comparing the depth value from neighbouring pixels for edge detection.</p>
+<p>Roystan has a great <a href="https://roystan.net/articles/outline-shader.html">edge detection tutorial</a> (for built-in pipeline &amp; PPv2) and Alexander Ameye has a tutorial converting it to work with URP <a href="https://alexanderameye.github.io/outlineshader.html">here</a>. While I understood the concept that these use, I never realised that having the depth linear in screen space was important here!</p>
+<hr>
+<h2 id="buffer-vs-texture">Depth Buffer vs Depth Texture</h2>
+<h3 id="depth-buffer">Depth Buffer, ZWrite &amp; ZTest</h3>
+<p>In the above section I mentioned the <strong>Depth Buffer</strong> (also referred to as the Z Buffer). When rendering, this buffer is essentially reponsible for sorting pixels/fragments. It ensures that objects closer to the camera will be on-top of objects that are further away (though there are ways to override that behaviour).</p>
+<p>Typically only <strong>Opaque</strong> geometry will write to the depth buffer, controlled by <a href="https://docs.unity3d.com/Manual/SL-CullAndDepth.html">ZWrite</a> in the Shaderlab section of the shader code. Shader Graph will write to the buffer automatically based on the Surface mode (ZWrite On for Opaque, Off for Transparent). If an object doesn&rsquo;t write to the buffer, other objects can&rsquo;t test against it later.</p>
+<p>Opaque geometry gets rendered <strong>front-to-back</strong>, meaning objects closer to the camera get drawn <strong>first</strong>, writing to the camera&rsquo;s colour and depth buffers. When an object further away tries to render, it tests against the values in the buffer based on <a href="https://docs.unity3d.com/Manual/SL-CullAndDepth.html">ZTest</a> in Shaderlab code. This can&rsquo;t be changed in Shader Graph, but you can override the values in URP using a RenderObjects feature on the Forward Renderer.</p>
+<p>ZTest has a default value of <strong>LEqual</strong>, meaning if the fragment&rsquo;s depth is less than, or equal to the value in the depth buffer it will render, otherwise the fragment is discarded/culled. We could instead use <strong>ZTest Greater</strong>, to only render an object if a closer object has already written to the buffer. e.g. In order to show a silhouette of the object when it is occluded.</p>
+<p>By rendering opaque objects closer to the camera first, we don&rsquo;t have to waste computation on pixels that would be covered by other objects&hellip; Technically, depth-testing / ZTest is actually handled <em>after</em> the fragment shader but there is also additional optimisations on GPU hardware that allow an early depth test to take place before the fragment - see the <a href="#sv-depth">SV_Depth</a> section for more info.</p>
+<p>But when rendering <strong>Transparent</strong> geometry, it instead has to render <strong>back-to-front</strong> and typically does not write to the depth buffer, in order to achieve the correct <strong>alpha blending</strong>. The objects are sorted by how close their origin is to the camera, but this can vary a bit as the camera moves, which is why sorting transparent shaders can sometimes be difficult.</p>
+<h3 id="depth-texture">Depth Texture</h3>
+<p>Between rendering objects in these opaque and transparent queues, the Universal RP <strong>copies</strong> the Depth Buffer and stores it in the <strong>Depth Texture</strong>. I would assume something similar happens in HDRP.</p>
+<p>This then allows <strong>Transparent</strong> shaders to read that texture and use it in their calculations. e.g. to create intersection effects like in the <a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown-simple">Simple Forcefield Breakdown</a> or edge-foam for toon water shaders and fog effects like the <a href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown">Fog Plane Shader Breakdown</a>.</p>
+<p>Note that other Transparent objects will not show on the Depth Texture, as they do not typically write to the Depth Buffer (ZWrite) and even if they did, the buffer was copied to the texture before transparent objects were even rendered.</p>
+<p>For some platforms, they do not support copying the depth buffer - and it also can&rsquo;t copy if MSAA (multisample anti-aliasing) is enabled on the URP asset currently. This might change in the future though, see the &ldquo;CanCopyDepth&rdquo; function at the bottom of the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/Runtime/ForwardRenderer.cs">ForwardRenderer</a> class.</p>
+<p>For those cases where the copy cannot occur, a <strong>Depth Prepass</strong> is used instead. Before anything is rendered, the entire scene is rendered using the <strong>DepthOnly</strong> pass in the shader. You can see whether the Copy Depth or Depth Prepass is in use via the <a href="https://docs.unity3d.com/Manual/FrameDebugger.html">Frame Debugger Window</a>.</p>
+<hr>
+<h2 id="sv-depth">SV_Depth</h2>
+<p>Fragments usually control their depth from the mesh, based on the values during rasterisation (between the vertex and fragment shader, turning the geometry into fragments/pixels).</p>
+<p>However it is also possible for the fragment shader to override the depth values that will be written into the depth buffer. This can&rsquo;t be done in Shader Graph, only in HLSL Shader Code. You can likely generate code from the graph and edit it though.</p>
+<p>The fragment shader usually outputs colour, using the SV_Target semantic. This can be set up either two ways, either as the usual :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">half4 frag (v2f i) : SV_Target {
+	... <span style="color:#75715e">// calculate color
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> color;
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>Or by instead using a struct. This is slightly more flexible as it allows us to also use other output semantics, such as <strong>SV_Depth</strong> semantic :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">FragOut</span> {
+    half4 color : SV_Target;
+	<span style="color:#66d9ef">float</span> depth : SV_Depth;
+};
+
+FragOut frag (v2f i) {
+	... <span style="color:#75715e">// calculate color and depth
+</span><span style="color:#75715e"></span>	FragOut o;
+	o.color = color;
+	o.depth = depth;
+	<span style="color:#66d9ef">return</span> o;
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>Here we can now specify a depth value as well as color. As mentioned previously this will override what is written into the depth buffer.</p>
+<p>For an Orthographic projection we need to output a linear depth value where 0 is the near plane and 1 is the far plane. But we also need to take into account the reversed depth buffer for Direct3D-like platforms, which is 1 at near and 0 at far instead. We can check if it is reversed by using the <strong>UNITY_REVERSED_Z</strong> macro. It will be 0 when not reversed, and 1 when reversed.</p>
+<p>We can handle this reversed-z by doing the following :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">float</span> depth <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+<span style="color:#75715e">// **0** at the near plane, **1** at the far plane
+</span><span style="color:#75715e">// Using a value of 1, aka the far plane as an example
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#if UNITY_REVERSED_Z
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// Reversed, **1** at the near plane, **0** at the far plane
+</span><span style="color:#75715e"></span>	depth <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> depth;
+<span style="color:#75715e">#end
+</span><span style="color:#75715e"></span>...
+o.depth <span style="color:#f92672">=</span> depth;</code></pre></td></tr></table>
+</div>
+</div>
+<p>For a Perspective projection, we need to convert to a non-linear value - mentioned in the <a href="#z-buffer-depth">Clip &amp; NDC space, Z Buffer (Raw) Depth</a> section. If we want to set the depth to a specific <strong>Eye Depth</strong> or <strong>Linear01 Depth</strong>, we can use the following :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">float</span> <span style="color:#a6e22e">LinearDepthToNonLinear</span>(<span style="color:#66d9ef">float</span> linear01Depth, float4 zBufferParam){
+	<span style="color:#75715e">// Inverse of Linear01Depth
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> (linear01Depth <span style="color:#f92672">*</span> zBufferParam.y)) <span style="color:#f92672">/</span> (linear01Depth <span style="color:#f92672">*</span> zBufferParam.x);
+}
+
+<span style="color:#66d9ef">float</span> <span style="color:#a6e22e">EyeDepthToNonLinear</span>(<span style="color:#66d9ef">float</span> eyeDepth, float4 zBufferParam){
+	<span style="color:#75715e">// Inverse of LinearEyeDepth
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> (eyeDepth <span style="color:#f92672">*</span> zBufferParam.w)) <span style="color:#f92672">/</span> (eyeDepth <span style="color:#f92672">*</span> zBufferParam.z);
+}
+
+<span style="color:#75715e">// e.g. The following would be a depth value at the near and far planes.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> nearPlaneDepth <span style="color:#f92672">=</span> Linear01Depth(<span style="color:#ae81ff">0</span>, _ZBufferParams);
+<span style="color:#66d9ef">float</span> farPlaneDepth <span style="color:#f92672">=</span> Linear01Depth(<span style="color:#ae81ff">1</span>, _ZBufferParams);
+
+<span style="color:#66d9ef">float</span> nonLinear <span style="color:#f92672">=</span> EyeDepthToNonLinear(eyeDepth, _ZBufferParams);
+<span style="color:#75715e">// would also be equal to :
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> nonLinear <span style="color:#f92672">=</span> LinearDepthToNonLinear(eyeDepth <span style="color:#f92672">/</span> farPlane, _ZBufferParams);
+<span style="color:#75715e">/*
+</span><span style="color:#75715e">as _ZBufferParams .w is equal to .y/far, and .z equal to .x/far.
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">Specifically, the values of _ZBufferParams are :
+</span><span style="color:#75715e">// x = 1-far/near
+</span><span style="color:#75715e">// y = far/near
+</span><span style="color:#75715e">// z = x/far
+</span><span style="color:#75715e">// w = y/far
+</span><span style="color:#75715e">// or in case of a reversed depth buffer (UNITY_REVERSED_Z is 1) :
+</span><span style="color:#75715e">// x = -1+far/near
+</span><span style="color:#75715e">// y = 1
+</span><span style="color:#75715e">// z = x/far
+</span><span style="color:#75715e">// w = 1/far
+</span><span style="color:#75715e">*/</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>As commented, these functions are the inverse of the Linear01Depth and LinearEyeDepth. They also handle the Direct3D vs OpenGL platform differences for us too, so a UNITY_REVERSED_Z check is not needed when using these.</p>
+<p>Note that you shouldn&rsquo;t use SV_Depth without a good reason, as it turns off early-z/depth testing optimisations on the GPU. This allows the depth to be tested against the depth buffer early, and discard the fragment if it fails, before the fragment shader even runs - since it knows the fragment won&rsquo;t be visible so there&rsquo;s no need to calculate it&rsquo;s colour/shading.</p>
+<p>Of course, if the shader is writing to SV_Depth then the fragment has to run, as the depth test needs to occur on this new depth value rather than the old one - Hence why those optimisations would be disabled. This allows the regular depth test to then take place after the fragment shader.</p>
+<p>Using <strong>Alpha Clipping</strong> (<strong>clip</strong> function) or <strong>discard</strong> in the shader also turns these optimisations off so the performance would be comparable to that. This is because during the early depth test a value has to also be written to the depth buffer if the test passes, assuming ZWrite is On. The test could pass, write to depth buffer, then the fragment shader could clip/discard - therefore the value written to the depth buffer would have been incorrect.</p>
+<p>Opaque shaders that use SV_Depth should also apparently be rendered after other opaque objects (according to <a href="https://docs.unity3d.com/Manual/SL-ShaderSemantics.html">this docs page</a>), e.g. during the AlphaTest queue.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">Tags { <span style="color:#e6db74">&#34;Queue&#34;</span> = <span style="color:#e6db74">&#34;AlphaTest&#34;</span> }
+</code></pre></td></tr></table>
+</div>
+</div>
+<hr>
+<h2 id="sample-depth-texture">Sampling the Depth Texture</h2>
+<p>As explained earlier, the depth texture contains depth values of the scene - how far <strong>opaque</strong> objects are from the camera plane. It should only be used by shaders in the <strong>Transparent</strong> parts of the <strong>Render Queue</strong>, specifically <strong>2501</strong> or higher (in URP at least). It allows us to obtain the depth of objects behind our transparent surface. If you instead need the depth to the fragment being rendered, you can calculate that without using the depth texture - see the <a href="#eye-depth">Eye Depth</a> section.</p>
+<p>Sampling the Depth Texture can be done in Shader Graph via the <b class="node">Scene Depth</b> node (see below).</p>
+<p>For <strong>URP</strong> Shader Code (HLSL), include <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl">DeclareDepthTexture.hlsl</a>, and use it&rsquo;s <strong>SampleSceneDepth</strong> function with the Screen coords to obtain the <strong>Raw Depth</strong> value. (pass positionNDC (from GetVertexPositionInputs, or use ComputeScreenPos with clip space pos, both in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.hlsl">ShaderVariablesFunctions.hlsl</a>) from vertex to fragment, then uv = screenPos.xy / screenPos.w).</p>
+<p>Be aware that the Depth Texture needs to be enabled in URP, see <a href="#notes-urp">here</a> for more info.</p>
+<p>e.g.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// (URP Example)
+</span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>...
+<span style="color:#75715e">// Vertex
+</span><span style="color:#75715e"></span>float4 positionCS <span style="color:#f92672">=</span> TransformObjectToHClip(IN.positionOS.xyz);
+OUT.positionCS <span style="color:#f92672">=</span> positionCS;
+OUT.screenPos <span style="color:#f92672">=</span> ComputeScreenPos(positionCS);
+...
+<span style="color:#75715e">// Fragment
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> sceneRawDepth <span style="color:#f92672">=</span> SampleSceneDepth(IN.screenPos.xy <span style="color:#f92672">/</span> IN.screenPos.w);
+<span style="color:#66d9ef">float</span> sceneEyeDepth <span style="color:#f92672">=</span> LinearEyeDepth(rawDepth, _ZBufferParams);</code></pre></td></tr></table>
+</div>
+</div>
+<p>For <strong>HDRP</strong> Shader Code (HLSL), use the <strong>SampleCameraDepth</strong> function in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl">ShaderVariables.hlsl</a>.</p>
+<p>Also, for the <strong>Built-in pipeline</strong> there is the docs page <a href="https://docs.unity3d.com/Manual/SL-DepthTextures.html">here</a> and <a href="https://docs.unity3d.com/Manual/SL-CameraDepthTexture.html">here</a> which explain some macros (specific to the built-in, won&rsquo;t work in URP/HDRP) and how to enable it for that pipeline.</p>
+<p>For converting to other spaces we can use :</p>
+<ul>
+<li>Convert to <strong>Linear01</strong> using : Linear01Depth(rawDepth, _ZBufferParams);</li>
+<li>Convert to <strong>Eye</strong> using : LinearEyeDepth(rawDepth, _ZBufferParams);</li>
+</ul>
+<p>(The built-in pipeline versions of these don&rsquo;t include the second parameter)</p>
+<p>Replacing &ldquo;rawDepth&rdquo; with the value sampled from the depth texture (SampleSceneDepth or SampleCameraDepth functions). Bare in mind that these functions are only used with <strong>Perspective</strong> projections. The Linear01Depth and LinearEyeDepth functions are found in the pipelines.core <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl">Common.hlsl</a>.</p>
+<p>For <strong>Orthographic</strong> projections, the rawDepth value is already linear but needs inverting for the reversed z buffer (when _ProjectionParams.x is -1), and lerping it with the near (_ProjectionParams.y) and far (_ProjectionParams.z) clip planes can convert it to view/eye space. Following code is untested but should work :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">orthoLinearDepth = _ProjectionParams.x &gt; <span style="color:#ae81ff">0</span> ? rawDepth : <span style="color:#ae81ff">1</span>-rawDepth;
+orthoEyeDepth = lerp(_ProjectionParams.y, _ProjectionParams.z, orthoLinearDepth);
+<span style="color:#75715e">/*
+</span><span style="color:#75715e">In case you are wondering what these _ProjectionParams values are :
+</span><span style="color:#75715e">x = 1 or -1 (-1 if projection is flipped)
+</span><span style="color:#75715e">y = near plane
+</span><span style="color:#75715e">z = far plane
+</span><span style="color:#75715e">w = 1/far plane
+</span><span style="color:#75715e">*/</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<hr>
+<h2 id="scene-depth-node">Scene Depth Node</h2>
+<p>The <b class="node">Scene Depth</b> node allows us to sample the camera&rsquo;s <strong>Depth Texture</strong>. As explained above, this texture contains depth values - how far objects are from the camera plane. It should only be used by shaders in the <strong>Transparent</strong> parts of the <strong>Render Queue</strong>, specifically 2501 or higher. Switching the Shader Graph to use a Transparent surface mode will switch it to 3000, but you can also change it manually in the material inspector.</p>
+<h3 id="modes">Modes</h3>
+<h4 id="perspective-scene-depth">Perspective Projection</h4>
+<ul>
+<li><strong>Raw</strong> : Non-Linear value between 0 and 1, directly from the Depth Texture
+<ul>
+<li>Direct3D-like, Reversed-Z : Ranges from <strong>1</strong> at near plane, to <strong>0</strong> at far plane</li>
+<li>OpenGL-like : Ranges from <strong>0</strong> at near plane, to <strong>1</strong> at far plane</li>
+</ul>
+</li>
+<li><strong>Linear01</strong> : Linear value between 0 and 1.
+<ul>
+<li>Converted using Linear01Depth(raw, _ZBufferParams);</li>
+<li>Ranges from <strong>0</strong> at camera pos, to <strong>1</strong> at far plane</li>
+</ul>
+</li>
+<li><strong>Eye</strong> : Eye (/View space) depth value.
+<ul>
+<li>Converted using LinearEyeDepth(raw, _ZBufferParams);</li>
+<li>Ranges from <strong>0</strong> at camera pos, 1 at 1 unit away, 10 at 10 units away, etc.</li>
+</ul>
+</li>
+</ul>
+<div class="img-center">
+<a href="SceneDepth.png" target="_blank" rel="noopener noreferrer"><img src="SceneDepth.png"></a>
+<p class="img-text"></p>
+</div>
+<h4 id="orthographic-scene-depth">Orthographic Projection</h4>
+<ul>
+<li><strong>Raw</strong> : In orthographic, this is a linear value between 0 and 1, directly from the Depth Texture
+<ul>
+<li>Direct3D-like, Reversed-Z : Ranges from <strong>1</strong> at near plane, to <strong>0</strong> at far plane</li>
+<li>OpenGL-like : Ranges from <strong>0</strong> at near plane, to <strong>1</strong> at far plane</li>
+</ul>
+</li>
+<li><strong>Linear01</strong> : Should not be used in Orthographic, as the Raw value is already Linear!
+<ul>
+<li>Note however that there is still platform differences with this value, see above. If you want a value that will work for both, we need to <b class="node">Branch</b> based on the <strong>Z Buffer Sign</strong> output from the <b class="node">Camera</b> node, put through a <b class="node">Comparsion</b> node with a B input of <strong>0</strong> and <strong>Greater</strong> mode. For the <strong>True</strong> input we can then use the <strong>Raw</strong> depth value as is, and for the <strong>False</strong> use the <b class="node">One Minus</b> node on the Raw value. See first part of image below.</li>
+</ul>
+</li>
+<li><strong>Eye</strong> : Should not be used in Orthographic.
+<ul>
+<li>If you want to convert the linear value to eye/viewspace units, use a <b class="node">Lerp</b> with the depth value as the <strong>T</strong> input, set <strong>A</strong> to the <strong>Near Plane</strong> from the <b class="node">Camera</b> node and <strong>B</strong> to the <strong>Far Plane</strong>. See image below.</li>
+</ul>
+</li>
+</ul>
+<div class="img-center">
+<a href="OrthoSceneDepth.png" target="_blank" rel="noopener noreferrer"><img src="OrthoSceneDepth.png"></a>
+<p class="img-text"></p>
+</div>
+<h3 id="notes-urp">Notes for Universal RP :</h3>
+<ul>
+<li>The <strong>Depth Texture</strong> option needs to be enabled on the <strong>URP Asset</strong> for the texture to be created.</li>
+</ul>
+<div class="img-center">
+<a href="URPAssetDepth.png" target="_blank" rel="noopener noreferrer"><img src="URPAssetDepth.png"></a>
+<p class="img-text"></p>
+</div>
+<ul>
+<li>Also, strangely in order for the depth texture to be correctly rendered, the “Post Processing” option on the Camera must also be enabled. (Having the Opaque Texture, HDR, or MSAA enabled on the URP Asset also seems to force it to render, but they will have extra overhead). This is true in URP v7.3.1 at least - it is possible that this is a bug and may be fixed in newer versions?</li>
+</ul>
+<hr>
+<h2 id="depth-difference">Depth Difference</h2>
+<div class="img-center">
+<a href="DepthDifference.png" target="_blank" rel="noopener noreferrer"><img src="DepthDifference.png"></a>
+<p class="img-text"></p>
+</div>
+<p>With the <strong>Eye Depth</strong> of the Scene (from the above sections) and Fragment (see <a href="#eye-depth">View Space, Eye Depth</a> section at the beginning of the post), we can use their <strong>difference</strong> (which means to <b class="node">Subtract</b> them) to achieve some intersection-like effects.</p>
+<p>Basically, if both depths are close together, meaning the value is almost the same, then subtracting them will give us a value close to <strong>0</strong>. We can take the <b class="node">One Minus</b> of this to only give us the intersection. We also use a <b class="node">Saturate</b> node to clamp the result between 0 and 1.</p>
+<p>This &ldquo;depth-difference&rdquo; method isn&rsquo;t always accurate however, especially at shallow viewing angles.</p>
+<div class="img-center">
+<a href="GraphDepthDifference.png" target="_blank" rel="noopener noreferrer"><img src="GraphDepthDifference.png"></a>
+<p class="img-text"></p>
+</div>
+<p>Since we are using the <b class="node">Scene Depth</b>, the graph must also be set to use <strong>Transparent</strong> surface mode for the node to function correctly. Note that this graph also only works in a <strong>Perspective</strong> projection.</p>
+<p>For <strong>Orthographic</strong>, swap the <b class="node">Scene Depth</b> out for the graph explained in the <a href="#orthographic-scene-depth">Scene Depth Node - Orthographic</a> section and swap the <strong>Object/Fragment Depth</strong> group out for the <b class="node">Position</b> node, <strong>View</strong> Space, <b class="node">Split</b> and <b class="node">Negate</b> <strong>Z/B</strong> axis (as explained in the <a href="#eye-depth">Eye Depth</a> section).</p>
+<p>For Shader Code, the above graph would be something like :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// (URP Example, untested but should be the same as the graph above)
+</span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>...
+<span style="color:#75715e">// Vertex
+</span><span style="color:#75715e"></span>float3 positionWS <span style="color:#f92672">=</span> TransformObjectToWorld(IN.positionOS.xyz);
+float3 positionVS <span style="color:#f92672">=</span> TransformWorldToView(positionWS);
+float4 positionCS <span style="color:#f92672">=</span> TransformWorldToHClip(positionWS);
+OUT.positionVS <span style="color:#f92672">=</span> positionVS; <span style="color:#75715e">// (TEXCOORD1 or whatever, any unused will do)
+</span><span style="color:#75715e"></span>OUT.positionCS <span style="color:#f92672">=</span> positionCS; <span style="color:#75715e">// (SV_POSITION)
+</span><span style="color:#75715e"></span>OUT.screenPos <span style="color:#f92672">=</span> ComputeScreenPos(positionCS); <span style="color:#75715e">// (TEXCOORD2)
+</span><span style="color:#75715e"></span>...
+<span style="color:#75715e">// Fragment
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> fragmentEyeDepth <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>IN.positionVS.z;
+<span style="color:#66d9ef">float</span> sceneRawDepth <span style="color:#f92672">=</span> SampleSceneDepth(IN.screenPos.xy <span style="color:#f92672">/</span> IN.screenPos.w);
+
+<span style="color:#75715e">// For perspective : 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> sceneEyeDepth <span style="color:#f92672">=</span> LinearEyeDepth(rawDepth, _ZBufferParams);
+<span style="color:#75715e">// For orthographic :
+</span><span style="color:#75715e">//float orthoLinearDepth = _ProjectionParams.x &gt; 0 ? rawDepth : 1-rawDepth;
+</span><span style="color:#75715e">//float sceneEyeDepth = lerp(_ProjectionParams.y, _ProjectionParams.z, orthoLinearDepth);
+</span><span style="color:#75715e"></span><span style="color:#75715e">/*
+</span><span style="color:#75715e">In case you are wondering what these _ProjectionParams values are :
+</span><span style="color:#75715e">x = 1 or -1 (-1 if projection is flipped)
+</span><span style="color:#75715e">y = near plane
+</span><span style="color:#75715e">z = far plane
+</span><span style="color:#75715e">w = 1/far plane
+</span><span style="color:#75715e">*/</span>
+
+<span style="color:#66d9ef">float</span> depthDifferenceExample <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> saturate((sceneEyeDepth <span style="color:#f92672">-</span> fragmentEyeDepth) <span style="color:#f92672">*</span> <span style="color:#ae81ff">1</span>);</code></pre></td></tr></table>
+</div>
+</div>
+<p>This technique is quite useful for effects such as :</p>
+<ul>
+<li>Intersection, e.g. <a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown-simple">Simple Forcefield Breakdown</a></li>
+<li>Edge foam for water shaders</li>
+<li>Fog effects, e.g. <a href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown">Fog Plane Shader Breakdown</a></li>
+</ul>
+<hr>
+<h2 id="reconstruct-world-pos">Reconstruct World Space Position from Depth</h2>
+<p>With the fragment&rsquo;s world position and eye depth values it&rsquo;s also possible to reconstruct the world position in the scene. The method we can use to do this varies a bit depending on if we&rsquo;re using a regular shader on a mesh or if the shader is a part of a image effect (e.g. using a <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Renderer Feature</a>).</p>
+<h3 id="mesh-perspective">Mesh (Perspective projection)</h3>
+<div class="img-center">
+<a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer"><img src="https://www.cyanilux.com/ReconstructDepthWorldPos.png"></a>
+<p class="img-text"></p>
+</div>
+<p>In the above image, we have a plane with a <strong>Transparent</strong> shader that wants to obtain the <strong>Scene Position</strong> based on the <b class="node">Scene Depth</b> (aka Depth Texture). For every fragment, this is a position that lies somewhere on a vector travelling from the camera to the fragment position.</p>
+<p>In URP we want to use the <b class="node">View Direction</b> node to obtain this vector, which is equal to the <b class="node">Camera</b> <strong>Position</strong> <b class="node">Subtract</b> the fragment <b class="node">Position</b> in world space. The &ldquo;direction&rdquo; here is <strong>not normalised</strong> which is important, but it is a bit inverted from what we actually want. We don&rsquo;t have to worry about using a <b class="node">Negate</b> node though, as the inputs on the <b class="node">Subtract</b> later is reversed which has the same effect.</p>
+<p>In HDRP, the <b class="node">View Direction</b> node is normalised though so won&rsquo;t work here. We can likely instead use the <b class="node">Position</b> node in World space due to the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">Camera-Relative rendering</a>, possibly negated, though I haven&rsquo;t tested this.</p>
+<p>In order to reconstruct the Scene Position we need to <strong>scale</strong> this view vector, by an amount based on the two depth values. We <b class="node">Divide</b> our view vector by the <strong>Fragment&rsquo;s Eye Depth</strong> (as explained in the <a href="#eye-depth">View Space, Eye Depth</a> section) then <b class="node">Multiply</b> by the <b class="node">Scene Depth</b> (<strong>Eye</strong> mode).</p>
+<p>If we put this into a <b class="node">Fraction</b> node then output it, we can visualise the position. But the result is still be moving with the camera. To fix this, take the <strong>Position</strong> output from the <b class="node">Camera</b> node and <b class="node">Subtract</b> the reconstructed position.</p>
+<p>Since we are using the <b class="node">Scene Depth</b>, the graph must also be set to use <strong>Transparent</strong> surface mode for the node to function correctly.</p>
+<div class="img-center">
+<a href="GraphReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer"><img src="GraphReconstructDepthWorldPos.png"></a>
+<p class="img-text"></p>
+</div>
+<p>For Shader Code / HLSL :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// (URP Example, untested but should be the same as the graph above)
+</span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>...
+<span style="color:#75715e">// Vertex
+</span><span style="color:#75715e"></span>float3 positionWS <span style="color:#f92672">=</span> TransformObjectToWorld(IN.positionOS.xyz);
+float3 positionVS <span style="color:#f92672">=</span> TransformWorldToView(positionWS);
+float4 positionCS <span style="color:#f92672">=</span> TransformWorldToHClip(positionWS);
+OUT.positionVS <span style="color:#f92672">=</span> positionVS; <span style="color:#75715e">// (TEXCOORD1 or whatever, any unused will do)
+</span><span style="color:#75715e"></span>OUT.viewDirVector <span style="color:#f92672">=</span> _WorldSpaceCameraPos <span style="color:#f92672">-</span> positionWS; <span style="color:#75715e">// (TEXCOORD2)
+</span><span style="color:#75715e"></span>OUT.positionCS <span style="color:#f92672">=</span> positionCS; <span style="color:#75715e">// (SV_POSITION)
+</span><span style="color:#75715e"></span>OUT.screenPos <span style="color:#f92672">=</span> ComputeScreenPos(positionCS); <span style="color:#75715e">// (TEXCOORD3)
+</span><span style="color:#75715e"></span>...
+<span style="color:#75715e">// Fragment
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> sceneRawDepth <span style="color:#f92672">=</span> SampleSceneDepth(IN.screenPos.xy <span style="color:#f92672">/</span> IN.screenPos.w);
+<span style="color:#66d9ef">float</span> sceneEyeDepth <span style="color:#f92672">=</span> LinearEyeDepth(rawDepth, _ZBufferParams);
+<span style="color:#66d9ef">float</span> fragmentEyeDepth <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>IN.positionVS.z;
+
+float3 worldPos <span style="color:#f92672">=</span> _WorldSpaceCameraPos <span style="color:#f92672">-</span> ((IN.viewDirVector <span style="color:#f92672">/</span> fragmentEyeDepth) <span style="color:#f92672">*</span> sceneEyeDepth);
+<span style="color:#75715e">// try visualising by returning : 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">return</span> <span style="color:#a6e22e">float4</span>(frac(worldPos), <span style="color:#ae81ff">1.0</span>);</code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="mesh-orthographic">Mesh (Orthographic projection)</h3>
+<div class="img-right">
+<a href="ReconstructDepthWorldPosOrtho.png" target="_blank" rel="noopener noreferrer"><img src="ReconstructDepthWorldPosOrtho.png"></a>
+<p class="img-text"></p>
+</div>
+<p>For an Orthographic projection, we need to use the <strong>Raw</strong> mode on the <b class="node">Scene Depth</b> node. The value returned still varies between platforms a bit as explained in the <a href="#orthographic-scene-depth">Scene Depth Node - Orthographic</a> section so we need to branch based on the <strong>Z Buffer Sign</strong> from the <b class="node">Camera</b> node. That gives us a value equivalent to the Linear01 depth, we then need to <b class="node">Lerp</b> between the <strong>near</strong> and <strong>far</strong> clip planes to convert it to <strong>View/Eye</strong> depth.</p>
+<p>We can then plug that into the <strong>Z</strong> axis of a <b class="node">Vector3</b> node, with the <strong>X</strong> and <strong>Y</strong> axis set to the <strong>X/R</strong> and <strong>Y/G</strong> outputs from the <b class="node">Position</b> node set to <strong>View</strong> space, <b class="node">Split</b>. Finally we <b class="node">Transform</b> that from <strong>View</strong> space to <strong>World</strong> space.</p>
+<p>Since we are using <b class="node">Scene Depth</b>, the <b class="node">Master</b> node should also be set to <strong>Transparent</strong> Surface mode.</p>
+<div class="img-center">
+<a href="GraphReconstructDepthWorldPosOrtho.png" target="_blank" rel="noopener noreferrer"><img src="GraphReconstructDepthWorldPosOrtho.png"></a>
+<p class="img-text"></p>
+</div>
+<h3 id="blit-perspective">Blit (Perspective projection)</h3>
+<p>For image effects, the above approach doesn&rsquo;t really work as we are rendering a quad to the screen. I have found that the following graph works but it requires sending in a <strong>_InverseView Matrix</strong>, (set to <a href="https://docs.unity3d.com/ScriptReference/Camera-cameraToWorldMatrix.html">cam.cameraToWorldMatrix</a>). The <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Renderer Feature</a> that I shared on Github has an option for this.</p>
+<p>Since we are using the <b class="node">Scene Depth</b>, the graph must also be set to use <strong>Transparent</strong> surface mode for the node to function correctly.</p>
+<div class="img-center">
+<a href="GraphReconstructDepthWorldPosBlit.png" target="_blank" rel="noopener noreferrer"><img src="GraphReconstructDepthWorldPosBlit.png"></a>
+<p class="img-text">
+Left note : Custom Function, Output : "Out" Matrix4x4. Body : Out = unity_CameraInvProjection;</br>
+Right note : C#, Shader.SetGlobalMatrix("_InverseView", cam.cameraToWorldMatrix); (I'm doing this in the Custom Renderer Feature used to Blit the shader to the screen)
+</p>
+</div>
+<p>It&rsquo;s possible that this could also be made more performant by moving the first matrix multiplication to the vertex shader. I think it wouldn&rsquo;t mess with the calculation, but this isn&rsquo;t really something available in Shader Graph currently.</p>
+<p>If you&rsquo;re working in Shader Code / HLSL, something like <a href="https://github.com/keijiro/DepthInverseProjection/blob/master/Assets/InverseProjection/Resources/InverseProjection.shader">keijiro&rsquo;s DepthInverseProjection</a> might help here. (Note it was written for the Post Processing v2 stack I believe, but the technique is similar)</p>
+<p>I&rsquo;m afraid I haven&rsquo;t got an Orthographic version of this either, but the <a href="#mesh-orthographic">Mesh Orthographic</a> approach above might also work for Blit effects - I haven&rsquo;t had time to test it sorry!</p>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+<p>Sources / Additional Info :</p>
+<ul>
+<li><a href="https://developer.nvidia.com/content/depth-precision-visualized">https://developer.nvidia.com/content/depth-precision-visualized</a></li>
+<li><a href="https://docs.unity3d.com/Manual/SL-PlatformDifferences.html">https://docs.unity3d.com/Manual/SL-PlatformDifferences.html</a></li>
+<li><a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@8.2/manual/Scene-Depth-Node.html">https://docs.unity3d.com/Packages/com.unity.shadergraph@8.2/manual/Scene-Depth-Node.html</a></li>
+<li><a href="http://www.codinglabs.net/article_world_view_projection_matrix.aspx">http://www.codinglabs.net/article_world_view_projection_matrix.aspx</a></li>
+<li><a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/projection-matrix-introduction">https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/projection-matrix-introduction</a></li>
+<li><a href="https://forum.unity.com/threads/decodedepthnormal-linear01depth-lineareyedepth-explanations.608452/#post-4070806">https://forum.unity.com/threads/decodedepthnormal-linear01depth-lineareyedepth-explanations.608452/#post-4070806</a></li>
+<li><a href="https://forum.unity.com/threads/what-is-screenpos-w.616003/#post-4125325">https://forum.unity.com/threads/what-is-screenpos-w.616003/#post-4125325</a></li>
+<li><a href="https://www.khronos.org/opengl/wiki/Early_Fragment_Test">https://www.khronos.org/opengl/wiki/Early_Fragment_Test</a></li>
+<li><a href="https://github.com/keijiro/DepthInverseProjection">https://github.com/keijiro/DepthInverseProjection</a></li>
+</ul>
+<p>More tutorials related to depth (for Built-in Pipeline) :</p>
+<ul>
+<li><a href="https://halisavakis.com/shader-bits-camera-depth-texture/">https://halisavakis.com/shader-bits-camera-depth-texture/</a></li>
+<li><a href="https://www.ronja-tutorials.com/2018/07/01/postprocessing-depth.html">https://www.ronja-tutorials.com/2018/07/01/postprocessing-depth.html</a></li>
+<li><a href="https://roystan.net/articles/toon-water.html">https://roystan.net/articles/toon-water.html</a></li>
+<li><a href="https://roystan.net/articles/outline-shader.html">https://roystan.net/articles/outline-shader.html</a></li>
+</ul>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

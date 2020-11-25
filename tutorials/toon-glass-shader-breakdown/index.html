@@ -242,17 +242,26 @@
 <li>Vector1 &ldquo;Line Alpha&rdquo; – Default : 0.4</li>
 </ul>
 <p>Note that in the material’s inspector, I’m using an Offset of 1 and a Scale Multiplier of 0.3. These values won’t look good in the shadergraph previews though!</p>
-<p>I also haven’t named the &ldquo;A&rdquo; and &ldquo;B&rdquo; properties very well, but they both control the number of diagonal lines produced by the shader. However A also affects how small the lines are in the center while B is more linear. The line count (per side) is equal to A<em>B. For best results, B should remain an integer. A doesn’t have to be an integer, but A</em>B should be. So, A=2.5 and B=2 is fine, for 5 lines per side. A=5 and B=1 would also give 5 lines per side, but the width of the lines would be different.</p>
+<p>I also haven’t named the &ldquo;A&rdquo; and &ldquo;B&rdquo; properties very well, but they both control the number of diagonal lines produced by the shader. However A also affects how small the lines are in the center while B is more linear. The line count (per side) is equal to A*B. For best results, B should remain an integer. A doesn’t have to be an integer, but A*B should be. So, A=2.5 and B=2 is fine, for 5 lines per side. A=5 and B=1 would also give 5 lines per side, but the width of the lines would be different.</p>
 <h3 id="breakdown-1">Breakdown</h3>
 <p>First we create a <b class="node">Position</b> node set to <strong>Absolute World</strong> space, and <b class="node">Subtract</b> the camera’s position (in world space, via the <strong>Position</strong> output on the <b class="node">Camera</b> node) to obtain the position relative to the camera. The origin of the effect will now be at the camera’s position so it will move as the camera moves (in terms of translation, not rotation).</p>
 <p>We can then <b class="node">Transform</b> to <strong>Tangent</strong> space, which appears to make the position relative to the meshes’ surface – kind of? Well, at least for our purposes the <strong>R/X</strong> component of the position is horizontal across the surface, and <strong>G/Y</strong> is vertical, but there may be better ways of handling this.</p>
 <p>We can <b class="node">Split</b> to obtain these components, and <b class="node">Add</b> them together to make a diagonal gradient. An <b class="node">Absolute</b> function will then convert any negative values to positive. Any changes made will now be mirrored across the diagonal line as both sides share the same values.</p>
 <p>The preview on our <b class="node">Absolute</b> node doesn’t seem to look right though. This is due to the transform to tangent space, but even if we were to change it, the preview will still show the &ldquo;3D&rdquo; circular version. Instead, we can create a <b class="node">UV</b> node and put it into a <b class="node">Remap</b> node with values of <strong>0 and 1</strong> for the <strong>In Min Max</strong> and <strong>-1 and 1</strong> for the <strong>Out Min Max</strong>. This remaps the values so the value at the center of the preview has a value of 0. When we connect this to the <b class="node">Split</b> we can visualise the previews properly which will help a lot when creating the rest of the graph, then at the end we can reconnect the other position instead.</p>
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png" class="img-center"></a>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<p class="img-text"></p>
+</div>
 <p>We now have two gradients going outwards diagonally in each direction. There are values of 0 in the center shown by the black areas on the preview. If we <b class="node">Subtract</b> a value from this it will shift the values inwards, and output negative values in the center (which we can remove later via a <b class="node">Saturate</b>). This results in creating a spacing between the two gradients. Here we use the <strong>Offset property</strong>, which will allow us to change the spacing later in the inspector. We can then also apply some scaling by using a <b class="node">Multiply</b> with the <strong>Scale Multiplier property</strong>, as shown on the left below.</p>
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png" class="img-center"></a>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<p class="img-text"></p>
+</div>
 <p>To handle creating multiple lines, I’m using this setup as shown above. By using a <b class="node">Power</b> in our calculations, we can allow the values to be more exponential / less linear. This affects the width of each line based on the distance from the diagonal, as shown in the <b class="node">Fraction</b> node preview. To better show how this works, I’ve plotted the functions here :</p>
-<p><a href="Plots.png" target="_blank" rel="noopener noreferrer"><img src="Plots.png" class="img-center"></a>
+<p><div class="img-center">
+<a href="Plots.png" target="_blank" rel="noopener noreferrer"><img src="Plots.png"></a>
+<p class="img-text"></p>
+</div>
 (Source : Wolfram|Alpha, Wolfram Alpha LLC, Date : 01/01/2020, Links : <a href="https://www.wolframalpha.com/input/?i=plot+%7B+y+%3D+2%5Ex+%2C+y+%3D+3%5Ex+%2C+y+%3D+4%5Ex+%2C+y+%3D+5%5Ex+%7D+x+%3D+0+to+1%2C+y+%3D+1+to+5">Plot1</a>, <a href="https://www.wolframalpha.com/input/?i=plot+%7B+y+%3D+frac%282%5Ex%29+%2C+y+%3D+frac%283%5Ex%29+%2C+y+%3D+frac%284%5Ex%29+%2C+y+%3D+frac%285%5Ex%29+%7D+x+%3D+0+to+1%2C+y+%3D+0+to+1">Plot2</a>)</p>
 <p>Both plots show the <strong>&ldquo;A&rdquo; property</strong> set to <strong>0 to 4</strong> and <strong>&ldquo;B&rdquo; set to 1</strong>. Note that the input on the <b class="node">Power</b> is <strong>A+1.01</strong>, which I’ve rounded to <strong>A+1</strong>, therefore the plots show <strong>2^x to 5^x</strong> as labelled.</p>
 <p>Looking at the plot on the left, When A is higher, the plot results in a more curved line.</p>
@@ -260,7 +269,10 @@
 <p>We use a <b class="node">One Minus</b> node on our second input on the <b class="node">Power</b>, so that we input values near 1 on diagonal line rather than 0, resulting in smaller width gradients rather than larger. There’s also a <b class="node">Saturate</b> in place which clamps values between 0 and 1. The extra .01 on the <b class="node">Add</b> node is in place to prevent the <b class="node">Fraction</b> node outputting 1 in the center (the spacing created by the <strong>Offset</strong>) for certain integer values of A, although it can still occur if B or A*B isn’t an integer, hence the mention of setting these to integers at the start of the breakdown. We could instead mask that area to always be black, but it felt a bit unnecessary.</p>
 <p>Hopefully those plots help explain what is going on here, as the maths might not be easy to grasp by looking at the nodes alone. All we need to do now is <b class="node">Step</b> the gradient-like result from the <b class="node">Fraction</b> node, using the <strong>Line Width property</strong> to obtain solid lines which we can then <b class="node">Multiply</b> by our <strong>Line Alpha</strong>. We also need to <b class="node">Add</b> the <strong>Color property’s alpha</strong>, to control the glass’ surface alpha, then put this into the <strong>Alpha</strong> input on the <b class="node">Master</b> node, and also set the <strong>Color</strong> input as shown.</p>
 <p>Also don’t forget to connect the (camera relative &amp; tangent) position rather than the UVs at the beginning when saving the graph, as the UVs were only there for better previews while editing!</p>
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png" class="img-center"></a>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<p class="img-text"></p>
+</div>
 <br><hr>
 <p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
 <p style="text-align:center;">~ Cyan</p>
