@@ -18,7 +18,7 @@
 <meta itemprop="description" content="A portal/wormhole shader on manipulating polar coordinates to create a spiralling effect">
 <meta itemprop="datePublished" content="2019-05-13T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-05-13T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1156">
+<meta itemprop="wordCount" content="1170">
 <meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 
 
@@ -240,7 +240,7 @@
 <h2 id="notes">Notes</h2>
 <ul>
 <li>This is an <strong>Unlit</strong> shader applied to a simple flat quad.</li>
-<li>You’ll need a seamless/tileable noise texture in order to create this effect. The exact type of noise doesn’t really matter, play around with a few different noise textures and see which works best.</li>
+<li>You’ll need a seamless/tileable noise texture in order to create this effect. The exact type of noise doesn’t really matter, play around with a few different noise textures and see which works best. In the texture&rsquo;s import settings make sure it is also set to Repeat mode.</li>
 <li>The shader created in this post is based off the original one in the tweet above but they do share some differences. I won’t discuss the scrolling star effect in this post so if you want to see how that was done check the original tweet’s graph <a href="https://twitter.com/Cyanilux/status/1124280286236295171">here</a>.</li>
 <li>I have also made some improvements since that last shader to make the graph clearer and more optimised. The previous one used maths based on the <b class="node">Ellipse</b> node to obtain the circular shape, while this one just uses the distance straight from the polar coordinates in order to achieve basically the same effect.</li>
 </ul>
