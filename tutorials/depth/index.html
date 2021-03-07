@@ -18,7 +18,7 @@
 <meta itemprop="description" content="A big post explaining everything about Depth : Depth Buffer, Depth Texture / Scene Depth node, SV_Depth, Reconstructing World Position from Depth, etc.">
 <meta itemprop="datePublished" content="2020-11-25T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2020-11-25T00:00:00+00:00" />
-<meta itemprop="wordCount" content="5503">
+<meta itemprop="wordCount" content="5509">
 <meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 
 
@@ -235,7 +235,7 @@
 <li><a href="#depth">What is Depth?</a>
 <ul>
 <li><a href="#eye-depth">View space, Eye Depth</a></li>
-<li><a href="#z-buffer-depth">Clip &amp; NDC space, Z Buffer Depth</a></li>
+<li><a href="#z-buffer-depth">Clip space, Normalised Device Coordinates (NDC) &amp; Z Buffer Depth</a></li>
 <li><a href="#non-linear">Why Non-Linear?</a></li>
 </ul>
 </li>
@@ -342,7 +342,7 @@ OUT.positionVS = positionVS;
 </div>
 <p>For obtaining the eye depth of <strong>objects in the scene</strong> (behind the fragment), we would instead sample a special texture that Unity generates for us known as the <strong>Depth Texture</strong> (aka the <b class="node">Scene Depth</b> node) - but more on that in the later <a href="#sample-depth-texture">Sampling the Depth Texture</a> and <a href="#scene-depth-node">Scene Depth</a> sections.</p>
 <p>You will also commonly see <strong>Linear01</strong> depth be used, which is just a remapped version of Eye (by dividing by the far plane value). It is still 0 at the camera position, but 1 at the far plane.</p>
-<h3 id="z-buffer-depth">Clip &amp; NDC space, Z Buffer Depth</h3>
+<h3 id="z-buffer-depth">Clip space, Normalised Device Coordinates (NDC) &amp; Z Buffer Depth</h3>
 <p>View space positions also get converted to <strong>Clip space</strong> via the <strong>Projection Matrix</strong>. Usually transformations like this can&rsquo;t warp the space in a non-uniform way - which we need for a perspective projection, but the matrix is set up in a way that outputs the <strong>Eye Depth</strong> in the <strong>W component</strong> of the result. The vertex shader then outputs this Clip space position. For orthographic projections, the W component just ends up as 1.</p>
 <p>Between the vertex and fragment stages the clip space XYZ is <strong>remapped</strong> a bit and then <strong>divided</strong> by it&rsquo;s <strong>W component</strong> (known as the <strong>perspective divide</strong>). The remapping that occurs is the same as the <strong>ComputeScreenPos</strong> function, or positionNDC calculated in the VertexPositionInputs struct. In URP these are both found in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.hlsl">ShaderVariablesFunctions.hlsl</a> :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">

@@ -6,7 +6,16 @@
     <description>Recent content in Home on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Mon, 01 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 05 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Intro to Shader Graph</title>
+      <link>https://www.cyanilux.com/tutorials/intro-to-shader-graph/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/intro-to-shader-graph/</guid>
+      <description>Hey! This post is a detailed introduction to using Shader Graph - a node based shader editor for Unity that is provided for the Scriptable Render Pipelines (SRPs), including the Universal Render Pipeline (URP) and High Definition Render Pipeline (HDRP). We&amp;rsquo;ll be going over how to use the tool and it&amp;rsquo;s features, not necessarily how to create shaders using it. I have other tutorial breakdowns that go over creating specific shader effects if you&amp;rsquo;re interested in that.</description>
+    </item>
+    
     <item>
       <title>Crystal Shader Breakdown</title>
       <link>https://www.cyanilux.com/tutorials/crystal-shader-breakdown/</link>
@@ -224,8 +233,7 @@ We can use the Polar Coordinates node to convert these Cartesian coordinates int
       
       <guid>https://www.cyanilux.com/contents/</guid>
       <description>Most of the tutorials below are for the Universal Render Pipeline (URP), but content may still work in the High Definition Render Pipeline (HDRP) too. It may need adjusting in some places due to HDRP using Camera-Relative rendering which makes World space relative to the camera position. Also note that the View Direction node is normalised in HDRP but not in URP.
-Sections :
- Tutorial Breakdowns Tutorial Posts Twitter Threads  Resources :</description>
+Sections :  Tutorial Breakdowns Tutorial Posts Twitter Threads  Looking for a place to start?</description>
     </item>
     
     <item>

@@ -6,11 +6,20 @@
     <description>Recent content in Tags on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Mon, 01 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 05 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HDRP</title>
+      <link>https://www.cyanilux.com/tags/hdrp/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tags/hdrp/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Shader Graph</title>
       <link>https://www.cyanilux.com/tags/shader-graph/</link>
-      <pubDate>Mon, 01 Feb 2021 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tags/shader-graph/</guid>
       <description></description>
@@ -19,7 +28,7 @@
     <item>
       <title>URP</title>
       <link>https://www.cyanilux.com/tags/urp/</link>
-      <pubDate>Mon, 01 Feb 2021 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tags/urp/</guid>
       <description></description>
