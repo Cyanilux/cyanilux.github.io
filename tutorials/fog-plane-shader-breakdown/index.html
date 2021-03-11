@@ -11,7 +11,7 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Fog Plane Shader Breakdown">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -250,7 +250,9 @@
 <p>It’s not too important to know why this is the object’s depth, but it’s due to how 3D object positions are converted to screen coordinates by the model-view-projection matrix. It is important that we set the node to Raw however, as in the Default mode each component is divided by this alpha/w value, including the alpha/w component itself meaning it&rsquo;ll just be 1. This is usually referred to as the “perspective divide” – it converts the clip space coordinates (obtained after applying the model-view-projection matrix) into normalised screen coordinates, displaying the 3D perspective to the 2D screen.</p>
 <p>(I believe we could also use the <b class="node">Position</b> node set to <strong>View</strong> Space, and <b class="node">Negate</b> the <strong>Z/B</strong> output from a <b class="node">Split</b> node to obtain this object depth. I&rsquo;m used to using the other approach instead though).</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="739" height="243" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>With these to depth values, we can now move onto producing the fog shaders.</p>
@@ -263,7 +265,9 @@
 <li>Make sure to set the alpha component of the <strong>Fog Colour</strong> in the shadergraph blackboard (AND in the material inspector!) to <strong>1</strong> (or 255 if using the 0-255 range), otherwise the effect will be invisible. Shadergraph defaults to (0,0,0,0)! For most effects I leave the alpha at 1, as fog is usually fully opaque at a distance, but I allowed the alpha to be changed in this case. If you don’t want the alpha of the colour to be taken into account you can remove the alpha <b class="node">Multiply</b>.</li>
 </ul>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="214" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h3 id="example-2-accurate">Example 2 (Accurate)</h3>
@@ -271,12 +275,16 @@
 <p>Create a <b class="node">View Direction</b> node set to <strong>World</strong> space. This obtains a vector from the pixel/fragment position to the camera. The magnitude of this vector is the distance (between the camera and fragment), but this is not the same as depth – The depth is a distance from the fragment position to a plane that is perpendicular to the camera, not the camera position itself. This creates a triangle as shown in the image.</p>
 <p>Note : <b class="node">View Direction</b> is <strong>not normalised</strong> in URP, but is in HDRP. If you are using HDRP you will need to use the <b class="node">Position</b> node in <strong>World</strong> space instead as we need it non-normalised. World positions in HDRP are also <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">Camera-Relative</a> which means we also don&rsquo;t need to worry about subtracting this from the camera&rsquo;s position later. At the end of the post I&rsquo;ll provide another graph showing how you can achieve the fog effect in HDRP.</p>
 <div class="img-center">
-<a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer"><img src="https://www.cyanilux.com/ReconstructDepthWorldPos.png"></a>
+<a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy"   alt="" src="https://www.cyanilux.com/ReconstructDepthWorldPos.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>In order to reconstruct the world position we need to scale this vector to the scene position, behind the quad/plane. The <b class="node">Scene Depth</b> and &ldquo;Scene Pos&rdquo; we want creates another triangle as shown in the image. We can use the scale factor of the two triangles to obtain the vector to the scene position, which can be achieved by dividing the <b class="node">View Direction</b> by the <strong>Raw Screen Position W/A depth</strong> and then multiplying by the <b class="node">Scene Depth</b>. We can then <b class="node">Subtract</b> the camera’s world <strong>Position</strong> from the <b class="node">Camera</b> node to get the scene world position.</p>
 <div class="img-center">
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="323" alt="" src="Graph3.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>With this scene world position, we can now handle the fog. To make sure the fog is in the correct direction, we can <b class="node">Transform</b> the position to <strong>Object</strong> space and take the <b class="node">Dot Product</b> between it and the normalized <b class="node">Normal Vector</b> in <strong>Object</strong> space. Since the normal vector points outwards from the plane though, we also need to <b class="node">Negate</b> the result of the <b class="node">Dot Product</b> (or negate the normal vector going into the dot product).</p>
@@ -289,12 +297,16 @@
 <li>To control the density of the fog, adjust the <strong>Y</strong> scale of the plane. Unlike the simpler version we use a <b class="node">Transform</b> to <strong>Object</strong> space, which as a result allows us to use the object’s scale to control the density rather than using an additional property.</li>
 </ul>
 <div class="img-center">
-<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png"></a>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="194" alt="" src="Graph4.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>If you are working in <strong>HDRP</strong>, the following graph should work instead (Note it doesn&rsquo;t include the <strong>Fog Colour property</strong>, but you can easily add that in and connect it to the <strong>Color</strong> input on the <b class="node">Master</b> node) :</p>
 <div class="img-center">
-<a href="GraphHDRP.png" target="_blank" rel="noopener noreferrer"><img src="GraphHDRP.png"></a>
+<a href="GraphHDRP.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="233" alt="" src="GraphHDRP.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <br><hr>

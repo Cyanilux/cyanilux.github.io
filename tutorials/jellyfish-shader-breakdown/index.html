@@ -11,7 +11,7 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Jellyfish Shader Breakdown">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -259,29 +259,39 @@
 <p>We will be offsetting vertices using a Sine wave based on the jellyfish’s Y (up/down) axis to scale the X and Z parts of each vertex, pushing vertices in and out without affecting their Y position. We’ll also mask this based on the Y axis, clamped between 1 and 3, allowing the tentacles to move slightly more than the top of the jellyfish.</p>
 <p>To begin, create a <b class="node">Position</b> node set to <strong>Object</strong> space and <b class="node">Split</b> it. Create a <b class="node">Time</b> node, take the <strong>Time</strong> output and <b class="node">Multiply</b> it by a <strong>time-scaling value/property</strong> of <strong>3</strong>. Then take the <strong>Y/G</strong> output of the <b class="node">Split</b> (which should corrospond to the vertical position along the jellyfish) and <b class="node">Multiply</b> this by a value to control the frequency of our wave, we’ll also set this to <strong>3</strong>. We can then <b class="node">Add</b> the output of these two nodes together and put it into a <b class="node">Sine</b> node.</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="312" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>To mask this so the tentacles can move more than the top of the jellyfish, we’ll take the <strong>Y/G</strong> output again, <b class="node">Subtract</b> <strong>1</strong> and then put this into an <b class="node">Absolute</b> node. We can then put this into a <b class="node">Clamp</b> node with a <strong>Min</strong> of <strong>1</strong> and Max of <strong>3</strong>. This will give us an output of 1 at and above the origin, while 1 unit below outputs a value of 2, and at and more than 2 units downwards will output values of 3. We can <b class="node">Multiply</b> this by our <b class="node">Sine</b> node output in order to increase the amplitude, or strength of the offset, on the tentacles.</p>
 <p>In order to use this to offset the vertices, <b class="node">Multiply</b> this by a value such as <strong>0.2</strong> to control the strength of the offset, then <b class="node">Add</b> <strong>1</strong>. Put this into the <strong>X</strong> and <strong>Z</strong> components of a <b class="node">Vector3</b> node, and set the Y component to <strong>1</strong>. We can then <b class="node">Multiply</b> this with the output from the <b class="node">Position</b> node.</p>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="293" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>To make the vertex displacement a little more interesting, I also added some Sine rotation around the Y axis, making the jellyfish sway back and forth a bit. To do this put the output of our vertex displacement into the <strong>In</strong> input of a <b class="node">Rotate About Axis</b> node, setting the <strong>Axis</strong> to <strong>(0, 1, 0)</strong>. Add the <strong>Time</strong> output from the <b class="node">Time</b> node we created earlier with the <strong>Y/G</strong> output of the <b class="node">Split</b>, then put this into a <b class="node">Sine</b> node, and use this as the <strong>Rotation</strong> input, with the <strong>Unit</strong> set to <strong>Radians</strong>. Take the output of this and put it into the <strong>Position</strong> input on the <b class="node">Master</b> node.</p>
 <div class="img-center">
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="205" alt="" src="Graph3.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Finally we can also add some colour to the Jellyfish. To do this I’m using a simple gradient between two colours created via a <b class="node">Lerp</b> node. We’ll take the <strong>Y/G</strong> output again and put it into a <b class="node">Remap</b> node with an <strong>In Min Max</strong> of <strong>-1 and 0.5</strong> and an <strong>Out Min Max</strong> of <strong>0 and 1</strong>, then put this into a <b class="node">Saturate</b> node to clamp the values between 0 and 1. Put this into the <strong>T</strong> input on a <b class="node">Lerp</b> node, and create two <b class="node">Color</b> nodes (or properties) and put them into the <strong>A</strong> and <strong>B</strong> inputs.</p>
 <div class="img-center">
-<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png"></a>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="708" height="417" alt="" src="Graph4.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>We can also <b class="node">Multiply</b> the colour output with a <b class="node">Fresnel Effect</b> node to create a more jelly-like look before putting it into the <strong>Color</strong> input on the <b class="node">Master</b> node. Also set it to use the <strong>Transparent</strong> rendering mode and <strong>Additive</strong> blending by clicking the cog icon. I’m also setting it to be <strong>double-sided</strong>, as the tentacles are only single-sided on the mesh I’m using and we won’t be able to see them from behind otherwise.</p>
 <p>You may notice however there are some slight issues. Firstly, as we are rotating vertices, we also need to rotate the <strong>Normals</strong> put into the <b class="node">Fresnel Effect</b> node to make it output the intended values. You can do this by putting a <b class="node">Normal Vector</b> node into the <strong>In</strong> input of another <b class="node">Rotate About Axis</b> node, having the other inputs the same as the one from before. Secondly, the back faces have normals facing away from us, so for all back faces the <b class="node">Fresnel Effect</b> is outputting 1. We can fix this by flipping the normals for back faces. Create a <b class="node">Branch</b> node with the <strong>Predicate</strong> set to use the <b class="node">Is Front Face</b> node, and put the rotated normal into the <strong>True</strong> input, as well as into a <b class="node">Negate</b> node for the <strong>False</strong> input.</p>
 <div class="img-center">
-<a href="Graph5.png" target="_blank" rel="noopener noreferrer"><img src="Graph5.png"></a>
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="362" alt="" src="Graph5.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Now we have a nice looking Jellyfish. In the next section, we’ll look at extending this further so that the jellyfish can move, with tentacles that can bend when the jellyfish turns in order to make the motion feel more realistic.</p>
@@ -479,13 +489,17 @@
 <p>We’ll take the output from the <b class="node">Rotate About Axis</b> node we used to rotate the vertex position before, and put it into the <strong>In</strong> input of another <b class="node">Rotate About Axis</b> node, with the axis set to the <strong>Rotation Axis</strong>. If we set the rotation to use the <strong>Rotation Angle</strong> however, we’ll be rotating every vertex with the same amount. We first need to mask it so we are only rotating the tentacles.</p>
 <p>To do this, take the <strong>Y/G</strong> output, put it into a <b class="node">Negate</b> node then <b class="node">Multiply</b> it by <strong>0.25</strong>. This flips our values to keep the tentacles in a range of positive values and means that a value of 1 is obtained about 4 units downwards, at the very end of the tentacles in the mesh I’m using. We put this into a <b class="node">Saturate</b> node, <b class="node">Multiply</b> it with our <strong>Rotation Angle</strong> property and put it into the <strong>Rotation</strong> input with the <strong>Unit</strong> set to <strong>Degrees</strong> (as the Vector3.Angle gave us the angle in degrees rather than radians). This means that the rotation will be 0 at the jellyfish’s position, while 4 units along the tentacles is the full rotation angle. Finally, put the output of this into the <strong>Position</strong> input on the <b class="node">Master</b> node.</p>
 <div class="img-center">
-<a href="Graph6.png" target="_blank" rel="noopener noreferrer"><img src="Graph6.png"></a>
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="272" alt="" src="Graph6.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>As mentioned before this won’t be perfect, but should provide a bit of bending to the mesh when the jellyfish rotates to make the motion a little more realistic. The fact we are using quite a few <b class="node">Rotate About Axis</b> nodes might make the shader a bit expensive though.</p>
 <p>Finally, here’s an image showing the entire graph.</p>
 <div class="img-center">
-<a href="GraphFull.png" target="_blank" rel="noopener noreferrer"><img src="GraphFull.png"></a>
+<a href="GraphFull.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="323" alt="" src="GraphFull.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <br><hr>

@@ -11,7 +11,7 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Cloud Shader Breakdown">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -249,37 +249,49 @@
 <p>In order to ensure we can use multiple plane objects and have no seams between them, we can set the <strong>UVs</strong> of the noise to be based on the <b class="node">Position</b> node set to <strong>World</strong> space. That gives us a <strong>Vector3</strong> but the <strong>UVs</strong> are a <strong>Vector2</strong> so we also need to <b class="node">Split</b> it and take the <strong>X/R</strong> and <strong>Z/B</strong> coordinates to make our noise be based horizontally along the plane.</p>
 <p>We can use a <b class="node">Time</b> node to offset this position so the noise moves slowly over <strong>Time</strong>, with a <b class="node">Multiply</b> node to control the speed at which the noise scrolls at. We’ll also add an overall speed multiplier as a <strong>Vector1 property</strong> so we can control the cloud scroll speed from the inspector.</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="400" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>We’ll use parts of this noise setup 3 times, one for the <b class="node">Gradient Noise</b> and two <b class="node">Simple Noise</b> nodes, all moving at slightly different rates as shown in the image below.</p>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="383" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>I’ve used a mixture of <b class="node">Add</b> and <b class="node">Multiply</b> to combine these layers of noise. We could take an average of all three (by adding them together and dividing by 3), but having a multiply in there made the layered noise output a bit more interesting, in my opinion at least.</p>
 <p>We can now use our layered noise output to offset the vertex position. In order to ensure this is only a vertical offset, we’ll first put it into the <strong>Y</strong> input on a <b class="node">Vector3</b> node, with the other two inputs set to <strong>0</strong>. We can then <b class="node">Multiply</b> this by a value to control the scaling – I’m using the object’s scale for this, so that we can easily change it by adjusting the <strong>Y</strong> scale of the plane rather than having a separate property – But if you want to be able to apply this to meshes other than a plane, you might want to use a property instead.</p>
 <p>Also note that we are offsetting the <strong>World</strong> space vertex position here, but the <b class="node">Master</b> node wants a <strong>Object</strong> space position, so we need to use a <b class="node">Transform</b> node to convert it (from <strong>World</strong>, to <strong>Object</strong>).</p>
 <div class="img-center">
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="322" alt="" src="Graph3.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Next we’ll handle the cloud colour as it’s currently hard to see anything we’ve done with the shader being a solid colour. I’m using the same output from our layered noise – giving the higher parts of the clouds a different colour to the lower parts. We can do this by putting the layered noise into the <strong>T</strong> input on a <b class="node">Lerp</b> node, and set the <strong>A</strong> and <strong>B</strong> inputs to two <strong>Color properties</strong>. This creates a linear interpolation between the two colours, creating a gradient. At T=0 it outputs A, and at T=1 it outputs B.</p>
 <div class="img-center">
-<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png"></a>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="322" alt="" src="Graph4.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>So we can control how much cloud cover there is, we can add a <b class="node">Smoothstep</b> based on the layered noise output and use this as the <strong>Alpha</strong> input on the <b class="node">Master</b> node. The <b class="node">Smoothstep</b> is similar to a <b class="node">Step</b> node, but provides a smoother transition where we specify two <strong>Edge</strong> inputs. If the <strong>In</strong> input is less than the first <strong>Edge</strong> it outputs 0 and if it is larger than the second <strong>Edge</strong> it outputs 1. Anything inbetween is an interpolation between 0 and 1, but it is not linear – it instead smoothly eases in and out.</p>
 <p>I’m using a property to control the two <strong>Edge</strong> inputs. It outputs 1 if the <strong>Cloud Cover property</strong> is 0, as all noise values will be larger than 0, but as it gets larger the <b class="node">Smoothstep</b> outputs 0 for the lower noise values, leaving only the higher parts behind. Also the falloff (which is controlled by <strong>Edge2</strong>) also increases, so the clouds also get softer, and we have an <strong>Additional Falloff property</strong> to control this further if required.</p>
 <div class="img-center">
-<a href="Graph5.png" target="_blank" rel="noopener noreferrer"><img src="Graph5.png"></a>
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="730" height="627" alt="" src="Graph5.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Finally, I wanted to add a depth intersection effect, so that objects fade into the clouds rather than having a harsh transition. We subtract the <strong>Object Depth</strong> from the <strong>Scene Depth</strong>, which we can then multiply by a value to control how it fades, aka the Density of the clouds. In order to obtain the <strong>Object Depth</strong>, we use the <strong>W/A</strong> component from the <b class="node">Screen Position</b> node set to <strong>Raw</strong> mode. We can then <b class="node">Multiply</b> this with the previous alpha affect to combine them.</p>
 <p>This is a common technique to have effects where there are intersections with scene objects, such as with forcefields or shoreline effects on water shaders. Note however that this will only work in a Perspective camera projection. Also, on the (Lightweight / Universal) Render Pipeline Asset, the <strong>Depth Texture</strong> option needs to be enabled for the <b class="node">Scene Depth</b> node to work.</p>
 <p>If you aren’t going to have any objects intersecting with the clouds you’ll likely want to leave this part out for better performance.</p>
 <div class="img-center">
-<a href="Graph6.png" target="_blank" rel="noopener noreferrer"><img src="Graph6.png"></a>
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="343" alt="" src="Graph6.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Note : Also make sure the <strong>Alpha Clip Threshold</strong> on the <b class="node">Master</b> node to <strong>0</strong> for URP. In older versions of LWRP the value would do nothing unless a node was connected but this has been changed. You may want to use an additional property to control this threshold in order to correctly render shadows if required, but this will create a hard-cutoff. If you don&rsquo;t want to affect the normal visuals, you can create a <strong>Boolean Keyword</strong> with the reference of SHADERPASS_SHADOWCASTER to output different values when that is true, or use a <b class="node">Custom Function</b> containing something like :</p>
@@ -314,7 +326,9 @@
 <li>From there, we should see a float4 ScreenPosition variable. Copy that line, without the &ldquo;float4&rdquo;, and paste it below the &ldquo;v.vertex.xyz = vd.Position&rdquo; line as seen in the image below.</li>
 </ul>
 <div class="img-center">
-<a href="ScreenPosFix.png" target="_blank" rel="noopener noreferrer"><img src="ScreenPosFix.png"></a>
+<a href="ScreenPosFix.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="555" alt="" src="ScreenPosFix.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <br><hr>

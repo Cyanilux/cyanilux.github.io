@@ -11,14 +11,14 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Liquid Shader Breakdown">
 <meta itemprop="description" content="A shader that discards pixels above a certain Y position and renders back faces to fake the top surface of the liquid">
 <meta itemprop="datePublished" content="2019-05-06T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-05-06T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1153">
+<meta itemprop="wordCount" content="1152">
 <meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 
 
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -236,26 +236,30 @@
 </script>
 <h2 id="intro">Intro</h2>
 <p>This liquid shader is based on discarding pixels that are above a certain Y position and rendering the back faces of the mesh in order to fake the top surface of the liquid.</p>
-<p>Based on <a href="https://www.patreon.com/posts/18245226">Minions Art’s liquid shader</a>, also see their shadergraph version <a href="https://www.patreon.com/posts/24996282">here</a>.</p>
+<p>Based on <a href="https://www.patreon.com/posts/18245226">Minions Art’s liquid shader</a>, also see their <a href="https://www.patreon.com/posts/24996282">shadergraph version here</a>.</p>
 <h2 id="notes">Notes</h2>
 <ul>
 <li>Models that use this technique need to have a <strong>pivot</strong> roughly in their <strong>center of mass</strong>, in order for the liquid distribution to look correct.</li>
 <li>I&rsquo;m using an <strong>Unlit</strong> graph. If you want lit, note that since the liquid surface is faked with back faces they won&rsquo;t have the correct normals to produce the correct lighting. You&rsquo;ll need to override the normals for the backfaces (using the <b class="node">Is Front Face</b> and <b class="node">Branch</b> nodes), maybe setting them to a <b class="node">Vector3</b> <!-- raw HTML omitted -->(0, 1, 0)<!-- raw HTML omitted --> (or passing a Vector3 property in) when <strong>False</strong>, and use the regular <b class="node">Normal Vector</b> when <strong>True</strong>.</li>
-<li>If you want to apply a texture to the fake top face, you&rsquo;ll need to calculate the correct UVs which requires the shader to know the normal and tangent of the plane that is used to clip the mesh (won&rsquo;t work if additional sine movement is involved). Remy (from Unity) has an amazing CrossSection example <a href="https://github.com/Remy-Maetz/ShaderGraph_Doodles/tree/master/Assets/Shaders/CrossSection">here</a> that does this.</li>
+<li>If you want to apply a texture to the fake top face, you&rsquo;ll need to calculate the correct UVs which requires the shader to know the normal and tangent of the plane that is used to clip the mesh (won&rsquo;t work if additional sine movement is involved). Remy (from Unity) has an amazing <a href="https://github.com/Remy-Maetz/ShaderGraph_Doodles/tree/master/Assets/Shaders/CrossSection">CrossSection example</a> that does this.</li>
 <li>Glass shader not included.</li>
 </ul>
 <h2 id="breakdown">Breakdown</h2>
 <p>First we use a <b class="node">Position</b> node to obtain the pixel/fragment’s position. We need to use <strong>World</strong> space so that the liquid doesn&rsquo;t rotate with the model, which it would do if we used object space.</p>
 <p>With this position we could discard all the pixels that are in the positive Y direction (upwards, where Y &gt; 0). However, doing this with the world position means the liquid height will not move if the object is moved, and it will become completely submerged or invisible if it’s moved too far below or above the liquid height level. To fix this, we need to first <b class="node">Subtract</b> the object’s world space position which can be obtained via the <strong>Position</strong> output on the <b class="node">Object</b> node.</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="487" height="265" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>So we can extract the Y axis from our result, we&rsquo;ll put it into a <b class="node">Split</b> node. It is labelled as RGBA, but this is the same as XYZW.</p>
 <p>For now, we will take the <strong>Y/G</strong> value, and plug it into the <strong>Edge</strong> input of a <b class="node">Step</b> node. This has two inputs and returns 1 if the <strong>In</strong> input is greater than or equal to the <strong>Edge</strong>, otherwise it returns 0. I will leave the other input as 0, but you could also connect a <strong>Vector1 property</strong> here so you can change the liquid height from outside of the shader. The output of this step node will go into the <strong>Alpha</strong> input on the <b class="node">Master</b> node.</p>
 <p>We can then use a value of 0.5 for the <strong>AlphaClipThreshold</strong> input on the Master node, which tells the shader to discard pixels that are below this threshold. We should now see that pixels above the pivot of our object are discarded, but there is no top surface yet. There&rsquo;s no way to add actual geometry to this surface but we can fake it by rendering back faces. To do this, click the cog icon on the top right of the <b class="node">Master</b> node and tick the <strong>Two Sided</strong> tickbox. (Note, in URP v10+ this can probably be found in the Graph&rsquo;s Inspector window instead)</p>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="347" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Now that there is a top surface we should change the colours so we can see the effect better. We&rsquo;ll use a <b class="node">Branch</b> node with the <strong>Predicate</strong> set to use the <b class="node">Is Front Face</b> node. This is a <strong>Boolean</strong> value as shown by the (B) and purple connections. It should be fairly self-explanatory what these nodes do – it’s basically an if statement based on whether it is a front face or not. If it is a front face, it will use the <strong>True</strong> input as the output and if it’s a back face it will use the <strong>False</strong> value instead.</p>
@@ -263,19 +267,25 @@
 <p>The output of the <b class="node">Branch</b> will then connect to the <strong>Color</strong> input on the <b class="node">Master</b> node.</p>
 <p>To improve the effect, I added a level of foam onto the side of the front faces. We can do this by adding another <b class="node">Step</b> node (using the same input as the other one), but offset the <strong>Edge</strong> input by a small amount. I’m using <strong>0.05</strong> for this, but it might again be a good idea to use a <strong>Vector1 property</strong> here instead, so you can change the foam height from outside of the shader.</p>
 <div class="img-center">
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="267" alt="" src="Graph3.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p><b class="node">Multiply</b> the lower <b class="node">Step</b> output with the liquid colour and put this into an <b class="node">Add</b> node, leaving one of the inputs empty for now. Then we can <b class="node">Subtract</b> the lower step from the higher step to obtain our foam level, and <b class="node">Multiply</b> the output by <strong>0.9</strong> - so it isn’t exactly the same colour as the top surface. We can then <b class="node">Multiply</b> it again by the foam colour and use this as the other input on that <b class="node">Add</b> node mentioned before. The output of that replaces the <strong>True</strong> input of the <b class="node">Branch</b> node we set up earlier.</p>
 <p>That’s pretty much the effect. I also added a little <b class="node">Sine</b> movement to the liquid height by offsetting the <strong>Y/G</strong> value from the <b class="node">Split</b> node using the <strong>R/X</strong> component, a <b class="node">Time</b> node and a few maths based nodes like this:</p>
 <div class="img-center">
-<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png"></a>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="262" alt="" src="Graph4.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>The <strong>Frequency</strong> and <strong>Time Scale</strong> properties are set to <strong>1</strong> but it is useful to have them there if you want to adjust the effect slightly, and the <strong>Amplitude</strong> is set to <strong>0.05</strong>. The output of the <b class="node">Add</b> on the right replaces the input into the <b class="node">Step</b> nodes from earlier.</p>
 <p>Here’s a final image showing the entire graph:</p>
 <div class="img-center">
-<a href="GraphFull.png" target="_blank" rel="noopener noreferrer"><img src="GraphFull.png"></a>
+<a href="GraphFull.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="239" alt="" src="GraphFull.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <br><hr>

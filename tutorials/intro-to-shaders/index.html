@@ -11,14 +11,14 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Intro to Shaders">
 <meta itemprop="description" content="An introduction to what a Mesh, Shader and Material is in Unity, how to set Shader Properties from C#, a brief look at Forward vs Deferred rendering and some information about Material instances and Batching">
 <meta itemprop="datePublished" content="2021-01-10T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-01-10T00:00:00+00:00" />
-<meta itemprop="wordCount" content="3726">
+<meta itemprop="wordCount" content="3730">
 
 
 
@@ -168,7 +168,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -230,7 +230,9 @@
 <p>Before going into shaders specifically, it’s important to first have a basic understanding of what a mesh is.</p>
 <p>A <strong>mesh</strong> contains the data for a <strong>3D model</strong>, consisting of <strong>vertices</strong> and how they connect into <strong>triangles</strong>. Each triangle is made up of 3 vertices, though each vertex can be shared between multiple triangles, (so there won’t always be triple the amount of vertices than triangles).</p>
 <div class="img-center">
-<a href="Cube.png" target="_blank" rel="noopener noreferrer"><img src="Cube.png"></a>
+<a href="Cube.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="412" height="389" alt="" src="Cube.png" />
+</a>
 <p class="img-text">
 Example Cube Mesh, consisting of 12 triangles. In Blender (3D modelling software), this has 8 vertices, however this value may change when importing into Unity depending on whether it's per-vertex data is the same between shared vertices.
 </p>
@@ -247,7 +249,9 @@ Example Cube Mesh, consisting of 12 triangles. In Blender (3D modelling software
 </ul>
 <p>While two vertices may share the same position in 3D space, if their other data doesn’t also match then they must be two separate entries in the vertex data lists.</p>
 <div class="img-center">
-<a href="CubeNormals.png" target="_blank" rel="noopener noreferrer"><img src="CubeNormals.png"></a>
+<a href="CubeNormals.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="716" height="351" alt="" src="CubeNormals.png" />
+</a>
 <p class="img-text">
 Example Cube Mesh. Both have <b>12</b> triangles but the left has <b>24</b> vertices, while the right has <b>8</b> vertices.
 </p>
@@ -259,7 +263,9 @@ Example Cube Mesh. Both have <b>12</b> triangles but the left has <b>24</b> vert
 <p>For tools like Shader Graph, this is mostly handled for us but it’s still very important to recognise there is two separate stages going on here. Newer versions have a <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@10.2/manual/Master-Stack.html">Master Stack</a> to make the separation between these stages clearer. It exposes a Vertex Position port for us to override the object space position before it is transformed to clip space, e.g. for <a href="https://www.cyanilux.com/tutorials/vertex-displacement">Vertex Displacement</a>. We can also override the Normal and Tangent that is passed to the fragment stage, but the graph will also handle all these ports automatically if left blank.</p>
 <p>For each triangle, and vertex in that triangle, the clip space positions passed out from the vertex stage is used to create <strong>fragments</strong> – potential pixels on the 2D screen. All of the per-vertex data passed into the fragment shader also gets <strong>interpolated</strong> across the triangle. This is why each vertex can specify a single vertex colour but the triangle ends up with a gradient across it. (The same thing happens to the UVs which is what allows the texture to be properly applied rather than just taking the colour a single pixel for each vertex)</p>
 <div class="img-center">
-<a href="VertexColourInterpolation.png" target="_blank" rel="noopener noreferrer"><img src="VertexColourInterpolation.png"></a>
+<a href="VertexColourInterpolation.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="300" height="251" alt="" src="VertexColourInterpolation.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>The <strong>fragment shader</strong> then runs for each of these fragments (potential pixels) and determines its <strong>colour</strong> that will be drawn to the screen (and in some cases, outputs a <strong>depth</strong> value too). This could be outputting a solid colour, using vertex colours, sampling textures, and/or handling lighting calculations to produce a more complex <em>shading</em> – which is where the name “shader” comes from.</p>
@@ -325,7 +331,7 @@ Example Cube Mesh. Both have <b>12</b> triangles but the left has <b>24</b> vert
 <p>The <strong>LightMode</strong> tag is important to tell Unity what the pass is used for. The <strong>RenderPipeline</strong> tag is also useful to tell Unity which pipeline the SubShader is intended for if the shader needs to support multiple pipelines.</p>
 <p>In URP and the Built-in pipeline there is typically also a <strong>ShadowCaster</strong> pass in the shader program, which as the name suggests, allows the mesh to cast shadows. Each pass has its own vertex and fragment shader. In this case, the vertex shader uses the shadow bias settings to offset the vertices a little, which helps prevent shadowing artifacts. The fragment shader here usually just outputs 0 (black) as it’s colour isn’t that important. It only needs to discard/clip the fragment if a shadow shouldn’t be cast for that pixel.</p>
 <p>There’s also a <strong>DepthOnly</strong> pass used in URP and HDRP which is very similar to the ShadowCaster but without the bias offsets. It allows a Depth Prepass to occur, which is sometimes used to create a Depth Texture. You can find more information about that in the <a href="https://www.cyanilux.com/tutorials/depth">Depth</a> post. In the Built-in pipeline I believe the Depth Texture is instead created using the ShadowCaster pass again.</p>
-<p>Depending on the pipeline, there may be more passes that a shader can include. You can find some listed <a href="https://docs.unity3d.com/Manual/SL-PassTags.html">here</a> for the built-in pipeline. Looking at the built-in shaders is also a good way to find out about each pass. You can download the built-in pipeline shaders source via the <a href="https://unity3d.com/get-unity/download/archive">unity download page</a>, and also find source for URP and HDRP via the <a href="https://github.com/Unity-Technologies/Graphics">Graphics github</a>.</p>
+<p>Depending on the pipeline, there may be more passes that a shader can include. You can find some listed <a href="https://docs.unity3d.com/Manual/SL-PassTags.html">on the PassTags docs page</a> for the built-in pipeline. Looking at the built-in shaders is also a good way to find out about each pass. You can download the built-in pipeline shaders source via the <a href="https://unity3d.com/get-unity/download/archive">unity download page</a>, and also find source for URP and HDRP via the <a href="https://github.com/Unity-Technologies/Graphics">Graphics github</a>.</p>
 <p>When using Shader Graph and other node editors, most passes are handled for us. We only really focus on the “main” forward pass that handles the colour drawn to the screen.</p>
 <h2 id="forward-vs-deferred">Forward vs Deferred Rendering</h2>
 <p>Forward rendering is the &ldquo;regular&rdquo; way of rendering things, where the shader calculates the pixel colour that is directly drawn to the screen. In URP there is a limit to the number of lights that can affect each GameObject (8 lights) due to how it&rsquo;s lighting system works (and likely due to performance reasons too). Built-in has a similar limit but it can also be increased (though with a performance penalty).</p>
@@ -347,7 +353,9 @@ Example Cube Mesh. Both have <b>12</b> triangles but the left has <b>24</b> vert
 <li><strong>Geometry</strong> shaders, which can add new geometry (e.g. triangles) for each vertex/triangle already in the mesh. For example, producing grass blades. It is worth nothing that the performance of geometry shaders isn’t great and there may be better methods to achieve a similar effect.</li>
 </ul>
 <div class="img-center">
-<a href="Pipeline.png" target="_blank" rel="noopener noreferrer"><img src="Pipeline.png"></a>
+<a href="Pipeline.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="681" height="105" alt="" src="Pipeline.png" />
+</a>
 <p class="img-text">
 Shows how these extra stages fit into the pipeline.</br>(Though this is simplified and doesn't include steps like clipping, face culling, early z-test, z-test, blending, etc)
 </p>

@@ -11,14 +11,14 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Portal Shader Breakdown">
 <meta itemprop="description" content="A portal/wormhole shader on manipulating polar coordinates to create a spiralling effect">
 <meta itemprop="datePublished" content="2019-05-13T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-05-13T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1170">
+<meta itemprop="wordCount" content="1168">
 <meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 
 
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -241,7 +241,7 @@
 <ul>
 <li>This is an <strong>Unlit</strong> shader applied to a simple flat quad.</li>
 <li>You’ll need a seamless/tileable noise texture in order to create this effect. The exact type of noise doesn’t really matter, play around with a few different noise textures and see which works best. In the texture&rsquo;s import settings make sure it is also set to Repeat mode.</li>
-<li>The shader created in this post is based off the original one in the tweet above but they do share some differences. I won’t discuss the scrolling star effect in this post so if you want to see how that was done check the original tweet’s graph <a href="https://twitter.com/Cyanilux/status/1124280286236295171">here</a>.</li>
+<li>The shader created in this post is based off the original one in the tweet above but they do share some differences. I won’t discuss the scrolling star effect in this post so if you want to see how that was done check the <a href="https://twitter.com/Cyanilux/status/1124280286236295171">original tweet’s graph</a>.</li>
 <li>I have also made some improvements since that last shader to make the graph clearer and more optimised. The previous one used maths based on the <b class="node">Ellipse</b> node to obtain the circular shape, while this one just uses the distance straight from the polar coordinates in order to achieve basically the same effect.</li>
 </ul>
 <h2 id="breakdown">Breakdown</h2>
@@ -250,14 +250,18 @@
 <p>In order to have the effect be sucked inwards we need to offset the distance part by time. We’ll create a <b class="node">Time</b> node, take the <strong>Time</strong> output along with the <strong>distance (R)</strong> output from the <b class="node">Split</b> and put these into an <b class="node">Add</b> node. The output of this can be put into the <strong>X</strong> input on a <b class="node">Vector2</b> node so we can use it as <strong>UVs</strong> for a <b class="node">Sample Texture 2D</b> node. (As a note, if you see some flickering seams when sampling your texture, turn off Mip Maps for the texture in the Unity editor, or use the <b class="node">Sample Texture 2D LOD</b> node set to 0 instead).</p>
 <p>To add a spiralling effect we can now offset the angle. If we offset it by the same value for every pixel though it will just rotate the whole thing rather than creating a spiral. We need to offset it based on the distance, so that points further away are rotated more than points closer to the center. This is as simple as putting both the <strong>angle (G)</strong> and <strong>distance (R)</strong> outputs into an <b class="node">Add</b> node. This can then be put into the <strong>Y</strong> input on that <b class="node">Vector2</b> node.</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="300" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>The image above shows what we’ve created so far but I’ve added some <b class="node">Multiply</b> nodes before the <b class="node">Add</b> nodes to change the speed at which it sucks inwards, and scale the amount of spiralling. I’m keeping both of these at <strong>1</strong>, but you can adjust these if you want to, or connect some <strong>Vector1 properties</strong> so you can change these values from outside the shadergraph.</p>
 <p>Next we can make the portal round by discarding some pixels. To do this we can again take the <strong>distance (R)</strong> from our <b class="node">Split</b> and put this into the <strong>Edge</strong> input of a <b class="node">Step</b> node, with the other input set to <strong>1</strong>. This node returns 1 if the In input is greater than or equal to the edge input, otherwise it returns 0. The output of this can be put into the <strong>Alpha</strong> input on the <b class="node">Master</b> node.</p>
 <p>We can then set the <strong>AlphaClipThreshold</strong> input on the <b class="node">Master</b> node to <strong>0.5</strong>, in order to tell the shader to discard pixels that are below that threshold.</p>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="246" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>This should now mean our portal is a circle, and you can simply resize the quad the shader/material is applied to if you want a more oval shape. We can also offset the <strong>distance (R)</strong> value by some noise before putting it into the <b class="node">Step</b> to add a wobbling effect to the portal. To do this we will create one of the noise nodes (<b class="node">Simple Noise</b> or <b class="node">Gradient Noise</b> depending on which type of noise you wish to use, or we could sample a noise texture). As the output of these is roughly between <strong>0</strong> and <strong>1</strong>, we should <b class="node">Multiply</b> by a small value so we aren’t offsetting it too much (e.g. <strong>0.1</strong>). Then put this into an <b class="node">Add</b> node with the distance and then into the <b class="node">Step</b> node from before.</p>
@@ -265,10 +269,12 @@
 <p>The last thing left to do is give the effect some colour. Create a <b class="node">Color</b> node and <b class="node">Multiply</b> it by the output of the <b class="node">Sample Texture 2D</b> node (when I’m using a grey-scale texture I usually just use the red output. Depending on the compression type I think green can be better though). You can use a combination of maths nodes (such as <b class="node">Power</b>, <b class="node">Add</b>, <b class="node">Multiply</b>), as well as artistic nodes like the <b class="node">Contrast</b> node, to adjust the texture output if required (or just adjust the texture itself in an image editing program to avoid additional calculations).</p>
 <p>I’m going to put it into a <b class="node">Power</b> node, with a value of <strong>3</strong>. I’m also setting the <b class="node">Color</b> node to use <strong>HDR mode</strong> and setting the <strong>Intensity</strong> of the colour to <strong>3</strong> (via the colour picker popup). With a Bloom post processing effect this will cause the portal to glow more but note that bloom can be expensive.</p>
 <div class="img-center">
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="228" alt="" src="Graph3.png" />
+</a>
 <p class="img-text"></p>
 </div>
-<p>I think that’s a good place to leave this effect. You can play around with different seamless textures to customise how the portal looks. My original shader also had a sort of scrolling parallax stars effect but I’m not going to explain that here. If you are interested in how I did that you can check the original tweet’s graph <a href="https://twitter.com/Cyanilux/status/1124280286236295171">here</a>.</p>
+<p>I think that’s a good place to leave this effect. You can play around with different seamless textures to customise how the portal looks. My original shader also had a sort of scrolling parallax stars effect but I’m not going to explain that here. If you are interested in how I did that you can check the <a href="https://twitter.com/Cyanilux/status/1124280286236295171">original tweet’s graph</a>.</p>
 <br><hr>
 <p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
 <p style="text-align:center;">~ Cyan</p>

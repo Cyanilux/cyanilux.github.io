@@ -11,7 +11,7 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Sprite Glow/Outline Shader Breakdown">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -245,19 +245,23 @@
 </ul>
 <p>The technique works best with vector-based sprites, but it does require some setup and won’t work straight from a normal sprite texture. A SDF texture needs to be generated, which can be stored in the <strong>alpha channel of the original texture</strong> so only a single texture sample is required. I’ll be going through how I generated this texture in the breakdown below. Depending on how many sprites you want to apply the outline/glow effect to, this setup could take a while.</p>
 <div class="img-center">
-<a href="SpriteResult.png" target="_blank" rel="noopener noreferrer"><img src="SpriteResult.png"></a>
+<a href="SpriteResult.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="736" height="353" alt="" src="SpriteResult.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>If you want to use it with pixel art sprites, but have the outlines/glow be <strong>smooth</strong> (as in not perfectly pixel based), the SDF texture would have to be stored in a separate file rather than combined into the alpha channel, possibly resized to be smaller, and sampled with <strong>Bilinear filtering</strong>, while the sprite texture would be sampled with <strong>Point filtering</strong>.</p>
 <p>If you use it with pixel art sprites and want pixel-based outlines too, then you can still combine it into the alpha channel. It may be best to hand-draw the SDF to ensure the outline/glow is consistent, though this may take a while to setup. e.g.</p>
 <div class="img-center">
-<a href="SpritePixelResult.png" target="_blank" rel="noopener noreferrer"><img src="SpritePixelResult.png"></a>
+<a href="SpritePixelResult.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="736" height="353" alt="" src="SpritePixelResult.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h2 id="breakdown">Breakdown</h2>
 <h3 id="sdf-texture-setup">SDF Texture Setup</h3>
 <p>Before we begin the shader graph, we need to have a sprite we want to outline and generate a distance field from it. <strong>Catlike Coding</strong> has a brilliant <a href="https://assetstore.unity.com/packages/tools/utilities/sdf-toolkit-free-50191">SDF Toolkit (Free version)</a> on the Unity Asset store for this! (You’ll need to open the asset store window in your project, search for the tool and import it. There is also a paid version which provides some shaders, however they probably only work for the Built-in Pipeline).</p>
-<p>For the documentation on how to use this tool, see <a href="https://catlikecoding.com/sdf-toolkit/docs/texture-generator/">here</a>. You should generate the SDF using both inner and outer distances to account for the inner and outer glows. These distances should likely be set to the largest glow/outline you want to use. Be aware that you may need to resize the sprite/texture so the SDF doesn’t go outside the texture bounds.</p>
+<p>For how to use the tool, see it&rsquo;s <a href="https://catlikecoding.com/sdf-toolkit/docs/texture-generator/">documentation page here</a>. You should generate the SDF using both inner and outer distances to account for the inner and outer glows. These distances should likely be set to the largest glow/outline you want to use. Be aware that you may need to resize the sprite/texture so the SDF doesn’t go outside the texture bounds.</p>
 <p>I’ve also come across <a href="https://shaderbits.com/blog/various-distance-field-generation-techniques">this article</a> which mentions a method of generating a SDF from a texture through Photoshop if you prefer, (as well as a few other fairly advanced shader based techniques, but we don’t need those).</p>
 <p>Once you have generated the SDF texture, you may want to open it in any image manipulation software along with the original sprite texture and use the SDF result as the alpha channel for the sprite. Personally I used <a href="https://www.gimp.org/">GIMP</a> for this – I’ll quickly go through the method I used :</p>
 <ul>
@@ -282,30 +286,40 @@
 </ul>
 <p>Next create a <b class="node">Sample Texture 2D</b> node, put the <strong>Main Texture property</strong> as the <strong>Texture</strong> input and put the <strong>A</strong> (alpha) output into the <strong>In</strong> input on a <b class="node">Smoothstep</b> node.</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="518" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>If you aren’t familiar with what a <a href="https://en.wikipedia.org/wiki/Smoothstep">smoothstep</a> does, it can remap values, similar to a <b class="node">Inverse Lerp</b>, but it’s not linear – It uses a Hermite interpolation which means it’s gradient starts and ends at 0, gradually increasing at the start, and decreasing at the end. The output is also clamped between 0 and 1 (if you wanted to use the <b class="node">Inverse Lerp</b> instead, you’d need to use a <b class="node">Saturate</b> node too, to achieve this clamping).</p>
 <p>We’ll be using the <b class="node">Smoothstep</b> to adjust the glow effect, such as change it’s width and falloff (so it has the option to be turned into a solid outline). While we could put properties straight into these <strong>Edge</strong> inputs, if the <strong>Edge2</strong> input is smaller than the <strong>Edge1</strong>, the entire effect flips! To better control the values, I’m remapping the inputs slightly so that each property can be a <strong>0-1 slider</strong>, based on the distance to the <strong>Sprite Edge Alpha</strong>.</p>
 <p>We also don’t want the colour to be darkened by the <b class="node">Smoothstep</b> output, so it’s first put into the <strong>A/W</strong> input on a <b class="node">Vector4</b> node, with the other inputs as <strong>1</strong>, before multiplying it with an <strong>Outer Glow Colour property</strong>.</p>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="362" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Next we’ll handle the inner glow effect, which is a similar setup. Again we use a <b class="node">Smoothstep</b>, but this time we will also take the texture colour into account by using a <b class="node">Lerp</b> node (with the <strong>A</strong> input as the <b class="node">Sample Texture 2D</b> <strong>RGBA</strong> output, and <strong>B</strong> as an <strong>Inner Glow Colour property</strong>). I’m also making sure that the alpha of the colour is taken into account via the <b class="node">One Minus</b> and <b class="node">Maximum</b> nodes.</p>
 <p>Note that the output from this Inner Glow <b class="node">Lerp</b>, contains alpha values inside the edge of the sprite which we don’t want. To remove this, I use a <b class="node">Split</b> and put the <strong>RGB</strong> outputs into a <b class="node">Vector4</b> node, setting the <strong>A/W</strong> input as <strong>1</strong>.</p>
 <div class="img-center">
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="288" alt="" src="Graph3.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Finally we need to combine the outer and inner results. To do this we’ll use a <b class="node">Lerp</b> node, with the <strong>T</strong> input based on the <strong>A</strong> output from the <b class="node">Sample Texture 2D</b> node put into a <b class="node">Step</b> with the <strong>Sprite Edge Alpha property</strong>. This can then be put into the <strong>Color</strong> input on the <b class="node">Master</b> node.</p>
 <div class="img-center">
-<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png"></a>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="367" alt="" src="Graph4.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>As an extra, I’m also using the <b class="node">Gradient Noise</b> node to offset the <strong>UVs</strong> in order produce some wobbling distortions for the fireball. If you are interested in this effect, the output of the following graph would be put into the <strong>UV</strong> input on the <b class="node">Sample Texture 2D</b> node, and there’s an additional <strong>Wobble Stength Vector2 property</strong> set up.</p>
 <div class="img-center">
-<a href="Graph5.png" target="_blank" rel="noopener noreferrer"><img src="Graph5.png"></a>
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="185" alt="" src="Graph5.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <br><hr>

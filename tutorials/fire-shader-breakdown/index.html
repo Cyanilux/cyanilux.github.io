@@ -11,7 +11,7 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Fire Shader Breakdown">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -247,14 +247,18 @@
 <p>In order to create the scrolling (aka moving) noise needed for the effect, we’ll use the <b class="node">Time</b> node and <b class="node">Multiply</b> it by a value to control the speed of the scrolling. (I’ve hardcoded this as <strong>0.5</strong>, but you could use a <strong>Vector1 property</strong> if you want to be able to control it from the material inspector). Since we want it to scroll upwards we need to <b class="node">Negate</b> this and put it into the <strong>Y</strong> input on a <b class="node">Vector2</b> node, leaving <strong>X</strong> as <strong>0</strong>. This is used as the <strong>Offset</strong> input to a <b class="node">Tiling And Offset</b> node.</p>
 <p>We’ll also provide a <strong>Vector2 property</strong> to control the <strong>Noise Scale</strong>, which will be put into the <strong>Tiling</strong> input – allowing us to change the scale of our UVs per-axis. The output from our <b class="node">Tiling And Offset</b> will then be put into a <b class="node">Simple Noise</b> node with a <strong>Scale</strong> of <strong>30</strong>-ish.</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="323" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>This noise will be used to offset the UVs for effects later. Unlike offsetting by a constant value or time (which changes, but is the same value for every UV coordinate), we are shifting each UV coordinate by a different value, which produces a distortion (aka warping) effect. We also should <b class="node">Subtract</b> <strong>0.5</strong>, so the distortion is centered and doesn’t offset more in one direction than the other.</p>
 <p><b class="node">Multiply</b> this with a <strong>Vector1 property</strong> named <strong>Distortion Strength</strong>. We also want the top of the fire to be distorted more than the bottom, so we also <b class="node">Multiply</b> with the <strong>Y</strong> axis of the <b class="node">UV</b> (<strong>G</strong> output from <b class="node">Split</b>). We put this result into the <strong>Y</strong> axis of a <b class="node">Vector2</b>, then into the <strong>Offset</strong> input on a <b class="node">Tiling And Offset</b> node to apply our distortion, only in the vertical direction.</p>
 <p>The distortion will mean our UVs could go outside of the 0-1 range, so parts of the texture/ellipse later could be cut-off by the size of the quad. To help fix this, we’ll also include a <strong>Vector1 property</strong> called <strong>Y Scale</strong> and put it into the <strong>Y</strong> of a <b class="node">Vector2</b>, with <strong>X</strong> as <strong>1</strong>, into the <strong>Tiling</strong> input. This will allow us to scale down the effect in the vertical direction, to try to keep the fire contained to the quad.</p>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="274" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>From here, I’m splitting the graph into <strong>two versions</strong> – a stylised version that uses <b class="node">Ellipse</b> nodes to create a fireball shape, and another simpler version which uses a <strong>texture</strong>, specifically a flame texture from <a href="https://www.kenney.nl/assets/particle-pack">Kenney’s Particle Pack</a>, which is a bit more realistic looking (though could probably look equally as stylised with an effect like <b class="node">Posterize</b> also applied). With a texture it’s a bit easier to control the shape of the effect, but I’ve also used the ellipse method before so felt like sharing it too.</p>
@@ -264,14 +268,18 @@
 <p>For the texture version, we mainly only need a <b class="node">Sample Texture 2D</b> node. As the texture I’m using is greyscale I’m taking the <strong>R</strong> output and <b class="node">Multiply</b> it by <strong>10</strong> so it’s a bit brighter. We then can <b class="node">Multiply</b> with a <strong>Color property</strong> to apply the fire colour (which is also set to <strong>HDR</strong> mode and has an <strong>Intensity</strong> of <strong>1.5</strong>, so it&rsquo;ll glow a bit with Bloom post processing, but that can be expensive on mobile).</p>
 <p>This is put into the <strong>Color</strong> input on the <b class="node">Unlit Master</b> node which should also be set to <strong>Transparent</strong> via the small cog on the node. You can also choose which blending type you prefer, e.g. <strong>Alpha/Additive</strong>.</p>
 <div class="img-center">
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="330" alt="" src="Graph3.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h3 id="ellipse-version">Ellipse Version</h3>
 <p>Another approach is generating a shape from math. Shader Graph provides an <b class="node">Ellipse</b> node which helps with this.</p>
 <p>While we could take our <strong>UVs</strong> and directly put them into an <b class="node">Ellipse</b> node, I’d like to apply a bit more offset first, to warp it into a more tear-drop, or candle-flame like shape. There might be a few ways to achieve this, but I’m taking the <strong>Y</strong> axis (<strong>G</strong> output from a <b class="node">Split</b>), using <b class="node">One Minus</b> to flip it upside-down and putting the result into a <b class="node">Power</b> node with a <strong>B</strong> value of <strong>2</strong>. (I guess this could also just be a <b class="node">Multiply</b>, not sure if the compiler is clever enough to optimise this automatically or not). The next <b class="node">One Minus</b> flips the vertical component back, but since the ellipse is centered and symmetrical it shouldn’t really matter.</p>
 <div class="img-center">
-<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png"></a>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="348" alt="" src="Graph4.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>With our edited <strong>UVs</strong>, we’ll put them into two <b class="node">Ellipse</b> nodes. The first with a <strong>Width</strong> of <strong>0.7</strong> and <strong>Height</strong> of <strong>0.5</strong>, and the other with <strong>1</strong> and <strong>1</strong>.</p>
@@ -279,14 +287,18 @@
 <p>This is added with the smaller <b class="node">Ellipse</b> output, then we can tint the fire by multiplying with a <strong>Color property</strong> (which is also set to <strong>HDR</strong> mode and has an <strong>Intensity</strong> of <strong>1.5</strong>) and plug the result into the <strong>Color</strong> input on the <b class="node">Unlit Master</b> node. Be sure to also set the surface type to <strong>Transparent</strong> via the small cog on the node.</p>
 <p>The larger <b class="node">Ellipse</b> is used as the <strong>Alpha</strong> input on the <b class="node">Master</b> node if using <strong>Alpha</strong> blending. If you prefer <strong>Additive</strong> blending, <b class="node">Multiply</b> this with the current colour result and use that as the <strong>Color</strong> input instead, as black areas will show as transparent.</p>
 <div class="img-center">
-<a href="Graph5.png" target="_blank" rel="noopener noreferrer"><img src="Graph5.png"></a>
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="428" alt="" src="Graph5.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h3 id="billboard">Billboard</h3>
 <p>For a 2D game this shader will work, but when applied to a flat quad in a 3D game the fire is obviously two dimensional if the player can walk around the side of it. One way to fix this is to have the quad always face the camera, which is known as billboarding. We could do this in a C# using <strong>Transform.LookAt</strong> in the <strong>Update/LateUpdate</strong> method, but we can also handle it inside the shader instead.</p>
 <p>The following graph is based off <a href="https://forum.unity.com/threads/unity-matrix-p-and-matrix-mv-equlivant.692932/#post-4638028">this forum answer by bgolus</a>, and can be put into the <strong>Vertex Position</strong> input on the <b class="node">Master</b> node to produce the billboard effect.</p>
 <div class="img-center">
-<a href="GraphBillboard.png" target="_blank" rel="noopener noreferrer"><img src="GraphBillboard.png"></a>
+<a href="GraphBillboard.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="232" alt="" src="GraphBillboard.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Alternatively the shader could be used together with the <strong>Particle System component</strong>, as a way to apply a distortion effect on the existing particles - which already handle a billboarding effect. You’d also likely want to swap the <strong>Color property</strong> out for the <b class="node">Vertex Color</b> node if you do that.</p>

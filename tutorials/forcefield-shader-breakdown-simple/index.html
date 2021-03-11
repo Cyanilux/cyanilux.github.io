@@ -11,7 +11,7 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Forcefield Shader Breakdown (Simple)">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -223,7 +223,9 @@
 
 
 <div class="img-center">
-<a href="Preview.png" target="_blank" rel="noopener noreferrer"><img src="Preview.png"></a>
+<a href="Preview.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="600" height="400" alt="" src="Preview.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h2 id="intro">Intro</h2>
@@ -237,20 +239,26 @@
 <p>We’ll first create a <b class="node">Color</b> node and put it into the <strong>Color</strong> input on the <b class="node">Master</b> node. Set it to <strong>HDR</strong> mode and use a blue colour with an <strong>Intensity</strong> of <strong>2</strong>. Having a more intense colour will allow us to also use Post Processing effects such as Bloom in order to make the forcefield glow more. Note that bloom can be quite expensive though, especially if targetting mobile platforms.</p>
 <p>We also need to click the small cog on our <b class="node">Master</b> node and set the shader to use <strong>Transparent</strong> rendering, <strong>Alpha</strong> blending and enable <strong>Two Sided</strong>.</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="689" height="165" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Next, create a <b class="node">Fresnel Effect</b> node. This will output a value based on the normal and view direction. This produces what looks like a “glow” around the edge of the object. We can increase the <strong>Power</strong> input to make this glow closer to the edges – I’m using a value of <strong>8</strong>. For more info about this node see : <a href="https://www.cyanilux.com/tutorials/fresnel-effect">Fresnel Effect Post</a>.</p>
 <p>We’ll be using this as the <strong>Alpha</strong> input on the <b class="node">Master</b> node, to have areas on the edges of our object appear, but have areas in the middle (where the Fresnel returns 0) to be transparent. However, for our back faces this node will output 1 as the normals of those vertices are facing away from the view direction. To prevent this, we can first put the <b class="node">Fresnel Effect</b> output into the <strong>True</strong> input on a <b class="node">Branch</b> node, with the <strong>Predicate</strong> set to the <b class="node">Is Front Face</b> node. We can then leave the <strong>False</strong> input as <strong>0</strong>, so we are only using the fresnel result for the front faces.</p>
 <p>We’ll take the output of the <b class="node">Branch</b> node and <b class="node">Multiply</b> it by <strong>2</strong> and then put it into an <b class="node">Add</b> node with a value of <strong>0.02</strong>. This allows us to tint the forcefield alpha, so it is slightly less transparent.</p>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="436" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>We next need to handle the intersection effect with scene objects. To do this, we’ll create a <b class="node">Screen Position</b> node with the mode set to <strong>Raw</strong> and put it into a <b class="node">Split</b>. This gives us the <strong>depth</strong> of the pixel/fragment on the surface of the object in the <strong>W/A</strong> component.</p>
 <p>We can then create a <b class="node">Scene Depth</b> node set to the <strong>Eye</strong> sampling mode, put it into the first input on a <b class="node">Subtract</b> node, and take the <strong>W/A</strong> component from the <b class="node">Split</b> and put it into the second input. By subtracting these two things, we obtain the difference in depth between the scene and object. We can then put this into a <b class="node">Saturate</b> node to clamp it between 0 and 1, then put it into a <b class="node">One Minus</b> node. We can then put this into a <b class="node">Power</b> node with a value of <strong>15</strong>, <b class="node">Add</b> it to our previous alpha value and then put it into the <strong>Alpha</strong> input on the <b class="node">Master</b> node.</p>
 <div class="img-center">
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="514" alt="" src="Graph3.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <br><hr>

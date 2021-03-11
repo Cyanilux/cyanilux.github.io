@@ -11,7 +11,7 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Water Shader Breakdown">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -246,7 +246,9 @@
 <p>We’ll first create a <b class="node">Scene Color</b> node. This node will allow us to sample a texture of opaque objects the camera renders and we can offset the <strong>UVs</strong> put into this by some noise to create distortions. For this node to work properly, we need to click the cog on the <b class="node">Master</b> node and set the surface mode to <strong>Transparent</strong>. You will also need to enable the Opaque Texture (and Depth Texture for later) options on the URP/LWRP Asset. For more information see the <a href="https://www.cyanilux.com/tutorials/scene-color">Scene Color</a> post. Also see <a href="https://www.cyanilux.com/tutorials/depth/#scene-depth-node">Depth</a> for information on the <b class="node">Scene Depth</b> node.</p>
 <p>So we can add some colour to our water, take the output of the <b class="node">Scene Color</b> node and put it into the <strong>B</strong> input on a <b class="node">Lerp</b> node. Then create a <b class="node">Color</b> node with a blue/cyan colour and put this into the <strong>A</strong> input. We can then plug a <b class="node">Vector1</b> value into the <strong>T</strong> input in order to control the visibility of our water. I’m using a value of <strong>0.6</strong> for this. You may also want to convert it to a <strong>Vector1 property</strong> so it can be edited from the material inspector. We’ll put the output of this <b class="node">Lerp</b> into the <strong>Color</strong> input on the <b class="node">Master</b> node.</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="665" height="355" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>If we set up a scene with a plane using this shader, we should see a transparent-looking plane which is slightly tinted blue/cyan. (I say transparent-looking, because we aren’t actually using &ldquo;alpha&rdquo; transparency – we’re just using the <b class="node">Scene Color</b> node to render what is behind to the plane itself).</p>
@@ -255,7 +257,9 @@
 <p>Create a <b class="node">UV</b> node, <b class="node">Split</b> the output and put the <strong>R</strong> and <strong>G</strong> components into a <b class="node">Vector2</b>. (Note that because we are using UVs, the object scale will affect the distortion. If you don’t want this you can <b class="node">Multiply</b> this by the <strong>XZ</strong> components of the object’s scale from the <b class="node">Object</b> node).</p>
 <p>To animate the distortion we’ll create a <b class="node">Time</b> node, <b class="node">Multiply</b> the <strong>Time</strong> output by <strong>0.1</strong> then <b class="node">Add</b> the output of this and the output of the <b class="node">Vector2</b> together. We can use this as the <strong>UV</strong> input into a <b class="node">Simple Noise</b> node with a <strong>Scale</strong> input of <strong>100</strong> to generate noise. Put this into a <b class="node">Remap</b> node, with an <strong>In Min Max</strong> of <strong>0, 1</strong> and <strong>Out Min Max</strong> of <strong>-1, 1</strong>, to change the range of the noise. We can <b class="node">Multiply</b> this by a small value such as <strong>0.02</strong>, which will control the strength of the offset, and then put this into the second input of the <b class="node">Subtract</b> (or <b class="node">Add</b>) node we created earlier.</p>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="244" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Now we have some distortion, but you may notice an issue… Opaque objects that are above/in-front of the water plane will also be distorted. In order to fix this we will determine whether our distorted scene pixel is above or below the water’s surface. If it is above, we can just use the undistorted pixel instead. This won’t be a perfect fix, but we have no way of knowing what the pixel colour should be behind those objects.</p>
@@ -264,7 +268,9 @@
 <p>We can take the <b class="node">Scene Depth</b> output and <b class="node">Subtract</b> the <strong>water surface depth</strong> (that <strong>W/A</strong> component), then put this into a <b class="node">Comparison</b> node with a second input of <strong>0</strong> and mode of <strong>Less</strong>. (You could also just compare the two depth values directly instead). This returns a <strong>Boolean</strong> which will be <strong>true</strong> if the <strong>scene depth is smaller than the surface depth</strong>, (meaning the scene depth is closer to the camera, aka above the surface).</p>
 <p>We’ll plug the boolean into the <strong>Predicate</strong> input of a <b class="node">Branch</b> node. Then set the <strong>True</strong> input to a <b class="node">Screen Position</b> node (set to Default mode, not the Raw one) and set the <b class="node">False</b> input to our <strong>distorted screen position</strong> (from the <b class="node">Subtract</b>). Then replace the <strong>UV</strong> input of the <b class="node">Scene Color</b> node with the output of this Branch.</p>
 <div class="img-center">
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="305" alt="" src="Graph3.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Next we’ll add the caustics effect. To do this we will use a <b class="node">Voronoi</b> node, with the <strong>Cell Density</strong> set to <strong>1</strong>. This node produces Voronoi noise, (also referred to as Cellular noise and Worley noise). If you want to know how this noise is generated, this Book Of Shaders page has a good explanation, also see my <a href="https://www.cyanilux.com/tutorials/voronoi">Voronoi</a> post.</p>
@@ -272,13 +278,17 @@
 <p>This is the basis of the caustics effect, but rather than having it on the surface of the water, we want it projected onto everything underwater. In order to do this, we’ll reconstruct the world position from the <b class="node">Scene Depth</b> value we sampled earlier and use the <strong>X</strong> and <strong>Z</strong> components of the world position as the <strong>UVs</strong> input for the <b class="node">Voronoi</b>.</p>
 <p>In order to <strong>reconstruct the world position from the depth</strong> we first need to create a <b class="node">View Direction</b> node set to <strong>World</strong> space. In URP this obtains a vector from the fragment to the camera position, aka pixel on the water’s surface. The magnitude of this vector is the distance (between the camera and fragment), but this is not the same as depth. The depth is a distance from the fragment position to a <strong>plane that is perpendicular to the camera</strong>, not the camera position itself. This creates a triangle as shown in the image.</p>
 <div class="img-center">
-<a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer"><img src="https://www.cyanilux.com/ReconstructDepthWorldPos.png"></a>
+<a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy"   alt="" src="https://www.cyanilux.com/ReconstructDepthWorldPos.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>We need to extend this vector to the position in the scene behind the surface. To do this, we <b class="node">Divide</b> the <b class="node">View Direction</b> by the <strong>Raw Screen Position W/A depth</strong> and then <b class="node">Multiply</b> by the <b class="node">Scene Depth</b>. This works because the scene position we want creates another triangle as shown in the image, and this is the scale factor of that triangle compared to the other.</p>
 <p>Currently this position moves with the camera&rsquo;s position so we now need to <b class="node">Subtract</b> the camera’s world <strong>Position</strong> from the <b class="node">Camera</b> node to get the actual scene world position. We’ll then <b class="node">Split</b> it, put the <strong>X/R</strong> and <strong>Z/B</strong> components into a <b class="node">Vector2</b> node, then into the <strong>UV</strong> input on the <b class="node">Voronoi</b> node.</p>
 <div class="img-center">
-<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png"></a>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="215" alt="" src="Graph4.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>And that’s it! I also originally had a slight gradient applied to the depth at the surface, but I’m leaving the shader here as although it helped show the distortion more, it didn’t entirely make sense to have it and I feel it wasn’t implemented very well. To improve this water shader further you could apply fog by basing the water visibility on the depth or make deeper parts darker, and also add some specular parts to the water surface.</p>

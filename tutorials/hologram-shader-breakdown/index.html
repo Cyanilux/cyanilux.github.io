@@ -11,7 +11,7 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Hologram Shader Breakdown">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -247,14 +247,18 @@
 <p>Take the output of the <b class="node">Position</b> and put this into a <b class="node">Split</b> node. In order to create horizontal lines we’ll take the Y coordinate of our position (from the <strong>G</strong> output) and <b class="node">Multiply</b> this by a vertical scaling value (e.g. <strong>70</strong>). Then put this into a <b class="node">Sine</b> node (or <b class="node">Cosine</b> node as we don’t care if it is offset slightly). Since this returns values between -1 and 1 we’ll put this into a <b class="node">Saturate</b> node so we clamp the values between 0 and 1. We can change the scaling value if we want more/less lines.</p>
 <p>To make this animated we can use the <strong>Time</strong> output from the <b class="node">Time</b> node and <b class="node">Multiply</b> this by a value to control the scroll speed (e.g. <strong>0.5</strong>). We’ll then put this into an <b class="node">Add</b> node with the <strong>Y/G</strong> output of the <b class="node">Split</b> to offset it before replacing it with the input into the <b class="node">Multiply</b> node we created earlier (the one that goes into the <b class="node">Sine</b>).</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="209" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Another way of producing a similar scanline effect is to use the <b class="node">Fraction</b> node. Instead of being smooth like a sine wave this produces a sawtooth wave with harsh transitions between the lines, as values to go from 0 to 1 and straight back to 0 again. This is because the node returns the fractional, or decimal, part of the value. Or put another way, it removes the integer part of the number. e.g. 3.26 would become 0.26.</p>
 <p>We can use both these together to make our hologram shader more interesting. We can either create new nodes or just copy-paste the existing <b class="node">Multiply</b> → <b class="node">Add</b> → <b class="node">Multiply</b> nodes we have so far, then put the output of the last multiply into a <b class="node">Fraction</b> node. Note that we don’t need the <b class="node">Saturate</b> node for this part as the fraction output is already between 0 and 1.</p>
 <p>I’m setting the scroll speed and vertical scaling both to 1. While this means these <b class="node">Multiply</b> nodes don’t do anything, I prefer to keep them as it allows us to adjust the effect if needed. (As a note, you may notice that when using the same value to scale the <b class="node">Sine</b> and <b class="node">Fraction</b> nodes they output different amount of horizontal lines. This is due to the sine function taking an input in radians (in terms of Pi). We could multiply by 2*Pi before putting a value into the <b class="node">Sine</b> node to ensure the scaling is the same for both, but this isn’t too important).</p>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="233" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>I’m also going to put the output of that <b class="node">Fraction</b> node into a <b class="node">Power</b> node with a value of <strong>2</strong> to make it less linear and then take the output of this and the <b class="node">Sine</b> node from before and <b class="node">Add</b> them together.</p>
@@ -263,7 +267,9 @@
 <p>To do this <b class="node">Multiply</b> the output from the previous <b class="node">Add</b> node with the <strong>RGBA</strong> output from a <b class="node">Sample Texture 2D</b> node. We’ll then take the output of that and <b class="node">Multiply</b> again by a <strong>Color property</strong> (use the blackboard in the top left to create this, or create a <b class="node">Color</b> node, right-click and <strong>Convert To Property</strong>). I’m using a colour property with <strong>HDR mode</strong> and an <strong>Intensity</strong> of <strong>2</strong> along with some post processing Bloom to make the effect ‘glow’ more.</p>
 <p>Finally put the output of that into the <strong>Color</strong> input on the <b class="node">Master</b> node and click the cog to change it to <strong>Transparent</strong> and use <strong>Additive</strong> blending if you haven’t done so already.</p>
 <div class="img-center">
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="257" alt="" src="Graph3.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Since creating this hologram shader I’ve also added some additional parts to improve the effect, explained below.</p>
@@ -280,7 +286,9 @@ Your browser does not support the video tag.
 <p>We’ll then put the output from that <b class="node">Add</b> node into a <b class="node">Gradient Noise</b> node, using <strong>10</strong> as the noise <strong>Scale</strong> input. (For a less wobbly distortion, we could instead use a <b class="node">Random Range</b> node to generate random noise, with a <b class="node">Multiply</b> and <b class="node">Floor</b> node before it to control the height of each line).</p>
 <p>Since this noise returns a value between 0 and 1 we will <b class="node">Subtract</b> <strong>0.5</strong>, so our distortion will be centered. Then <b class="node">Multiply</b> by <strong>0.1</strong>, and <b class="node">Multiply</b> again by a <strong>Vector1 property</strong> named <strong>Distortion Strength</strong>. (Note that I’m just multiplying by 0.1 so that our strength value is more reasonable, as without it, a value of 1 would distort the texture by a maximum of half of itself (since our noise is between -0.5 and 0.5), which is quite a lot of distortion).</p>
 <div class="img-center">
-<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png"></a>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="174" alt="" src="Graph4.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>We’ll then <b class="node">Add</b> our output with the <strong>X/R</strong> output, from the <b class="node">Split</b> earlier, and put this into the <strong>X</strong> input on a <b class="node">Vector2</b> node and put the <strong>Y/G</strong> output into the <strong>Y</strong> input. The image above shows how I’ve arranged all of this. The output of that can then be put into the <strong>UV</strong> input on the <b class="node">Sample Texture 2D</b> node from earlier.</p>
@@ -297,19 +305,25 @@ Your browser does not support the video tag.
 <p>These random values will be how much offset to apply, before we use this though it would be useful to control the glitching more. We can probably do this in a number of ways, but I put the random output into an <b class="node">Absolute</b> node, and then into the <strong>Edge</strong> input on a <b class="node">Step</b> node. (Returns the absolute value so everything is in the positive range, above 0. So values like -0.5 become 0.5 instead. The step then returns 1 if the In input is greater than or equal to the edge input, otherwise it returns 0).</p>
 <p>We’ll put a <strong>Glitch Amount Vector1 property</strong> into the second input of the <b class="node">Step</b> node to control the amount of glitching that will get past the step. (A value of 0 will allow no glitching through, 0.5 half of it, while 1 will allow all of it). We can then <b class="node">Multiply</b> our random input by this step output, <b class="node">Multiply</b> by <strong>0.1</strong> and <b class="node">Multiply</b> again by <strong>Glitch Strength Vector1 property</strong> to control the strength of our glitching effect.</p>
 <div class="img-center">
-<a href="Graph5.png" target="_blank" rel="noopener noreferrer"><img src="Graph5.png"></a>
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="177" alt="" src="Graph5.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p><b class="node">Add</b> the output with the <strong>X/R</strong> output, from the <b class="node">Split</b> earlier, (or with the <b class="node">Add</b> output from the previous distortion effect if you did that. Note the image above does not include this). Then put this into the <strong>X</strong> input on a <b class="node">Vector2</b> node and put the <strong>Y/G</strong> output into the <strong>Y</strong> input. The image above shows how I’ve arranged all of this.</p>
 <p>The output of that <b class="node">Vector2</b> node can then be put into the <strong>UV</strong> input on the <b class="node">Sample Texture 2D</b> node from earlier. You may also want to switch this out for a <b class="node">Sample Texture 2D LOD</b> node with a <strong>LOD</strong> value of <strong>0</strong> as you might see some unintentional glitchy parts between the lines, (unless you think this adds to the glitch effect I guess).</p>
 <p>We can also make the glitching change the colour of the effect. You could use a <b class="node">Hue</b> node to offset the colour, but I found this gave too much variation. Instead, I took the <b class="node">Multiply</b> output (the one including the <b class="node">Random Range</b> and <b class="node">Step</b> inputs). Since this is between -1 and 1 we can colour the positive offsets and negative offsets differently. I simply use a <b class="node">Saturate</b> node to clamp values between 0 and 1 and then <b class="node">Multiply</b> by a <strong>red Color property</strong>, and do this again but with a <b class="node">Negate</b> node and <strong>green Color property</strong>. I then <b class="node">Add</b> these two outputs together, as seen in the image below.</p>
 <div class="img-center">
-<a href="Graph6.png" target="_blank" rel="noopener noreferrer"><img src="Graph6.png"></a>
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="223" alt="" src="Graph6.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>We can then <b class="node">Add</b> this to our previous colour that went into the <b class="node">Master</b> node, but before the <b class="node">Sample Texture 2D LOD</b> node to ensure it is masked correctly. You may need to rearrange the nodes a little, but it should look something like below.</p>
 <div class="img-center">
-<a href="Graph7.png" target="_blank" rel="noopener noreferrer"><img src="Graph7.png"></a>
+<a href="Graph7.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="292" alt="" src="Graph7.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <br><hr>

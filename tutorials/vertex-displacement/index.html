@@ -11,7 +11,7 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Vertex Displacement">
@@ -168,7 +168,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -222,12 +222,16 @@
 <p>Scaling should usually be done first, assuming you want to keep the offset in terms of object space units rather than the scaled space. We can scale/offset each vertex by connecting a <b class="node">Vector3</b> node and set each component separately, or use a <strong>Vector3 property</strong> to control it from the inspector, or a C# Script (via materialReference.SetVector(“_Ref”, vector), where _Ref is the reference string of the property in the shadergraph blackboard).</p>
 <p>You can also <b class="node">Split</b> and offset/scale each component separately then recombine in a <b class="node">Combine</b> or <b class="node">Vector3</b> node, however this very quickly causes the graph to get messy with overlapping wires. I suggest using the Vector3 node/property approach instead.</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="164" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Here is another example if you wanted to scale both the <strong>X</strong> and <strong>Z</strong> with the same <strong>Vector1 property</strong>. Since we use a <b class="node">Multiply</b> to adjust scale, we set the <strong>Y</strong> value to <strong>1</strong> so there is no change. (With offsetting we would use a value of <strong>0</strong> for no change)</p>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="209" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>We can also use a <b class="node">Time</b> node to animate the offset over <strong>Time</strong> (or <strong>Sine Time</strong>, etc). There will be more examples later in the post including a swaying effect for grass/plants and animating fish or butterflies.</p>
@@ -252,7 +256,7 @@ mesh.bounds = <span style="color:#66d9ef">new</span> Bounds(origin, size);
 <ul>
 <li>Adding detail to a mesh using displacement textures along with tessellation (which can’t be done in shadergraph yet as far as I know, at least not in URP).</li>
 <li>Animating vertices on a water plane to simulate waves. (See this <a href="https://catlikecoding.com/unity/tutorials/flow/waves/">catlikecoding tutorial</a> for a good example)</li>
-<li>Creating various effects such as melting and wobbling. (I&rsquo;ve done a melting candle effect before, shared on twitter <a href="https://twitter.com/Cyanilux/status/1180084819906220032">here</a>)</li>
+<li>Creating various effects such as melting and wobbling. (I&rsquo;ve done a <a href="https://twitter.com/Cyanilux/status/1180084819906220032">melting candle effect</a>, only shared on twitter though)</li>
 <li>Simulating wind on grass, plants and trees, see example below.</li>
 <li>Adding simple animation to regular meshes, instead of using skinned meshes. See below for examples of the motion of swimming fish and flapping butterfly/bird wings, which are fairly simple to simulate. The game ABZÛ also uses this a lot, see this <a href="https://www.youtube.com/watch?v=l9NX06mvp2E">ABZÛ GDC Talk</a>.</li>
 <li>It&rsquo;s also possible to bake actual skinned mesh animations to textures, and use the Vertex ID (SV_VertexID) to read the texture. While I haven&rsquo;t used it, I am aware of <a href="https://github.com/ryanslikesocool/Mecanim2Texture">this
@@ -261,7 +265,9 @@ Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking
 <h2 id="examples">Examples</h2>
 <h3 id="swaying-grass">Swaying Grass</h3>
 <div class="img-center">
-<a href="GraphSwayGrass.png" target="_blank" rel="noopener noreferrer"><img src="GraphSwayGrass.png"></a>
+<a href="GraphSwayGrass.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="277" alt="" src="GraphSwayGrass.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Right Note : By using the Position set to World space, we ensure that the offsetting will always occur in the X world space axis, regardless of the transform’s rotation. The input on the master needs to be in Object space though, so we use a Transform node.</p>
@@ -282,7 +288,9 @@ Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking
 </script>
 <p>A simple way to create a swimming motion for a fish, is to offset the <strong>R/X</strong> <b class="node">Position</b> of the fish (left/right) by a <b class="node">Sine</b> wave based on <b class="node">Time</b> added with the position along the fish (forward/back, which is actually <strong>G/Y</strong> for the model I’m using). This can then be multiplied with a mask created from the <strong>G/Y</strong> position so vertices at the front of the fish move less.</p>
 <div class="img-center">
-<a href="GraphFish.png" target="_blank" rel="noopener noreferrer"><img src="GraphFish.png"></a>
+<a href="GraphFish.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="343" alt="" src="GraphFish.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>In terms of code, this would be something along the lines of :</p>
@@ -301,7 +309,9 @@ Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking
 <p>We can then offset the <strong>B/Z</strong> position by a <b class="node">Sine</b> wave based just on <b class="node">Time</b> which will make the wings move linearly. If we want the wings to bend (which would be better for a bird) we can <b class="node">Add</b> the mask to the <b class="node">Time</b> output and put this into the <b class="node">Sine</b> node instead.</p>
 <p>We can also offset the <strong>R/X</strong> (left/right) a little, so as the wings go upwards they also move slightly inwards, which will reduce stretching and make the motion feel more realistic.</p>
 <div class="img-center">
-<a href="GraphButterfly.png" target="_blank" rel="noopener noreferrer"><img src="GraphButterfly.png"></a>
+<a href="GraphButterfly.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="333" alt="" src="GraphButterfly.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>In terms of code, this would be something along the lines of :</p>

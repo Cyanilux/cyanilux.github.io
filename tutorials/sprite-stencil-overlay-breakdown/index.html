@@ -11,7 +11,7 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Sprite Stencil Overlay Breakdown">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -248,13 +248,17 @@
 <p>To start with this effect, our <strong>Player</strong> GameObject (with the SpriteRenderer) needs to be assigned to a new Layer, which we will call “Player”.</p>
 <p>Objects that are in-front of the player (where the overlay will appear) will also be assigned to another layer, named “Infront” (or “Foreground”, the name isn’t too important).</p>
 <div class="img-center">
-<a href="Image1.png" target="_blank" rel="noopener noreferrer"><img src="Image1.png"></a>
+<a href="Image1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="557" height="221" alt="" src="Image1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h3 id="example-overlay-shader">Example Overlay Shader</h3>
 <p>Next we need to write a shader for the overlay effect. I’ve created a new Shader Graph using the 2D <b class="node">Sprite Unlit Master</b> node. I’d like to create a dithering-like effect which could be achieved using the <b class="node">Dither</b> node. I don’t want it too small though and it uses screenspace pixels, and the “pixels” in my sprites are actually made up of multiple screen pixels. Therefore, I’ll be using a checker-board approach instead. There is a <b class="node">Checkerboard</b> node, however this is anti-aliased, so will have transparent parts, which may not be the intended result if using a pixel perfect approach. Instead, I’m creating the checker pattern by using a combination of <b class="node">Fraction</b>, <b class="node">Step</b> and <b class="node">Lerp</b> nodes – (but play around with each approach and see which suits your project best!)</p>
 <div class="img-center">
-<a href="Graph.png" target="_blank" rel="noopener noreferrer"><img src="Graph.png"></a>
+<a href="Graph.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="271" alt="" src="Graph.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Can use <b class="node">Position</b> set to <strong>World</strong> rather than <strong>UVs</strong> if you don’t want the effect being stretched &amp; scaled by UVs. (Note, the twitter gif also uses <b class="node">Add</b> <strong>0.5</strong> after the <b class="node">Lerp</b>).</p>
@@ -262,7 +266,9 @@
 <p>We need to create a new <strong>Material</strong> using this graph. We’ll be overlaying this material on top of the player sprite, but only when it is hidden behind objects in the Infront/Foreground layer. This can be achieved by using the <strong>Stencil overrides</strong> on the Forward Renderer&rsquo;s <strong>RenderObjects</strong> feature.</p>
 <h3 id="forward-renderer">Forward Renderer</h3>
 <div class="img-center">
-<a href="Image2.png" target="_blank" rel="noopener noreferrer"><img src="Image2.png"></a>
+<a href="Image2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="562" height="536" alt="" src="Image2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Before going into the stencil overrides, we need to make sure the Forward Renderer is set up correctly. You should have a <strong>Universal Render Pipeline Asset</strong> object, somewhere in your Assets. If you used the URP button when creating the project, there may be multiple pipeline assets, named like “UniversalRP-HighQuality” under the <strong>Settings</strong> folder, you’ll want to make sure each quality setting is using the same <strong>Forward Renderer</strong>. If you don’t have these, you’ll want to go through the URP set up as shown in the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@7.2/manual/InstallingAndConfiguringURP.html">docs</a>.</p>
@@ -270,7 +276,9 @@
 <p>As we don’t want to render the <strong>Infront</strong> layer objects twice however, we should also exclude them from the <strong>Default Layer Mask</strong> (split into Opaque and Transparent Layer Masks in newer versions), at the top of the Forward Renderer. This means we won’t render objects normally on that layer, so in the scene/game view those objects should disappear. But we can then add a <strong>RenderObjects</strong> feature to render them, specifying the additional overrides (We&rsquo;ll be going over this in a bit).</p>
 <p>For the <strong>Player</strong> layer, we want to render it twice so should keep it in the default mask. This is because we will be overriding the material to create the overlay and still want the normal sprite/material to show.</p>
 <div class="img-center">
-<a href="Image3.png" target="_blank" rel="noopener noreferrer"><img src="Image3.png"></a>
+<a href="Image3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="560" height="318" alt="" src="Image3.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h3 id="stencil-overrides">Stencil Overrides</h3>
@@ -278,14 +286,18 @@
 <p>We can also test against the value currently in the buffer at the same time, based on operations like <strong>Less</strong>, <strong>Greater</strong>, <strong>Equal</strong>, <strong>Not Equal</strong>, etc. If the test <strong>fails</strong>, it <strong>discards</strong> the pixel, and the <strong>Pass</strong>, <strong>Fail</strong> and <strong>Z Fail</strong> settings show what happens to the <strong>value in the buffer</strong> when the test passes or fails (e.g. <strong>Keep</strong> the current value in the buffer, add/remove 1 from the current value, or <strong>Replace</strong> it entirely with the value that was tested).</p>
 <p>For more information on the stencil buffer and operations, see the <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil docs page</a>, (note that it is for code-written shaders but still applies).</p>
 <div class="img-center">
-<a href="Image4.png" target="_blank" rel="noopener noreferrer"><img src="Image4.png"></a>
+<a href="Image4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="477" height="122" alt="" src="Image4.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h3 id="render-infront-objects">Render Infront Objects</h3>
 <p>So in order to create our overlay effect, we first need to have our <strong>Infront</strong> layer objects write a value of <strong>1</strong> into the <strong>Stencil buffer</strong>. The full <strong>RenderObjects</strong> feature is as shown :</p>
 <p>Note that all objects are currently using the default sprite material, which places them into the <strong>Transparent</strong> render queue. We need to specify this in the <strong>Queue</strong> under the <strong>Filters</strong> on the feature.</p>
 <div class="img-center">
-<a href="Image5.png" target="_blank" rel="noopener noreferrer"><img src="Image5.png"></a>
+<a href="Image5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="534" height="395" alt="" src="Image5.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <ul>
@@ -313,7 +325,9 @@
 <h3 id="render-player-overlay">Render Player Overlay</h3>
 <p>Then, we need to render the <strong>Player</strong> (again, since the Default Layer Mask includes that layer too), using another <strong>RenderObjects</strong> feature. This time testing against the value in the buffer, and overriding the material to show our overlay :</p>
 <div class="img-center">
-<a href="Image6.png" target="_blank" rel="noopener noreferrer"><img src="Image6.png"></a>
+<a href="Image6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="532" height="410" alt="" src="Image6.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <ul>
@@ -342,7 +356,9 @@
 <p>If the stencil buffer contains a value of <strong>1</strong>, the test <strong>passes</strong>, so <strong>renders the pixel</strong>. If it <strong>fails</strong>, it <strong>discards the pixel</strong>.</p>
 <p>We’ve also overridden the <strong>Material</strong> used for rendering, to use our <strong>SpriteOverlay material</strong> which is using the checkerboard Shader Graph example from earlier. This produces the final result as shown below and in the tweet at the start.</p>
 <div class="img-center">
-<a href="Preview.png" target="_blank" rel="noopener noreferrer"><img src="Preview.png"></a>
+<a href="Preview.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="600" height="400" alt="" src="Preview.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <br><hr>

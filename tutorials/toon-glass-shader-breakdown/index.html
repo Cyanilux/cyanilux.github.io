@@ -11,7 +11,7 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Toon Glass Shader Breakdown">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -263,17 +263,23 @@
 <p>We can <b class="node">Split</b> to obtain these components, and <b class="node">Add</b> them together to make a diagonal gradient. An <b class="node">Absolute</b> function will then convert any negative values to positive. Any changes made will now be mirrored across the diagonal line as both sides share the same values.</p>
 <p>The preview on our <b class="node">Absolute</b> node doesn’t seem to look right though. This is due to the transform to tangent space, but even if we were to change it, the preview will still show the &ldquo;3D&rdquo; circular version. Instead, we can create a <b class="node">UV</b> node and put it into a <b class="node">Remap</b> node with values of <strong>0 and 1</strong> for the <strong>In Min Max</strong> and <strong>-1 and 1</strong> for the <strong>Out Min Max</strong>. This remaps the values so the value at the center of the preview has a value of 0. When we connect this to the <b class="node">Split</b> we can visualise the previews properly which will help a lot when creating the rest of the graph, then at the end we can reconnect the other position instead.</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="382" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>We now have two gradients going outwards diagonally in each direction. There are values of 0 in the center shown by the black areas on the preview. If we <b class="node">Subtract</b> a value from this it will shift the values inwards, and output negative values in the center (which we can remove later via a <b class="node">Saturate</b>). This results in creating a spacing between the two gradients. Here we use the <strong>Offset property</strong>, which will allow us to change the spacing later in the inspector. We can then also apply some scaling by using a <b class="node">Multiply</b> with the <strong>Scale Multiplier property</strong>, as shown on the left below.</p>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="282" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>To handle creating multiple lines, I’m using this setup as shown above. By using a <b class="node">Power</b> in our calculations, we can allow the values to be more exponential / less linear. This affects the width of each line based on the distance from the diagonal, as shown in the <b class="node">Fraction</b> node preview. To better show how this works, I’ve plotted the functions here :</p>
 <p><div class="img-center">
-<a href="Plots.png" target="_blank" rel="noopener noreferrer"><img src="Plots.png"></a>
+<a href="Plots.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="202" alt="" src="Plots.png" />
+</a>
 <p class="img-text"></p>
 </div>
 (Source : Wolfram|Alpha, Wolfram Alpha LLC, Date : 01/01/2020, Links : <a href="https://www.wolframalpha.com/input/?i=plot+%7B+y+%3D+2%5Ex+%2C+y+%3D+3%5Ex+%2C+y+%3D+4%5Ex+%2C+y+%3D+5%5Ex+%7D+x+%3D+0+to+1%2C+y+%3D+1+to+5">Plot1</a>, <a href="https://www.wolframalpha.com/input/?i=plot+%7B+y+%3D+frac%282%5Ex%29+%2C+y+%3D+frac%283%5Ex%29+%2C+y+%3D+frac%284%5Ex%29+%2C+y+%3D+frac%285%5Ex%29+%7D+x+%3D+0+to+1%2C+y+%3D+0+to+1">Plot2</a>)</p>
@@ -284,7 +290,9 @@
 <p>Hopefully those plots help explain what is going on here, as the maths might not be easy to grasp by looking at the nodes alone. All we need to do now is <b class="node">Step</b> the gradient-like result from the <b class="node">Fraction</b> node, using the <strong>Line Width property</strong> to obtain solid lines which we can then <b class="node">Multiply</b> by our <strong>Line Alpha</strong>. We also need to <b class="node">Add</b> the <strong>Color property’s alpha</strong>, to control the glass’ surface alpha, then put this into the <strong>Alpha</strong> input on the <b class="node">Master</b> node, and also set the <strong>Color</strong> input as shown.</p>
 <p>Also don’t forget to connect the (camera relative &amp; tangent) position rather than the UVs at the beginning when saving the graph, as the UVs were only there for better previews while editing!</p>
 <div class="img-center">
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="412" alt="" src="Graph3.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <br><hr>

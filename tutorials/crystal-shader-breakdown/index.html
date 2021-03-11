@@ -11,14 +11,14 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Crystal Shader Breakdown">
 <meta itemprop="description" content="An unlit/glowing crystal shader with a colour gradient based on object space Y position, and refraction via Scene Color node">
 <meta itemprop="datePublished" content="2021-02-01T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-02-01T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1503">
+<meta itemprop="wordCount" content="1505">
 <meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 
 
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -242,7 +242,7 @@
 <li>This is an <strong>Unlit</strong> shader using <strong>Transparent</strong> surface mode and <strong>Alpha</strong> blending. However the alpha will be left at <strong>1</strong> as we are using the <b class="node">Scene Color</b> node to fake refractions.</li>
 <li>The <strong>Opaque Texture</strong> option on the <strong>Universal RP Asset</strong> needs to be enabled for refraction to work. This asset will be somewhere in your assets (Project window). If you used the template, it&rsquo;s under Settings. There may be multiple for each Quality level. Without this option enabled, the <b class="node">Scene Color</b> result will just be grey. (Make sure the Main Camera also does not override the asset value)</li>
 <li>The gif above is also using <strong>point lights</strong> in the scene so the walls/floor are illuminated by the crystals. The crystals themselves are not producing the light and is also not affected by them, except for what appears on the camera opaque texture.</li>
-<li>The gif also contains some additional post processing, including <strong>Bloom</strong> and <strong>ACES Tonemapping</strong>. See <a href="https://twitter.com/Cyanilux/status/1332335323632766977">here</a> for full settings.</li>
+<li>The gif also contains some additional post processing, including <strong>Bloom</strong> and <strong>ACES Tonemapping</strong>. See <a href="https://twitter.com/Cyanilux/status/1332335323632766977">this twitter post</a> for full settings.</li>
 </ul>
 <h2 id="breakdown">Breakdown</h2>
 <h3 id="colour-gradient">Colour Gradient</h3>
@@ -250,7 +250,9 @@
 <p>For linear interpolation we use the <b class="node">Lerp</b> node and set the <strong>A</strong> and <strong>B</strong> inputs to two <b class="node">Color</b> nodes or <strong>properties</strong>. (For handling more colours, we could alternatively use a <b class="node">Sample Gradient</b> or <b class="node">Sample Texture 2D</b>).</p>
 <p>For the <strong>T</strong> input, since we want it based on the Y position of the fragment/pixel we&rsquo;ll create a <b class="node">Position</b> node set to <strong>Object</strong> space and <b class="node">Split</b> it. The <strong>G</strong> port corresponds to the Y axis. We&rsquo;ll first put this into the <strong>T</strong> axis on an <b class="node">Inverse Lerp</b> node then <b class="node">Saturate</b> the result (clamps between 0 and 1) and put it into the <strong>T</strong> input on the <b class="node">Lerp</b>.</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="327" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>The <b class="node">Inverse Lerp</b> allows us to remap the Y coordinate. I&rsquo;m setting the <strong>A</strong> and <strong>B</strong> inputs to <strong>1</strong> and <strong>0</strong>, which currently means the result is the same as a <b class="node">One Minus</b> node, but having this gives the freedom to change what Y coordinate the gradient will <strong>start</strong> and <strong>end</strong> at. Also remember since this is in Object space, these values will be relative to the GameObject&rsquo;s position, rotation and scale.</p>
@@ -260,7 +262,9 @@
 <p>Next we&rsquo;ll handle the refraction part of the shader. This involves offsetting the position used to sample the camera&rsquo;s Opaque Texture (which needs to be enabled on the URP Asset if you haven&rsquo;t done so already, see notes section above).</p>
 <p>We&rsquo;ll create a <b class="node">Scene Color</b> node which samples this camera opaque texture. The input needs to be the <b class="node">Screen Position</b> node (which is what it defaults to if left blank), however since we want to offset this we&rsquo;ll need an <b class="node">Add</b> node too. We&rsquo;ll leave the second input on this blank for now.</p>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="481" height="245" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>I&rsquo;m unsure on the most realistic method to handle the refraction here, but for this shader I used the <b class="node">Normal Vector</b> in <strong>View</strong> space. This allows geometry facing <strong>away</strong> from the camera to have a <strong>higher offset value</strong> (on X and Y axis). Geometry facing the camera will have a much lower X and Y amount and while it&rsquo;ll have a Z coordinate it can be ignored here as the Opaque Texture is 2D.</p>
@@ -268,7 +272,9 @@
 <p>Since the normal vector is normalised it&rsquo;ll have a maximum offset strength of <strong>1</strong>, which is quite large for offsetting UVs which are only a 0-1 range. While the <b class="node">Fresnel Effect</b> will help, To reduce the strength further I&rsquo;m also multiplying by a <strong>Vector1 property</strong> named &ldquo;Refraction Strength&rdquo;, so it can be controlled from the material inspector. A value of <strong>0.4</strong> seemed to work quite well.</p>
 <p>I also have used a <b class="node">Negate</b> node here to flip the direction that the offset occurs in.</p>
 <div class="img-center">
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="267" alt="" src="Graph3.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h3 id="opacity">Opacity</h3>
@@ -276,7 +282,9 @@
 <p>This is another interpolation, so will involve a <b class="node">Lerp</b> node and since we want to control it based on geometry facing the camera we&rsquo;ll reuse the <b class="node">Fresnel Efect</b> result from earlier. So we can tweak it a bit, We&rsquo;ll first <b class="node">Multiply</b> the result by a <strong>Vector1 &ldquo;Fresnel Strength&rdquo; property</strong>, <b class="node">Add</b> a <strong>Vector1 &ldquo;Opacity&rdquo; property</strong> and <b class="node">Saturate</b> it before putting it into the <strong>T</strong> on the <b class="node">Lerp</b>.</p>
 <p>The <strong>A</strong> input on the <b class="node">Lerp</b> will be set to the <b class="node">Scene Color</b> result, and the <strong>B</strong> input is set to the result of the Colour Gradient section.</p>
 <div class="img-center">
-<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png"></a>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="414" alt="" src="Graph4.png" />
+</a>
 <p class="img-text">
 (Click to show full image in new tab)
 </p>

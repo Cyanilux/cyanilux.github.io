@@ -11,14 +11,14 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Dissolve Shader Breakdown">
 <meta itemprop="description" content="A shader which uses noise and step functions to discard pixels to create a dissolving effect. Also provides examples for dissolving based on height / Y and using view space position as UVs to avoid seams">
 <meta itemprop="datePublished" content="2020-02-04T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2020-02-04T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1863">
+<meta itemprop="wordCount" content="1874">
 <meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 
 
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -247,31 +247,39 @@
 <p>In order to make a dissolve shader we first need a noise input, either generated through the use of the <b class="node">Simple Noise</b> or <b class="node">Gradient Noise</b> nodes, or sampled through a texture. Sampling from a texture can be better for performance, especially when targeting mobile platforms, but for this post I’ll be using generated noise.</p>
 <p>We pass our noise output into a <b class="node">Step</b> function, which outputs 0 or 1 based on whether the input value is smaller or bigger (or equal) than the <strong>Edge</strong> input. For this <strong>Edge</strong> input, we use a <strong>Vector1 property</strong>, named <strong>Amount</strong> here, (Be sure to set the Reference for the property to “_Amount” too). We can then control the property through a C# Script or Animation. (I won’t be going through that in this post though as I’d like to focus on the shader itself – Might do a “Setting properties from script/animation” post in the future, but for now if you are unfamiliar with it you’ll have to use google, sorry! – For setting them via C#, look into <a href="https://docs.unity3d.com/ScriptReference/Material.SetFloat.html">Material.SetFloat</a>).</p>
 <div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer"><img src="Graph1.png"></a>
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="261" alt="" src="Graph1.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>We can use this <b class="node">Step</b> output as the <strong>Alpha</strong> input on our <b class="node">Master</b> node. As long as our <strong>AlphaClipThreshold</strong> is larger than 0 (but smaller than 1, e.g. 0.5), we’ll now be discarding the black pixels shown in the <b class="node">Step</b> preview. This is the basis of the dissolve shader, but it isn’t very interesting yet.</p>
 <p>In order to add a glowing edge to the dissolve, we need to use another <b class="node">Step</b>, but with a slightly offset <strong>Edge</strong> input (<strong>Amount</strong> <b class="node">Add</b> a <strong>Vector1 “Edge Width” property</strong>, with a default value of <strong>0.05</strong>). Then <b class="node">Subtract</b> the <b class="node">Step</b> with the bigger <strong>Edge</strong> value, from the other.</p>
 <div class="img-center">
-<a href="Graph2.png" target="_blank" rel="noopener noreferrer"><img src="Graph2.png"></a>
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="498" alt="" src="Graph2.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>For the <b class="node">PBR Master</b> node, we can now <b class="node">Multiply</b> the output of the <b class="node">Subtract</b> with a <b class="node">Color</b>, and use that as the <strong>Emission</strong> input. We can then use the <strong>Albedo</strong> input for the base object colour, which could be a sampled texture for example.</p>
 <p>However, for the <b class="node">Unlit Master</b> node, since it only has a <strong>Color</strong> input we should use a <b class="node">Lerp</b> so we can also have a base colour for the material. If you aren’t familiar with a Lerp : It linearly interpolates (blends) between two inputs, A and B, based on a third T input. When T=0 it outputs A, and when T=1 it outputs B. For any other input of T it will be an interpolation (blend) between the two inputs. In our case however the T input will only contain values of 0 and 1 exactly, so either output A or B. We could also instead use a <b class="node">Comparison</b> and <b class="node">Branch</b> node to achieve something similar.</p>
 <div class="img-center">
-<a href="Graph3.png" target="_blank" rel="noopener noreferrer"><img src="Graph3.png"></a>
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="436" alt="" src="Graph3.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>The output of our <b class="node">Subtract</b> is put into the <strong>T</strong> input on the <b class="node">Lerp</b> node, and a <b class="node">Color</b> for the dissolve edge into the <strong>B</strong> input. The <strong>A</strong> input is for the albedo/colour for the base material, e.g. a <b class="node">Sample Texture 2D</b> output, perhaps tinted with an additional colour property.</p>
 <p>In order to take the texture’s transparency/alpha into account, we also need to <b class="node">Multiply</b> the <b class="node">Step</b> (smaller edge, <strong>Amount</strong> input), with the <strong>A</strong> component from the <b class="node">Sample Texture 2D</b> node before putting it into the <strong>Alpha</strong> input on the <b class="node">Master</b> node.</p>
 <p>(If you are using a <b class="node">Sprite Lit/Unlit Master</b> node, you will want to sample the <strong>_MainTex texture</strong>, and tint with the <b class="node">Vertex Color</b> node for it to correctly take the SpriteRenderer into account. Also note that it doesn&rsquo;t have a dedicated alpha input, but it is included with the <strong>Color</strong> input as it is a Vector4, unlike the other master nodes which use a <strong>Vector3</strong> for the <strong>Color/Albedo</strong> input. If you make sure all other Color nodes/properties have an alpha of 1, you can <b class="node">Multiply</b> the <strong>Vector4</strong> output by a <b class="node">Vector4</b> node set to (1,1,1, with the <strong>W</strong> input as the <strong>A</strong> component from the texture sample)).</p>
-<p>Next to make our dissolve edge glow, we’ll want to be using a Bloom Post Processing effect and use <strong>HDR</strong> mode on the <b class="node">Color</b> node, with the colour having an <strong>Intensity</strong> of <strong>2</strong> (and enabling HDR under the Lightweight/Universal Render Pipeline asset). If you aren&rsquo;t familiar with how to set up post processing in URP, see <a href="https://www.cyanilux.com/tutorials/urp-post-processing">here</a>.</p>
+<p>Next to make our dissolve edge glow, we’ll want to be using a Bloom Post Processing effect and use <strong>HDR</strong> mode on the <b class="node">Color</b> node, with the colour having an <strong>Intensity</strong> of <strong>2</strong> (and enabling HDR under the Lightweight/Universal Render Pipeline asset). If you aren&rsquo;t familiar with setting this up, I have a tutorial on setting up <a href="https://cyangamedev.wordpress.com/2020/06/22/urp-post-processing/">post processing in URP</a> (on my old site) which might help.</p>
 <h3 id="dissolve-based-on-height--y">Dissolve based on Height / Y</h3>
 <p>While our dissolve effect is certainly more interesting with the glowing edge, it dissolves uniformly across the mesh. For certain dissolve effects, we might want the dissolve to follow the mesh’s height.</p>
 <p>We can use the <b class="node">Position</b> node and <b class="node">Split</b> to obtain the <strong>Y/G</strong> value of the position, using <strong>Object</strong> space if we want the dissolve effect to stay fixed to that axis regardless of rotation &amp; scale. If we want it fixed to the worldspace Y axis instead, we should use <strong>World</strong> space, but also make it relative to the object’s origin by subtracting the <strong>Position</strong> output of the <b class="node">Object</b> node.</p>
 <p>We’ll <b class="node">Add</b> this onto the noise output, but first <b class="node">Multiply</b> it by <strong>-1</strong> (or use the <b class="node">Negate</b> node), to make sure the dissolve effect starts with an Amount of 0 at the highest point rather than the lowest.</p>
 <div class="img-center">
-<a href="Graph4.png" target="_blank" rel="noopener noreferrer"><img src="Graph4.png"></a>
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="329" alt="" src="Graph4.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>However, by adding these two things it shifts the range of the values. This will be a problem if we want to control the dissolve with the Amount property going only from 0 to 1. To fix this, we need to remap the values back into the 0-1 range before putting it into both our <b class="node">Step</b> nodes (also using a <b class="node">Preview</b> node in the image above, to organise the connections better).</p>
@@ -297,7 +305,9 @@
 <p>By using this <strong>View</strong> space <strong>UV</strong> method it is still a single <b class="node">Sample Texture 2D</b> node (or <b class="node">Simple Noise</b> in this case as I’m generating the noise). However, when the camera moves or rotates the noise will follow, like the UVs/texture is projected from the camera.</p>
 <p>We can fix this a little by offsetting the <strong>View</strong> <b class="node">Position</b> with the object’s origin (<strong>Position</strong> output from the <b class="node">Object</b> node), transformed from <strong>World</strong> space to <strong>View</strong> space using the <b class="node">Transform</b> node, like so :</p>
 <div class="img-center">
-<a href="Graph5.png" target="_blank" rel="noopener noreferrer"><img src="Graph5.png"></a>
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="259" alt="" src="Graph5.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Using this method will also mean every object shares the same set of noise however. I won’t be going through fixing this in detail – It’s better to just not use this dissolve shader for multiple objects on screen at the same time. However, if that’s not an option, you would want to look into having an additional <strong>Vector2 offset property</strong> which can be different per object. (Probably using the object’s start position or Object.GetInstanceID as a seed to generate a random offset, and set either by using an instanced material at runtime (material = GetComponent<!-- raw HTML omitted -->().<a href="https://docs.unity3d.com/ScriptReference/Renderer-material.html">material</a>; will do this, be sure to cache &amp; destroy it when the object is destroyed too! (<a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnDestroy.html">OnDestroy</a>)), and set via <a href="https://docs.unity3d.com/ScriptReference/Material.SetVector.html">material.SetVector</a>.</p>

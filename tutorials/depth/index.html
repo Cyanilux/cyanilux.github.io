@@ -11,14 +11,14 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Depth">
 <meta itemprop="description" content="A big post explaining everything about Depth : Depth Buffer, Depth Texture / Scene Depth node, SV_Depth, Reconstructing World Position from Depth, etc.">
 <meta itemprop="datePublished" content="2020-11-25T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2020-11-25T00:00:00+00:00" />
-<meta itemprop="wordCount" content="5509">
+<meta itemprop="wordCount" content="5513">
 <meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 
 
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -224,7 +224,9 @@
 
 <p><strong>Depth</strong> is a term used in computer graphics to refer to how far a fragment (a potential pixel) is from the camera. But it can be a bit complicated - as depth can come in different spaces/ranges, vary between platform, and vary between perspective and orthographic camera projections.</p>
 <div class="img-center">
-<a href="Preview.png" target="_blank" rel="noopener noreferrer"><img src="Preview.png"></a>
+<a href="Preview.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="428" alt="" src="Preview.png" />
+</a>
 <p class="img-text">
 (Image showing "Linear01" Depth)
 </p>
@@ -278,7 +280,9 @@
 <h3 id="eye-depth">View space, Eye Depth</h3>
 <p>The easiest type of depth to understand is <strong>Eye/View-space Depth</strong> which refers to the distance between a position in the scene to a <strong>plane perpendicular to the camera&rsquo;s view</strong> - (Not the camera position itself).</p>
 <div class="img-center">
-<a href="EyeDepth.png" target="_blank" rel="noopener noreferrer"><img src="EyeDepth.png"></a>
+<a href="EyeDepth.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="433" alt="" src="EyeDepth.png" />
+</a>
 <p class="img-text">
 The red line corrosponds to the Eye Depth to the Position in the Scene. While the cyan line is the actual Euclidean distance.
 </p>
@@ -293,7 +297,9 @@ The red line corrosponds to the Eye Depth to the Position in the Scene. While th
 </ul>
 <p>I&rsquo;m unsure if there is any difference in performance between the two for perspective projections. I usually use the second method personally. It&rsquo;s also a good idea to group the nodes and name them something like &ldquo;Object/Fragment (Eye) Depth&rdquo; to keep it similar to the <b class="node">Scene Depth</b> node naming but to make it clear this is the <strong>depth to the object/fragment being rendered</strong> rather than the scene behind it!</p>
 <div class="img-center">
-<a href="FragmentDepth.png" target="_blank" rel="noopener noreferrer"><img src="FragmentDepth.png"></a>
+<a href="FragmentDepth.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="166" alt="" src="FragmentDepth.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>For Shader Code, the first method would be the equivalent of :</p>
@@ -410,19 +416,23 @@ float2 screenUV 	= pd.xy;
 <h3 id="non-linear">Why Non-Linear?</h3>
 <p>The reason for making the depth buffer value non-linear (in view space), as well as the Reversed Z Buffer for Direct3D-like platforms, is for better precision. More information about how this works can be found in this <a href="https://developer.nvidia.com/content/depth-precision-visualized">NVIDIA article</a> and it can explain it a lot better than I can.</p>
 <div class="img-center">
-<a href="https://developer.nvidia.com/sites/default/files/akamai/gameworks/blog/Depthprecision/graph5.jpg" target="_blank" rel="noopener noreferrer"><img src="https://developer.nvidia.com/sites/default/files/akamai/gameworks/blog/Depthprecision/graph5.jpg"></a>
+<a href="https://developer.nvidia.com/sites/default/files/akamai/gameworks/blog/Depthprecision/graph5.jpg" target="_blank" rel="noopener noreferrer">
+<img loading="lazy"   alt="" src="https://developer.nvidia.com/sites/default/files/akamai/gameworks/blog/Depthprecision/graph5.jpg" />
+</a>
 <p class="img-text">
 Source : From the NVIDIA article linked below. "The quasi-logarithmic distribution of floating-point somewhat cancels the 1/z nonlinearity, giving us similar precision at the near plane to an integer depth buffer, and vastly improved precision everywhere else. The precision worsens only very slowly as you move farther out."
 </p>
 </div>
 <p>Here&rsquo;s an image to help show the comparison between this non-linear NDC / Z Buffer Depth (labelled &ldquo;raw&rdquo; here, as it&rsquo;s the raw value from the Depth Buffer and Depth Texture), and the Linear01 or Eye depth.</p>
 <div class="img-center">
-<a href="DepthComparison.png" target="_blank" rel="noopener noreferrer"><img src="DepthComparison.png"></a>
+<a href="DepthComparison.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="428" alt="" src="DepthComparison.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>On the right, is the Linear01 value multiplied by 15 (the far plane value) - which is equal to the Eye depth, put through a frac function (aka <b class="node">Fraction</b> node) which makes the value repeat between 0 and 1. Each repeating value of 0-1 on the right is 1 unit. The width of each repeating section gets smaller as it approaches the far plane.</p>
 <p>On the left, we have the NDC Depth multiplied by 15 (far plane) and again put through a frac function. While this depth is non-linear in View space, it is actually <strong>linear in NDC/Screen space</strong> - the width of each repeating section varies based on the viewing angle, but it&rsquo;s always the same across the plane. I came across <a href="http://www.humus.name/index.php?ID=255">this article</a> which again confirms this and notes that it is useful for some hardware optimisations, as well as for post processing - such as comparing the depth value from neighbouring pixels for edge detection.</p>
-<p>Roystan has a great <a href="https://roystan.net/articles/outline-shader.html">edge detection tutorial</a> (for built-in pipeline &amp; PPv2) and Alexander Ameye has a tutorial converting it to work with URP <a href="https://alexanderameye.github.io/outlineshader.html">here</a>. While I understood the concept that these use, I never realised that having the depth linear in screen space was important here!</p>
+<p>Roystan has a great <a href="https://roystan.net/articles/outline-shader.html">edge detection tutorial</a> (for built-in pipeline &amp; PPv2) and Alexander Ameye has a <a href="https://alexanderameye.github.io/outlineshader.html">tutorial converting it to work with URP</a>. While I understood the concept that these use, I never realised that having the depth linear in screen space was important here!</p>
 <hr>
 <h2 id="buffer-vs-texture">Depth Buffer vs Depth Texture</h2>
 <h3 id="depth-buffer">Depth Buffer, ZWrite &amp; ZTest</h3>
@@ -612,7 +622,7 @@ o.depth <span style="color:#f92672">=</span> depth;</code></pre></td></tr></tabl
 <p>As explained earlier, the depth texture contains depth values of the scene - how far <strong>opaque</strong> objects are from the camera plane. It should only be used by shaders in the <strong>Transparent</strong> parts of the <strong>Render Queue</strong>, specifically <strong>2501</strong> or higher (in URP at least). It allows us to obtain the depth of objects behind our transparent surface. If you instead need the depth to the fragment being rendered, you can calculate that without using the depth texture - see the <a href="#eye-depth">Eye Depth</a> section.</p>
 <p>Sampling the Depth Texture can be done in Shader Graph via the <b class="node">Scene Depth</b> node (see below).</p>
 <p>For <strong>URP</strong> Shader Code (HLSL), include <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl">DeclareDepthTexture.hlsl</a>, and use it&rsquo;s <strong>SampleSceneDepth</strong> function with the Screen coords to obtain the <strong>Raw Depth</strong> value. (pass positionNDC (from GetVertexPositionInputs, or use ComputeScreenPos with clip space pos, both in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.hlsl">ShaderVariablesFunctions.hlsl</a>) from vertex to fragment, then uv = screenPos.xy / screenPos.w).</p>
-<p>Be aware that the Depth Texture needs to be enabled in URP, see <a href="#notes-urp">here</a> for more info.</p>
+<p>Be aware that the Depth Texture needs to be enabled in URP, this will be discussed more in the section below.</p>
 <p>e.g.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -643,7 +653,7 @@ OUT.screenPos <span style="color:#f92672">=</span> ComputeScreenPos(positionCS);
 </div>
 </div>
 <p>For <strong>HDRP</strong> Shader Code (HLSL), use the <strong>SampleCameraDepth</strong> function in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl">ShaderVariables.hlsl</a>.</p>
-<p>Also, for the <strong>Built-in pipeline</strong> there is the docs page <a href="https://docs.unity3d.com/Manual/SL-DepthTextures.html">here</a> and <a href="https://docs.unity3d.com/Manual/SL-CameraDepthTexture.html">here</a> which explain some macros (specific to the built-in, won&rsquo;t work in URP/HDRP) and how to enable it for that pipeline.</p>
+<p>Also, for the <strong>Built-in pipeline</strong> there is the <a href="https://docs.unity3d.com/Manual/SL-DepthTextures.html">docs page</a>, also <a href="https://docs.unity3d.com/Manual/SL-CameraDepthTexture.html">see CameraDepthTexture docs</a>. These explain some macros (specific to the built-in, won&rsquo;t work in URP/HDRP) and how to enable it for that pipeline.</p>
 <p>For converting to other spaces we can use :</p>
 <ul>
 <li>Convert to <strong>Linear01</strong> using : <code>Linear01Depth(rawDepth, _ZBufferParams);</code></li>
@@ -703,7 +713,9 @@ orthoEyeDepth = lerp(_ProjectionParams.y, _ProjectionParams.z, orthoLinearDepth)
 </li>
 </ul>
 <div class="img-center">
-<a href="SceneDepth.png" target="_blank" rel="noopener noreferrer"><img src="SceneDepth.png"></a>
+<a href="SceneDepth.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="311" alt="" src="OrthoSceneDepth.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h4 id="orthographic-scene-depth">Orthographic Projection</h4>
@@ -726,7 +738,9 @@ orthoEyeDepth = lerp(_ProjectionParams.y, _ProjectionParams.z, orthoLinearDepth)
 </li>
 </ul>
 <div class="img-center">
-<a href="OrthoSceneDepth.png" target="_blank" rel="noopener noreferrer"><img src="OrthoSceneDepth.png"></a>
+<a href="OrthoSceneDepth.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="311" alt="" src="OrthoSceneDepth.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h3 id="notes-urp">Notes for Universal RP :</h3>
@@ -734,7 +748,9 @@ orthoEyeDepth = lerp(_ProjectionParams.y, _ProjectionParams.z, orthoLinearDepth)
 <li>The <strong>Depth Texture</strong> option needs to be enabled on the <strong>URP Asset</strong> for the texture to be created.</li>
 </ul>
 <div class="img-center">
-<a href="URPAssetDepth.png" target="_blank" rel="noopener noreferrer"><img src="URPAssetDepth.png"></a>
+<a href="URPAssetDepth.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="529" height="262" alt="" src="URPAssetDepth.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <ul>
@@ -743,14 +759,18 @@ orthoEyeDepth = lerp(_ProjectionParams.y, _ProjectionParams.z, orthoLinearDepth)
 <hr>
 <h2 id="depth-difference">Depth Difference</h2>
 <div class="img-center">
-<a href="DepthDifference.png" target="_blank" rel="noopener noreferrer"><img src="DepthDifference.png"></a>
+<a href="DepthDifference.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="598" height="291" alt="" src="DepthDifference.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>With the <strong>Eye Depth</strong> of the Scene (from the above sections) and Fragment (see <a href="#eye-depth">View Space, Eye Depth</a> section at the beginning of the post), we can use their <strong>difference</strong> (which means to <b class="node">Subtract</b> them) to achieve some intersection-like effects.</p>
 <p>Basically, if both depths are close together, meaning the value is almost the same, then subtracting them will give us a value close to <strong>0</strong>. We can take the <b class="node">One Minus</b> of this to only give us the intersection. We also use a <b class="node">Saturate</b> node to clamp the result between 0 and 1.</p>
 <p>This &ldquo;depth-difference&rdquo; method isn&rsquo;t always accurate however, especially at shallow viewing angles.</p>
 <div class="img-center">
-<a href="GraphDepthDifference.png" target="_blank" rel="noopener noreferrer"><img src="GraphDepthDifference.png"></a>
+<a href="GraphDepthDifference.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="363" alt="" src="GraphDepthDifference.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Since we are using the <b class="node">Scene Depth</b>, the graph must also be set to use <strong>Transparent</strong> surface mode for the node to function correctly. Note that this graph also only works in a <strong>Perspective</strong> projection.</p>
@@ -831,7 +851,9 @@ OUT.positionVS <span style="color:#f92672">=</span> positionVS; <span style="col
 <p>With the fragment&rsquo;s world position and eye depth values it&rsquo;s also possible to reconstruct the world position in the scene. The method we can use to do this varies a bit depending on if we&rsquo;re using a regular shader on a mesh or if the shader is a part of a image effect (e.g. using a <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Renderer Feature</a>).</p>
 <h3 id="mesh-perspective">Mesh (Perspective projection)</h3>
 <div class="img-center">
-<a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer"><img src="https://www.cyanilux.com/ReconstructDepthWorldPos.png"></a>
+<a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy"   alt="" src="https://www.cyanilux.com/ReconstructDepthWorldPos.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>In the above image, we have a plane with a <strong>Transparent</strong> shader that wants to obtain the <strong>Scene Position</strong> based on the <b class="node">Scene Depth</b> (aka Depth Texture). For every fragment, this is a position that lies somewhere on a vector travelling from the camera to the fragment position.</p>
@@ -841,7 +863,9 @@ OUT.positionVS <span style="color:#f92672">=</span> positionVS; <span style="col
 <p>If we put this into a <b class="node">Fraction</b> node then output it, we can visualise the position. But the result is still be moving with the camera. To fix this, take the <strong>Position</strong> output from the <b class="node">Camera</b> node and <b class="node">Subtract</b> the reconstructed position.</p>
 <p>Since we are using the <b class="node">Scene Depth</b>, the graph must also be set to use <strong>Transparent</strong> surface mode for the node to function correctly.</p>
 <div class="img-center">
-<a href="GraphReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer"><img src="GraphReconstructDepthWorldPos.png"></a>
+<a href="GraphReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="422" alt="" src="GraphReconstructDepthWorldPos.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>For Shader Code / HLSL :</p>
@@ -893,21 +917,27 @@ float3 worldPos <span style="color:#f92672">=</span> _WorldSpaceCameraPos <span 
 </div>
 <h3 id="mesh-orthographic">Mesh (Orthographic projection)</h3>
 <div class="img-right">
-<a href="ReconstructDepthWorldPosOrtho.png" target="_blank" rel="noopener noreferrer"><img src="ReconstructDepthWorldPosOrtho.png"></a>
+<a href="ReconstructDepthWorldPosOrtho.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="210" alt="" src="GraphReconstructDepthWorldPosOrtho.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>For an Orthographic projection, we need to use the <strong>Raw</strong> mode on the <b class="node">Scene Depth</b> node. The value returned still varies between platforms a bit as explained in the <a href="#orthographic-scene-depth">Scene Depth Node - Orthographic</a> section so we need to branch based on the <strong>Z Buffer Sign</strong> from the <b class="node">Camera</b> node. That gives us a value equivalent to the Linear01 depth, we then need to <b class="node">Lerp</b> between the <strong>near</strong> and <strong>far</strong> clip planes to convert it to <strong>View/Eye</strong> depth.</p>
 <p>We can then plug that into the <strong>Z</strong> axis of a <b class="node">Vector3</b> node, with the <strong>X</strong> and <strong>Y</strong> axis set to the <strong>X/R</strong> and <strong>Y/G</strong> outputs from the <b class="node">Position</b> node set to <strong>View</strong> space, <b class="node">Split</b>. Finally we <b class="node">Transform</b> that from <strong>View</strong> space to <strong>World</strong> space.</p>
 <p>Since we are using <b class="node">Scene Depth</b>, the <b class="node">Master</b> node should also be set to <strong>Transparent</strong> Surface mode.</p>
 <div class="img-center">
-<a href="GraphReconstructDepthWorldPosOrtho.png" target="_blank" rel="noopener noreferrer"><img src="GraphReconstructDepthWorldPosOrtho.png"></a>
+<a href="GraphReconstructDepthWorldPosOrtho.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="210" alt="" src="GraphReconstructDepthWorldPosOrtho.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h3 id="blit-perspective">Blit (Perspective projection)</h3>
 <p>For image effects, the above approach doesn&rsquo;t really work as we are rendering a quad to the screen. I have found that the following graph works but it requires sending in a <code>_InverseView</code> Matrix, (set to <a href="https://docs.unity3d.com/ScriptReference/Camera-cameraToWorldMatrix.html">cam.cameraToWorldMatrix</a>). The <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Renderer Feature</a> that I shared on Github has an option for this.</p>
 <p>Since we are using the <b class="node">Scene Depth</b>, the graph must also be set to use <strong>Transparent</strong> surface mode for the node to function correctly.</p>
 <div class="img-center">
-<a href="GraphReconstructDepthWorldPosBlit.png" target="_blank" rel="noopener noreferrer"><img src="GraphReconstructDepthWorldPosBlit.png"></a>
+<a href="GraphReconstructDepthWorldPosBlit.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="141" alt="" src="GraphReconstructDepthWorldPosBlit.png" />
+</a>
 <p class="img-text">
 Left note : Custom Function, Output : "Out" Matrix4x4. Body : Out = unity_CameraInvProjection;</br>
 Right note : C#, Shader.SetGlobalMatrix("_InverseView", cam.cameraToWorldMatrix); (I'm doing this in the Custom Renderer Feature used to Blit the shader to the screen)

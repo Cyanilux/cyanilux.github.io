@@ -11,14 +11,14 @@
 	<meta name="msapplication-TileColor" content="#00aba9">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Intro to Shader Graph">
 <meta itemprop="description" content="A detailed introduction on how to use Unity Shader Graph (including v10&#43; changes). Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!">
 <meta itemprop="datePublished" content="2021-03-05T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-03-05T00:00:00+00:00" />
-<meta itemprop="wordCount" content="15548">
+<meta itemprop="wordCount" content="15588">
 
 
 
@@ -168,7 +168,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -362,7 +362,9 @@
 <h2 id="graph-types">Graph Types</h2>
 <p>To create a Shader Graph Asset, right-click somewhere in your <strong>Assets</strong> in the <strong>Project</strong> window then select <strong>Create → Shader</strong>.</p>
 <div class="img-center">
-<a href="CreateShaderGraph.png" target="_blank" rel="noopener noreferrer"><img src="CreateShaderGraph.png"></a>
+<a href="CreateShaderGraph.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="220" alt="Example : Create -&gt; Shader -&gt; Universal Render Pipeline -&gt; Unlit Shader Graph" src="CreateShaderGraph.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>At the top there will be some options related to writing shaders using code (CG/HLSL), Surface Shader, Unlit Shader, etc. These templates are intended for the Built-in Render Pipeline and may not function in other pipelines. As the focus of this article is on Shader Graph, we want to ignore these. Under them, you should see a list of &ldquo;Graph&rdquo; options assuming Shader Graph has been installed correctly. If not, see the previous section.</p>
@@ -394,13 +396,17 @@
 <h2 id="graph-inspector">Graph Inspector</h2>
 <p>In v10+, the <strong>Graph Inspector</strong> window was added, which can be toggled using the button in the top right of the graph. It has two tabs, <strong>Node Settings</strong> and <strong>Graph Settings</strong>.</p>
 <div class="img-center">
-<a href="GraphInspector.png" target="_blank" rel="noopener noreferrer"><img src="GraphInspector.png"></a>
+<a href="GraphInspector.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="331" height="292" alt="" src="GraphInspector.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>The <strong>Graph Settings</strong> tab is important to set up the graph correctly if you&rsquo;ve selected the <strong>Blank Shader Graph</strong> or want to switch to a different graph type. We need to select an <strong>Active Target</strong> (Universal, HDRP or Visual Effect, depending on which is installed in the project). It&rsquo;s also possible to add multiple active targets to the list, if you need it to be compiled for more than one that is.</p>
 <p>Once a target is selected, more settings are added below the list. I&rsquo;ll be going through the <strong>Universal</strong> ones below but HDRP has some similar ones too (listed on their graph type / master node pages, as linked above). HDRP also exposes it&rsquo;s settings in the Material Inspector but sadly URP doesn&rsquo;t do this currently.</p>
 <div class="img-center">
-<a href="GraphSettingsUniversal.png" target="_blank" rel="noopener noreferrer"><img src="GraphSettingsUniversal.png"></a>
+<a href="GraphSettingsUniversal.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="647" height="224" alt="" src="GraphSettingsUniversal.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Prior to v10, these settings can instead be found on the <b class="node">Master</b> node. While hovering over it, a small cog/gear icon appears in the top right of the node which shows the settings when clicked.</p>
@@ -430,7 +436,9 @@
 <li><strong>Two Sided</strong> : If enabled, Back-faces will also be rendered, otherwise they are culled. Be aware that for URP you may need to flip the Tangent space Normal for these faces in order to get the correct lighting/shading. You can do this with the <b class="node">Is Front Face</b> node and a <b class="node">Branch</b> like so :</li>
 </ul>
 <div class="img-center">
-<a href="GraphTwoSidedLit.png" target="_blank" rel="noopener noreferrer"><img src="GraphTwoSidedLit.png"></a>
+<a href="GraphTwoSidedLit.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="883" height="306" alt="" src="GraphTwoSidedLit.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p><strong>Two Sided</strong> might also cause issues with shadows if the <strong>Normal Bias</strong> is used on the URP Asset, as this pushes the vertices in the normal direction and will lead to self-shadowing for back faces.</p>
@@ -438,7 +446,9 @@
 <hr>
 <h2 id="master-stack">Master Stack</h2>
 <div class="img-right">
-<a href="MasterStack.png" target="_blank" rel="noopener noreferrer"><img src="MasterStack.png"></a>
+<a href="MasterStack.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="294" height="507" alt="" src="MasterStack.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Prior to v10, You could switch between graph types by creating a new <strong>Master Node</strong> (e.g. <b class="node">Unlit</b>, <b class="node">PBR</b>), right-clicking it and setting it as the <strong>Active</strong> one.</p>
@@ -448,7 +458,9 @@
 <p>Blocks in the stack can be removed by right-clicking them and selecting &ldquo;Delete&rdquo; from the dropdown.
 <p class="img-clearfix"></p>
 <div class="img-center">
-<a href="MasterStackAdd.png" target="_blank" rel="noopener noreferrer"><img src="MasterStackAdd.png"></a>
+<a href="MasterStackAdd.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="350" height="144" alt="" src="MasterStackAdd.png" />
+</a>
 <p class="img-text"></p>
 </div></p>
 <p>Blocks can also be added manually by hovering over gaps between two blocks, or at the end of the last block. Right-click and select <strong>Create Node</strong>, or press <strong>Space</strong>. While you can add blocks, they&rsquo;ll still be greyed out if the graph type doesn&rsquo;t use them.</p>
@@ -462,13 +474,17 @@
 <h2 id="nodes">Nodes</h2>
 <p>To add a node to the graph, right-click and choose <strong>Create Node</strong> from the dropdown, or press the <strong>Spacebar</strong>. A box will open at the mouse position allowing you to search and/or choose a node from the list. As the list is quite extensive, I recommend typing the name of a node once you learn them.</p>
 <div class="img-center">
-<a href="CreateNode.png" target="_blank" rel="noopener noreferrer"><img src="CreateNode.png"></a>
+<a href="CreateNode.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="308" height="361" alt="" src="CreateNode.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h3 id="ports">Ports &amp; Connections</h3>
 <p>Nodes have <strong>inputs</strong> and <strong>outputs</strong> shown as small circles, known as <strong>ports</strong>. Inputs are always on the <strong>left</strong> side of the node while outputs are on the <strong>right</strong>.</p>
 <div class="img-center">
-<a href="Nodes.png" target="_blank" rel="noopener noreferrer"><img src="Nodes.png"></a>
+<a href="Nodes.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="678" height="509" alt="" src="Nodes.png" />
+</a>
 <p class="img-text">
 A small collection nodes, showing connections and various previews.
 </p>
@@ -478,7 +494,9 @@ A small collection nodes, showing connections and various previews.
 <p>While dragging a connection from a port, If you release the mouse while <strong>not</strong> hovering over another node port, it will open the <strong>Create Node</strong> menu – filtered to only show nodes where a connection is allowed. Selecting a node from there will then automatically connect it up too. This is very useful for quickly creating graphs.</p>
 <p>Existing connections can be changed by clicking and dragging on the connection wire near to the port. In v10+ it&rsquo;s also possible to drag a selection box over multiple connections coming out of a single output port, and move them all at once to another output.</p>
 <div class="img-center">
-<a href="MovingConnections.gif" target="_blank" rel="noopener noreferrer"><img src="MovingConnections.gif"></a>
+<a href="MovingConnections.gif" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="484" height="208" alt="" src="MovingConnections.gif" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>It&rsquo;s also possible to collapse unused ports to make the node smaller. This can be toggled with the small arrow in the top right of the node (that appears when hovering over it). You can also right-click the node and use <strong>View → Collapse Ports</strong> and <strong>Expand Ports</strong> to show all ports again.</p>
@@ -486,7 +504,9 @@ A small collection nodes, showing connections and various previews.
 <p>In v10+ you can add a redirect/elbow node by <strong>double-clicking along the connection wire</strong>, (or right-clicking the connection and selecting it from the dropdown). This will create a tiny node with a single input and output port that allows you to better organise connections (example shown below).</p>
 <p>To help keep a graph readable, you should avoid having connections pass over other nodes. I&rsquo;d also recommend keeping connections going horizontally or vertically, rather than diagonally, but this is more of a personal preference.</p>
 <div class="img-center">
-<a href="RedirectNodeExample.png" target="_blank" rel="noopener noreferrer"><img src="RedirectNodeExample.png"></a>
+<a href="RedirectNodeExample.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="313" alt="" src="RedirectNodeExample.png" />
+</a>
 <p class="img-text">
 An example using (probably way to many unncessary) redirect nodes, (but hopefully you get the point).
 </p>
@@ -494,7 +514,9 @@ An example using (probably way to many unncessary) redirect nodes, (but hopefull
 <p>Versions prior to v10 did not have this feature, but the <b class="node">Preview</b> node could be used instead, with the preview collapsed to make the node smaller to work with.</p>
 <h3 id="selection">Selecting Nodes</h3>
 <div class="img-center">
-<a href="SelectedNode.png" target="_blank" rel="noopener noreferrer"><img src="SelectedNode.png"></a>
+<a href="SelectedNode.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="498" height="144" alt="" src="SelectedNode.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Nodes can be selected by clicking on them using the left mouse button, or by clicking in an empty space and dragging a selection box over multiple nodes to select them all at once.</p>
@@ -503,7 +525,9 @@ An example using (probably way to many unncessary) redirect nodes, (but hopefull
 <p>Most nodes will have a <strong>Preview</strong>, shown on the bottom of the node. They allow you to preview what the shader is doing at that particular stage, but the result might look different in the scene depending on the mesh used. You can also use the <b class="node">Preview</b> node to preview a particular port if it doesn&rsquo;t already have a preview.</p>
 <p>Because the <strong>Preview</strong> can take up a lot of space, you can collapse it by clicking the upwards-pointing arrow that appears on the preview while hovering over it. The preview can then be shown again by clicking the downwards-pointing arrow on the bottom of the node. Alternatively, right-click the node and use <strong>View → Collapse Preview</strong> and <strong>Expand Preview</strong>.</p>
 <div class="img-center">
-<a href="NodePreviews.png" target="_blank" rel="noopener noreferrer"><img src="NodePreviews.png"></a>
+<a href="NodePreviews.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="188" alt="" src="NodePreviews.png" />
+</a>
 <p class="img-text">
 A collection of nodes showing different previews
 </p>
@@ -539,7 +563,9 @@ A collection of nodes showing different previews
 <h4 id="truncate">Truncate</h4>
 <p>Unlike other data types, different size vectors can be connected to other sized vector ports. For example, A <strong>Vector3</strong> or <strong>Vector4</strong> can be connected to a <strong>Vector2</strong> port (e.g. the <strong>UV</strong> input on a <b class="node">Sample Texture 2D</b> node, some more examples are shown below).</p>
 <div class="img-center">
-<a href="VectorTruncate.png" target="_blank" rel="noopener noreferrer"><img src="VectorTruncate.png"></a>
+<a href="VectorTruncate.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="211" alt="" src="VectorTruncate.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>This will cause the vector to be <strong>truncated</strong>. In the case of the <strong>Float input</strong> port, only the <strong>R/X</strong> component is used while GBA/YZW is truncated. For a <strong>Vector2</strong>, the <strong>RG/XY</strong> components are used and BA/ZW is truncated, and <strong>Vector3</strong>, <strong>RGB/XYZ</strong> with A/W truncated.</p>
@@ -548,7 +574,9 @@ A collection of nodes showing different previews
 <p>Similarly, a smaller sized vector put into a larger sized port will be <strong>promoted</strong>. For example, a <strong>Vector2</strong> put into a <strong>Vector3</strong>. The third component will be filled with a default value of <strong>0</strong>.</p>
 <p>If put into a <strong>Vector4</strong> port, the fourth component has a default value of <strong>1</strong> (as it typically corresponds to an <strong>alpha</strong> value, and it defaults to full opaque, rather than invisible. Also useful for matrix multiplciation where the fourth component should be 1 to allow for translation. Don&rsquo;t worry about that for now though, we&rsquo;ll be going into matrices in a bit).</p>
 <div class="img-center">
-<a href="VectorPromote.png" target="_blank" rel="noopener noreferrer"><img src="VectorPromote.png"></a>
+<a href="VectorPromote.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="246" alt="" src="VectorPromote.png" />
+</a>
 <p class="img-text">
 On the left, the Float is promoted to the Vector3 size, (0.5, 0.5, 0.5). After the add, resulting in (0.5, 0.5, 1).
 </br>On the right, the Vector3 is truncated to the Vector2 size, (0, 0). After the add, resulting in (0.5, 0).
@@ -562,7 +590,9 @@ On the left, the Float is promoted to the Vector3 size, (0.5, 0.5, 0.5). After t
 <p>While not really a data type, Some nodes also have <strong>Dynamic Vector</strong> ports. This means it can change between <strong>Float/Vector1</strong>, <strong>Vector2</strong>, <strong>Vector3</strong> and <strong>Vector4</strong> depending on the inputs.</p>
 <p>Examples of these include many of the <strong>Math</strong> based nodes, e.g. <b class="node">Add</b>, <b class="node">Subtract</b>, <b class="node">Divide</b>, <b class="node">Power</b>, <b class="node">Fraction</b>, <b class="node">Normalize</b>, etc.</p>
 <div class="img-center">
-<a href="DynamicVectorPorts.gif" target="_blank" rel="noopener noreferrer"><img src="DynamicVectorPorts.gif"></a>
+<a href="DynamicVectorPorts.gif" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="484" height="208" alt="" src="DynamicVectorPorts.gif" />
+</a>
 <p class="img-text">
 Add node with ports switching between Float, Vector3 and Vector2 depending on what is connected
 </p>
@@ -574,7 +604,9 @@ Add node with ports switching between Float, Vector3 and Vector2 depending on wh
 <p>A <strong>Matrix4x4</strong> means it has 4 rows and 4 columns, so 16 components in total. Similarly, a <strong>Matrix3x3</strong> has 9 components, and <strong>Matrix2x2</strong> has 4 components.</p>
 <p>Matrices are used for applying transformations which consists of translation (adjusting position), rotation, and scaling. Shader Graph has a few useful spaces built-in to nodes though, such as <strong>Object</strong>, <strong>World</strong>, <strong>View</strong> and <strong>Tangent</strong>, so usually you don&rsquo;t need to deal with matrices. I&rsquo;ll be going over these spaces in more detail later. There&rsquo;s also a <b class="node">Transform</b> node to transform between these spaces.</p>
 <div class="img-center">
-<a href="MatrixMultiplication.png" target="_blank" rel="noopener noreferrer"><img src="MatrixMultiplication.png"></a>
+<a href="MatrixMultiplication.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="383" height="263" alt="" src="MatrixMultiplication.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>It is possible that you may want to handle your own transformations to a custom space too though. The <b class="node">Multiply</b> node can be used to achieve <strong>matrix multiplciation</strong> if a <strong>Matrix</strong> is connected. It&rsquo;s unlikely that you&rsquo;ll need to deal with matrix multiplication unless you&rsquo;re doing some very custom stuff, but if you aren&rsquo;t familiar with it I&rsquo;d recommend looking it up. This <a href="https://catlikecoding.com/unity/tutorials/rendering/part-1/">CatlikeCoding tutorial</a> goes over them.</p>
@@ -583,7 +615,9 @@ Add node with ports switching between Float, Vector3 and Vector2 depending on wh
 <h3 id="boolean">Boolean</h3>
 <p>A type with two possible values, <strong>True</strong> or <strong>False</strong>. It is used in <strong>Logic</strong> based nodes, for example the <b class="node">Comparsion</b> node outputs a Boolean based on comparing two Floats. The Boolean is mainly used in the <strong>Predicate</strong> input of the <b class="node">Branch</b> node, which is used to select between two Floats or Vectors based on if the Boolean is True or False. For Example :</p>
 <div class="img-center">
-<a href="BranchNode.png" target="_blank" rel="noopener noreferrer"><img src="BranchNode.png"></a>
+<a href="BranchNode.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="711" height="363" alt="" src="BranchNode.png" />
+</a>
 <p class="img-text">
 Example showing a Branch based on a Boolean Property. Allows switching between two different UV types. Planar projected / regular model UVs.
 </p>
@@ -604,7 +638,9 @@ Example showing a Branch based on a Boolean Property. Allows switching between t
 <p><strong>Mipmaps</strong> are versions of a texture which are smaller than the original, with each mip map level being half the size of the previous. This produces downsampled/blurry versions of the texture which is useful for lowering detail at a distance, to avoid artifacts like <a href="https://en.wikipedia.org/wiki/Moir%C3%A9_pattern">moiré patterns</a>.</p>
 <p>The original texture is known as mipmap level 0. If it&rsquo;s size was 512x512, then level 1 would have a size of 256x256, level 2 would be 128x128, level 3 would be 64x64, and so on until it reaches 1x1 (level 9 in this case), or a maximum mip map chain count set in the case of textures created through C# code. You can visualise what these mipmaps look like by using the slider on the Texture Preview in Unity&rsquo;s Inspector :</p>
 <div class="img-center">
-<a href="MipmapExample.gif" target="_blank" rel="noopener noreferrer"><img src="MipmapExample.gif"></a>
+<a href="MipmapExample.gif" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="484" height="295" alt="" src="MipmapExample.gif" />
+</a>
 <p class="img-text">
 Mipmap levels of an example noise texture
 </p>
@@ -636,7 +672,9 @@ Mipmap levels of an example noise texture
 <p>A <strong>Cubemap</strong> (also referred to as a TextureCube in HLSL) is another type of 2D texture array that contains 6 slices, one for each side of a cube. It is sampled with a 3D vector that points out from the center of the texture cube. The returned colour is the result of where that vector intersects it.</p>
 <h3 id="gradient">Gradient</h3>
 <div class="img-center">
-<a href="GradientType.png" target="_blank" rel="noopener noreferrer"><img src="GradientType.png"></a>
+<a href="GradientType.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="263" alt="" src="GradientType.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>The gradient type is a bit of an odd one. The type does not exist in regular shaders, It is something specific to shader graph and is actually defined as a struct containing an array of up to 8 colour and alpha values.</p>
@@ -671,7 +709,9 @@ Mipmap levels of an example noise texture
 <li>If you only need two colours, you can create a gradient quite easily from two <strong>Color properties</strong> and a <b class="node">Lerp</b> node. Same with three, perhaps four, but you&rsquo;ll need to link together multiple lerps and remap the <strong>T</strong> inputs. The below image provides an example for a 3-colour gradient.</li>
 </ul>
 <div class="img-center">
-<a href="Lerp3Colours.png" target="_blank" rel="noopener noreferrer"><img src="Lerp3Colours.png"></a>
+<a href="Lerp3Colours.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="441" alt="" src="Lerp3Colours.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <ul>
@@ -875,7 +915,9 @@ float4 _GradientColors[<span style="color:#ae81ff">8</span>];
 <h2 id="understanding-previews">Understanding Previews</h2>
 <h3 id="preview-float">Float/Vector1</h3>
 <div class="img-center">
-<a href="FloatPreview.png" target="_blank" rel="noopener noreferrer"><img src="FloatPreview.png"></a>
+<a href="FloatPreview.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="277" alt="" src="FloatPreview.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>For <strong>Float</strong> types, previews are always <strong>greyscale</strong>. <strong>Black</strong> means the value is <strong>0</strong>, or <strong>negative</strong>, and <strong>White</strong> means a value of <strong>1</strong> or <strong>higher</strong>. Values in-between 0 and 1 show as different greyscale shades.</p>
@@ -892,7 +934,9 @@ float4 _GradientColors[<span style="color:#ae81ff">8</span>];
 <p>As well as for colours, vectors are commonly used for <strong>positions</strong> and other coordinates. Some examples are below.</p>
 <h3 id="preview-uv">UV</h3>
 <div class="img-right">
-<a href="UVNode.png" target="_blank" rel="noopener noreferrer"><img src="UVNode.png"></a>
+<a href="UVNode.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="210" height="315" alt="" src="UVNode.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>The <b class="node">UV</b> node for example shows a <strong>2D/Quad</strong> preview. It&rsquo;s output is a <strong>Vector4</strong>, but typically UVs (aka Texture Coordinates) are Vector2. As mentioned the 4th alpha component (which is 1 here) is ignored for previews and the 3rd component is 0 so we don&rsquo;t see any Blue, only see <strong>Red</strong> and <strong>Green</strong>. From the colours shown, we can see that the red values start in the bottom left corner at 0 as they are darker, then increase to 1 horizontally across the quad, while green starts at 0 increasing to 1 vertically.</p>
@@ -908,14 +952,18 @@ float4 _GradientColors[<span style="color:#ae81ff">8</span>];
 <p>When we use the <b class="node">Sample Texture 2D</b> node, these <strong>UVs</strong> are used as an input, where they correspond to the part of the texture to sample. In the case of the default quad UVs this just shows the texture (though since alpha is ignored it can show either black areas, or colour bleeding as some programs/formats won&rsquo;t store RGB values in areas with 0 alpha).</p>
 <p>It&rsquo;s possible to offset or adjust the tiling of the UVs through <b class="node">Add</b> and <b class="node">Multiply</b> nodes, or by using the <b class="node">Tiling And Offset</b> node. We can even offset each part of the UVs by different amounts, e.g. using <b class="node">Simple Noise</b> or <b class="node">Gradient Noise</b> nodes (or noise sampled from another texture). This distorts the UV coordinates, and so the resulting texture sample is also distorted.</p>
 <div class="img-center">
-<a href="UVDistortion.png" target="_blank" rel="noopener noreferrer"><img src="UVDistortion.png"></a>
+<a href="UVDistortion.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="266" alt="" src="UVDistortion.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>The noise has values in a range from 0 to 1 (though this may vary depending on the noise used), so we <b class="node">Subtract</b> <strong>0.5</strong> to center the distortion. We also <b class="node">Multiply</b> by a small value to lower the strength of the distortion, as values of -0.5 and 0.5 would offset a coordinate by half of the texture.</p>
 <p>Something to also note is the noise output is a <strong>Float</strong>, but the <strong>Offset</strong> is a <strong>Vector2</strong>, so it is being promoted. The distortion is using the same value in both axis of the texture so it will only ever offset in a diagonal direction towards the bottom left or top right. There is other methods that allow the distortion to be in any direction, for example using a flow map (which are very similar to Bump/Normal maps). This <a href="https://catlikecoding.com/unity/tutorials/flow/texture-distortion/">CatlikeCoding</a> article is a good example of those, also offset by repeating time to create flowing water materials.</p>
 <h3 id="preview-position">Position</h3>
 <div class="img-right">
-<a href="PositionNode.png" target="_blank" rel="noopener noreferrer"><img src="PositionNode.png"></a>
+<a href="PositionNode.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="180" height="274" alt="" src="PositionNode.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>The <b class="node">Position</b> node shows similar colours, but shows a <strong>3D/Sphere</strong> and the output is <strong>Vector3</strong>. Again no blue shades are shown, but this time it&rsquo;s because the side of the sphere facing us is the negative Z axis. The blue parts of the sphere are hidden on the other side. We can <b class="node">Negate</b> the result to flip everything and blue will be shown. We can also use an <b class="node">Absolute</b> node to bring negative values back into a positive range.</p>
@@ -926,7 +974,9 @@ float4 _GradientColors[<span style="color:#ae81ff">8</span>];
 <h2 id="main-preview">Main Preview</h2>
 <p>You can also use the <strong>Main Preview</strong> window to view the final shader result based on what is connected to the <strong>Master Stack</strong> (or active <b class="node">Master Node</b>), though personally I prefer to view the shader applied to an object in the <strong>Scene View</strong> instead.</p>
 <div class="img-center">
-<a href="MainPreview.png" target="_blank" rel="noopener noreferrer"><img src="MainPreview.png"></a>
+<a href="MainPreview.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="368" height="368" alt="" src="MainPreview.png" />
+</a>
 <p class="img-text">
 Example Main Preview for a Soft Foliage Shader, showing a custom mesh
 </p>
@@ -940,7 +990,9 @@ Example Main Preview for a Soft Foliage Shader, showing a custom mesh
 <h3 id="path">Path</h3>
 <p>The <strong>Blackboard</strong> window also allows you to adjust the <strong>path</strong> of the shader when it appears in the <strong>Shader dropdown menu</strong> on the Material. This is the grey text under the graph name at the top.</p>
 <div class="img-center">
-<a href="Blackboard.png" target="_blank" rel="noopener noreferrer"><img src="Blackboard.png"></a>
+<a href="Blackboard.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="275" height="179" alt="" src="Blackboard.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>By default it shows under the &ldquo;Shader Graphs&rdquo; heading but this can be changed. It <em>really</em> doesn&rsquo;t look like an editable field - but you can <strong>double-click</strong> it and it will change into a editable field.</p>
@@ -950,7 +1002,9 @@ Example Main Preview for a Soft Foliage Shader, showing a custom mesh
 <p>If we have a data type node in the graph, (e.g. Nodes like <b class="node">Float</b>, <b class="node">Vector2</b>, <b class="node">Color</b>, etc), we can also right-click them and choose <strong>Convert To → Property</strong> from the dropdown to create the property automatically, with the default value set from the value it had before converting. It&rsquo;s also possible to convert a property back using <strong>Convert To → Inline Node</strong> if required. These can be done to multiple nodes/properties at once if multiple are selected.</p>
 <p>Each property in the <strong>Blackboard</strong> can be dragged into the graph to add it as a node. You can also use the <strong>Create Node</strong> menu by typing it&rsquo;s name, or &ldquo;Property&rdquo; to see all of them.</p>
 <div class="img-center">
-<a href="PropertySettings.png" target="_blank" rel="noopener noreferrer"><img src="PropertySettings.png"></a>
+<a href="PropertySettings.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="735" height="268" alt="" src="PropertySettings.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Prior to v10, an arrow was on the left of each property to expand extra settings for it. In v10+ these settings were moved to the <strong>Graph Inspector</strong> window in the <strong>Node Settings</strong> tab. While a property is selected in the <strong>Blackboard</strong> or in the graph, the settings will appear there. (I&rsquo;m personally not a fan of this change as it makes creating properties a bit awkward when having to go back and forth between two separate windows, so I&rsquo;m very much hoping it&rsquo;s reverted).</p>
@@ -972,7 +1026,9 @@ Example Main Preview for a Soft Foliage Shader, showing a custom mesh
 <p>It is also the value that will be used in the node <strong>Previews</strong> so it can be important to set these.</p>
 <h4 id="property-modes">Modes</h4>
 <div class="img-center">
-<a href="PropertyModeExamples.png" target="_blank" rel="noopener noreferrer"><img src="PropertyModeExamples.png"></a>
+<a href="PropertyModeExamples.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="275" alt="" src="PropertyModeExamples.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Some properties will have different &ldquo;modes&rdquo;, such as the <strong>Float</strong> property which has the following :</p>
@@ -1005,7 +1061,9 @@ Example Main Preview for a Soft Foliage Shader, showing a custom mesh
 <p>For more information and example code on setting properties from C#, see the section in my <a href="https://www.cyanilux.com/tutorials/intro-to-shaders/#properties">Intro to Shaders post</a>. It&rsquo;s also important to understand the difference between using <code>Renderer.material</code> and <code>Renderer.sharedMaterial</code>, so see the section <a href="https://www.cyanilux.com/tutorials/intro-to-shaders/#material-instances">here</a> too.</p>
 <h3 id="keywords">Keywords &amp; Shader Variants</h3>
 <div class="img-center">
-<a href="Keywords.png" target="_blank" rel="noopener noreferrer"><img src="Keywords.png"></a>
+<a href="Keywords.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="241" height="212" alt="" src="Keywords.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>As well as Properties, the <strong>Blackboard</strong> also allows us to add <strong>Keywords</strong>. In the &ldquo;+&rdquo; menu, under the Keywords heading there is the following options :</p>
@@ -1023,7 +1081,9 @@ Example Main Preview for a Soft Foliage Shader, showing a custom mesh
 <p>The maximum can be edited in <strong>Edit → Preferences → Shader Graph</strong>, however it is important to realise that with each keyword added it <strong>exponentially creates more variants</strong>. And more variants will also slow down build times. With 7 Boolean Keywords (2 states, On and Off), the shader produces 2^7 or 128 variants, so hits the limit exactly. I recommend to be careful with keywords as you don&rsquo;t want to over-use them for everything. They should be used in a situation where you need to toggle an effect because it would greatly affect performance if a <b class="node">Branch</b> was used instead (which would still calculate both sides and discard one).</p>
 <p>Each keyword can be dragged into the graph to add it as a node. You can also use the <strong>Create Node</strong> menu by typing it&rsquo;s name, or &ldquo;Keyword&rdquo; to see all of them. The created node will resemble other nodes and have input ports (either On/Off for the <strong>Boolean Keyword</strong>, or the Entries for the <strong>Enum Keyword</strong>). Only <strong>Floats</strong> and <strong>Vector</strong> types can be connected.</p>
 <div class="img-center">
-<a href="KeywordSettings.png" target="_blank" rel="noopener noreferrer"><img src="KeywordSettings.png"></a>
+<a href="KeywordSettings.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="202" alt="" src="KeywordSettings.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>Similar to Properties, you can find settings for each keyword under the <strong>Graph Inspector</strong> window in the <strong>Node Settings</strong> tab. While a keyword is selected in the <strong>Blackboard</strong>, the settings will appear there. (Prior to v10, an arrow was on the left of each keyword to expand extra settings for it).</p>
@@ -1112,7 +1172,9 @@ material.DisableKeyword(<span style="color:#e6db74">&#34;ENUM_C&#34;</span>);
 <h2 id="groups">Grouping Nodes</h2>
 <p>To help with organising your graphs, you can group sections of nodes together. Drag a selection box over multiple nodes, right-click on one of those selected nodes, then choose <strong>Group Selection</strong>. Or use the <strong>Ctrl+G</strong> shortcut.</p>
 <div class="img-center">
-<a href="NodeGroup.png" target="_blank" rel="noopener noreferrer"><img src="NodeGroup.png"></a>
+<a href="NodeGroup.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="305" alt="" src="NodeGroup.png" />
+</a>
 <p class="img-text">
 Example section of a graph containing a couple grouped nodes. Helps to understand what the nodes are doing at a quick glance.
 </p>
@@ -1125,7 +1187,9 @@ Example section of a graph containing a couple grouped nodes. Helps to understan
 <h2 id="sticky-notes">Sticky Notes</h2>
 <p>You can also add <strong>Sticky Notes</strong> to a graph (I believe this was added in v8.2.0), by right-clicking an empty space in the graph and selecting <strong>Create Sticky Note</strong> from the dropdown.</p>
 <div class="img-center">
-<a href="StickyNote.png" target="_blank" rel="noopener noreferrer"><img src="StickyNote.png"></a>
+<a href="StickyNote.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="487" height="187" alt="" src="StickyNote.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>These are for adding comments to your graph. They have a text field at the top for a title, and a larger box for the text body. The text can be edited by double-clicking one of the fields. They can also be resized by dragging the edges.</p>
@@ -1154,6 +1218,7 @@ Example section of a graph containing a couple grouped nodes. Helps to understan
 <li><strong>Ctrl+G</strong> : Group a selection of nodes. If nodes were already in a group, they will be removed from the previous one and added to the new group.</li>
 <li><strong>Ctrl+U</strong> : Remove a selection of nodes from a group</li>
 <li><strong>Delete</strong> : Deletes selected connections and nodes. If a group is selected, the group is deleted without affecting it&rsquo;s contents (unless they are selected too). Some nodes, like a Sub Graph&rsquo;s <b class="node">Output</b> node cannot be deleted.</li>
+<li><strong>Shift + Space</strong> : Toggles Maximize on the Unity window the mouse is currently hovering over. This is one of Unity&rsquo;s shortcuts for all windows, not just Shader Graph. The shortcut can be edited via Edit → Shortcuts&hellip; → Window.</li>
 </ul>
 <p>Shader Graph currently does not have any shortcuts for easily placing/creating nodes.</p>
 <hr>
@@ -1166,14 +1231,18 @@ Example section of a graph containing a couple grouped nodes. Helps to understan
 <li><strong>Convert To Sub Graph</strong> : In any graph, you can drag a selection over some nodes, right-click one of the selected nodes, and convert to a <strong>Sub Graph</strong> (<strong>Convert To → Sub-graph</strong>). This will put the selected content into a new Sub Graph and should automatically create inputs/outputs and retain their connections. Note it only creates inputs if a connection from a non-selected node is going into one of the selected nodes.</li>
 </ul>
 <div class="img-center">
-<a href="ConvertToSubGraph.png" target="_blank" rel="noopener noreferrer"><img src="ConvertToSubGraph.png"></a>
+<a href="ConvertToSubGraph.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="512" height="373" alt="" src="ConvertToSubGraph.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <h3 id="sub-graph-outputs">Outputs</h3>
 <p>In v10+ we can adjust the number of outputs and change their data types by selecting the <b class="node">Output</b> node (left-click on it). A list will appear in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window, (It&rsquo;s incorrectly labelled as &ldquo;Inputs&rdquo;, in v10/v11 at least, but this might be fixed in the future).</p>
 <p>Prior to v10 a cog/gear could be found on the <b class="node">Output</b> node to adjust these instead.</p>
 <div class="img-center">
-<a href="SubGraphOutputs.png" target="_blank" rel="noopener noreferrer"><img src="SubGraphOutputs.png"></a>
+<a href="SubGraphOutputs.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="556" height="225" alt="" src="SubGraphOutputs.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>The first output is used to create the node&rsquo;s Preview. It must be a <strong>Float</strong>, <strong>Vector</strong>, <strong>Matrix</strong>, or <strong>Boolean</strong> type or the <strong>Sub Graph</strong> will error. Other outputs can be any type from the dropdown (though Virtual Texture appears to not be supported and is greyed out).</p>
@@ -1268,7 +1337,9 @@ RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTextur
 <p>Back in Unity 2018.1, there was a method of creating custom nodes using the <code>CodeFunctionNode</code> class in the <code>UnityEditor.ShaderGraph</code> namespace. This method is <strong>no longer accessible</strong> and will error if you attempt to use CodeFunctionNode in Shader Graph/URP/HDRP versions for Unity 2019.1+. The replacement was the in-graph node :</p>
 <p>The <b class="node">Custom Function</b> node can be added to a graph, then in v10+ settings for it is found in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window, while the node is selected in the graph. Prior to v10 the settings could be accessed by the small cog/gear icon on the node itself.</p>
 <div class="img-center">
-<a href="CustomFunctionExample.png" target="_blank" rel="noopener noreferrer"><img src="CustomFunctionExample.png"></a>
+<a href="CustomFunctionExample.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="339" alt="" src="CustomFunctionExample.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>We can set the <strong>Inputs</strong> and <strong>Outputs</strong> for the function by using the &ldquo;+&rdquo; icon to add to the list. For each item, a dropdown is shown to change it&rsquo;s data type. This affects the ports on the node.</p>
@@ -1476,7 +1547,9 @@ RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTextur
 <h3 id="generated-shader-code">Viewing/Editing Generated Shader Code</h3>
 <p>Behind the scenes, Shader Graph generates shader code specific to the render pipeline you&rsquo;re working in (URP/HDRP). In v10+ it&rsquo;s possible to view this code using the <strong>View Generated Shader</strong> button in Unity&rsquo;s <strong>Inspector</strong> window when the <strong>Shader Graph Asset</strong> is selected in the <strong>Project</strong> window. Prior to v10 you could instead right-click the <b class="node">Master</b> node to find this option.</p>
 <div class="img-center">
-<a href="ViewGeneratedShader.png" target="_blank" rel="noopener noreferrer"><img src="ViewGeneratedShader.png"></a>
+<a href="ViewGeneratedShader.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="557" height="155" alt="" src="ViewGeneratedShader.png" />
+</a>
 <p class="img-text"></p>
 </div>
 <p>This will generate the code into a temporary file, allowing you to view it.</p>
