@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Soft Foliage Shader Breakdown">
+<meta itemprop="description" content="Soft shaded foliage shader that uses alpha clipping with foliage texture and a small amount of vertex displacement to simulate wind. Applied to a mesh consisting of intersecting quads generated from a particle system">
+<meta itemprop="datePublished" content="2021-03-16T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-03-16T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2310">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	
+	
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/soft-foliage-shader-breakdown/Preview.png"/>
+<meta name="twitter:title" content="Soft Foliage Shader Breakdown"/>
+<meta name="twitter:description" content="Soft shaded foliage shader that uses alpha clipping with foliage texture and a small amount of vertex displacement to simulate wind. Applied to a mesh consisting of intersecting quads generated from a particle system"/>
+
+	
+<meta property="og:title" content="Soft Foliage Shader Breakdown" />
+<meta property="og:description" content="Soft shaded foliage shader that uses alpha clipping with foliage texture and a small amount of vertex displacement to simulate wind. Applied to a mesh consisting of intersecting quads generated from a particle system" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/soft-foliage-shader-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/soft-foliage-shader-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2021-03-16T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-03-16T00:00:00+00:00" />
+	
+	
+	
+    
+    
+    <title>Soft Foliage Shader Breakdown | Cyanilux</title>
+	
+	
+	
+		
+		
+		<meta name="description" content="Soft shaded foliage shader that uses alpha clipping with foliage texture and a small amount of vertex displacement to simulate wind. Applied to a mesh consisting of intersecting quads generated from a particle system. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/soft-foliage-shader-breakdown/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	
+	<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Soft Foliage Shader Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2021-03-16">&#128337 Mar 16, 2021</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eMore foliage progress ~ 🌳🌿✨\u003cbr\u003eShowing off lighting a bit better, also an actual tree model rather than a cylinder 😄\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/cMxxs76uN3\"\u003epic.twitter.com/cMxxs76uN3\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1337800925231112193?ref_src=twsrc%5Etfw\"\u003eDecember 12, 2020\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1337800925231112193\">https://twitter.com/Cyanilux/status/1337800925231112193</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>This is a foliage shader that is applied to mesh consisting of intersecting quads generated from a particle system. It uses adjusted normals to provide a soft shading, alpha clipping with foliage texture and a small amount of vertex displacement to simulate wind.</p>
+<p>I posted the shader on my twitter as linked above back in Dec 2020. This post provides a slightly updated version and full breakdown of the setup.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This is an <strong>Unlit</strong> shader using <strong>Opaque</strong> surface mode and <strong>Alpha Clipping</strong> to discard pixels to produce the foliage shape (based on a texture).</li>
+<li>Uses the <strong>Main Light</strong> subgraph from my <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">custom lighting functions on github</a>. You can add them to your project in the <strong>Package Manager</strong> using the HTTPS link with .git appended, or download and put the files in your assets manually.</li>
+<li>Doesn&rsquo;t receive shadows, though that could be added with the use of the <strong>Main Light Shadows</strong> subgraph (e.g. using a <b class="node">Multiply</b> before the colour gradient is applied). With receiving shadows, the quads in the foliage mesh can cast shadows onto itself making the quads much more obvious. I personally prefer not including it for a softer result.</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<h3 id="foliage-mesh">Foliage Mesh</h3>
+<p>Before going into the Shader Graph, it&rsquo;s important that we have a mesh to use for the effect. As mentioned, we&rsquo;re using intersecting quads which allows us to view the foliage from any direction. Alternatives might be billboarding but that might look obvious as quads move to face the camera which is something I wanted to avoid.</p>
+<p>There is likely many ways to generate the mesh for this effect, but I&rsquo;m using the <strong>Particle System</strong> component as it can spawn quads as particles, and it’s possible to spawn them based on a Mesh. We can then convert the particles to a new mesh using <code>ParticleSystemRenderer.BakeMesh</code> (which is a really handy function to be aware of, and <em>I totally didn&rsquo;t write a custom one before discovering it</em>). The mesh is then saved as an asset using <code>AssetDatabase.CreateAsset</code> (or <code>EditorUtility.CopySerialized</code> to override an existing mesh without breaking references).</p>
+<p>Create an empty GameObject and add the <strong>Particle System</strong> component. My Particle System has the following settings :</p>
+<p><strong>Main Module</strong> :</p>
+<ul>
+<li>Looping : false</li>
+<li>Start Lifetime : 999</li>
+<li>Start Speed : 0</li>
+<li>Start Size : 1</li>
+<li>3D Start Rotation : true, set to Random Between Two Constants using the small arrow on the right, set each axis to between 0 and 360.</li>
+<li>Max Particles : 200</li>
+</ul>
+<p><strong>Emission Module</strong> :</p>
+<ul>
+<li>Rate over Time : 0</li>
+<li>Add a single Burst, with a count of 200 particles</li>
+</ul>
+<p><strong>Shape Module</strong> :</p>
+<ul>
+<li>Shape : Mesh, Type : Triangle, Mesh : A custom mesh (an example is shown in a later image). Each triangle in the mesh spawns a quad.</li>
+<li>Normal Offset : -0.25</li>
+<li>Depending on the mesh, may want to adjust Rotation/Scale. Can also rotate/scale the gameobject as the BakeMesh takes that into account as it’s second parameter is set to true.</li>
+</ul>
+<p><strong>Renderer Module</strong> :</p>
+<ul>
+<li>Render Alignment : Local (this is what stops the billboards always facing the camera)</li>
+</ul>
+<p>Next, create a new C# script named &ldquo;BakeParticleSystemToMesh&rdquo; and copy the following into it :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">using</span> UnityEngine;
+<span style="color:#75715e">#if UNITY_EDITOR
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> UnityEditor;
+<span style="color:#66d9ef">using</span> System.IO;
+<span style="color:#75715e">#endif
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">
+</span><span style="color:#a6e22e">[RequireComponent(typeof(ParticleSystem))]</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BakeParticleSystemToMesh</span> : MonoBehaviour {
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> folderPath = <span style="color:#e6db74">&#34;Meshes&#34;</span>;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> fileName = <span style="color:#e6db74">&#34;NewBakedParticleSystemMesh&#34;</span>;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> keepVertexColors = <span style="color:#66d9ef">true</span>;
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> NormalType {
+        KeepNormals,
+        NormalizedVertexPosition,
+        ClearNormals
+    }
+
+    <span style="color:#66d9ef">public</span> NormalType handleNormals;
+
+<span style="color:#75715e">#if UNITY_EDITOR
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">    [ContextMenu(&#34;Bake To Mesh Asset&#34;)]</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> SaveAsset() {
+        <span style="color:#75715e">// Bake
+</span><span style="color:#75715e"></span>        Mesh mesh = <span style="color:#66d9ef">new</span> Mesh();
+        GetComponent&lt;ParticleSystemRenderer&gt;().BakeMesh(mesh, <span style="color:#66d9ef">true</span>);
+        <span style="color:#66d9ef">if</span> (!keepVertexColors)
+            mesh.colors32 = <span style="color:#66d9ef">null</span>;
+        <span style="color:#66d9ef">switch</span> (handleNormals) {
+            <span style="color:#66d9ef">case</span> NormalType.KeepNormals:
+                <span style="color:#66d9ef">break</span>;
+            <span style="color:#66d9ef">case</span> NormalType.NormalizedVertexPosition:
+                Vector3[] normals = mesh.vertices;
+                <span style="color:#66d9ef">int</span> length = normals.Length;
+                <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; length; i++) {
+                    normals[i] = normals[i].normalized;
+                }
+                mesh.normals = normals;
+                <span style="color:#66d9ef">break</span>;
+            <span style="color:#66d9ef">default</span>:
+            <span style="color:#66d9ef">case</span> NormalType.ClearNormals:
+                mesh.normals = <span style="color:#66d9ef">null</span>;
+                <span style="color:#66d9ef">break</span>;
+        }
+
+        <span style="color:#75715e">// Setup Path
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">string</span> fileName = Path.GetFileNameWithoutExtension(<span style="color:#66d9ef">this</span>.fileName) + <span style="color:#e6db74">&#34;.asset&#34;</span>;
+        Directory.CreateDirectory(<span style="color:#e6db74">&#34;Assets/&#34;</span> + folderPath);
+        <span style="color:#66d9ef">string</span> assetPath = <span style="color:#e6db74">&#34;Assets/&#34;</span> + folderPath + <span style="color:#e6db74">&#34;/&#34;</span> + fileName;
+
+        <span style="color:#75715e">// Create / Override Asset
+</span><span style="color:#75715e"></span>        Object existingAsset = AssetDatabase.LoadAssetAtPath&lt;Object&gt;(assetPath);
+        <span style="color:#66d9ef">if</span> (existingAsset == <span style="color:#66d9ef">null</span>) {
+            AssetDatabase.CreateAsset(mesh, assetPath);
+        } <span style="color:#66d9ef">else</span> {
+            <span style="color:#66d9ef">if</span> (existingAsset <span style="color:#66d9ef">is</span> Mesh)
+                (existingAsset <span style="color:#66d9ef">as</span> Mesh).Clear();
+            EditorUtility.CopySerialized(mesh, existingAsset);
+        }
+        AssetDatabase.SaveAssets();
+    }
+<span style="color:#75715e">#endif
+</span><span style="color:#75715e"></span>}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>We can add this component to our GameObject. In the Scene View we click the Play/Restart on the Particle Effect window to spawn the particles. Then right-click the <code>BakeParticleSystemToMesh</code> script (or use the &ldquo;&hellip;&rdquo; button) and select <strong>Bake To Mesh Asset</strong>, which appears in the dropdown thanks to the ContextMenu attribute used.</p>
+<p>Alternatively, use a custom inspector to add a <strong>Bake</strong> button which calls the same function, by placing the following script (<code>BakeParticleSystemToMeshEditor</code>) in a folder named &ldquo;Editor&rdquo; :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">using</span> UnityEngine;
+<span style="color:#66d9ef">using</span> UnityEditor;
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">[CustomEditor(typeof(BakeParticleSystemToMesh))]</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BakeParticleSystemToMeshEditor</span> : Editor {
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> OnInspectorGUI() {
+        <span style="color:#66d9ef">base</span>.OnInspectorGUI();
+
+        <span style="color:#66d9ef">if</span> (GUILayout.Button(<span style="color:#e6db74">&#34;Bake&#34;</span>)) {
+            ((BakeParticleSystemToMesh)target).SaveAsset();
+        }
+    }
+
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>The generated mesh is saved in the folder (under Assets) with the name specified on the <code>BakeParticleSystemToMesh</code> component. This particle system GameObject is no longer required and could be deleted - However it may be useful to keep it (e.g. saved as a prefab) for generating more foliage meshes later so you don’t have to change the settings again.</p>
+<p>For the <strong>soft shading</strong>, we have a choice as we can either alter the <strong>normals</strong> of our mesh to point outwards, or we can use the <b class="node">Position</b> later in the shader to create a vector used for the shading. If we require static/dynamic batching, we should calculate the normals and store them now as it’ll combine meshes which will alter the <strong>origin</strong> (and <strong>model matrix</strong>) used in those calculations (specifically clearing it to an identity matrix as the transform will be baked into the vertex shader input).</p>
+<p>Calculating the required normals isn’t too difficult, we use the vertex positions and normalise them, the script above already has this included. Make sure to change the <strong>Handle Normals</strong> setting to <strong>Normalised Vertex Pos</strong>. If you&rsquo;d rather handle it in the shader, you can still generate the normals or clear them to save on memory.</p>
+<div class="img-center">
+<a href="GeneratedMesh.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="700" height="221" alt="" src="GeneratedMesh.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>With the mesh generated, we can now create a new <strong>GameObject</strong>, add a <strong>Mesh Renderer</strong> and a <strong>Mesh Filter</strong> with the new foliage mesh assigned.</p>
+<h3 id="shader-graph">Shader Graph</h3>
+<p>For the shader, I’m using an <strong>Unlit Graph</strong> but applying some custom lighting (Main Light only, optional shadow receiving). The same concept may work for the PBR / Lit Graph too though. Create a new <strong>Material</strong> using the graph and assign it to the <strong>Mesh Renderer</strong>.</p>
+<p>First up, we need to create a <strong>Texture2D property</strong> that is used for our foliage texture. I’m using the following texture that I threw together quite quickly in GIMP. (Feel free to use it if you want, or make your own)</p>
+<div class="img-center">
+<a href="FoliageTexture.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="256" height="256" alt="" src="FoliageTexture.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We use a <b class="node">Sample Texture 2D</b> node to sample it, and put one of the outputs into the <strong>Alpha</strong> port on the <strong>Master Stack</strong> (or <b class="node">Unlit Master</b> node).</p>
+<p>Every channel of the texture is basically the same so it isn’t too important which is used. If the texture is compressed the alpha channel likely uses more bits but we could also remove the alpha on the texture import to save memory. Usually the <strong>G</strong> channel is stored with more bits than the red/blue when compressed so I&rsquo;m using that - there likely won&rsquo;t be any visible difference between them all for this texture though.</p>
+<p>To optimise the texture further, it could likely be made smaller and converting the shape to a distance field may help too (discussed briefly in my <a href="https://www.cyanilux.com/tutorials/sprite-outline-shader-breakdown/">sprite glow/outline breakdown</a>).</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="666" height="461" alt="" src="Graph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The shader is <strong>Opaque</strong> as that is best to prevent sorting issues, but in order to get the foliage shape we need to make sure <strong>Alpha Clipping</strong> is enabled via the <strong>Graph Inspector</strong> (if in v10+). We’ll set the <strong>Alpha Clip Threshold</strong> port to <strong>0.5</strong>. The shader will now clip/remove any pixels where the Alpha port is below the threshold, which is mainly the black parts of the texture (since 0 &lt; 0.5).</p>
+<h3 id="shading">Shading</h3>
+<p>For the shading I’m using the <strong>Lambertian</strong> diffuse calculation, which is a <strong>dot product between the normal and light direction</strong>. If the normals were edited in the mesh, we can use the <b class="node">Normal Vector</b> node to obtain them.</p>
+<p>If you’d rather calculate the required normals in the shader, we can do so using the <b class="node">Position</b> node in <strong>World</strong> space and <b class="node">Subtract</b> the <strong>Position</strong> output from the <b class="node">Object</b> node (which is the world space position of the <strong>origin of the GameObject/Transform</strong>). We then need to <b class="node">Normalize</b> the result. (As mentioned previously, be aware that this calculation won&rsquo;t produce the correct results for meshes batched using static/dynamic batching, or particle systems)</p>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="416" height="246" alt="" src="Graph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We can then use a <b class="node">Dot Product</b> between the (stored or calculated) <strong>normal</strong> and <strong>Light Direction</strong>, obtained using a <strong>Sub Graph</strong> named <b class="node">Main Light</b>, which contains a <b class="node">Custom Function</b> node calling <code>GetMainLight()</code>. I have shared some <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">custom lighting functions on github</a> which includes this. (You can add them to your project in the <strong>Package Manager</strong> using the HTTPS link with .git appended, or download and put the files in your assets manually)</p>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="630" height="295" alt="" src="Graph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The output of the <b class="node">Dot Product</b> is in a <strong>-1 to 1</strong> range, so we can use an <b class="node">Inverse Lerp</b> (or <b class="node">Remap</b>) to remap it to a <strong>0 to 1</strong> range with <strong>-1 and 1</strong> as the <strong>A</strong> and <strong>B</strong> inputs (or <strong>In Min Max</strong>). For most objects you usually don’t remap this and have half of the object darker but this shading looks strange for foliage as it should allow some light to pass through.</p>
+<div class="img-center">
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="315" alt="" src="Graph4.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>To apply some colour to the remapped gradient, we put the output into the <strong>T</strong> of a <b class="node">Lerp</b> node and assign some <strong>Color properties</strong> to the <strong>A</strong> and <strong>B</strong> inputs. This allows us to interpolate between the two colours. With this put into the <strong>Base Color</strong> port of the <strong>Master Stack</strong> (or <strong>Color</strong> of <b class="node">Unlit Master</b> node) we get the soft shading that we wanted :</p>
+<div class="img-center">
+<a href="Preview.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="500" height="400" alt="" src="Preview.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>If you wanted vertex colours to be taken into account too, you should <b class="node">Multiply</b> the result with the <b class="node">Vertex Color</b> node before putting it into the <strong>Base Color</strong>.</p>
+<h3 id="wind">Wind</h3>
+<p>To handle the wind we&rsquo;re displacing the vertices. There may be a few ways to go about doing this depending on the accuracy needed (e.g. could use noise / texture sample). I&rsquo;m using a sine wave to give a slight swaying motion to give the impression that a light wind is affecting them. This will only affect the foliage, however it may be possible to extend the same method to the tree branches too - with an additional method of controlling the weight of the offset (e.g. painting vertex colours), so the bottom of the trunk doesn&rsquo;t move as much as the ends of branches.</p>
+<p>The Master Stack/Node expects the <strong>Vertex Position</strong> to be in <strong>Object</strong> space. The regular input would be the <b class="node">Position</b> node set to <strong>Object</strong> space, which gives us the vertex positions. We could then use an <b class="node">Add</b> or <b class="node">Subtract</b> to offset it. However, if we imagine offsetting all the vertices by (1,0,0) it&rsquo;ll shift the mesh on the <strong>local X axis</strong>. If we rotate the GameObject that direction will change which might look strange for wind. The scale would also affect the amount of displacement.</p>
+<p>Ideally, we would want the wind direction to remain constant for all objects in the scene so should instead use a <b class="node">Position</b> node in <strong>World</strong> space, <b class="node">Add</b>, then <b class="node">Transform</b> it back to <strong>Object</strong> at the end. We&rsquo;ll come back to what goes in the second port on the <b class="node">Add</b> later.</p>
+<div class="img-center">
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="725" height="243" alt="" src="Graph5.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>For the swaying motion we&rsquo;re using the <b class="node">Sine</b> node. The sine wave should be based on <strong>Time</strong> so we need the <b class="node">Time</b> node, with a <b class="node">Multiply</b> to control the <strong>speed</strong> (aka <strong>time-based frequency</strong> of the wave, set to <strong>2</strong>), you can create a <strong>Vector1 property</strong> for this if you want control from the material inspector.</p>
+<p>We don’t want every vertex to move the same amount so should take the position into account. We use a <b class="node">Position</b> node (<strong>World</strong> space), <b class="node">Split</b> to obtain each component and add them together. Since it’s a <strong>Vector3</strong> we only need to worry about the <strong>X, Y and Z</strong> (aka <strong>R, G and B</strong>). We’ll include another <b class="node">Multiply</b> for this which will increase the <strong>position-based frequency</strong> of the wave, which I have set to <strong>8</strong>.</p>
+<p>Now we can <b class="node">Add</b> these two frequencies together and input it into the <b class="node">Sine</b> node. The range (or amplitude) of the wave is <strong>-1 to 1</strong> which is far too large of an offset, so we also <b class="node">Multiply</b> the output by <strong>0.04</strong> to lower that. Again could use a <strong>Vector1 property</strong>.</p>
+<div class="img-center">
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="245" alt="" src="Graph6.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We put the result into a <b class="node">Vector3</b> node which is then put into the <b class="node">Add</b> node in the <strong>Vertex Displacement</strong> group from earlier. I find the results to look best when the wind only affects the <strong>R/X and Z/B</strong> axis, especially for bushes/shrubs that are on the ground rather than trees.
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p></p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>
