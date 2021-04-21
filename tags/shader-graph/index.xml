@@ -6,7 +6,17 @@
     <description>Recent content in Shader Graph on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Tue, 16 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/shader-graph/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 21 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/shader-graph/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Holofoil Card Shader Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/holofoil-card-shader-breakdown/</link>
+      <pubDate>Wed, 21 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/holofoil-card-shader-breakdown/</guid>
+      <description>if (cookiesAccepted){document.write(&#34;\u003cblockquote class=\&#34;twitter-tweet\&#34; data-dnt=\&#34;true\&#34; data-theme=\&#34;dark\&#34;\u003e\u003cp lang=\&#34;en\&#34; dir=\&#34;ltr\&#34;\u003ePretty happy with the result of these holographic foil trading card experiments! I\u0026#39;m also working on a breakdown of the shader (\u0026amp; stencil window effect), should have it finished \u0026amp; released sometime this week ✨\u003ca href=\&#34;https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\&#34;\u003e#unity3D\u003c/a\u003e \u003ca href=\&#34;https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\&#34;\u003e#shaders\u003c/a\u003e \u003ca href=\&#34;https://t.co/L3FH6hZ3Qh\&#34;\u003epic.twitter.com/L3FH6hZ3Qh\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\&#34;https://twitter.com/Cyanilux/status/1383873492920115202?ref_src=twsrc%5Etfw\&#34;\u003eApril 18, 2021\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\&#34;https://platform.twitter.com/widgets.js\&#34; charset=\&#34;utf-8\&#34;\u003e\u003c/script\u003e\n&#34;);}else{document.write(&#34;https://twitter.com/Cyanilux/status/1383873492920115202&#34;+&#34;Cookies are not accepted so cannot show embedded tweet.
+&#34;+&#34;</description>
+    </item>
+    
     <item>
       <title>Soft Foliage Shader Breakdown</title>
       <link>https://www.cyanilux.com/tutorials/soft-foliage-shader-breakdown/</link>

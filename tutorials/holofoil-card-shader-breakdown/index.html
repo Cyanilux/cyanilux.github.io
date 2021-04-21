@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Holofoil Card Shader Breakdown">
+<meta itemprop="description" content="A shader that replicates the Holographic Foil effects on Trading Cards. Also explains the stencil shader effect on the card window.">
+<meta itemprop="datePublished" content="2021-04-21T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-04-21T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2078">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	
+	
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/holofoil-card-shader-breakdown/Preview.png"/>
+<meta name="twitter:title" content="Holofoil Card Shader Breakdown"/>
+<meta name="twitter:description" content="A shader that replicates the Holographic Foil effects on Trading Cards. Also explains the stencil shader effect on the card window."/>
+
+	
+<meta property="og:title" content="Holofoil Card Shader Breakdown" />
+<meta property="og:description" content="A shader that replicates the Holographic Foil effects on Trading Cards. Also explains the stencil shader effect on the card window." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/holofoil-card-shader-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/holofoil-card-shader-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2021-04-21T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-04-21T00:00:00+00:00" />
+	
+	
+	
+    
+    
+    <title>Holofoil Card Shader Breakdown | Cyanilux</title>
+	
+	
+	
+		
+		
+		<meta name="description" content="A shader that replicates the Holographic Foil effects on Trading Cards. Also explains the stencil shader effect on the card window.. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/holofoil-card-shader-breakdown/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	
+	<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Holofoil Card Shader Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2021-04-21">&#128337 Apr 21, 2021</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003ePretty happy with the result of these holographic foil trading card experiments! I\u0026#39;m also working on a breakdown of the shader (\u0026amp; stencil window effect), should have it finished \u0026amp; released sometime this week ✨\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/L3FH6hZ3Qh\"\u003epic.twitter.com/L3FH6hZ3Qh\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1383873492920115202?ref_src=twsrc%5Etfw\"\u003eApril 18, 2021\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1383873492920115202\">https://twitter.com/Cyanilux/status/1383873492920115202</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>Lately I&rsquo;ve been experimenting a bit with holographic foil shader effects. The tweet above includes the final result, but you can also see some of the experiments I did in <a href="https://twitter.com/Cyanilux/status/1376949139838275584">this tweet thread</a>.</p>
+<p>The shader uses the <strong>Tangent Space</strong> <b class="node">View Direction</b> vector, which is commonly used for parallax effects. The vector is distorted using a texture sample, then used to sample a repeating rainbow texture (optionally with some gaps, as shown below) which provides a nice holofoil effect (or at least a stylised version of it, this isn&rsquo;t meant to replicate it accurately).</p>
+<div class="img-center">
+<a href="RainbowTex.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="512" height="32" alt="" src="RainbowTex.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We can then mask this over various parts of the card, either to remove it completely or provide different intensities as we don&rsquo;t want to make the card itself unreadable. Some parts being brighter than others also produces the illusion that they are more reflective and especially looks good with Bloom Post Processing enabled (though that can be very expensive if targeting mobile platforms).</p>
+<p>The rainbow gradient could also be generated procedurally but I felt using a texture was much easier and provided more control over the resulting look as it can be swapped out for other gradients too. If you want to look into it though, <a href="https://www.alanzucconi.com/2017/07/15/improving-the-rainbow/">Alan Zucconi&rsquo;s Improving the Rainbow article</a> (and it&rsquo;s part 2) is a good resource.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This is an <strong>Unlit</strong> shader using <strong>Opaque</strong> surface mode (for the main card at least. The window is using a separate graph with the same node setup, but with <strong>Transparent</strong> &amp; <strong>Additive</strong> blending. I&rsquo;d recommend putting the Holofoil effect in a Sub Graph so it can be shared between both). It could also work in a <strong>Lit/PBR</strong> graph, though you would then likely want the holofoil effects to be used in the Emission port.</li>
+<li>Also using Post Processing in tweet gif/videos (ACES Tonemapping &amp; Bloom). This isn&rsquo;t required though.</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<h3 id="holographic-foil">Holographic Foil</h3>
+<p>Obtaining the <b class="node">View Direction</b> in <strong>Tangent</strong> space is extremely easy in Shader Graph as it&rsquo;s one of the space options on the node. If you output this temporarily to the <strong>Base Color</strong> port on the <strong>Master Stack</strong> (or Node if prior to v10) and assign it to a quad in the scene, you&rsquo;ll see that it moves with the camera. These coordinates are almost perfect for the effect we want, but we should <b class="node">Negate</b> them so the rainbow texture doesn&rsquo;t get flipped.</p>
+<p>With most parallax effects, it&rsquo;s common to use this to offset existing UV coordinates (<code>UV - viewDirTS</code>). While we could still do that here, I felt it wasn&rsquo;t needed. If you&rsquo;re interested in including that it would kinda &ldquo;delay&rdquo; the coordinates from matching where our camera is, if that makes sense.</p>
+<p>We want to (optionally) distort the coordinates to create the interesting holographic foil patterns some trading cards have. We can use a texture to control these patterns so need the <b class="node">Sample Texture 2D</b> node using a <strong>Texture2D property</strong>, and use a <b class="node">Tiling And Offset</b> to alter the UVs. We&rsquo;ll use a <strong>Vector4 property</strong> and <b class="node">Split</b> and recombine them into <b class="node">Vector2</b> nodes for the <strong>Tiling</strong> and <strong>Offset</strong> inputs, allowing us to easily control those settings from the material inspector.</p>
+<p>As my card mesh uses the UV0 channel for other data (as I&rsquo;ll explain in the next section), I&rsquo;m also projecting the texture onto the mesh by using the <b class="node">Position</b> node in <strong>Object</strong> space (X &amp; Y axis) as the UVs instead.</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="366" alt="" src="Graph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>I&rsquo;m using a few greyscale textures currently for these distortion patterns, which basically results in pushing the coordinates towards the top right a little bit. This works well as long as the rainbow texture isn&rsquo;t also aligned with that direction but we could also provide some rotation with the <b class="node">Rotate</b> node after the texture sample to push the distortion in a different direction. Alternatively we could use textures that store directions themselves similar to Flow maps or Bump/Normal maps (in which case we&rsquo;d also have to remap the texture sample output, e.g. <b class="node">Subtract</b> 0.5).</p>
+<p>The <strong>RGBA</strong> output from the <b class="node">Sample Texture 2D</b> is multiplied with a &ldquo;Distortion Strength&rdquo; <strong>Float property</strong> and the <strong>Tangent</strong> space <b class="node">View Direction</b> is also multiplied with a &ldquo;Tiling&rdquo; <strong>Float property</strong>. These two outputs are then added together and put into a <b class="node">Rotate</b> node (allowing us to optionally rotate the whole foil effect), then into the <strong>UV</strong> input on another <b class="node">Sample Texture 2D</b> node which samples the rainbow texture.</p>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="356" alt="" src="Graph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>It&rsquo;s a relatively simple graph but with the right textures this can produce some really nice holofoil effects. Next we&rsquo;ll look at masking this to specific parts of the card.</p>
+<h3 id="masking">Masking</h3>
+<p>In order to mask the Holofoil effect to specific parts of the card, we first need a way to separate each part. I&rsquo;d also like to be able to control the strength of the holofoil effect for each part rather than toggling it completely.</p>
+<p>This could be done with an additional texture, i.e. using the separate RGB channels for each part of the card. In the graph we could then use the <b class="node">Sample Texture 2D</b> node and the <strong>R</strong>, <strong>G</strong>, <strong>B</strong> outputs give us the masks. (If 4 masks is needed the alpha channel can be used, though might need to be inverted in the texture as some programs don&rsquo;t allow storing colour in areas with 0 alpha. Can then access it with <b class="node">One Minus</b> the <strong>A</strong> output to invert it back).</p>
+<p>Avoiding another texture sample would be cheaper so we could alternatively use <strong>Vertex Colors</strong> (though you would then have to separate those vertices you want to paint so the parts don&rsquo;t blend), or use a specific <strong>UV Mapping</strong>. For example my card has two parts so we can have the vertical axis from 1 to 0.5 be the main body of the card, while 0.5 to 0 is the shiny edge/border (or vice versa).</p>
+<div class="img-center">
+<a href="CardMeshUVs.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="427" alt="" src="CardMeshUVs.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We can then obtain the mask in the shader by using the <b class="node">UV</b> node, <b class="node">Split</b> and use a <b class="node">Step</b> node on the <strong>Y/G</strong> axis with a value of 0.5. And <b class="node">One Minus</b> to obtain the mask for the other half.</p>
+<p>If we needed more sections this can be extended by splitting the UV into more sections and we could combine it with the X axis too. If you prefer, the <b class="node">Step</b> nodes could also be replaced with <b class="node">Comparsion</b> which allows us to use the logic nodes (e.g. <b class="node">And</b>, <b class="node">Or</b>) and <b class="node">Branch</b> with values of 0 and 1 to then obtain a mask.</p>
+<p>For each mask we can provide a <strong>Float property</strong> (or store them as a <strong>Vector property</strong>). We <b class="node">Multiply</b> each mask by the property, then <b class="node">Add</b> the results together. Rather than multiplying each float separately, it&rsquo;s easier (and likely more efficent) to combine them into a <b class="node">Vector4</b> as shown below. We finally <b class="node">Multiply</b> by the Holofoil result and output it to the <strong>Base Color</strong> on the <strong>Master Stack</strong> (or perhaps Emission if using a Lit Graph).</p>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="191" alt="" src="Graph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>With this we can now adjust the (X and Y) values of our <strong>Mask</strong> property to control the strength of the holofoil effect on the main card vs edge/border. Using values over 1 also allows us to increase the intensity of the effect, which as mentioned in the introduction produces the illusion that it is more reflective. It especially looks good with <strong>HDR</strong> enabled on the URP Asset and using <strong>Bloom</strong> in the global Post Processing Volume (though note it can be very expensive if targeting mobile platforms).</p>
+<h3 id="stencil-window">Stencil Window</h3>
+<p>The card includes a rectangular window where you&rsquo;d typically put a creature/item/etc, but rather than using a 2D texture, I&rsquo;m using a 3D model - though I&rsquo;m not that good with modelling so just using a placeholder cube for now. This sort of effect works best with a single card.</p>
+<p>We only want the model to appear when viewed through the card, which we can do using the <strong>Stencil buffer</strong>. If you aren&rsquo;t familiar, it&rsquo;s an extra <strong>8 bits</strong> that is included alongside the 24-bit depth buffer. We can write and test against values in the buffer (using an integer from <strong>0 to 255</strong>). If the test fails it will discard fragments/pixels before they are rendered.</p>
+<p>The card mesh that I&rsquo;m using is separated into two meshes (and two separate GameObjects / MeshRenderers). It includes a hole where the window is located (allowing us to see the model behind it), and we have a separate quad mesh to render the window itself.</p>
+<p>Shader Graph currently doesn&rsquo;t have access to setting Stencil values, but we can instead assign <strong>two materials</strong> to the window MeshRenderer : One will draw the window into the stencil buffer only (shader code shown below), and the other material can use a similar Shader Graph to the Holofoil effect above but using <strong>Transparent</strong> surface mode and <strong>Additive</strong> blending (Assuming you want the effect to show on the window).</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">Shader <span style="color:#e6db74">&#34;Custom/Stencil&#34;</span> {
+	Properties {
+<span style="color:#a6e22e">		[IntRange]</span> _StencilRef(<span style="color:#e6db74">&#34;Stencil Reference&#34;</span>, Range(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">255</span>)) = <span style="color:#ae81ff">2</span>
+	}
+	SubShader{
+		Tags { <span style="color:#e6db74">&#34;RenderType&#34;</span>=<span style="color:#e6db74">&#34;Opaque&#34;</span> <span style="color:#e6db74">&#34;Queue&#34;</span> = <span style="color:#e6db74">&#34;Geometry-1&#34;</span> }
+
+		Pass {
+			ColorMask <span style="color:#ae81ff">0</span>
+			ZWrite Off
+
+			Stencil {
+				Ref [_StencilRef]
+				Comp Always
+				Pass Replace
+			}
+		}
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>This shader makes sure the window gets drawn to the Stencil buffer using a reference (defaults to <strong>2</strong> in this case). We then need to draw the object that will be inside our card using the same reference with the <strong>Equal</strong> comparison. When drawing the fragment/pixel if the reference is not equal to 2 it will be <strong>discarded</strong> (so the object is not visible unless viewed through the window).</p>
+<p>In other pipelines to handle this we would have to edit the shader(s) of the object inside the card to include this Stencil Equal operation. In URP however, it is also possible to override the stencil values using a renderer feature which is very useful here. As mentioned before Shader Graph also doesn&rsquo;t have access to Stencil operations, so the override may be the only way to handle it without editing the generated code.</p>
+<p>To set this up, we first need to set up a new <strong>&ldquo;Card Object&rdquo; Layer</strong> to put the object on, then on the <strong>Forward Renderer</strong> asset we exclude that layer from the <strong>Opaque Layer Mask</strong>. This means that layer will not be drawn automatically, as we want to handle rendering it ourself in order to use the overrides.</p>
+<div class="img-center">
+<a href="ForwardRenderer.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="488" height="320" alt="" src="ForwardRenderer.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We can now add the <strong>RenderObjects</strong> feature to the list of features. Since we need to render the object after the card window we must put the <strong>Event</strong> to <strong>AfterRenderingOpaques</strong>.</p>
+<p>Under Filters, we want to select <strong>Opaque</strong> and our <strong>&ldquo;Card Object&rdquo; layer</strong>. Then under Overrides, tick <strong>Stencil</strong>, set the <strong>Value</strong> to <strong>2</strong> and change the <strong>Compare Function</strong> to <strong>Equal</strong>. The Pass/Fail/ZFail can all be left as Keep.</p>
+<div class="img-center">
+<a href="RenderObjects.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="488" height="341" alt="" src="RenderObjects.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>You should now see the object only when viewing it through the card window. If not, check the window is being drawn before the Card Object (the <strong>Frame Debugger</strong> window can be helpful) and make sure they both use the same reference value.</p>
+<p>Something to bear in mind is that multiple cards use the same stencil value so objects can be seen through both. While it is possible to use different stencil values it is a bit awkward with the RenderObjects feature as you&rsquo;d need a separate Layer for each (and there is a limit of 31 layers, some of which you&rsquo;d want to use for other uses too). Objects behind the card can also still be seen through the window and can block viewing the object, unless you render everything else with Stencil, similar to the RenderObjects above but with the Compare Function as <strong>Not Equal</strong>.</p>
+<p>An alternative to using stencils would be using additional cameras and Render Textures instead, which might be a bit more expensive but provides easier control over the sorting of multiple cards.
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p></p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

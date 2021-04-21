@@ -18,7 +18,7 @@
 <meta itemprop="description" content="A detailed introduction on how to use Unity Shader Graph (including v10&#43; changes). Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!">
 <meta itemprop="datePublished" content="2021-03-05T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-03-05T00:00:00+00:00" />
-<meta itemprop="wordCount" content="15584">
+<meta itemprop="wordCount" content="15743">
 
 
 
@@ -1058,6 +1058,7 @@ Example Main Preview for a Soft Foliage Shader, showing a custom mesh
 <p>I usually don&rsquo;t worry to much about the precision, but it may be important if you&rsquo;re targetting mobile platforms. It can help to make the shader more performant. You can learn more about precision in the <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@11.0/manual/Precision-Modes.html">shadergraph docs</a>.</p>
 <h4 id="setting-properties">Setting Properties from C#</h4>
 <p>Properties can also be set from a <strong>C# script</strong> through the <a href="https://docs.unity3d.com/ScriptReference/Material.html">Material</a> class (only if exposed), or set globally through the static methods in the <a href="https://docs.unity3d.com/ScriptReference/Shader.html">Shader</a> class. Follow those links to see a list of these methods. When setting a property using them, it&rsquo;s important to use the <a href="#property-reference">Reference</a> of the property, and not it&rsquo;s name in the <strong>Blackboard</strong>.</p>
+<p>Note, since a <strong>Matrix</strong> cannot be exposed, by default they are declared in the <strong>UnityPerMaterial</strong> cbuffer which allows the SRP Batcher to function and the matrix can be different for each material. This however leads to garbage results when setting the matrix globally. If you want a global matrix, you should use the <strong>Override Property Declaration</strong> in the Node Settings to force it to <strong>Global</strong>. Don&rsquo;t override it for other property types (unless you know what you are doing) as it can break SRP Batcher compatibility.</p>
 <p>For more information and example code on setting properties from C#, see the section in my <a href="https://www.cyanilux.com/tutorials/intro-to-shaders/#properties">Intro to Shaders post</a>. It&rsquo;s also important to understand the difference between using <code>Renderer.material</code> and <code>Renderer.sharedMaterial</code>, so see the section <a href="https://www.cyanilux.com/tutorials/intro-to-shaders/#material-instances">here</a> too.</p>
 <h3 id="keywords">Keywords &amp; Shader Variants</h3>
 <div class="img-center">
@@ -1555,6 +1556,7 @@ RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTextur
 <p>This will generate the code into a temporary file, allowing you to view it.</p>
 <p>If you plan to edit the code, you must first save the shader file somewhere in your <strong>Assets</strong> folder. It can then be treated exactly like any other code-written shader. It is completely separate from the graph now, so you&rsquo;ll need to switch materials to use the code version. Changes to the code will not update the graph, and vice versa.</p>
 <p>Sometimes Shader Graph can be a bit limited, so it can be useful to edit the generated code to extend what it is possible in graph form. For example, adding <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil</a> operations. (It&rsquo;s also possible to override this on the <strong>RenderObjects</strong> feature for the URP Forward Renderer. That is outside of the scope of this tutorial though, it&rsquo;s long enough already!)</p>
+<p>Be aware that the code might include two SubShaders, one intended for gles platforms (&amp; using shader model 2) and another for other platforms (using shader model 4.5), so if you&rsquo;re editing the code make sure you edit the one being used by your target (or both). The gles one seems to not include the <code>DOTS_INSTANCING_ON</code> multi_compile/keyword, so I would assume the reason for separating it into two versions is related to that.</p>
 <br><hr>
 <p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
 <p style="text-align:center;">~ Cyan</p>

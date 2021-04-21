@@ -370,22 +370,29 @@ video {
 	display: table;
 }
 
-/* note, this also affects the .highlight table which is annoying. might be related to the "table" in highlight cs "linenos=table,linenostart=1"
-table {
+/* Table */
+
+.tbl table {
 	border: 2px solid #151515;
-	background-color : #191919;
-	border-collapse: collapse;
+	background-color : #202020;
 }
 
-th, tr:nth-child(even) {
-  background-color: #252525;
+.tbl.w40 th:nth-child(1) {
+	width: 40%;
 }
 
-td {
-	padding-left : 10px;
-	padding-right : 10px;
+.tbl.w50 th {
+	width: 50%;
 }
-*/
+
+.tbl th, .tbl tr:nth-child(even) {
+  background-color: #191919;
+}
+
+.tbl th, .tbl td {
+	padding-left : 5px;
+	padding-right : 5px;
+}
 
 /* Pagination */
 

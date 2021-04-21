@@ -18,7 +18,7 @@
 <meta itemprop="description" content="A shader which produces solid diagonal lines across a quad&#39;s surface that moves with the camera position to simulate toon-like glass reflections">
 <meta itemprop="datePublished" content="2020-01-03T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2020-01-03T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1387">
+<meta itemprop="wordCount" content="1478">
 <meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 
 
@@ -260,8 +260,10 @@
 <h3 id="breakdown-1">Breakdown</h3>
 <p>First we create a <b class="node">Position</b> node set to <strong>Absolute World</strong> space, and <b class="node">Subtract</b> the camera’s position (in world space, via the <strong>Position</strong> output on the <b class="node">Camera</b> node) to obtain the position relative to the camera. The origin of the effect will now be at the camera’s position so it will move as the camera moves (in terms of translation, not rotation).</p>
 <p>We can then <b class="node">Transform</b> to <strong>Tangent</strong> space, which appears to make the position relative to the meshes’ surface – kind of? Well, at least for our purposes the <strong>R/X</strong> component of the position is horizontal across the surface, and <strong>G/Y</strong> is vertical, but there may be better ways of handling this.</p>
+<p>Note : This is now broken as the <b class="node">Transform</b> node normalises the <strong>Tangent</strong> space output which we don&rsquo;t want here. You can instead use a <b class="node">Matrix Construction</b> node with the Tangent Vector, Bitangent Vector and Normal Vector nodes connected (in that order, each in <strong>Absolute World</strong> space) and <b class="node">Multiply</b> to handle matrix multiplication. Alternatively, just use the <b class="node">UV</b> or <b class="node">Position</b> in <strong>Object</strong> space but it will stretch when the GameObject is scaled.</p>
 <p>We can <b class="node">Split</b> to obtain these components, and <b class="node">Add</b> them together to make a diagonal gradient. An <b class="node">Absolute</b> function will then convert any negative values to positive. Any changes made will now be mirrored across the diagonal line as both sides share the same values.</p>
 <p>The preview on our <b class="node">Absolute</b> node doesn’t seem to look right though. This is due to the transform to tangent space, but even if we were to change it, the preview will still show the &ldquo;3D&rdquo; circular version. Instead, we can create a <b class="node">UV</b> node and put it into a <b class="node">Remap</b> node with values of <strong>0 and 1</strong> for the <strong>In Min Max</strong> and <strong>-1 and 1</strong> for the <strong>Out Min Max</strong>. This remaps the values so the value at the center of the preview has a value of 0. When we connect this to the <b class="node">Split</b> we can visualise the previews properly which will help a lot when creating the rest of the graph, then at the end we can reconnect the other position instead.</p>
+<p>(In v10.3+ you can now set the Preview to 2D using the Node Settings tab of the Graph Inspector)</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="382" alt="" src="Graph1.png" />
