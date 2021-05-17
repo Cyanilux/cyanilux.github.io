@@ -6,65 +6,74 @@
     <description>Recent content in Posts on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Fri, 05 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tutorials/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tutorials/posts/index.xml" rel="self" type="application/rss+xml" />
+	
+    <item>
+      <title>Writing Shader Code in Universal RP (v2)</title>
+      <link>https://www.cyanilux.com/tutorials/urp-shader-code/</link>
+      <pubDate>Mon, 17 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/urp-shader-code/</guid>
+      <description>Explains how shader code (ShaderLab &amp; HLSL) is written to support the Universal RP</description>
+    </item>
+	
+    
+	
     <item>
       <title>Intro to Shader Graph</title>
       <link>https://www.cyanilux.com/tutorials/intro-to-shader-graph/</link>
       <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tutorials/intro-to-shader-graph/</guid>
-      <description>Hey! This post is a detailed introduction to using Shader Graph - a node based shader editor for Unity that is provided for the Scriptable Render Pipelines (SRPs), including the Universal Render Pipeline (URP) and High Definition Render Pipeline (HDRP). We&amp;rsquo;ll be going over how to use the tool and it&amp;rsquo;s features, not necessarily how to create shaders using it. I have other tutorial breakdowns that go over creating specific shader effects if you&amp;rsquo;re interested in that.</description>
+      <description>A detailed introduction on how to use Unity Shader Graph (including v10&#43; changes). Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!</description>
     </item>
+	
     
+	
     <item>
       <title>Intro to Shaders</title>
       <link>https://www.cyanilux.com/tutorials/intro-to-shaders/</link>
       <pubDate>Sun, 10 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tutorials/intro-to-shaders/</guid>
-      <description>Hello! This is a small introduction to what shaders are and how they are used when rendering graphics in Unity.
-Sections :  What is a Mesh? What is a Shader? Shader Code Shader Passes Forward vs Deferred Rendering Other Types of Shaders Materials &amp;amp; Properties Setting Properties from C# Global Shader Properties Material Instances &amp;amp; Batching SRP Batcher  What is a Mesh? Before going into shaders specifically, it’s important to first have a basic understanding of what a mesh is.</description>
+      <description>An introduction to what a Mesh, Shader and Material is in Unity, how to set Shader Properties from C#, a brief look at Forward vs Deferred rendering and some information about Material instances and Batching</description>
     </item>
+	
     
+	
     <item>
       <title>Depth</title>
       <link>https://www.cyanilux.com/tutorials/depth/</link>
       <pubDate>Wed, 25 Nov 2020 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tutorials/depth/</guid>
-      <description>Depth is a term used in computer graphics to refer to how far a fragment (a potential pixel) is from the camera. But it can be a bit complicated - as depth can come in different spaces/ranges, vary between platform, and vary between perspective and orthographic camera projections.
-(Image showing &#34;Linear01&#34; Depth)  This post goes over everything about depth that I&amp;rsquo;ve come across (so you could say it&amp;rsquo;s an in-depth post about depth!</description>
+      <description>A big post explaining everything about Depth : Depth Buffer, Depth Texture / Scene Depth node, SV_Depth, Reconstructing World Position from Depth, etc.</description>
     </item>
+	
     
-    <item>
-      <title>Scene Color</title>
-      <link>https://www.cyanilux.com/tutorials/scene-color/</link>
-      <pubDate>Thu, 12 Nov 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.cyanilux.com/tutorials/scene-color/</guid>
-      <description>Sorry this post is under construction.
-For now, refer to https://cyangamedev.wordpress.com/2019/06/01/scene-color-depth-nodes/</description>
-    </item>
+	
     
+	
     <item>
       <title>Vertex Displacement</title>
       <link>https://www.cyanilux.com/tutorials/vertex-displacement/</link>
       <pubDate>Fri, 14 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tutorials/vertex-displacement/</guid>
-      <description>Shader Stages While fragment shaders provide colours for each fragment/pixel, we can use vertex shaders to offset the vertices of the mesh. In Shader Graph, nodes that are connected to the Master node&amp;rsquo;s Vertex ports are written to this vertex shader stage.
-When attempting to connect a node between the vertex and fragment stages, they sometimes may not connect. It is usually a good idea to keep the two parts as separate as possible.</description>
+      <description>A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies</description>
     </item>
+	
     
+	
     <item>
       <title>Polar Coordinates</title>
       <link>https://www.cyanilux.com/tutorials/polar-coordinates/</link>
       <pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tutorials/polar-coordinates/</guid>
-      <description>When using UVs you are usually using the Cartesian coordinate system, or something similar to it at least. Pixels along the X or U axis start at 0 and increase to 1 horizontally, and the same goes for the Y or V axis but vertically. We can then offset (Add or Subtract) and scale (Multiply or Divide) these UVs to manipulate how a texture is sampled.
-We can use the Polar Coordinates node to convert these Cartesian coordinates into a Polar coordinate system.</description>
+      <description>A post explaining the Polar Coordinates node</description>
     </item>
+	
     
   </channel>
 </rss>

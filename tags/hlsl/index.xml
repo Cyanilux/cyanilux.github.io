@@ -6,26 +6,39 @@
     <description>Recent content in HLSL on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Sun, 10 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/hlsl/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/hlsl/index.xml" rel="self" type="application/rss+xml" />
+	
+    <item>
+      <title>Writing Shader Code in Universal RP (v2)</title>
+      <link>https://www.cyanilux.com/tutorials/urp-shader-code/</link>
+      <pubDate>Mon, 17 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/urp-shader-code/</guid>
+      <description>Explains how shader code (ShaderLab &amp; HLSL) is written to support the Universal RP</description>
+    </item>
+	
+    
+	
     <item>
       <title>Intro to Shaders</title>
       <link>https://www.cyanilux.com/tutorials/intro-to-shaders/</link>
       <pubDate>Sun, 10 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tutorials/intro-to-shaders/</guid>
-      <description>Hello! This is a small introduction to what shaders are and how they are used when rendering graphics in Unity.
-Sections :  What is a Mesh? What is a Shader? Shader Code Shader Passes Forward vs Deferred Rendering Other Types of Shaders Materials &amp;amp; Properties Setting Properties from C# Global Shader Properties Material Instances &amp;amp; Batching SRP Batcher  What is a Mesh? Before going into shaders specifically, it’s important to first have a basic understanding of what a mesh is.</description>
+      <description>An introduction to what a Mesh, Shader and Material is in Unity, how to set Shader Properties from C#, a brief look at Forward vs Deferred rendering and some information about Material instances and Batching</description>
     </item>
+	
     
+	
     <item>
       <title>Depth</title>
       <link>https://www.cyanilux.com/tutorials/depth/</link>
       <pubDate>Wed, 25 Nov 2020 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tutorials/depth/</guid>
-      <description>Depth is a term used in computer graphics to refer to how far a fragment (a potential pixel) is from the camera. But it can be a bit complicated - as depth can come in different spaces/ranges, vary between platform, and vary between perspective and orthographic camera projections.
-(Image showing &#34;Linear01&#34; Depth)  This post goes over everything about depth that I&amp;rsquo;ve come across (so you could say it&amp;rsquo;s an in-depth post about depth!</description>
+      <description>A big post explaining everything about Depth : Depth Buffer, Depth Texture / Scene Depth node, SV_Depth, Reconstructing World Position from Depth, etc.</description>
     </item>
+	
     
   </channel>
 </rss>
