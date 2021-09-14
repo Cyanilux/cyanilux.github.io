@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Contents">
 <meta itemprop="description" content="Tutorials for Unity Shader Graph and Universal Render Pipeline">
 
-<meta itemprop="wordCount" content="1276">
+<meta itemprop="wordCount" content="1362">
 
 
 
@@ -200,7 +200,8 @@
 
 
 
-<p>Most of the tutorials below are for the <strong>Universal Render Pipeline</strong> (URP), but content may still work in the <strong>High Definition Render Pipeline</strong> (HDRP) too. It may need adjusting in some places due to HDRP using <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">Camera-Relative rendering</a> which makes <strong>World</strong> space relative to the camera position. Also note that the <b class="node">View Direction</b> node is normalised in HDRP but not in URP.</p>
+<p>Most of the tutorials below are for the <strong>Universal Render Pipeline</strong> (URP), but content may still work in the <strong>High Definition Render Pipeline</strong> (HDRP) too. It may need adjusting in some places due to HDRP using <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">Camera-Relative rendering</a> which makes <strong>World</strong> space relative to the camera position.</p>
+<p><strong>Important</strong> : Prior to v11 the <b class="node">View Direction</b> node is normalised in HDRP but not in URP. In SG v11 the node is now always normalised, and a <b class="node">View Vector</b> node was introduced to obtain the un-normalised value. See <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@12.0/manual/View-Direction-Node.html">View Direction node docs</a> for more info. I like that they are now consistent, but note that quite a few of my tutorials below make use of the old functionality and will need to swap to the <b class="node">View Vector</b> node if you&rsquo;re in v11+!</p>
 <h4 id="sections-">Sections :</h4>
 <ul>
 <li><a href="#tutorial-breakdowns">Tutorial Breakdowns</a></li>
@@ -213,6 +214,8 @@
 <ul>
 <li><a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Shader Graph Custom Lighting Functions/SubGraphs</a></li>
 <li><a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Improved Blit Render Feature</a></li>
+<li><a href="https://github.com/Cyanilux/ShaderGraphToPNG">Shader Graph To PNG</a></li>
+<li><a href="https://github.com/Cyanilux/ShaderGraphVariables">Shader Graph Variables</a> (+ coloured groups, swap hotkey, add node hotkeys)</li>
 </ul>
 <p>If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If you found this site useful, please share a link with others!</p>
 <hr>
@@ -748,7 +751,7 @@
 
 			</div>
 		</div></p>
-<p>Also still working on copying / rewriting content from my old <a href="https://cyangamedev.wordpress.com/contents/">Wordpress blog</a>, Sorry! You might be able to find some more stuff there, mainly :</p>
+<p>I also have some older content on my <a href="https://cyangamedev.wordpress.com/contents/">Wordpress blog</a>, such as :</p>
 <ul>
 <li><a href="https://cyangamedev.wordpress.com/2020/03/05/orthographic-depth/">Orthographic Depth</a> (mentioned in the Depth post above too)</li>
 <li><a href="https://cyangamedev.wordpress.com/2020/07/19/custom-vertex-streams/">Passing Particle System Data into Shader Graph</a></li>
@@ -757,7 +760,6 @@
 <li><a href="https://cyangamedev.wordpress.com/2020/01/14/uv-based-nodes/">UV-Based Nodes</a></li>
 <li><a href="https://cyangamedev.wordpress.com/2019/07/16/voronoi/">Voronoi</a></li>
 <li><a href="https://cyangamedev.wordpress.com/2020/01/28/worldspace-uvs-triplanar-mapping/">Worldspace UVs &amp; Triplanar Mapping</a></li>
-<li><a href="https://cyangamedev.wordpress.com/2020/06/05/urp-shader-code/">Writing Shader Code for URP</a></li>
 </ul>
 <hr>
 <h2 id="twitter-threads">Twitter Threads</h2>
@@ -797,10 +799,14 @@
 <li><a href="https://twitter.com/Cyanilux/status/1385609554067705858">Anisotropic Hair Shader</a></li>
 <li><a href="https://twitter.com/Cyanilux/status/1389545378865893376">Potion Shader</a></li>
 <li><a href="https://twitter.com/Cyanilux/status/1392491540396793861">Paper Lanterns</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1396848736022802435">Shader Graph Grass with DrawMeshInstanced &amp; DrawMeshInstancedIndirect</a> (also see github gists in comments)</li>
+<li><a href="https://twitter.com/Cyanilux/status/1407727586986311687">Stained Glass</a></li>
 </ul>
 <hr>
 <h2 id="other">Other</h2>
 <ul>
+<li><a href="https://twitter.com/Cyanilux/status/1152903868507967489">Procgen Growing Plants</a></li>
+<li><a href="https://twitter.com/Cyanilux/status/1264299617434419200">Procgen Tilemap Planet</a></li>
 <li><a href="https://github.com/Cyanilux/ToDo">To Do</a> (A simple in-editor to-do list for Unity, attached to a GameObject as a component)</li>
 <li><a href="https://twitter.com/Cyanilux/status/1296100597893148677">Card experiments</a> (&amp; <a href="https://github.com/Cyanilux/Cards">github</a>)</li>
 <li>Ludum Dare 48 (Deeper and deeper) <a href="https://cyanilux.itch.io/dig-deeper">jam game</a> &amp; <a href="https://twitter.com/Cyanilux/status/1386839424424718336">twitter thread</a></li>

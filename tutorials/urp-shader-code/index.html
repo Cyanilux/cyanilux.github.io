@@ -18,7 +18,7 @@
 <meta itemprop="description" content="Explains how shader code (ShaderLab &amp; HLSL) is written to support the Universal RP">
 <meta itemprop="datePublished" content="2021-05-17T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-05-17T00:00:00+00:00" />
-<meta itemprop="wordCount" content="14942">
+<meta itemprop="wordCount" content="14953">
 
 
 
@@ -3027,6 +3027,7 @@ ENDHLSL</code></pre></td></tr></table>
 <h2 id="summary-hlsl">HLSL : </h2>
 <ul>
 <li>HLSLPROGRAM and ENDHLSL should always be used instead of CGPROGRAM/ENDCG. This is because the latter includes some additional files which conflicts with the URP ShaderLibrary causing redefinitions errors.</li>
+<li>The &ldquo;fixed&rdquo; type/precision does not exist in HLSLPROGRAM, use &ldquo;half&rdquo; instead.</li>
 <li>URP does not support Surface shaders (<code>#pragma surface</code>), only Vertex/Fragment style shaders. (Geometry and Hull/Domain is also still supported)</li>
 <li>Structs used to pass data between the vertex and fragment shaders is commonly called Attributes and Varyings in URP instead of appdata and v2f. This is mainly a naming convention and isn&rsquo;t important though.</li>
 <li>Instead of including UnityCG.cginc, use the URP ShaderLibrary. The main one to include is :</li>
