@@ -18,7 +18,7 @@
 <meta itemprop="description" content="Explains how shader code (ShaderLab &amp; HLSL) is written to support the Universal RP">
 <meta itemprop="datePublished" content="2021-05-17T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-05-17T00:00:00+00:00" />
-<meta itemprop="wordCount" content="14953">
+<meta itemprop="wordCount" content="14981">
 
 
 
@@ -1636,15 +1636,24 @@ We can then use <code>#if defined(KEYWORD)</code> / <code>#ifdef KEYWORD</code> 
 </div>
 </div>
 <h3 id="shader-feature">Shader Feature</h3>
+<p>Shader Features are similar to Multi-Compile, but an additional variant is generated with all keywords disabled and any <strong>unused variants will be not be included in the final build</strong>. This can be useful to keep build times down, but it’s not good to enable/disable these keywords at runtime, since the shader it needs might not be included in the build! If you need to handle keywords at runtime, multi_compile should be used instead.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#pragma shader_feature _A _B</span></code></pre></td></tr></table>
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#pragma shader_feature _A _B (...etc)</span></code></pre></td></tr></table>
 </div>
 </div>
-<p>Shader Features work exactly the same as Multi-Compile, with the exception that <strong>unused variants will be not be included in the final build</strong>. This can be useful to keep build times down, but it’s not good to enable/disable these keywords at runtime, since the shader it needs might not be included in the build! If you need to handle keywords at runtime, multi_compile should be used instead.</p>
+<p>The above code generates <strong>three</strong> variants, where _A and _B are keywords. While there&rsquo;s only two keywords, an additional variant where both are disabled is also generated. When using Multi-Compile we can also do this, by specifying the first keyword as blank by using one or more underscores (<code>_</code>). e.g.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#pragma multi_compile _ _A _B</span></code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="shader-variants">Shader Variants</h3>
 <p>With each added multi_compile and shader_feature, it produces more and more shader variants for each possible combination of enabled/disabled keywords. Take the following for example :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
@@ -1656,11 +1665,11 @@ We can then use <code>#if defined(KEYWORD)</code> / <code>#ifdef KEYWORD</code> 
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#pragma multi_compile _A _B _C
 </span><span style="color:#75715e">#pragma multi_compile _D _E
-</span><span style="color:#75715e">#pragma shader_feature _F _G</span></code></pre></td></tr></table>
+</span><span style="color:#75715e">#pragma shader_feature _F</span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Here, the first line is producing 3 shader variants. But the second line, needs to produce 2 shader variants for those variants where _D or _E is already enabled. So, A &amp; D, A &amp; E, B &amp; D, B &amp; E, C &amp; D and C &amp; E. That’s now 6 variants.</p>
-<p>Third line, is another 2 variants for each of those 6,  so we now have a total of 12 shader variants. Since that line is a shader_feature, some of those variants might not be included in the build though.</p>
+<p>Third line, is another 2 variants for each of those 6, so we now have a total of 12 shader variants. (While it&rsquo;s only one keyword, it has the additional variant with it disabled since that line is a shader_feature. Some of those variants might also not be included in the build depending on what is used by materials)</p>
 <p>Each added multi_compile with 2 keywords will double the amount of variants produced, so a shader that contains 10 of these will result in 1024 shader variants! It’ll need to compile each shader variant that needs to be included in the final build, so will increase build time as well as the size of the build.</p>
 <p>If you want to see how many shader variants a shader produces, click the shader and in the inspector there’s a “Compile and Show Code” button, next to that is a small dropdown arrow where it lists the number of included variants. If you click the “skip unused shader_features” you can toggle to see the total number of variants instead.</p>
 <p>To assist with reducing the number of variants produced, There is also “vertex” and “fragment” versions of these directives. For example :</p>
@@ -1674,16 +1683,15 @@ We can then use <code>#if defined(KEYWORD)</code> / <code>#ifdef KEYWORD</code> 
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#pragma multi_compile_vertex _ _A
 </span><span style="color:#75715e">#pragma multi_compile_fragment _ _B
-</span><span style="color:#75715e">#pragma shader_feature_vertex _ _C
-</span><span style="color:#75715e">#pragma shader_feature_fragment _ _D</span></code></pre></td></tr></table>
+</span><span style="color:#75715e">#pragma shader_feature_vertex _C
+</span><span style="color:#75715e">#pragma shader_feature_fragment _D</span></code></pre></td></tr></table>
 </div>
 </div>
-<p>I haven’t seen these documented anywhere, but I’ve seen others mention them and they are used by some URP &amp; HDRP shaders.</p>
 <p>In this example, the _A and _C keywords are only being used for the vertex program and _B and _D only for the fragment. Unity tells us that this produces 2 shader variants, although it’s more like one shader variant where both are disabled and two “half” variants when you look at the actual compiled code it seems.</p>
 <p>The <a href="https://docs.unity3d.com/Manual/SL-MultipleProgramVariants.html">documentation</a> has some more information on shader variants.</p>
 <h3 id="keyword-limits">Keyword Limits</h3>
 <p>An important note is there is also a maximum of <strong>256 global keywords per project</strong>, so it can be good to stick to the naming conventions of other shaders to ensure the same keywords are reused rather than defining new ones.</p>
-<p>You’ll also notice for many Multi-Compile and Shader Features the first keyword is usually left as just “_”. This doesn’t actually produce a keyword so leaves more space available for other keywords in the 256 maximum. For Shader Features, it&rsquo;s also possible to only define a single keyword which acts as a shorthand. This isn&rsquo;t available for Multi-Compile though.</p>
+<p>You’ll also notice for many Multi-Compile the first keyword is usually left as just “_”. By leaving the keyword blank, it leaves more space available for other keywords in the 256 maximum. For Shader Features, this is done automatically.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -1702,18 +1710,18 @@ We can then use <code>#if defined(KEYWORD)</code> / <code>#ifdef KEYWORD</code> 
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#pragma multi_compile _ _KEYWORD
-</span><span style="color:#75715e"></span> 
-<span style="color:#75715e">#pragma shader_feature _KEYWORD
-</span><span style="color:#75715e"></span><span style="color:#75715e">// Alternative / Shorthand for :
-</span><span style="color:#75715e"></span><span style="color:#75715e">#pragma shader_feature _ _KEYWORD
+</span><span style="color:#75715e">#pragma shader_feature _KEYWORD
 </span><span style="color:#75715e"></span> 
 <span style="color:#75715e">// If you need to know if that keyword is disabled
 </span><span style="color:#75715e">// We can then just do :
-</span><span style="color:#75715e"></span><span style="color:#75715e">#ifndef _KEYWORD
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#ifndef _KEYWORD
 </span><span style="color:#75715e"></span><span style="color:#75715e">// aka &#34;#if !defined(_KEYWORD)&#34;
 </span><span style="color:#75715e">// or &#34;#ifdef _KEYWORD #else&#34; also works too
-</span><span style="color:#75715e">// code
-</span><span style="color:#75715e"></span><span style="color:#75715e">#endif</span></code></pre></td></tr></table>
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// ... code ...
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#endif</span></code></pre></td></tr></table>
 </div>
 </div>
 <p>We can also avoid using up the maximum keyword count by using <strong>local versions</strong> of the <code>multi_compile</code> and <code>shader_feature</code>. These produce keywords that are local to that shader, but there’s also a maximum of <strong>64 local keywords per shader</strong>.</p>
@@ -1735,8 +1743,8 @@ We can then use <code>#if defined(KEYWORD)</code> / <code>#ifdef KEYWORD</code> 
 <span style="color:#75715e">// There&#39;s also local_fragment/vertex ones too!
 </span><span style="color:#75715e"></span><span style="color:#75715e">#pragma multi_compile_local_vertex _ _KEYWORD
 </span><span style="color:#75715e">#pragma multi_compile_local_fragment _ _KEYWORD
-</span><span style="color:#75715e">#pragma shader_feature_local_vertex _ _KEYWORD
-</span><span style="color:#75715e">#pragma shader_feature_local_fragment _ _KEYWORD</span></code></pre></td></tr></table>
+</span><span style="color:#75715e">#pragma shader_feature_local_vertex _KEYWORD
+</span><span style="color:#75715e">#pragma shader_feature_local_fragment _KEYWORD</span></code></pre></td></tr></table>
 </div>
 </div>
 <hr>
