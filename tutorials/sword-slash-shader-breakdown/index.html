@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Sword Slash Shader Breakdown">
+<meta itemprop="description" content="A shader applied to a ring mesh that pans a texture along it to create a swipe/slash effect">
+<meta itemprop="datePublished" content="2021-12-08T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-12-08T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1398">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	
+	
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/sword-slash-shader-breakdown/Preview.png"/>
+<meta name="twitter:title" content="Sword Slash Shader Breakdown"/>
+<meta name="twitter:description" content="A shader applied to a ring mesh that pans a texture along it to create a swipe/slash effect"/>
+
+	
+<meta property="og:title" content="Sword Slash Shader Breakdown" />
+<meta property="og:description" content="A shader applied to a ring mesh that pans a texture along it to create a swipe/slash effect" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/sword-slash-shader-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/sword-slash-shader-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2021-12-08T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-12-08T00:00:00+00:00" />
+	
+	
+	
+    
+    
+    <title>Sword Slash Shader Breakdown | Cyanilux</title>
+	
+	
+	
+		
+		
+		<meta name="description" content="A shader applied to a ring mesh that pans a texture along it to create a swipe/slash effect. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/sword-slash-shader-breakdown/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	
+	<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Sword Slash Shader Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2021-12-08">&#128337 Dec 8, 2021</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eDid a magic sword slash effect as part of \u003ca href=\"https://twitter.com/HarryAlisavakis?ref_src=twsrc%5Etfw\"\u003e@HarryAlisavakis\u003c/a\u003e\u0026#39;s discord \u003ca href=\"https://twitter.com/hashtag/TechnicallyAChallenge?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#TechnicallyAChallenge\u003c/a\u003e (theme is \u0026quot;Weapon slashes / attack VFX\u0026quot;)\u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/vfx?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#vfx\u003c/a\u003e \u003ca href=\"https://t.co/ZebeRutRIb\"\u003epic.twitter.com/ZebeRutRIb\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1467533351091376136?ref_src=twsrc%5Etfw\"\u003eDecember 5, 2021\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1467533351091376136\">https://twitter.com/Cyanilux/status/1467533351091376136</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>Hey! This shader uses a technique similar to that of a <em>&ldquo;soulercoaster&rdquo;</em> (which are similar to ribbons/trails, commonly used in VFX involving magic spells). It involves panning a texture across a premade mesh, masking sections of it to be visible over time. In this case the mesh is a ring that will surround the player and we&rsquo;ll be panning two textures - one trianglular shaped one which masks the shape of the slash, and a noise texture to add detail.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This is an <strong>Unlit</strong> shader.</li>
+<li>I&rsquo;m applying the effect to a regular <strong>Mesh Renderer</strong> but disabling it when the effect isn&rsquo;t playing so we aren&rsquo;t wasting time rendering something completely transparent. You could alternatively use a Particle System that emits a single mesh-based particle.</li>
+<li>To animate the effect (and sword mesh) in the twitter gif I&rsquo;m adjusting the values of shader properties in a animation clip created via the <strong>Animation window</strong>. This tutorial won&rsquo;t go over that part though, sorry.</li>
+<li><strong>Bloom</strong> and <strong>ACES Tonemapping</strong> Post Processing is used in the Preview/Gif. There&rsquo;s also some small particles applied to the sword (Cone shape with small angle, Emit 15 over distance, World simulation space, Noise module to make movement interesting)</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<h3 id="setup">Setup</h3>
+<p>Before we go through the shader, you should create a <strong>ring mesh</strong> to test it on (with UVs as shown), as well as a <strong>triangular shaped texture</strong> similar to the one shown below. Alternatively, you can <a href="SwordSlash.zip">download the mesh &amp; texture I made here</a>.</p>
+<div class="img-center">
+<a href="RingMeshAndTex.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="588" height="305" alt="" src="RingMeshAndTex.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Also in the texture import settings, I&rsquo;ve set the wrap mode to <strong>Clamp</strong> as we don&rsquo;t need the texture to repeat. This isn&rsquo;t too important as the shader will mask it out anyway, but it does help previews make a little more sense.</p>
+<p>You should also get a <strong>seamless noise texture</strong> (or could use <b class="node">Simple Noise</b> node but it&rsquo;s nice to be able to swap it out for different noise types, and probably less expensive)</p>
+<h3 id="graph">Graph</h3>
+<p>First we&rsquo;ll go through making the slash shape. Create these properties in the Blackboard :</p>
+<ul>
+<li><strong>Texture2D</strong> &ldquo;SlashTex&rdquo;, Default set to the triangle texture</li>
+<li><strong>Float</strong> &ldquo;Length&rdquo;, Default set to <strong>0.5</strong>, mode to <strong>Slider</strong> (keeping MinMax of 0 and 1))</li>
+<li><strong>Float</strong> &ldquo;Slash&rdquo;, Default set to <strong>0.5</strong>)</li>
+</ul>
+<p>We should also set the <strong>References</strong> for these float properties. The exact reference string isn&rsquo;t too important but I&rsquo;m using the <strong>Animation</strong> window to animate them later, so it&rsquo;s much easier if they are readable (e.g. <strong>_Slash</strong> and <strong>_Length</strong>). The animation also moves the sword mesh in my case, but you could probably instead play it alongside a regular character animation. (Note this breakdown won&rsquo;t go over how to set up the animation side of things, just the shader, sorry!)</p>
+<p>In hindsight, it may also have been better to have <em>two</em> length properties, one to animate (e.g. <strong>_AnimLength</strong>) and one to adjust per-material (<strong>_Length</strong>) as the animation currently overrides the length value which makes it difficult to change. The two properties would then be multipled together to obtain the actual length used. Feel free to do this, but the graph below won&rsquo;t mention it.</p>
+<p>We&rsquo;ll start by creating a <b class="node">Sample Texture 2D</b> node with the <strong>SlashTex property</strong> as the <strong>Texture</strong> input. We want to offset the X axis of the texture so that at <code>Slash == 0</code> the triangle is only just off the left of the preview, and at <code>Slash == 1</code> it&rsquo;s just off the right of the preview. This is achieved by :</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="236" alt="" src="Graph1.png" />
+</a>
+<p class="img-text">(Click images to view them full size)</p>
+</div>
+<p>The <b class="node">UV</b> node is <b class="node">Split</b> to obtain each axis, from the <strong>R/X</strong> output we <b class="node">Subtract</b> a <b class="node">Lerp</b> node with <strong>A</strong> set to the <strong>Length property</strong> put through a <b class="node">Negate</b> node. <strong>B</strong> is left at a value of <strong>1</strong> and <strong>T</strong> is set to the <strong>Slash property</strong>. Then <b class="node">Divide</b> by the <strong>Length property</strong>. This is put into the <strong>X</strong> input on a <b class="node">Vector2</b> node, with the <strong>Y</strong> input set to the <strong>G/Y</strong> from the <b class="node">Split</b> from earlier, then into the <strong>UV</strong> input on the <b class="node">Sample Texture 2D</b> node.</p>
+<p>To remove any repetitions or clamping artifacts from the texture, we&rsquo;ll also take the output from the <b class="node">Divide</b> node and put it into <strong>two</strong> <b class="node">Comparison</b> nodes. The first with <strong>B</strong> set to <strong>0</strong> and the mode set to <strong>Greater Or Equal</strong>, and the second with <strong>B</strong> set to <strong>1</strong> and using <strong>Less Or Equal</strong>. The boolean output of these is put into an <b class="node">And</b> node, then into the <strong>Predicate</strong> on a <b class="node">Branch</b> with the texture result in <strong>True</strong> and <strong>0</strong> in <strong>False</strong>.</p>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="332" alt="" src="Graph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We also want to fade the texture at the edges of the mesh to help hide the mesh shape. Use another <b class="node">UV</b> node and <b class="node">Subtract</b> a <b class="node">Vector2</b> node set to <strong>(0.5, 0.5)</strong>. We then use an <b class="node">Absolute</b> node to make all values positive. The values at the edge are only 0.5 but we want them to be 1 so we need to <b class="node">Multiply</b> by <strong>(2.7, 2)</strong> (The X value is slightly larger as we want the texture to fade in more along the ring, you could also use a Vector2 property to control this).</p>
+<p>We then <b class="node">One Minus</b> as that&rsquo;s what we need for the mask, and <b class="node">Saturate</b> to remove any negative values. We can then <b class="node">Split</b> and <b class="node">Multiply</b> the R and G outputs together.</p>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="170" alt="" src="Graph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>It might be hard to visualise because of the red/green in the previews, but we are fading both sides at the same time by using a Vector2, instead of doing the calculations separately which would be less efficient.</p>
+<p>We haven&rsquo;t connected this group into the rest of the graph yet but don&rsquo;t worry, we&rsquo;ll come back to it. We&rsquo;ll first set up the Noise to add some detail to the slash. This will just be a regular panning texture. We&rsquo;ll need some more properties to be set up in the Blackboard :</p>
+<ul>
+<li><strong>Texture2D</strong> &ldquo;NoiseTex&rdquo;, Default set to a noise texture (repeatable without seams)</li>
+<li><strong>Vector2</strong> &ldquo;NoiseTexTiling&rdquo;, Default set to <strong>(1, 1)</strong></li>
+<li><strong>Float</strong> &ldquo;NoiseSpeed&rdquo;, Default set to <strong>2</strong></li>
+</ul>
+<p>We use a <b class="node">Sample Texture 2D</b> node to sample the <strong>NoiseTex property</strong>, with the <strong>UV</strong> set to a <b class="node">Tiling And Offset</b> node. The <strong>Tiling</strong> is set to a <strong>NoiseTexTiling property</strong> and <strong>Offset</strong> is set to a <b class="node">Vector2</b> node. The <strong>Y</strong> input remains at <strong>0</strong> but <strong>X</strong> is set to a <b class="node">Time</b> node, multiplied by the <strong>NoiseSpeed property</strong> put into a <b class="node">Negate</b> node.</p>
+<div class="img-center">
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="362" alt="" src="Graph4.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>In order to combine these groups, we use two <b class="node">Multiply</b> nodes. The order they are multiplied is not important. We also want another <b class="node">Multiply</b> with a <strong>Float &ldquo;Intensity&rdquo; property</strong> (set to a Default value of <strong>20</strong>).</p>
+<div class="img-center">
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="363" alt="" src="Graph5.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We can then put this into the <strong>T</strong> on a <b class="node">Lerp</b> node with <strong>A</strong> and <strong>B</strong> set to two <strong>Color properties</strong>. This is put into the <strong>Base Color</strong> (aka Albedo) port on the <strong>Master Stack</strong>.</p>
+<div class="img-center">
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="721" height="418" alt="" src="Graph6.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The output of the Intensity group is also put into the <strong>In</strong> input of a <b class="node">Smoothstep</b> node, with <strong>Edge1</strong> and <strong>Edge2</strong> set to a <strong>Vector2 &ldquo;Step&rdquo; property</strong> (Default set to <strong>(0, 0.1)</strong>) put through a <b class="node">Split</b>.</p>
+<div class="img-center">
+<a href="Graph7.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="689" height="362" alt="" src="Graph7.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Enabling HDR on the URP Asset and using Bloom Post Processing and ACES Tonemapping can improve the look further. For more control over the colours you could also try adding a <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/Lerp3Colours.png">3-way colour gradient</a> or sample a gradient texture (or Gradient property, though they can&rsquo;t be exposed).</p>
+<p>You can also optionally have a <strong>Float &ldquo;Scale&rdquo; property</strong> and <b class="node">Multiply</b> it with the <b class="node">Position</b> node (<strong>Object</strong> space) to put into the <strong>Position</strong> port on the Vertex stage of the <strong>Master Stack</strong>. This can be used in the animation to change the size of the slash effect (e.g. start small and grow), assuming the origin of the mesh is at the center of the ring. This size change could probably also be baked into the ring mesh by having it shaped more like a slash than a perfect ring.</p>
+<div class="img-center">
+<a href="Graph8.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="289" alt="" src="Graph8.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

@@ -6,14 +6,14 @@
     <description>Recent content in Tags on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Mon, 17 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 08 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/index.xml" rel="self" type="application/rss+xml" />
 	
     <item>
-      <title>HLSL</title>
-      <link>https://www.cyanilux.com/tags/hlsl/</link>
-      <pubDate>Mon, 17 May 2021 00:00:00 +0000</pubDate>
+      <title>Shader Graph</title>
+      <link>https://www.cyanilux.com/tags/shader-graph/</link>
+      <pubDate>Wed, 08 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.cyanilux.com/tags/hlsl/</guid>
+      <guid>https://www.cyanilux.com/tags/shader-graph/</guid>
       <description></description>
     </item>
 	
@@ -22,7 +22,7 @@
     <item>
       <title>URP</title>
       <link>https://www.cyanilux.com/tags/urp/</link>
-      <pubDate>Mon, 17 May 2021 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 08 Dec 2021 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tags/urp/</guid>
       <description></description>
@@ -31,11 +31,11 @@
     
 	
     <item>
-      <title>Shader Graph</title>
-      <link>https://www.cyanilux.com/tags/shader-graph/</link>
-      <pubDate>Wed, 21 Apr 2021 00:00:00 +0000</pubDate>
+      <title>HLSL</title>
+      <link>https://www.cyanilux.com/tags/hlsl/</link>
+      <pubDate>Mon, 17 May 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.cyanilux.com/tags/shader-graph/</guid>
+      <guid>https://www.cyanilux.com/tags/hlsl/</guid>
       <description></description>
     </item>
 	

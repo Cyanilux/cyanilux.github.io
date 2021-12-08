@@ -6,7 +6,18 @@
     <description>Recent content in Home on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Mon, 17 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 08 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/index.xml" rel="self" type="application/rss+xml" />
+	
+    <item>
+      <title>Sword Slash Shader Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/sword-slash-shader-breakdown/</link>
+      <pubDate>Wed, 08 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/sword-slash-shader-breakdown/</guid>
+      <description>A shader applied to a ring mesh that pans a texture along it to create a swipe/slash effect</description>
+    </item>
+	
+    
 	
     <item>
       <title>Writing Shader Code in Universal RP (v2)</title>
