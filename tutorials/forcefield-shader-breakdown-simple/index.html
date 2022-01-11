@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -194,6 +194,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -224,7 +230,7 @@
 
 <div class="img-center">
 <a href="Preview.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="600" height="400" alt="" src="Preview.png" />
+<img loading="lazy" width="600" height="400" alt="(Image)" src="Preview.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -240,7 +246,7 @@
 <p>We also need to click the small cog on our <b class="node">Master</b> node and set the shader to use <strong>Transparent</strong> rendering, <strong>Alpha</strong> blending and enable <strong>Two Sided</strong>.</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="689" height="165" alt="" src="Graph1.png" />
+<img loading="lazy" width="689" height="165" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -249,7 +255,7 @@
 <p>We’ll take the output of the <b class="node">Branch</b> node and <b class="node">Multiply</b> it by <strong>2</strong> and then put it into an <b class="node">Add</b> node with a value of <strong>0.02</strong>. This allows us to tint the forcefield alpha, so it is slightly less transparent.</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="436" alt="" src="Graph2.png" />
+<img loading="lazy" width="750" height="436" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -257,7 +263,7 @@
 <p>We can then create a <b class="node">Scene Depth</b> node set to the <strong>Eye</strong> sampling mode, put it into the first input on a <b class="node">Subtract</b> node, and take the <strong>W/A</strong> component from the <b class="node">Split</b> and put it into the second input. By subtracting these two things, we obtain the difference in depth between the scene and object. We can then put this into a <b class="node">Saturate</b> node to clamp it between 0 and 1, then put it into a <b class="node">One Minus</b> node. We can then put this into a <b class="node">Power</b> node with a value of <strong>15</strong>, <b class="node">Add</b> it to our previous alpha value and then put it into the <strong>Alpha</strong> input on the <b class="node">Master</b> node.</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="514" alt="" src="Graph3.png" />
+<img loading="lazy" width="750" height="514" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -194,6 +194,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -225,7 +231,7 @@
 <p><strong>Depth</strong> is a term used in computer graphics to refer to how far a fragment (a potential pixel) is from the camera. But it can be a bit complicated - as depth can come in different spaces/ranges, vary between platform, and vary between perspective and orthographic camera projections.</p>
 <div class="img-center">
 <a href="Preview.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="428" alt="" src="Preview.png" />
+<img loading="lazy" width="750" height="428" alt="(Image)" src="Preview.png" />
 </a>
 <p class="img-text">
 (Image showing "Linear01" Depth)
@@ -282,7 +288,7 @@
 <p>The easiest type of depth to understand is <strong>Eye/View-space Depth</strong> which refers to the distance between a position in the scene to a <strong>plane perpendicular to the camera&rsquo;s view</strong> - (Not the camera position itself).</p>
 <div class="img-center">
 <a href="EyeDepth.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="433" alt="" src="EyeDepth.png" />
+<img loading="lazy" width="750" height="433" alt="(Image)" src="EyeDepth.png" />
 </a>
 <p class="img-text">
 The red line corrosponds to the Eye Depth to the Position in the Scene. While the cyan line is the actual Euclidean distance.
@@ -299,7 +305,7 @@ The red line corrosponds to the Eye Depth to the Position in the Scene. While th
 <p>I&rsquo;m unsure if there is any difference in performance between the two for perspective projections. I usually use the second method personally. It&rsquo;s also a good idea to group the nodes and name them something like &ldquo;Object/Fragment (Eye) Depth&rdquo; to keep it similar to the <b class="node">Scene Depth</b> node naming but to make it clear this is the <strong>depth to the object/fragment being rendered</strong> rather than the scene behind it!</p>
 <div class="img-center">
 <a href="FragmentDepth.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="166" alt="" src="FragmentDepth.png" />
+<img loading="lazy" width="750" height="166" alt="(Image)" src="FragmentDepth.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -418,7 +424,7 @@ float2 screenUV 	= pd.xy;
 <p>The reason for making the depth buffer value non-linear (in view space), as well as the Reversed Z Buffer for Direct3D-like platforms, is for better precision. More information about how this works can be found in this <a href="https://developer.nvidia.com/content/depth-precision-visualized">NVIDIA article</a> and it can explain it a lot better than I can.</p>
 <div class="img-center">
 <a href="https://developer.nvidia.com/sites/default/files/akamai/gameworks/blog/Depthprecision/graph5.jpg" target="_blank" rel="noopener noreferrer">
-<img loading="lazy"   alt="" src="https://developer.nvidia.com/sites/default/files/akamai/gameworks/blog/Depthprecision/graph5.jpg" />
+<img loading="lazy"   alt="(Image)" src="https://developer.nvidia.com/sites/default/files/akamai/gameworks/blog/Depthprecision/graph5.jpg" />
 </a>
 <p class="img-text">
 Source : From the NVIDIA article linked below. "The quasi-logarithmic distribution of floating-point somewhat cancels the 1/z nonlinearity, giving us similar precision at the near plane to an integer depth buffer, and vastly improved precision everywhere else. The precision worsens only very slowly as you move farther out."
@@ -427,7 +433,7 @@ Source : From the NVIDIA article linked below. "The quasi-logarithmic distributi
 <p>Here&rsquo;s an image to help show the comparison between this non-linear NDC / Z Buffer Depth (labelled &ldquo;raw&rdquo; here, as it&rsquo;s the raw value from the Depth Buffer and Depth Texture), and the Linear01 or Eye depth.</p>
 <div class="img-center">
 <a href="DepthComparison.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="428" alt="" src="DepthComparison.png" />
+<img loading="lazy" width="750" height="428" alt="(Image)" src="DepthComparison.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -649,7 +655,7 @@ OUT.positionCS <span style="color:#f92672">=</span> positionCS;
 OUT.screenPos <span style="color:#f92672">=</span> ComputeScreenPos(positionCS);
 ...
 <span style="color:#75715e">// Fragment
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> sceneRawDepth <span style="color:#f92672">=</span> SampleSceneDepth(IN.screenPos.xy <span style="color:#f92672">/</span> IN.screenPos.w);
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> rawDepth <span style="color:#f92672">=</span> SampleSceneDepth(IN.screenPos.xy <span style="color:#f92672">/</span> IN.screenPos.w);
 <span style="color:#66d9ef">float</span> sceneEyeDepth <span style="color:#f92672">=</span> LinearEyeDepth(rawDepth, _ZBufferParams);</code></pre></td></tr></table>
 </div>
 </div>
@@ -715,7 +721,7 @@ orthoEyeDepth = lerp(_ProjectionParams.y, _ProjectionParams.z, orthoLinearDepth)
 </ul>
 <div class="img-center">
 <a href="SceneDepth.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="326" height="162" alt="" src="SceneDepth.png" />
+<img loading="lazy" width="326" height="162" alt="(Image)" src="SceneDepth.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -740,7 +746,7 @@ orthoEyeDepth = lerp(_ProjectionParams.y, _ProjectionParams.z, orthoLinearDepth)
 </ul>
 <div class="img-center">
 <a href="OrthoSceneDepth.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="311" alt="" src="OrthoSceneDepth.png" />
+<img loading="lazy" width="750" height="311" alt="(Image)" src="OrthoSceneDepth.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -750,7 +756,7 @@ orthoEyeDepth = lerp(_ProjectionParams.y, _ProjectionParams.z, orthoLinearDepth)
 </ul>
 <div class="img-center">
 <a href="URPAssetDepth.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="529" height="262" alt="" src="URPAssetDepth.png" />
+<img loading="lazy" width="529" height="262" alt="(Image)" src="URPAssetDepth.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -761,7 +767,7 @@ orthoEyeDepth = lerp(_ProjectionParams.y, _ProjectionParams.z, orthoLinearDepth)
 <h2 id="depth-difference">Depth Difference</h2>
 <div class="img-center">
 <a href="DepthDifference.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="598" height="291" alt="" src="DepthDifference.png" />
+<img loading="lazy" width="598" height="291" alt="(Image)" src="DepthDifference.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -770,7 +776,7 @@ orthoEyeDepth = lerp(_ProjectionParams.y, _ProjectionParams.z, orthoLinearDepth)
 <p>This &ldquo;depth-difference&rdquo; method isn&rsquo;t always accurate however, especially at shallow viewing angles.</p>
 <div class="img-center">
 <a href="GraphDepthDifference.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="363" alt="" src="GraphDepthDifference.png" />
+<img loading="lazy" width="750" height="363" alt="(Image)" src="GraphDepthDifference.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -823,7 +829,7 @@ OUT.positionVS <span style="color:#f92672">=</span> positionVS; <span style="col
 </span><span style="color:#75715e"></span>...
 <span style="color:#75715e">// Fragment
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> fragmentEyeDepth <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>IN.positionVS.z;
-<span style="color:#66d9ef">float</span> sceneRawDepth <span style="color:#f92672">=</span> SampleSceneDepth(IN.screenPos.xy <span style="color:#f92672">/</span> IN.screenPos.w);
+<span style="color:#66d9ef">float</span> rawDepth <span style="color:#f92672">=</span> SampleSceneDepth(IN.screenPos.xy <span style="color:#f92672">/</span> IN.screenPos.w);
 
 <span style="color:#75715e">// For perspective : 
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> sceneEyeDepth <span style="color:#f92672">=</span> LinearEyeDepth(rawDepth, _ZBufferParams);
@@ -853,7 +859,7 @@ OUT.positionVS <span style="color:#f92672">=</span> positionVS; <span style="col
 <h3 id="mesh-perspective">Mesh (Perspective projection)</h3>
 <div class="img-center">
 <a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy"   alt="" src="https://www.cyanilux.com/ReconstructDepthWorldPos.png" />
+<img loading="lazy"   alt="(Image)" src="https://www.cyanilux.com/ReconstructDepthWorldPos.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -865,7 +871,7 @@ OUT.positionVS <span style="color:#f92672">=</span> positionVS; <span style="col
 <p>Since we are using the <b class="node">Scene Depth</b>, the graph must also be set to use <strong>Transparent</strong> surface mode for the node to function correctly.</p>
 <div class="img-center">
 <a href="GraphReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="422" alt="" src="GraphReconstructDepthWorldPos.png" />
+<img loading="lazy" width="750" height="422" alt="(Image)" src="GraphReconstructDepthWorldPos.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -907,7 +913,7 @@ OUT.positionVS <span style="color:#f92672">=</span> positionVS; <span style="col
 </span><span style="color:#75715e"></span>OUT.screenPos <span style="color:#f92672">=</span> ComputeScreenPos(positionCS); <span style="color:#75715e">// (TEXCOORD3)
 </span><span style="color:#75715e"></span>...
 <span style="color:#75715e">// Fragment
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> sceneRawDepth <span style="color:#f92672">=</span> SampleSceneDepth(IN.screenPos.xy <span style="color:#f92672">/</span> IN.screenPos.w);
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> rawDepth <span style="color:#f92672">=</span> SampleSceneDepth(IN.screenPos.xy <span style="color:#f92672">/</span> IN.screenPos.w);
 <span style="color:#66d9ef">float</span> sceneEyeDepth <span style="color:#f92672">=</span> LinearEyeDepth(rawDepth, _ZBufferParams);
 <span style="color:#66d9ef">float</span> fragmentEyeDepth <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>IN.positionVS.z;
 
@@ -919,7 +925,7 @@ float3 worldPos <span style="color:#f92672">=</span> _WorldSpaceCameraPos <span 
 <h3 id="mesh-orthographic">Mesh (Orthographic projection)</h3>
 <div class="img-right">
 <a href="ReconstructDepthWorldPosOrtho.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="400" height="235" alt="" src="ReconstructDepthWorldPosOrtho.png" />
+<img loading="lazy" width="400" height="235" alt="(Image)" src="ReconstructDepthWorldPosOrtho.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -928,7 +934,7 @@ float3 worldPos <span style="color:#f92672">=</span> _WorldSpaceCameraPos <span 
 <p>Since we are using <b class="node">Scene Depth</b>, the <b class="node">Master</b> node should also be set to <strong>Transparent</strong> Surface mode.</p>
 <div class="img-center">
 <a href="GraphReconstructDepthWorldPosOrtho.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="210" alt="" src="GraphReconstructDepthWorldPosOrtho.png" />
+<img loading="lazy" width="750" height="210" alt="(Image)" src="GraphReconstructDepthWorldPosOrtho.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -937,7 +943,7 @@ float3 worldPos <span style="color:#f92672">=</span> _WorldSpaceCameraPos <span 
 <p>Since we are using the <b class="node">Scene Depth</b>, the graph should also be set to use <strong>Transparent</strong> surface mode for the node to function correctly, and the blit should occur in the Before Skybox event or any event after.</p>
 <div class="img-center">
 <a href="GraphReconstructDepthWorldPosBlit.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="141" alt="" src="GraphReconstructDepthWorldPosBlit.png" />
+<img loading="lazy" width="750" height="141" alt="(Image)" src="GraphReconstructDepthWorldPosBlit.png" />
 </a>
 <p class="img-text">
 Left note : Custom Function, Output : "Out" Matrix4x4. Body : Out = unity_CameraInvProjection;</br>
@@ -950,7 +956,7 @@ Right note : C#, Shader.SetGlobalMatrix("_InverseView", cam.cameraToWorldMatrix)
 <p>This version is very similar to the above. Again requires the <code>_InverseView</code> matrix (set to <a href="https://docs.unity3d.com/ScriptReference/Camera-cameraToWorldMatrix.html">cam.cameraToWorldMatrix</a>). The <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Renderer Feature</a> that I shared on Github has an option for this.</p>
 <div class="img-center">
 <a href="GraphReconstructDepthWorldPosBlitOrtho.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="299" alt="" src="GraphReconstructDepthWorldPosBlitOrtho.png" />
+<img loading="lazy" width="750" height="299" alt="(Image)" src="GraphReconstructDepthWorldPosBlitOrtho.png" />
 </a>
 <p class="img-text">
 Custom Function, Output : "Out" Matrix4x4. Body : Out = unity_CameraInvProjection;</br>

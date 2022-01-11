@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -194,6 +194,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -239,7 +245,7 @@
 <p>The shader uses the <strong>Tangent Space</strong> <b class="node">View Direction</b> vector, which is commonly used for parallax effects. The vector is distorted using a texture sample, then used to sample a repeating rainbow texture (optionally with some gaps, as shown below) which provides a nice holofoil effect (or at least a stylised version of it, this isn&rsquo;t meant to replicate it accurately).</p>
 <div class="img-center">
 <a href="RainbowTex.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="512" height="32" alt="" src="RainbowTex.png" />
+<img loading="lazy" width="512" height="32" alt="(Image)" src="RainbowTex.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -258,7 +264,7 @@
 <p>As my card mesh uses the UV0 channel for other data (as I&rsquo;ll explain in the next section), I&rsquo;m also projecting the texture onto the mesh by using the <b class="node">Position</b> node in <strong>Object</strong> space (X &amp; Y axis) as the UVs instead.</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="366" alt="" src="Graph1.png" />
+<img loading="lazy" width="750" height="366" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -266,7 +272,7 @@
 <p>The <strong>RGBA</strong> output from the <b class="node">Sample Texture 2D</b> is multiplied with a &ldquo;Distortion Strength&rdquo; <strong>Float property</strong> and the <strong>Tangent</strong> space <b class="node">View Direction</b> is also multiplied with a &ldquo;Tiling&rdquo; <strong>Float property</strong>. These two outputs are then added together and put into a <b class="node">Rotate</b> node (allowing us to optionally rotate the whole foil effect), then into the <strong>UV</strong> input on another <b class="node">Sample Texture 2D</b> node which samples the rainbow texture.</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="356" alt="" src="Graph2.png" />
+<img loading="lazy" width="750" height="356" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -277,7 +283,7 @@
 <p>Avoiding another texture sample would be cheaper so we could alternatively use <strong>Vertex Colors</strong> (though you would then have to separate those vertices you want to paint so the parts don&rsquo;t blend), or use a specific <strong>UV Mapping</strong>. For example my card has two parts so we can have the vertical axis from 1 to 0.5 be the main body of the card, while 0.5 to 0 is the shiny edge/border (or vice versa).</p>
 <div class="img-center">
 <a href="CardMeshUVs.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="427" alt="" src="CardMeshUVs.png" />
+<img loading="lazy" width="750" height="427" alt="(Image)" src="CardMeshUVs.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -286,7 +292,7 @@
 <p>For each mask we can provide a <strong>Float property</strong> (or store them as a <strong>Vector property</strong>). We <b class="node">Multiply</b> each mask by the property, then <b class="node">Add</b> the results together. Rather than multiplying each float separately, it&rsquo;s easier (and likely more efficent) to combine them into a <b class="node">Vector4</b> as shown below. We finally <b class="node">Multiply</b> by the Holofoil result and output it to the <strong>Base Color</strong> on the <strong>Master Stack</strong> (or perhaps Emission if using a Lit Graph).</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="191" alt="" src="Graph3.png" />
+<img loading="lazy" width="750" height="191" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -346,7 +352,7 @@
 <p>To set this up, we first need to set up a new <strong>&ldquo;Card Object&rdquo; Layer</strong> to put the object on, then on the <strong>Forward Renderer</strong> asset we exclude that layer from the <strong>Opaque Layer Mask</strong>. This means that layer will not be drawn automatically, as we want to handle rendering it ourself in order to use the overrides.</p>
 <div class="img-center">
 <a href="ForwardRenderer.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="488" height="320" alt="" src="ForwardRenderer.png" />
+<img loading="lazy" width="488" height="320" alt="(Image)" src="ForwardRenderer.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -354,7 +360,7 @@
 <p>Under Filters, we want to select <strong>Opaque</strong> and our <strong>&ldquo;Card Object&rdquo; layer</strong>. Then under Overrides, tick <strong>Stencil</strong>, set the <strong>Value</strong> to <strong>2</strong> and change the <strong>Compare Function</strong> to <strong>Equal</strong>. The Pass/Fail/ZFail can all be left as Keep.</p>
 <div class="img-center">
 <a href="RenderObjects.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="488" height="341" alt="" src="RenderObjects.png" />
+<img loading="lazy" width="488" height="341" alt="(Image)" src="RenderObjects.png" />
 </a>
 <p class="img-text"></p>
 </div>

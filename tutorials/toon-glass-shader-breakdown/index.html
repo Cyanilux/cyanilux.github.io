@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -194,6 +194,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -266,21 +272,21 @@
 <p>(In v10.3+ you can now set the Preview to 2D using the Node Settings tab of the Graph Inspector)</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="382" alt="" src="Graph1.png" />
+<img loading="lazy" width="750" height="382" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>We now have two gradients going outwards diagonally in each direction. There are values of 0 in the center shown by the black areas on the preview. If we <b class="node">Subtract</b> a value from this it will shift the values inwards, and output negative values in the center (which we can remove later via a <b class="node">Saturate</b>). This results in creating a spacing between the two gradients. Here we use the <strong>Offset property</strong>, which will allow us to change the spacing later in the inspector. We can then also apply some scaling by using a <b class="node">Multiply</b> with the <strong>Scale Multiplier property</strong>, as shown on the left below.</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="282" alt="" src="Graph2.png" />
+<img loading="lazy" width="750" height="282" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>To handle creating multiple lines, I’m using this setup as shown above. By using a <b class="node">Power</b> in our calculations, we can allow the values to be more exponential / less linear. This affects the width of each line based on the distance from the diagonal, as shown in the <b class="node">Fraction</b> node preview. To better show how this works, I’ve plotted the functions here :</p>
 <p><div class="img-center">
 <a href="Plots.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="202" alt="" src="Plots.png" />
+<img loading="lazy" width="750" height="202" alt="(Image)" src="Plots.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -293,7 +299,7 @@
 <p>Also don’t forget to connect the (camera relative &amp; tangent) position rather than the UVs at the beginning when saving the graph, as the UVs were only there for better previews while editing!</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="412" alt="" src="Graph3.png" />
+<img loading="lazy" width="750" height="412" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>

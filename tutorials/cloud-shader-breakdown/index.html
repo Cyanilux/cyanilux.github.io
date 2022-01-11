@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -194,6 +194,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -250,14 +256,14 @@
 <p>We can use a <b class="node">Time</b> node to offset this position so the noise moves slowly over <strong>Time</strong>, with a <b class="node">Multiply</b> node to control the speed at which the noise scrolls at. We’ll also add an overall speed multiplier as a <strong>Vector1 property</strong> so we can control the cloud scroll speed from the inspector.</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="400" alt="" src="Graph1.png" />
+<img loading="lazy" width="750" height="400" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>We’ll use parts of this noise setup 3 times, one for the <b class="node">Gradient Noise</b> and two <b class="node">Simple Noise</b> nodes, all moving at slightly different rates as shown in the image below.</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="383" alt="" src="Graph2.png" />
+<img loading="lazy" width="750" height="383" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -266,14 +272,14 @@
 <p>Also note that we are offsetting the <strong>World</strong> space vertex position here, but the <b class="node">Master</b> node wants a <strong>Object</strong> space position, so we need to use a <b class="node">Transform</b> node to convert it (from <strong>World</strong>, to <strong>Object</strong>).</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="322" alt="" src="Graph3.png" />
+<img loading="lazy" width="750" height="322" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>Next we’ll handle the cloud colour as it’s currently hard to see anything we’ve done with the shader being a solid colour. I’m using the same output from our layered noise – giving the higher parts of the clouds a different colour to the lower parts. We can do this by putting the layered noise into the <strong>T</strong> input on a <b class="node">Lerp</b> node, and set the <strong>A</strong> and <strong>B</strong> inputs to two <strong>Color properties</strong>. This creates a linear interpolation between the two colours, creating a gradient. At T=0 it outputs A, and at T=1 it outputs B.</p>
 <div class="img-center">
 <a href="Graph4.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="322" alt="" src="Graph4.png" />
+<img loading="lazy" width="750" height="322" alt="(Image)" src="Graph4.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -281,7 +287,7 @@
 <p>I’m using a property to control the two <strong>Edge</strong> inputs. It outputs 1 if the <strong>Cloud Cover property</strong> is 0, as all noise values will be larger than 0, but as it gets larger the <b class="node">Smoothstep</b> outputs 0 for the lower noise values, leaving only the higher parts behind. Also the falloff (which is controlled by <strong>Edge2</strong>) also increases, so the clouds also get softer, and we have an <strong>Additional Falloff property</strong> to control this further if required.</p>
 <div class="img-center">
 <a href="Graph5.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="730" height="627" alt="" src="Graph5.png" />
+<img loading="lazy" width="730" height="627" alt="(Image)" src="Graph5.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -290,7 +296,7 @@
 <p>If you aren’t going to have any objects intersecting with the clouds you’ll likely want to leave this part out for better performance.</p>
 <div class="img-center">
 <a href="Graph6.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="343" alt="" src="Graph6.png" />
+<img loading="lazy" width="750" height="343" alt="(Image)" src="Graph6.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -327,7 +333,7 @@
 </ul>
 <div class="img-center">
 <a href="ScreenPosFix.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="555" alt="" src="ScreenPosFix.png" />
+<img loading="lazy" width="750" height="555" alt="(Image)" src="ScreenPosFix.png" />
 </a>
 <p class="img-text"></p>
 </div>

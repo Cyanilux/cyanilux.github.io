@@ -185,6 +185,14 @@ a:active {
 		align-content: flex-start;
 	}
 	
+	.card:hover {
+		background-color: #303030;
+	}
+	
+	.card-compact:hover {
+		background-color: #303030;
+	}
+	
 	.card-compact:hover > .card-image-box > .card-image-small {
 		height : 110%;
 		bottom : 5%;

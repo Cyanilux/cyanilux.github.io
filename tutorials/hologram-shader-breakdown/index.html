@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -194,6 +194,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -248,7 +254,7 @@
 <p>To make this animated we can use the <strong>Time</strong> output from the <b class="node">Time</b> node and <b class="node">Multiply</b> this by a value to control the scroll speed (e.g. <strong>0.5</strong>). We’ll then put this into an <b class="node">Add</b> node with the <strong>Y/G</strong> output of the <b class="node">Split</b> to offset it before replacing it with the input into the <b class="node">Multiply</b> node we created earlier (the one that goes into the <b class="node">Sine</b>).</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="209" alt="" src="Graph1.png" />
+<img loading="lazy" width="750" height="209" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -257,7 +263,7 @@
 <p>I’m setting the scroll speed and vertical scaling both to 1. While this means these <b class="node">Multiply</b> nodes don’t do anything, I prefer to keep them as it allows us to adjust the effect if needed. (As a note, you may notice that when using the same value to scale the <b class="node">Sine</b> and <b class="node">Fraction</b> nodes they output different amount of horizontal lines. This is due to the sine function taking an input in radians (in terms of Pi). We could multiply by 2*Pi before putting a value into the <b class="node">Sine</b> node to ensure the scaling is the same for both, but this isn’t too important).</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="233" alt="" src="Graph2.png" />
+<img loading="lazy" width="750" height="233" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -268,7 +274,7 @@
 <p>Finally put the output of that into the <strong>Color</strong> input on the <b class="node">Master</b> node and click the cog to change it to <strong>Transparent</strong> and use <strong>Additive</strong> blending if you haven’t done so already.</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="257" alt="" src="Graph3.png" />
+<img loading="lazy" width="750" height="257" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -287,7 +293,7 @@ Your browser does not support the video tag.
 <p>Since this noise returns a value between 0 and 1 we will <b class="node">Subtract</b> <strong>0.5</strong>, so our distortion will be centered. Then <b class="node">Multiply</b> by <strong>0.1</strong>, and <b class="node">Multiply</b> again by a <strong>Vector1 property</strong> named <strong>Distortion Strength</strong>. (Note that I’m just multiplying by 0.1 so that our strength value is more reasonable, as without it, a value of 1 would distort the texture by a maximum of half of itself (since our noise is between -0.5 and 0.5), which is quite a lot of distortion).</p>
 <div class="img-center">
 <a href="Graph4.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="174" alt="" src="Graph4.png" />
+<img loading="lazy" width="750" height="174" alt="(Image)" src="Graph4.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -306,7 +312,7 @@ Your browser does not support the video tag.
 <p>We’ll put a <strong>Glitch Amount Vector1 property</strong> into the second input of the <b class="node">Step</b> node to control the amount of glitching that will get past the step. (A value of 0 will allow no glitching through, 0.5 half of it, while 1 will allow all of it). We can then <b class="node">Multiply</b> our random input by this step output, <b class="node">Multiply</b> by <strong>0.1</strong> and <b class="node">Multiply</b> again by <strong>Glitch Strength Vector1 property</strong> to control the strength of our glitching effect.</p>
 <div class="img-center">
 <a href="Graph5.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="177" alt="" src="Graph5.png" />
+<img loading="lazy" width="750" height="177" alt="(Image)" src="Graph5.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -315,14 +321,14 @@ Your browser does not support the video tag.
 <p>We can also make the glitching change the colour of the effect. You could use a <b class="node">Hue</b> node to offset the colour, but I found this gave too much variation. Instead, I took the <b class="node">Multiply</b> output (the one including the <b class="node">Random Range</b> and <b class="node">Step</b> inputs). Since this is between -1 and 1 we can colour the positive offsets and negative offsets differently. I simply use a <b class="node">Saturate</b> node to clamp values between 0 and 1 and then <b class="node">Multiply</b> by a <strong>red Color property</strong>, and do this again but with a <b class="node">Negate</b> node and <strong>green Color property</strong>. I then <b class="node">Add</b> these two outputs together, as seen in the image below.</p>
 <div class="img-center">
 <a href="Graph6.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="223" alt="" src="Graph6.png" />
+<img loading="lazy" width="750" height="223" alt="(Image)" src="Graph6.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>We can then <b class="node">Add</b> this to our previous colour that went into the <b class="node">Master</b> node, but before the <b class="node">Sample Texture 2D LOD</b> node to ensure it is masked correctly. You may need to rearrange the nodes a little, but it should look something like below.</p>
 <div class="img-center">
 <a href="Graph7.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="292" alt="" src="Graph7.png" />
+<img loading="lazy" width="750" height="292" alt="(Image)" src="Graph7.png" />
 </a>
 <p class="img-text"></p>
 </div>

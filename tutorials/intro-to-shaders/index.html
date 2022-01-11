@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -168,7 +168,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -187,6 +187,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -231,7 +237,7 @@
 <p>A <strong>mesh</strong> contains the data for a <strong>3D model</strong>, consisting of <strong>vertices</strong> and how they connect into <strong>triangles</strong>. Each triangle is made up of 3 vertices, though each vertex can be shared between multiple triangles, (so there won’t always be triple the amount of vertices than triangles).</p>
 <div class="img-center">
 <a href="Cube.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="412" height="389" alt="" src="Cube.png" />
+<img loading="lazy" width="412" height="389" alt="(Image)" src="Cube.png" />
 </a>
 <p class="img-text">
 Example Cube Mesh, consisting of 12 triangles. In Blender (3D modelling software), this has 8 vertices, however this value may change when importing into Unity depending on whether it's per-vertex data is the same between shared vertices.
@@ -250,7 +256,7 @@ Example Cube Mesh, consisting of 12 triangles. In Blender (3D modelling software
 <p>While two vertices may share the same position in 3D space, if their other data doesn’t also match then they must be two separate entries in the vertex data lists.</p>
 <div class="img-center">
 <a href="CubeNormals.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="716" height="351" alt="" src="CubeNormals.png" />
+<img loading="lazy" width="716" height="351" alt="(Image)" src="CubeNormals.png" />
 </a>
 <p class="img-text">
 Example Cube Mesh. Both have <b>12</b> triangles but the left has <b>24</b> vertices, while the right has <b>8</b> vertices.
@@ -264,7 +270,7 @@ Example Cube Mesh. Both have <b>12</b> triangles but the left has <b>24</b> vert
 <p>For each triangle, and vertex in that triangle, the clip space positions passed out from the vertex stage is used to create <strong>fragments</strong> – potential pixels on the 2D screen. All of the per-vertex data passed into the fragment shader also gets <strong>interpolated</strong> across the triangle. This is why each vertex can specify a single vertex colour but the triangle ends up with a gradient across it. (The same thing happens to the UVs which is what allows the texture to be properly applied rather than just taking the colour a single pixel for each vertex)</p>
 <div class="img-center">
 <a href="VertexColourInterpolation.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="300" height="251" alt="" src="VertexColourInterpolation.png" />
+<img loading="lazy" width="300" height="251" alt="(Image)" src="VertexColourInterpolation.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -354,7 +360,7 @@ Example Cube Mesh. Both have <b>12</b> triangles but the left has <b>24</b> vert
 </ul>
 <div class="img-center">
 <a href="Pipeline.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="681" height="105" alt="" src="Pipeline.png" />
+<img loading="lazy" width="681" height="105" alt="(Image)" src="Pipeline.png" />
 </a>
 <p class="img-text">
 Shows how these extra stages fit into the pipeline.</br>(Though this is simplified and doesn't include steps like clipping, face culling, early z-test, z-test, blending, etc)

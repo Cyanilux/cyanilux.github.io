@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -194,6 +194,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -452,7 +458,7 @@
 <p>Calculating the required normals isn’t too difficult, we use the vertex positions and normalise them, the script above already has this included. Make sure to change the <strong>Handle Normals</strong> setting to <strong>Normalised Vertex Pos</strong>. If you&rsquo;d rather handle it in the shader, you can still generate the normals or clear them to save on memory.</p>
 <div class="img-center">
 <a href="GeneratedMesh.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="700" height="221" alt="" src="GeneratedMesh.png" />
+<img loading="lazy" width="700" height="221" alt="(Image)" src="GeneratedMesh.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -462,7 +468,7 @@
 <p>First up, we need to create a <strong>Texture2D property</strong> that is used for our foliage texture. I’m using the following texture that I threw together quite quickly in GIMP. (Feel free to use it if you want, or make your own)</p>
 <div class="img-center">
 <a href="FoliageTexture.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="256" height="256" alt="" src="FoliageTexture.png" />
+<img loading="lazy" width="256" height="256" alt="(Image)" src="FoliageTexture.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -471,7 +477,7 @@
 <p>To optimise the texture further, it could likely be made smaller and converting the shape to a distance field may help too (discussed briefly in my <a href="https://www.cyanilux.com/tutorials/sprite-outline-shader-breakdown/">sprite glow/outline breakdown</a>).</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="666" height="461" alt="" src="Graph1.png" />
+<img loading="lazy" width="666" height="461" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -481,28 +487,28 @@
 <p>If you’d rather calculate the required normals in the shader, we can do so using the <b class="node">Position</b> node in <strong>World</strong> space and <b class="node">Subtract</b> the <strong>Position</strong> output from the <b class="node">Object</b> node (which is the world space position of the <strong>origin of the GameObject/Transform</strong>). We then need to <b class="node">Normalize</b> the result. (As mentioned previously, be aware that this calculation won&rsquo;t produce the correct results for meshes batched using static/dynamic batching, or particle systems)</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="416" height="246" alt="" src="Graph2.png" />
+<img loading="lazy" width="416" height="246" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>We can then use a <b class="node">Dot Product</b> between the (stored or calculated) <strong>normal</strong> and <strong>Light Direction</strong>, obtained using a <strong>Sub Graph</strong> named <b class="node">Main Light</b>, which contains a <b class="node">Custom Function</b> node calling <code>GetMainLight()</code>. I have shared some <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">custom lighting functions on github</a> which includes this. (You can add them to your project in the <strong>Package Manager</strong> using the HTTPS link with .git appended, or download and put the files in your assets manually)</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="630" height="295" alt="" src="Graph3.png" />
+<img loading="lazy" width="630" height="295" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>The output of the <b class="node">Dot Product</b> is in a <strong>-1 to 1</strong> range, so we can use an <b class="node">Inverse Lerp</b> (or <b class="node">Remap</b>) to remap it to a <strong>0 to 1</strong> range with <strong>-1 and 1</strong> as the <strong>A</strong> and <strong>B</strong> inputs (or <strong>In Min Max</strong>). For most objects you usually don’t remap this and have half of the object darker but this shading looks strange for foliage as it should allow some light to pass through.</p>
 <div class="img-center">
 <a href="Graph4.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="315" alt="" src="Graph4.png" />
+<img loading="lazy" width="750" height="315" alt="(Image)" src="Graph4.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>To apply some colour to the remapped gradient, we put the output into the <strong>T</strong> of a <b class="node">Lerp</b> node and assign some <strong>Color properties</strong> to the <strong>A</strong> and <strong>B</strong> inputs. This allows us to interpolate between the two colours. With this put into the <strong>Base Color</strong> port of the <strong>Master Stack</strong> (or <strong>Color</strong> of <b class="node">Unlit Master</b> node) we get the soft shading that we wanted :</p>
 <div class="img-center">
 <a href="Preview.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="500" height="400" alt="" src="Preview.png" />
+<img loading="lazy" width="500" height="400" alt="(Image)" src="Preview.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -513,7 +519,7 @@
 <p>Ideally, we would want the wind direction to remain constant for all objects in the scene so should instead use a <b class="node">Position</b> node in <strong>World</strong> space, <b class="node">Add</b>, then <b class="node">Transform</b> it back to <strong>Object</strong> at the end. We&rsquo;ll come back to what goes in the second port on the <b class="node">Add</b> later.</p>
 <div class="img-center">
 <a href="Graph5.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="725" height="243" alt="" src="Graph5.png" />
+<img loading="lazy" width="725" height="243" alt="(Image)" src="Graph5.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -522,7 +528,7 @@
 <p>Now we can <b class="node">Add</b> these two frequencies together and input it into the <b class="node">Sine</b> node. The range (or amplitude) of the wave is <strong>-1 to 1</strong> which is far too large of an offset, so we also <b class="node">Multiply</b> the output by <strong>0.04</strong> to lower that. Again could use a <strong>Vector1 property</strong>.</p>
 <div class="img-center">
 <a href="Graph6.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="245" alt="" src="Graph6.png" />
+<img loading="lazy" width="750" height="245" alt="(Image)" src="Graph6.png" />
 </a>
 <p class="img-text"></p>
 </div>

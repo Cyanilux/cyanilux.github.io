@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -194,6 +194,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -249,7 +255,7 @@
 <p>With this position we could discard all the pixels that are in the positive Y direction (upwards, where Y &gt; 0). However, doing this with the world position means the liquid height will not move if the object is moved, and it will become completely submerged or invisible if it’s moved too far below or above the liquid height level. To fix this, we need to first <b class="node">Subtract</b> the object’s world space position which can be obtained via the <strong>Position</strong> output on the <b class="node">Object</b> node.</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="487" height="265" alt="" src="Graph1.png" />
+<img loading="lazy" width="487" height="265" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -258,7 +264,7 @@
 <p>We can then use a value of 0.5 for the <strong>AlphaClipThreshold</strong> input on the Master node, which tells the shader to discard pixels that are below this threshold. We should now see that pixels above the pivot of our object are discarded, but there is no top surface yet. There&rsquo;s no way to add actual geometry to this surface but we can fake it by rendering back faces. To do this, click the cog icon on the top right of the <b class="node">Master</b> node and tick the <strong>Two Sided</strong> tickbox. (Note, in URP v10+ this can probably be found in the Graph&rsquo;s Inspector window instead)</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="347" alt="" src="Graph2.png" />
+<img loading="lazy" width="750" height="347" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -268,7 +274,7 @@
 <p>To improve the effect, I added a level of foam onto the side of the front faces. We can do this by adding another <b class="node">Step</b> node (using the same input as the other one), but offset the <strong>Edge</strong> input by a small amount. I’m using <strong>0.05</strong> for this, but it might again be a good idea to use a <strong>Vector1 property</strong> here instead, so you can change the foam height from outside of the shader.</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="267" alt="" src="Graph3.png" />
+<img loading="lazy" width="750" height="267" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -276,7 +282,7 @@
 <p>That’s pretty much the effect. I also added a little <b class="node">Sine</b> movement to the liquid height by offsetting the <strong>Y/G</strong> value from the <b class="node">Split</b> node using the <strong>R/X</strong> component, a <b class="node">Time</b> node and a few maths based nodes like this:</p>
 <div class="img-center">
 <a href="Graph4.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="262" alt="" src="Graph4.png" />
+<img loading="lazy" width="750" height="262" alt="(Image)" src="Graph4.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -284,7 +290,7 @@
 <p>Here’s a final image showing the entire graph:</p>
 <div class="img-center">
 <a href="GraphFull.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="239" alt="" src="GraphFull.png" />
+<img loading="lazy" width="750" height="239" alt="(Image)" src="GraphFull.png" />
 </a>
 <p class="img-text"></p>
 </div>

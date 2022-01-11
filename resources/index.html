@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Resources">
+<meta itemprop="description" content="Useful Links to Resources/Tutorials/Docs related to Unity or Gamedev">
+
+<meta itemprop="wordCount" content="429">
+
+
+
+<meta itemprop="keywords" content="" />
+
+	
+	
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Resources"/>
+<meta name="twitter:description" content="Useful Links to Resources/Tutorials/Docs related to Unity or Gamedev"/>
+
+	
+<meta property="og:title" content="Resources" />
+<meta property="og:description" content="Useful Links to Resources/Tutorials/Docs related to Unity or Gamedev" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/resources/" />
+
+	
+
+	
+	
+	
+    
+    
+    <title>Resources | Cyanilux</title>
+	
+	
+	
+		
+		<meta name="description" content="Useful Links to Resources/Tutorials/Docs related to Unity or Gamedev. | Unity Shader Tutorials, @Cyanilux"/>
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/resources/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	
+	<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Resources</h1>
+
+
+
+
+
+
+<p>Below links external resources, mostly related to Shaders and Unity (various pipelines).</p>
+<p>I&rsquo;ve mostly favoured articles / written tutorials. If you&rsquo;re looking for Youtube video tutorials you could just search there instead so I tend not to add those as much. If you have suggestions of links to add, you can put them in the <code>#resources</code> section of my <a href="http://discord.gg/2V93q9w">discord</a>. If the owners of any of these resources want to be removed from the list can also ask me on discord or <a href="https://twitter.com/Cyanilux">twitter</a>.</p>
+<p>The list is loaded from a <a href="https://gist.github.com/Cyanilux/69e4f228206b1a70c3f8a0ab4f22ef75">Github gist</a> (so I don&rsquo;t have to update the entire site to add entries). If it fails to load for some reason (won&rsquo;t be supported for Internet Explorer) can optionally view that instead.</p>
+<ul>
+<li>The list is grouped into sections, but can also use the filter below to find things easier. Note that some entries may be for other engines (e.g. Unreal) but can still translate to Unity. Some entries may also use Amplify Shader Editor vs Shader Graph, or CG vs HLSL, etc, but again can still translate.</li>
+<li>It searches for the exact string (not case sensitive) anywhere in text (including tags at side)</li>
+<li>Can use multiple strings/keywords, separate each with <code>,</code> / <code>&amp;</code> for AND, <code>|</code> for OR, and use <code>(</code> / <code>)</code> for grouping (If you don&rsquo;t group, AND takes precedence). Example : <code>(BiRP | URP) &amp; (CG | HLSL)</code></li>
+<li>Starting a keyword with &ldquo;!&rdquo; (e.g. &ldquo;!HDRP&rdquo;) will instead hide entries too, but this can only be done per-keyword, not on groups. If you want something like <code>!(a &amp; b)</code>, use the opposite instead : <code>!a | !b</code> (swap AND/OR and invert each keyword)</li>
+</ul>
+
+
+<label for="searchBox">Filters : </label>
+<input placeholder="(showing all entries)" type="text" name="searchBox" id="searchBox" size="40" />
+<div id="results"></div>
+
+<script>
+
+
+
+
+const results = document.getElementById("results");
+
+if (webStorageSupported){
+	
+	
+	
+	let data = sessionStorage.getItem('resources');
+	if (data == null){
+		setTimeout(doFetch, 100);
+	}else{
+		loadEntries(data);
+	}
+} else {
+	setTimeout(doFetch, 100);
+}
+
+function doFetch() {
+	
+	fetch('https:\/\/gist.githubusercontent.com\/Cyanilux\/69e4f228206b1a70c3f8a0ab4f22ef75\/raw\/').then(response => {
+		console.log("Fetched https:\/\/gist.githubusercontent.com\/Cyanilux\/69e4f228206b1a70c3f8a0ab4f22ef75\/raw\/");
+		if (!response.ok){
+			var p = document.createElement("p");
+			p.style = "margin:5px; margin-left:10px; margin-right:10px;";
+			var text = document.createTextNode("Whoops! Failed to load. Probably exceeded Github's API rate limit (60). "
+				+ " Should be able to try again in an hour, for now can view the gist directly (linked above). "
+				+ "In the future may want to avoid visiting this page that much, just keep the tab open!~");
+			p.appendChild(text);
+			results.appendChild(p);
+			return;
+		}
+		return response.text();
+	}).then(textResponse => {
+		if (textResponse == null) return;
+		
+		if (webStorageSupported){
+			
+			sessionStorage.setItem('resources', textResponse); 
+		}
+		loadEntries(textResponse);
+	});
+}
+
+function loadEntries(contents) {
+	if (contents == null) return;
+	
+	var lines = contents.split("\n");
+	for(let i = 0; i < lines.length; i++) {
+		var line = lines[i];
+		if (line === "") continue;
+		if (line.startsWith("//")) continue;
+		
+		
+		
+
+		
+		if (line.startsWith("### ")){
+			
+			var p = document.createElement("h3");
+			var text = document.createTextNode(line.substring(4));
+			p.appendChild(text);
+			results.appendChild(p);
+			continue;
+		}
+		if (line.endsWith("\\")) {
+			
+			line = line.substring(0, line.length - 1);
+		}
+		
+		
+		var div = document.createElement("div");
+		div.classList.add("card-compact");
+		div.style = "display: flex; flex-wrap: wrap";
+		
+		var tags = null;
+		if (line.startsWith("{")){
+			
+			var tagEnd = line.indexOf("}");
+			
+			tags = line.substring(1, tagEnd).split(",");
+			
+			line = line.substring(tagEnd + 1).trimStart();
+		}
+		
+		
+		var p = document.createElement("p");
+		p.style = "margin:5px; margin-left:10px; margin-right:10px;";
+		
+		
+		var matches = line.matchAll(/\[(.*?)\]\((.*?)\)/gi);
+		
+		var endIndex = 0;
+		for (const m of matches) {
+			if (endIndex != 0 && endIndex < m.index){
+				var text = document.createTextNode(line.substring(endIndex, m.index));
+				p.appendChild(text);
+			}
+			
+			
+			var a = document.createElement("a");
+			a.setAttribute("href", m[2]);
+			a.setAttribute("target", "_blank"); 
+			a.setAttribute("rel", "noopener noreferrer");
+			var text = document.createTextNode(m[1]);
+			a.appendChild(text);
+			p.appendChild(a);
+			
+			endIndex = m.index + m[0].length;
+		}
+		
+		var text = document.createTextNode(line.substring(endIndex));
+		p.appendChild(text);
+		
+		div.appendChild(p);
+		
+		
+		if (tags != null){
+			
+			var tagsDiv = document.createElement("div");
+			tagsDiv.style = "display: flex; flex-wrap: wrap; flex-grow: 1;";
+			
+			var flexDiv = document.createElement("div");
+			flexDiv.style = "flex-grow: 1;";
+			tagsDiv.appendChild(flexDiv);
+			
+			div.appendChild(tagsDiv);
+		
+			for(let j = 0; j < tags.length; j++) {
+				var tag = tags[j].trim();
+				if (tag === "") continue;
+				
+				var color = "#191919";
+				switch(tag){
+					case "URP":
+					color = "#00aabb"; break;
+					case "HDRP":
+					color = "#aa1100"; break;
+					case "BiRP":
+					color = "#ffffff;color:#111111"; break;
+					case "CG":
+					case "HLSL":
+					color = "#108010"; break;
+					case "Shader Graph":
+					color = "#101010"; break;
+					case "C#":
+					color = "#0b61d9"; break;
+				}
+				
+				
+				var tagDiv = document.createElement("div");
+				tagDiv.classList.add("tag");
+				tagDiv.style = "background-color:" + color + ";";
+				var text = document.createTextNode(tag);
+				tagDiv.appendChild(text);
+				tagsDiv.appendChild(tagDiv);
+			}
+		}
+		
+		results.appendChild(div);
+	}
+}
+
+
+const input = document.getElementById("searchBox");
+
+
+input.addEventListener("keyup", function(event) {
+	if (event.keyCode === 13) { 
+		input.blur(); 
+	}
+});
+input.addEventListener("focusout", function(event) {
+    onTextInput2(input.value);
+});
+
+function add(scope, keyword) {
+	if (keyword.length != 0) scope.push(keyword);
+}
+
+function printArr(arr) {
+	let str = "["; 
+	for (let [i,v] of arr.entries()) { 
+		if (Array.isArray(v)) 
+			str += printArr(v) + ", "; 
+		else 
+			str += v + (i < arr.length-1 ? ", " : ""); 
+	} 
+	return str+"]"; 
+}
+
+function onTextInput2(text) {
+	console.clear();
+	var inputText = text.toLowerCase();
+	
+	
+
+	
+	var scope = [ ];
+	var current = [ ];
+	var keyword = "";
+	for (let i = 0; i < inputText.length; i++) {
+		var c = inputText.charAt(i);
+	
+		switch(c){
+		case '(':
+			scope.push(current);
+			console.log("start scope, stored :" + printArr(scope));
+			current = [];
+			break;
+		case ')':
+			if (current.length != 0){
+				add(current, keyword.trimEnd());
+			}
+			
+			var pop = scope.pop();
+			if (pop != null){
+				pop.push(current);
+				current = pop;
+			}
+			console.log("end scope, current :" + printArr(current));
+			break;
+		case ',':
+		case '&':
+			keyword = keyword.trimEnd();
+			
+			if (current.length == 0){
+				current.push('&');
+				if (keyword !== "") current.push(keyword);
+			}else if (current[0] == '|'){
+				
+				scope.push(current);
+				console.log("forced start scope, stored :" + printArr(scope));
+				current = [];
+				current.push('&');
+				if (keyword !== "") current.push(keyword);
+			}else{
+				add(current, keyword);
+			}
+			console.log("and - " + printArr(current));
+			break;
+		case '|':
+			keyword = keyword.trimEnd();
+			
+			if (current.length != 0){
+				add(current, keyword);
+				keyword = "";
+				
+				var pop = scope.pop();
+				if (pop != null && pop.length != 0){
+					pop.push(current);
+					current = pop;
+					console.log("forced end scope, current :" + printArr(current));
+				}
+			}
+			
+			var or = ['|'];
+			if (current.length == 0){
+				if (keyword != null && keyword.length != 0) or.push(keyword);
+				current = or;
+			}else if (current[0] == '|'){
+				add(current, keyword);
+			}else{
+				add(current, keyword);
+				or.push(current);
+				current = or;
+			}
+			console.log("or - " + printArr(current));
+			break;
+		case ' ':
+			if (keyword.length == 0) break; 
+		default:
+			keyword += c;
+			continue;
+		}
+		keyword = "";
+	}
+	if (keyword != ""){
+		add(current, keyword.trimEnd());
+	}
+	if (current.length != 0){
+		var pop = scope.pop();
+		if (pop != null && pop.length != 0){
+			console.log("forced end scope, stored :" + printArr(scope));
+			pop.push(current);
+			current = pop;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+
+	var logic = current;
+	console.log("Filter Logic : " + printArr(logic));
+	var children = results.querySelectorAll("#results > *");
+	var header = null;
+	var atLeastOneVisible = false;
+	for (let j = 0; j < children.length; j++) {
+		var child = children[j];
+		
+		if (child.nodeName == "H3"){
+			if (header != null){
+				if(!atLeastOneVisible){
+					header.style.display = "none";
+				}else{
+					header.style.display = "block";
+				}
+			}
+			
+			header = child;
+			atLeastOneVisible = false;
+			continue;
+		}
+		
+		var textContent = child.textContent.toLowerCase();
+		var showChild = checkText(textContent, logic);
+		console.log(j + " : " + showChild);
+		if (showChild){
+			child.style.display = "flex";
+			
+			atLeastOneVisible = true;
+		}else {
+			child.style.display = "none";
+			
+		}
+	}
+	
+	if (header != null){
+		if(!atLeastOneVisible){
+			header.style.display = "none";
+		}else{
+			header.style.display = "block";
+		}
+	}
+}
+
+function checkText(textContent, logicArray){
+	var and = true;
+	for (let k = 0; k < logicArray.length; k++){
+		var logic = logicArray[k];
+		if (logic == null || logic == "") continue; 
+		var result;
+		if (typeof logic === 'string'){
+			if (logic == '&'){
+				and = true;
+				continue;
+			} else if (logic == '|'){
+				and = false;
+				continue;
+			} else {
+				var invert = false;
+				if (logic.startsWith("!")){
+					invert = true;
+					logic = logic.substring(1);
+				}
+				result = textContent.includes(logic);
+				if (invert) result = !result;
+			}
+		}else{
+			
+			result = checkText(textContent, logic);
+		}
+		
+		if (and && !result){ 
+			return false;
+		}
+		if (!and && result){ 
+			return true;
+		}
+	}
+	return and;
+}
+
+
+
+</script>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

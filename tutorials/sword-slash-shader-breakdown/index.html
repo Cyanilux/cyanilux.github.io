@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -194,6 +194,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -235,7 +241,7 @@
 	}
 </script>
 <h2 id="intro">Intro</h2>
-<p>Hey! This shader uses a technique similar to that of a <em>&ldquo;soulercoaster&rdquo;</em> (which are similar to ribbons/trails, commonly used in VFX involving magic spells). It involves panning a texture across a premade mesh, masking sections of it to be visible over time. In this case the mesh is a ring that will surround the player and we&rsquo;ll be panning two textures - one trianglular shaped one which masks the shape of the slash, and a noise texture to add detail.</p>
+<p>Hey! This shader uses a technique similar to that of a <em>&quot;<a href="https://realtimevfx.com/t/vfx-basics-mesh-soulercoasters/1987">soulercoaster</a>&quot;</em> (which are similar to ribbons/trails, commonly used in VFX involving magic spells). It involves panning a texture across a premade mesh, masking sections of it to be visible over time. In this case the mesh is a ring that will surround the player and we&rsquo;ll be panning two textures - one trianglular shaped one which masks the shape of the slash, and a noise texture to add detail.</p>
 <h2 id="notes">Notes</h2>
 <ul>
 <li>This is an <strong>Unlit</strong> shader.</li>
@@ -248,7 +254,7 @@
 <p>Before we go through the shader, you should create a <strong>ring mesh</strong> to test it on (with UVs as shown), as well as a <strong>triangular shaped texture</strong> similar to the one shown below. Alternatively, you can <a href="SwordSlash.zip">download the mesh &amp; texture I made here</a>.</p>
 <div class="img-center">
 <a href="RingMeshAndTex.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="588" height="305" alt="" src="RingMeshAndTex.png" />
+<img loading="lazy" width="588" height="305" alt="(Image)" src="RingMeshAndTex.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -266,7 +272,7 @@
 <p>We&rsquo;ll start by creating a <b class="node">Sample Texture 2D</b> node with the <strong>SlashTex property</strong> as the <strong>Texture</strong> input. We want to offset the X axis of the texture so that at <code>Slash == 0</code> the triangle is only just off the left of the preview, and at <code>Slash == 1</code> it&rsquo;s just off the right of the preview. This is achieved by :</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="236" alt="" src="Graph1.png" />
+<img loading="lazy" width="750" height="236" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text">(Click images to view them full size)</p>
 </div>
@@ -274,7 +280,7 @@
 <p>To remove any repetitions or clamping artifacts from the texture, we&rsquo;ll also take the output from the <b class="node">Divide</b> node and put it into <strong>two</strong> <b class="node">Comparison</b> nodes. The first with <strong>B</strong> set to <strong>0</strong> and the mode set to <strong>Greater Or Equal</strong>, and the second with <strong>B</strong> set to <strong>1</strong> and using <strong>Less Or Equal</strong>. The boolean output of these is put into an <b class="node">And</b> node, then into the <strong>Predicate</strong> on a <b class="node">Branch</b> with the texture result in <strong>True</strong> and <strong>0</strong> in <strong>False</strong>.</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="332" alt="" src="Graph2.png" />
+<img loading="lazy" width="750" height="332" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -282,7 +288,7 @@
 <p>We then <b class="node">One Minus</b> as that&rsquo;s what we need for the mask, and <b class="node">Saturate</b> to remove any negative values. We can then <b class="node">Split</b> and <b class="node">Multiply</b> the R and G outputs together.</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="170" alt="" src="Graph3.png" />
+<img loading="lazy" width="750" height="170" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -296,28 +302,28 @@
 <p>We use a <b class="node">Sample Texture 2D</b> node to sample the <strong>NoiseTex property</strong>, with the <strong>UV</strong> set to a <b class="node">Tiling And Offset</b> node. The <strong>Tiling</strong> is set to a <strong>NoiseTexTiling property</strong> and <strong>Offset</strong> is set to a <b class="node">Vector2</b> node. The <strong>Y</strong> input remains at <strong>0</strong> but <strong>X</strong> is set to a <b class="node">Time</b> node, multiplied by the <strong>NoiseSpeed property</strong> put into a <b class="node">Negate</b> node.</p>
 <div class="img-center">
 <a href="Graph4.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="362" alt="" src="Graph4.png" />
+<img loading="lazy" width="750" height="362" alt="(Image)" src="Graph4.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>In order to combine these groups, we use two <b class="node">Multiply</b> nodes. The order they are multiplied is not important. We also want another <b class="node">Multiply</b> with a <strong>Float &ldquo;Intensity&rdquo; property</strong> (set to a Default value of <strong>20</strong>).</p>
 <div class="img-center">
 <a href="Graph5.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="363" alt="" src="Graph5.png" />
+<img loading="lazy" width="750" height="363" alt="(Image)" src="Graph5.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>We can then put this into the <strong>T</strong> on a <b class="node">Lerp</b> node with <strong>A</strong> and <strong>B</strong> set to two <strong>Color properties</strong>. This is put into the <strong>Base Color</strong> (aka Albedo) port on the <strong>Master Stack</strong>.</p>
 <div class="img-center">
 <a href="Graph6.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="721" height="418" alt="" src="Graph6.png" />
+<img loading="lazy" width="721" height="418" alt="(Image)" src="Graph6.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>The output of the Intensity group is also put into the <strong>In</strong> input of a <b class="node">Smoothstep</b> node, with <strong>Edge1</strong> and <strong>Edge2</strong> set to a <strong>Vector2 &ldquo;Step&rdquo; property</strong> (Default set to <strong>(0, 0.1)</strong>) put through a <b class="node">Split</b>.</p>
 <div class="img-center">
 <a href="Graph7.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="689" height="362" alt="" src="Graph7.png" />
+<img loading="lazy" width="689" height="362" alt="(Image)" src="Graph7.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -325,7 +331,7 @@
 <p>You can also optionally have a <strong>Float &ldquo;Scale&rdquo; property</strong> and <b class="node">Multiply</b> it with the <b class="node">Position</b> node (<strong>Object</strong> space) to put into the <strong>Position</strong> port on the Vertex stage of the <strong>Master Stack</strong>. This can be used in the animation to change the size of the slash effect (e.g. start small and grow), assuming the origin of the mesh is at the center of the ring. This size change could probably also be baked into the ring mesh by having it shaped more like a slash than a perfect ring.</p>
 <div class="img-center">
 <a href="Graph8.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="289" alt="" src="Graph8.png" />
+<img loading="lazy" width="750" height="289" alt="(Image)" src="Graph8.png" />
 </a>
 <p class="img-text"></p>
 </div>

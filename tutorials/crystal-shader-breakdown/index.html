@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -194,6 +194,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -251,7 +257,7 @@
 <p>For the <strong>T</strong> input, since we want it based on the Y position of the fragment/pixel we&rsquo;ll create a <b class="node">Position</b> node set to <strong>Object</strong> space and <b class="node">Split</b> it. The <strong>G</strong> port corresponds to the Y axis. We&rsquo;ll first put this into the <strong>T</strong> axis on an <b class="node">Inverse Lerp</b> node then <b class="node">Saturate</b> the result (clamps between 0 and 1) and put it into the <strong>T</strong> input on the <b class="node">Lerp</b>.</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="327" alt="" src="Graph1.png" />
+<img loading="lazy" width="750" height="327" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -263,7 +269,7 @@
 <p>We&rsquo;ll create a <b class="node">Scene Color</b> node which samples this camera opaque texture. The input needs to be the <b class="node">Screen Position</b> node (which is what it defaults to if left blank), however since we want to offset this we&rsquo;ll need an <b class="node">Add</b> node too. We&rsquo;ll leave the second input on this blank for now.</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="481" height="245" alt="" src="Graph2.png" />
+<img loading="lazy" width="481" height="245" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -273,7 +279,7 @@
 <p>I also have used a <b class="node">Negate</b> node here to flip the direction that the offset occurs in.</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="267" alt="" src="Graph3.png" />
+<img loading="lazy" width="750" height="267" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -283,7 +289,7 @@
 <p>The <strong>A</strong> input on the <b class="node">Lerp</b> will be set to the <b class="node">Scene Color</b> result, and the <strong>B</strong> input is set to the result of the Colour Gradient section.</p>
 <div class="img-center">
 <a href="Graph4.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="414" alt="" src="Graph4.png" />
+<img loading="lazy" width="750" height="414" alt="(Image)" src="Graph4.png" />
 </a>
 <p class="img-text">
 (Click to show full image in new tab)

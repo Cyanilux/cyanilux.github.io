@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -194,6 +194,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -251,7 +257,7 @@
 <p>To add a spiralling effect we can now offset the angle. If we offset it by the same value for every pixel though it will just rotate the whole thing rather than creating a spiral. We need to offset it based on the distance, so that points further away are rotated more than points closer to the center. This is as simple as putting both the <strong>angle (G)</strong> and <strong>distance (R)</strong> outputs into an <b class="node">Add</b> node. This can then be put into the <strong>Y</strong> input on that <b class="node">Vector2</b> node.</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="300" alt="" src="Graph1.png" />
+<img loading="lazy" width="750" height="300" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -260,7 +266,7 @@
 <p>We can then set the <strong>AlphaClipThreshold</strong> input on the <b class="node">Master</b> node to <strong>0.5</strong>, in order to tell the shader to discard pixels that are below that threshold.</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="246" alt="" src="Graph2.png" />
+<img loading="lazy" width="750" height="246" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -270,7 +276,7 @@
 <p>I’m going to put it into a <b class="node">Power</b> node, with a value of <strong>3</strong>. I’m also setting the <b class="node">Color</b> node to use <strong>HDR mode</strong> and setting the <strong>Intensity</strong> of the colour to <strong>3</strong> (via the colour picker popup). With a Bloom post processing effect this will cause the portal to glow more but note that bloom can be expensive.</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="228" alt="" src="Graph3.png" />
+<img loading="lazy" width="750" height="228" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>

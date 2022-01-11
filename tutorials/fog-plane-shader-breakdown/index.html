@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -194,6 +194,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -251,7 +257,7 @@
 <p>(I believe we could also use the <b class="node">Position</b> node set to <strong>View</strong> Space, and <b class="node">Negate</b> the <strong>Z/B</strong> output from a <b class="node">Split</b> node to obtain this object depth. I&rsquo;m used to using the other approach instead though).</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="739" height="243" alt="" src="Graph1.png" />
+<img loading="lazy" width="739" height="243" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -266,7 +272,7 @@
 </ul>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="214" alt="" src="Graph2.png" />
+<img loading="lazy" width="750" height="214" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -276,14 +282,14 @@
 <p>Note : <b class="node">View Direction</b> is <strong>not normalised</strong> in URP, but is in HDRP. If you are using HDRP you will need to use the <b class="node">Position</b> node in <strong>World</strong> space instead as we need it non-normalised. World positions in HDRP are also <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">Camera-Relative</a> which means we also don&rsquo;t need to worry about subtracting this from the camera&rsquo;s position later. At the end of the post I&rsquo;ll provide another graph showing how you can achieve the fog effect in HDRP.</p>
 <div class="img-center">
 <a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy"   alt="" src="https://www.cyanilux.com/ReconstructDepthWorldPos.png" />
+<img loading="lazy"   alt="(Image)" src="https://www.cyanilux.com/ReconstructDepthWorldPos.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>In order to reconstruct the world position we need to scale this vector to the scene position, behind the quad/plane. The <b class="node">Scene Depth</b> and &ldquo;Scene Pos&rdquo; we want creates another triangle as shown in the image. We can use the scale factor of the two triangles to obtain the vector to the scene position, which can be achieved by dividing the <b class="node">View Direction</b> by the <strong>Raw Screen Position W/A depth</strong> and then multiplying by the <b class="node">Scene Depth</b>. We can then <b class="node">Subtract</b> the camera’s world <strong>Position</strong> from the <b class="node">Camera</b> node to get the scene world position.</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="323" alt="" src="Graph3.png" />
+<img loading="lazy" width="750" height="323" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -298,14 +304,14 @@
 </ul>
 <div class="img-center">
 <a href="Graph4.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="194" alt="" src="Graph4.png" />
+<img loading="lazy" width="750" height="194" alt="(Image)" src="Graph4.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>If you are working in <strong>HDRP</strong>, the following graph should work instead (Note it doesn&rsquo;t include the <strong>Fog Colour property</strong>, but you can easily add that in and connect it to the <strong>Color</strong> input on the <b class="node">Master</b> node) :</p>
 <div class="img-center">
 <a href="GraphHDRP.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="233" alt="" src="GraphHDRP.png" />
+<img loading="lazy" width="750" height="233" alt="(Image)" src="GraphHDRP.png" />
 </a>
 <p class="img-text"></p>
 </div>

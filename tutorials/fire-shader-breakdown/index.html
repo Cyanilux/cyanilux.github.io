@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +175,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -194,6 +194,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -248,7 +254,7 @@
 <p>We’ll also provide a <strong>Vector2 property</strong> to control the <strong>Noise Scale</strong>, which will be put into the <strong>Tiling</strong> input – allowing us to change the scale of our UVs per-axis. The output from our <b class="node">Tiling And Offset</b> will then be put into a <b class="node">Simple Noise</b> node with a <strong>Scale</strong> of <strong>30</strong>-ish.</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="323" alt="" src="Graph1.png" />
+<img loading="lazy" width="750" height="323" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -257,7 +263,7 @@
 <p>The distortion will mean our UVs could go outside of the 0-1 range, so parts of the texture/ellipse later could be cut-off by the size of the quad. To help fix this, we’ll also include a <strong>Vector1 property</strong> called <strong>Y Scale</strong> and put it into the <strong>Y</strong> of a <b class="node">Vector2</b>, with <strong>X</strong> as <strong>1</strong>, into the <strong>Tiling</strong> input. This will allow us to scale down the effect in the vertical direction, to try to keep the fire contained to the quad.</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="274" alt="" src="Graph2.png" />
+<img loading="lazy" width="750" height="274" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -269,7 +275,7 @@
 <p>This is put into the <strong>Color</strong> input on the <b class="node">Unlit Master</b> node which should also be set to <strong>Transparent</strong> via the small cog on the node. You can also choose which blending type you prefer, e.g. <strong>Alpha/Additive</strong>.</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="330" alt="" src="Graph3.png" />
+<img loading="lazy" width="750" height="330" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -278,7 +284,7 @@
 <p>While we could take our <strong>UVs</strong> and directly put them into an <b class="node">Ellipse</b> node, I’d like to apply a bit more offset first, to warp it into a more tear-drop, or candle-flame like shape. There might be a few ways to achieve this, but I’m taking the <strong>Y</strong> axis (<strong>G</strong> output from a <b class="node">Split</b>), using <b class="node">One Minus</b> to flip it upside-down and putting the result into a <b class="node">Power</b> node with a <strong>B</strong> value of <strong>2</strong>. (I guess this could also just be a <b class="node">Multiply</b>, not sure if the compiler is clever enough to optimise this automatically or not). The next <b class="node">One Minus</b> flips the vertical component back, but since the ellipse is centered and symmetrical it shouldn’t really matter.</p>
 <div class="img-center">
 <a href="Graph4.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="348" alt="" src="Graph4.png" />
+<img loading="lazy" width="750" height="348" alt="(Image)" src="Graph4.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -288,7 +294,7 @@
 <p>The larger <b class="node">Ellipse</b> is used as the <strong>Alpha</strong> input on the <b class="node">Master</b> node if using <strong>Alpha</strong> blending. If you prefer <strong>Additive</strong> blending, <b class="node">Multiply</b> this with the current colour result and use that as the <strong>Color</strong> input instead, as black areas will show as transparent.</p>
 <div class="img-center">
 <a href="Graph5.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="428" alt="" src="Graph5.png" />
+<img loading="lazy" width="750" height="428" alt="(Image)" src="Graph5.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -297,7 +303,7 @@
 <p>The following graph is based off <a href="https://forum.unity.com/threads/unity-matrix-p-and-matrix-mv-equlivant.692932/#post-4638028">this forum answer by bgolus</a>, and can be put into the <strong>Vertex Position</strong> input on the <b class="node">Master</b> node to produce the billboard effect.</p>
 <div class="img-center">
 <a href="GraphBillboard.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="232" alt="" src="GraphBillboard.png" />
+<img loading="lazy" width="750" height="232" alt="(Image)" src="GraphBillboard.png" />
 </a>
 <p class="img-text"></p>
 </div>

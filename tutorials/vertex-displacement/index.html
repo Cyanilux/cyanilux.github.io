@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -168,7 +168,7 @@
 <div class="header">
 	<h1 class="title-no-margin">
 		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
 		</a>
 		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
 	</h1>
@@ -187,6 +187,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
 		
 		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
 		</a></b>
 		</li>
 		
@@ -223,14 +229,14 @@
 <p>You can also <b class="node">Split</b> and offset/scale each component separately then recombine in a <b class="node">Combine</b> or <b class="node">Vector3</b> node, however this very quickly causes the graph to get messy with overlapping wires. I suggest using the Vector3 node/property approach instead.</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="164" alt="" src="Graph1.png" />
+<img loading="lazy" width="750" height="164" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <p>Here is another example if you wanted to scale both the <strong>X</strong> and <strong>Z</strong> with the same <strong>Vector1 property</strong>. Since we use a <b class="node">Multiply</b> to adjust scale, we set the <strong>Y</strong> value to <strong>1</strong> so there is no change. (With offsetting we would use a value of <strong>0</strong> for no change)</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="209" alt="" src="Graph2.png" />
+<img loading="lazy" width="750" height="209" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -266,7 +272,7 @@ Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking
 <h3 id="swaying-grass">Swaying Grass</h3>
 <div class="img-center">
 <a href="GraphSwayGrass.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="277" alt="" src="GraphSwayGrass.png" />
+<img loading="lazy" width="750" height="277" alt="(Image)" src="GraphSwayGrass.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -289,7 +295,7 @@ Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking
 <p>A simple way to create a swimming motion for a fish, is to offset the <strong>R/X</strong> <b class="node">Position</b> of the fish (left/right) by a <b class="node">Sine</b> wave based on <b class="node">Time</b> added with the position along the fish (forward/back, which is actually <strong>G/Y</strong> for the model I’m using). This can then be multiplied with a mask created from the <strong>G/Y</strong> position so vertices at the front of the fish move less.</p>
 <div class="img-center">
 <a href="GraphFish.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="343" alt="" src="GraphFish.png" />
+<img loading="lazy" width="750" height="343" alt="(Image)" src="GraphFish.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -310,7 +316,7 @@ Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking
 <p>We can also offset the <strong>R/X</strong> (left/right) a little, so as the wings go upwards they also move slightly inwards, which will reduce stretching and make the motion feel more realistic.</p>
 <div class="img-center">
 <a href="GraphButterfly.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="333" alt="" src="GraphButterfly.png" />
+<img loading="lazy" width="750" height="333" alt="(Image)" src="GraphButterfly.png" />
 </a>
 <p class="img-text"></p>
 </div>
