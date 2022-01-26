@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Tornado Shader Breakdown">
+<meta itemprop="description" content="A shader applied to a few layers of alpha-clipped scrolling noise, with vertex displacement to make it wobble">
+<meta itemprop="datePublished" content="2022-01-26T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2022-01-26T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1843">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	
+	
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/tornado-shader-breakdown/Preview.png"/>
+<meta name="twitter:title" content="Tornado Shader Breakdown"/>
+<meta name="twitter:description" content="A shader applied to a few layers of alpha-clipped scrolling noise, with vertex displacement to make it wobble"/>
+
+	
+<meta property="og:title" content="Tornado Shader Breakdown" />
+<meta property="og:description" content="A shader applied to a few layers of alpha-clipped scrolling noise, with vertex displacement to make it wobble" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/tornado-shader-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/tornado-shader-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2022-01-26T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-01-26T00:00:00+00:00" />
+	
+	
+	
+    
+    
+    <title>Tornado Shader Breakdown | Cyanilux</title>
+	
+	
+	
+		
+		
+		<meta name="description" content="A shader applied to a few layers of alpha-clipped scrolling noise, with vertex displacement to make it wobble. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/tornado-shader-breakdown/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	
+	<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Tornado Shader Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2022-01-26">&#128337 Jan 26, 2022</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eMade a Tornado as part of \u003ca href=\"https://twitter.com/HarryAlisavakis?ref_src=twsrc%5Etfw\"\u003e@HarryAlisavakis\u003c/a\u003e\u0026#39;s discord \u003ca href=\"https://twitter.com/hashtag/TechnicallyAChallenge?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#TechnicallyAChallenge\u003c/a\u003e, theme is \u0026quot;wind\u0026quot; 🌪️\u003cbr\u003e(A few layers of alpha-clipped scrolling noise w/ vertex displacement \u0026amp; some particle trails)\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/vfx?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#vfx\u003c/a\u003e \u003ca href=\"https://t.co/Xdd53Pre5x\"\u003epic.twitter.com/Xdd53Pre5x\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1483094258076856320?ref_src=twsrc%5Etfw\"\u003eJanuary 17, 2022\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1483094258076856320\">https://twitter.com/Cyanilux/status/1483094258076856320</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>Recently made this tornado which involves a few layers of alpha-clipped scrolling noise and vertex displacement to make it wobble. Each layer is a separate GameObject/MeshRenderer with various scalings, though you could also combine them into a single mesh with multiple sub-meshes to apply separate materials. There&rsquo;s also a subtle Rim/Fresnel effect applied to the alpha, to remove noise at the very edges as it curves around to help hide the shape of the mesh.</p>
+<p>In hindsight it may have made sense to apply rotation (e.g. with <b class="node">Rotate About Axis</b> node) in the vertex shader instead of scrolling the textures. But if the mesh is combined it would be harder to spin each layer at different speeds, so I&rsquo;ll stick with the original method I used.</p>
+<p>The tweet gif also includes some particle trails (simulating wind) that swirls around the tornado. If this were used in an actual game, I can imagine something like this would help show the range that the tornado will affect. I&rsquo;ll also include a section below going over the settings I used to achieve that.</p>
+<p>One thing I didn&rsquo;t add to this shader that might be nice if you&rsquo;re interested in a small challenge, is a vertical dissolve-like effect for when the tornado is forming or dissipating.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This is an <strong>Unlit</strong> shader. Might also work with Lit but unsure how shadows will look with each layer. May want to turn off shadow casting on the outer layers.</li>
+<li>Uses <strong>Alpha Clipping</strong> (enabled under <strong>Graph Settings</strong>)</li>
+<li>To prevent a visible seam, you should use a <strong>noise texture which can repeat seamlessly</strong> (and integer tiling value). I haven&rsquo;t got any resources on generating/creating this (yet), so you&rsquo;ll need to search online.</li>
+<li>If you need to be able to see the tornado from above / inside you may want to enable <strong>Two Sided</strong> (aka <strong>Render Face : Both</strong>) in <strong>Graph Settings</strong>.</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<h3 id="mesh">Mesh</h3>
+<p>Before beginning the shader we need to create a mesh. I&rsquo;m using a funnel-like shape, with UVs that are unwrapped in a cylindrical projection.</p>
+<div class="img-center">
+<a href="Mesh.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="320" alt="(Image)" src="Mesh.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>I&rsquo;m no expert with Blender but these are the steps I took :</p>
+<ul>
+<li>Start with a Circle and extrude upwards (<strong>E</strong>) (or Cylinder and remove end faces)</li>
+<li>Select the bottom loop (<strong>Alt + Click</strong> on edge) (For me it&rsquo;s right-click to select but that might differ based on version / preferences)</li>
+<li>Scale it smaller (<strong>S</strong>)</li>
+<li>Make a loop cut (<strong>Ctrl+R</strong>), scale it (<strong>S</strong>) then repeat until you get a decent funnel shape. Can re-select loops (<strong>Alt+Click</strong>) and scale again if necessary.</li>
+<li>When happy with the shape, enter Front-Orthographic view (<strong>numpad 1</strong>) and select the whole mesh (<strong>A</strong>)</li>
+<li>Unrwap UVs (<strong>U</strong>), selecting &ldquo;<strong>Cylinder Projection</strong>&rdquo;. In the bottom left, check &ldquo;<strong>Scale to Bounds</strong>&rdquo; in the settings for the projection.</li>
+</ul>
+<p>When exporting you&rsquo;ll want to make sure that it&rsquo;s <strong>Y-up</strong> to match Unity, so that the height of the tornado mesh corresponds with the Y axis in object space. Otherwise you may need to change the axis around in the vertex shader.</p>
+<h3 id="fragment">Fragment</h3>
+<p>We&rsquo;ll start with the fragment stage of the graph, which involves setting up a scrolling seamless noise texture. We use a <b class="node">Sample Texture 2D</b> node with a <b class="node">Tiling And Offset</b> node in the <strong>UV</strong> input. The <strong>Texture</strong> input is set to a <strong>Texture2D property</strong> so we can edit it from the material. I&rsquo;m also using a <strong>Vector2 property</strong> for the <strong>Tiling</strong> port (should set the Default value to at least (1,1) so the previews still work). It&rsquo;s important that the tiling values stay set to integers (at least on the X axis) to prevent a seam (and the texture must repeat seamlessly too).</p>
+<p>We use the <strong>Time</strong> output from a <b class="node">Time</b> node and <b class="node">Multiply</b> by a <strong>Float property</strong> to control the speed of the scrolling. I then <b class="node">Negate</b> this so it spins anti-clockwise (which is apparently more common for the Northern Hemisphere) but you could alternatively set the speed to a negative value, or have it spin clockwise. Whether you need to do this will also depend on the UVs.</p>
+<p>I&rsquo;ve put this into a <b class="node">Vector2</b> node with the option to adjust the vertical speed, but could also put the result straight into the <strong>Offset</strong> port if that isn&rsquo;t needed.</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="316" alt="(Image)" src="Graph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Because the noise texture is greyscale it doesn&rsquo;t really matter which port we use so I&rsquo;m using the <strong>R</strong> port (though if the texture is compressed the green channel may provide the most precision). I don&rsquo;t want the colour of the tornado to be as dark as the noise is, so I&rsquo;ve done a bit of remapping with a <b class="node">Multiply</b> and <b class="node">Add</b> node, then tint with another <b class="node">Multiply</b> and <strong>Colour property</strong>. May also want to <b class="node">Saturate</b> to clamp the value to the 0-1 range.</p>
+<p>Could alternatively <b class="node">Lerp</b> between two colour properties if you want more control over the colours. The output of this is put into the <strong>Base Color</strong> port on the <strong>Master Stack</strong>.</p>
+<p>If you haven&rsquo;t already, enable <strong>Alpha Clipping</strong> in the <strong>Graph Settings</strong> (tab in <strong>Graph Inspector</strong> window). This should make the <strong>Alpha</strong> and <strong>Alpha Clip Threshold</strong> ports appear in the <strong>Master Stack</strong>.</p>
+<p>We put a <strong>Float property</strong> in the <strong>Alpha Clip Threshold</strong> port so we can control that from the material. The result from the noise is used for the <strong>Alpha</strong>, but I first <b class="node">Multiply</b> by a subtle Rim / <b class="node">Fresnel Effect</b> with a <strong>Power</strong> of 8, put through a <b class="node">One Minus</b>.</p>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="274" alt="(Image)" src="Graph2.png" />
+</a>
+<p class="img-text">(Click image to view fullscreen in new tab)</p>
+</div>
+<p>The Fresnel group is optional but helps to hide the shape of the mesh a bit. It&rsquo;s fairly subtle but here&rsquo;s an image to compare it. If you&rsquo;re fine without that, put the noise output straight into the <strong>Alpha</strong> port.</p>
+<div class="img-center">
+<a href="FresnelComparison.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="294" alt="(Image)" src="FresnelComparison.png" />
+</a>
+<p class="img-text">(Left : Fresnel On, Right : Fresnel Off)</p>
+</div>
+<p>It may now be a good idea to save the graph (<strong>Save Asset</strong> in top left) and preview it in the <strong>Scene View</strong>. You&rsquo;ll want to duplicate our tornado mesh GameObject a few times (3 layers in total), with each being scaled a little on the <strong>X</strong> and <strong>Z</strong> axis (e.g. Specifically I used scales of <code>(1,1,1)</code>, <code>(1.2, 1, 1.2)</code> and <code>(1.3, 1, 1.3)</code>). Can put them inside another GameObject so you can control the scale of the whole tornado at once.</p>
+<p>Each layer also uses a different material, with the scroll speed set to different values. The inner layer spins the fastest (<strong>1</strong>), while the middle and outer layers spin at speeds of <strong>0.6</strong> and <strong>0.5</strong> respectively. The two inner layers use a lower detail noise texture (e.g. single-octave perlin noise, visually similar to the <b class="node">Gradient Noise</b> node, but seamless), while the outer layer instead uses a more detailed fractal noise (multiple octaves, visually similar to the <b class="node">Simple Noise</b> node, but again seamless).</p>
+<h3 id="vertex">Vertex</h3>
+<p>For the vertex stage, we&rsquo;ll be displacing the vertex positions to make our tornado sort of pulsate (via scaling), and then wobble (via translation).</p>
+<p>Use the <b class="node">UV</b> node, <b class="node">Split</b> and take the <strong>G</strong> output to obtain a gradient for the height of the tornado. Put this into an <b class="node">Add</b> node. The other port will use a setup similar to what we did for the texture scrolling; use the <strong>Time</strong> output of the <b class="node">Time</b> node and <b class="node">Negate</b>. I&rsquo;m also multiplying by an optional speed value but this needs to remain constant for all layers or they will wobble at different rates, so I&rsquo;ve hardcoded it to <strong>1</strong>. I&rsquo;ve put this in a group called &ldquo;Scrolling&rdquo; as groups are a great way to keep the graph organised. We&rsquo;ll need the output of this twice.</p>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="539" height="413" alt="(Image)" src="Graph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>For the pulsating/scaling, we <b class="node">Multiply</b> our output by <strong>15</strong>, then use a <b class="node">Sine</b> node. We only want to scale a little, so <b class="node">Multiply</b> by <strong>0.1</strong>.</p>
+<p>Since the top of our funnel is already larger and we don&rsquo;t want that to pulsate, we need to mask this effect so put the output into another <b class="node">Multiply</b>. For the other port, take the <strong>G</strong> output from the <b class="node">Split</b> (from <b class="node">UV</b> node) again, then put it into a <b class="node">Smoothstep</b> node. I&rsquo;ve used values of <strong>0.98</strong> for <strong>Edge1</strong> and <strong>0.8</strong> for <strong>Edge2</strong>.</p>
+<p>We only want to apply the scaling on the <strong>X</strong> and <strong>Z</strong> axis, so <b class="node">Multiply</b> again, this time with a <b class="node">Vector3</b> node set to <strong>(1, 0, 1)</strong>. Then <b class="node">Add</b> <strong>(1, 1, 1)</strong> since we want this applied to the original scale (not override it). Then <b class="node">Multiply</b> by the <b class="node">Position</b> node (<strong>Object</strong> space). If you want to preview this, put it into the <strong>Position</strong> port on the <strong>Master Stack</strong>, then check the <strong>Main Preview</strong> window or save the graph and check the result in <strong>Scene View</strong>.</p>
+<div class="img-center">
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="250" alt="(Image)" src="Graph4.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>For the wobbling, we take the output of our Scrolling group again. Similar to before we <b class="node">Multiply</b> then put into a <b class="node">Sine</b> node, but this time with a smaller value of <strong>5</strong>.</p>
+<p>Since we only want to offset a little, we <b class="node">Multiply</b> by <strong>0.3</strong> and the offset should only be applied to the X axis, so is put into the <strong>X</strong> input on a <b class="node">Vector3</b> node. We then <b class="node">Add</b> to the output of our Scaling group and connect this to the <strong>Position</strong> port on the <strong>Master Stack</strong>.</p>
+<div class="img-center">
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="296" alt="(Image)" src="Graph5.png" />
+</a>
+<p class="img-text">(Click image to view fullscreen in new tab)</p>
+</div>
+<h3 id="particle-trails">Particle Trails</h3>
+<p>As mentioned in the intro, the twitter gif also includes some particle trails swirling around the tornado. For these I used the <strong>Particle System</strong> component (Shuriken). In short, it involves spawning particles in a large cylinder, and using the <strong>Velocity over Lifetime</strong> module to apply some Linear, Orbital and Radial velocities to make the particles swirl into it&rsquo;s origin. <strong>Trails</strong> module is also enabled and rendering the regular particles is disabled (so only the trails are shown).</p>
+<p>There&rsquo;s a lot of settings on the component but here&rsquo;s a list of the more important ones that need editing from the defaults :</p>
+<ul>
+<li>Start Lifetime : 1.2</li>
+<li>Start Speed : 0</li>
+<li>Start Size : 0.2</li>
+<li>Start Color : Kinda dark grey (which appears more transparent as I&rsquo;m using an additive material). Slightly tinted green as my tornado is also tinted that colour.</li>
+<li><strong>Emission</strong>
+<ul>
+<li>Rate over Time : 20</li>
+</ul>
+</li>
+<li><strong>Shape</strong>
+<ul>
+<li>Shape : Cone</li>
+<li>Angle : 0</li>
+<li>Radius : 20</li>
+<li>Radius Thickness : 0</li>
+<li>Emit from : Volume</li>
+<li>Length : 8.5</li>
+<li>Position : (0, -10, 0)</li>
+<li>Rotation : (-90, 0, 0)</li>
+</ul>
+</li>
+<li><strong>Velocity over Lifetime</strong>
+<ul>
+<li>Linear : (0, 2, 0)</li>
+<li>Orbital : (0, -5, 0)</li>
+<li>Radial : -15</li>
+</ul>
+</li>
+<li><strong>Trails</strong>
+<ul>
+<li>Lifetime : 0.2</li>
+</ul>
+</li>
+<li><strong>Renderer</strong>
+<ul>
+<li>Render Mode : None</li>
+<li>Trail Material : Material using URP/Particles/Unlit shader, Transparent, Additive blending, using circle texture.</li>
+</ul>
+</li>
+</ul>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

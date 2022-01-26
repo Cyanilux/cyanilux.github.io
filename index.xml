@@ -6,7 +6,18 @@
     <description>Recent content in Home on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Wed, 08 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/index.xml" rel="self" type="application/rss+xml" />
+	
+    <item>
+      <title>Tornado Shader Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/tornado-shader-breakdown/</link>
+      <pubDate>Wed, 26 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/tornado-shader-breakdown/</guid>
+      <description>A shader applied to a few layers of alpha-clipped scrolling noise, with vertex displacement to make it wobble</description>
+    </item>
+	
+    
 	
     <item>
       <title>Sword Slash Shader Breakdown</title>
