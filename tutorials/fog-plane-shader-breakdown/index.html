@@ -18,7 +18,7 @@
 <meta itemprop="description" content="Two examples of vertical fog effects produced using the depth texture (scene depth)">
 <meta itemprop="datePublished" content="2019-12-05T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-12-05T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1549">
+<meta itemprop="wordCount" content="1614">
 <meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 
 
@@ -278,15 +278,15 @@
 </div>
 <h3 id="example-2-accurate">Example 2 (Accurate)</h3>
 <p>For a more accurate fog, we can calculate the world position of the scene depth coordinate and use that to produce the fog instead, using the normal direction of the plane/quad to have the fog in the correct direction. Note that this will likely be less performant than the simpler version.</p>
-<p>Create a <b class="node">View Direction</b> node set to <strong>World</strong> space. This obtains a vector from the pixel/fragment position to the camera. The magnitude of this vector is the distance (between the camera and fragment), but this is not the same as depth – The depth is a distance from the fragment position to a plane that is perpendicular to the camera, not the camera position itself. This creates a triangle as shown in the image.</p>
-<p>Note : <b class="node">View Direction</b> is <strong>not normalised</strong> in URP, but is in HDRP. If you are using HDRP you will need to use the <b class="node">Position</b> node in <strong>World</strong> space instead as we need it non-normalised. World positions in HDRP are also <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">Camera-Relative</a> which means we also don&rsquo;t need to worry about subtracting this from the camera&rsquo;s position later. At the end of the post I&rsquo;ll provide another graph showing how you can achieve the fog effect in HDRP.</p>
+<p>Important : Newer versions of Shader Graph (v11 / Unity 2021.1+) has changed the <b class="node">View Direction</b> node to be normalised in all pipelines. Now must use the <b class="node">View Vector</b> node to achieve the correct result. I&rsquo;ve updated the text below to account for this change but images will still use the direction node instead. If you are using prior versions of URP, continue using the <b class="node">View Direction</b> instead. For HDRP, see the graph at the end of the post.</p>
+<p>Create a <b class="node">View Vector</b> node set to <strong>World</strong> space. This obtains a vector from the pixel/fragment position to the camera. The magnitude of this vector is the distance (between the camera and fragment), but this is not the same as depth – The depth is a distance from the fragment position to a plane that is perpendicular to the camera, not the camera position itself. This creates a triangle as shown in the image.</p>
 <div class="img-center">
 <a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy"   alt="(Image)" src="https://www.cyanilux.com/ReconstructDepthWorldPos.png" />
 </a>
 <p class="img-text"></p>
 </div>
-<p>In order to reconstruct the world position we need to scale this vector to the scene position, behind the quad/plane. The <b class="node">Scene Depth</b> and &ldquo;Scene Pos&rdquo; we want creates another triangle as shown in the image. We can use the scale factor of the two triangles to obtain the vector to the scene position, which can be achieved by dividing the <b class="node">View Direction</b> by the <strong>Raw Screen Position W/A depth</strong> and then multiplying by the <b class="node">Scene Depth</b>. We can then <b class="node">Subtract</b> the camera’s world <strong>Position</strong> from the <b class="node">Camera</b> node to get the scene world position.</p>
+<p>In order to reconstruct the world position we need to scale this vector to the scene position, behind the quad/plane. The <b class="node">Scene Depth</b> and &ldquo;Scene Pos&rdquo; we want creates another triangle as shown in the image. We can use the scale factor of the two triangles to obtain the vector to the scene position, which can be achieved by dividing the <b class="node">View Vector</b> by the <strong>Raw Screen Position W/A depth</strong> and then multiplying by the <b class="node">Scene Depth</b>. We can then <b class="node">Subtract</b> the camera’s world <strong>Position</strong> from the <b class="node">Camera</b> node to get the scene world position.</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="323" alt="(Image)" src="Graph3.png" />
@@ -315,6 +315,7 @@
 </a>
 <p class="img-text"></p>
 </div>
+<p>We don&rsquo;t use the <b class="node">View Direction</b> node here as it was always normalised which isn&rsquo;t what we want. It may be possible to use the same <b class="node">View Vector</b> setup above if in Unity 2021.1+, but otherwise this method using the <b class="node">Position</b> node in <strong>World</strong> space should work too. Due to <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">Camera-Relative</a> rendering also don&rsquo;t need to worry about subtracting this from the camera&rsquo;s position.</p>
 <br><hr>
 <p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
 <p style="text-align:center;">~ Cyan</p>

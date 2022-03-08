@@ -18,7 +18,7 @@
 <meta itemprop="description" content="A detailed introduction on how to use Unity Shader Graph (including v10&#43; changes). Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!">
 <meta itemprop="datePublished" content="2021-03-05T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-03-05T00:00:00+00:00" />
-<meta itemprop="wordCount" content="15743">
+<meta itemprop="wordCount" content="15782">
 
 
 
@@ -226,7 +226,7 @@
 
 
 <p>Hey! This post is a detailed introduction to using <strong>Shader Graph</strong> - a node based shader editor for Unity that is provided for the <strong>Scriptable Render Pipelines</strong> (SRPs), including the <strong>Universal Render Pipeline</strong> (URP) and <strong>High Definition Render Pipeline</strong> (HDRP). We&rsquo;ll be going over how to use the tool and it&rsquo;s features, not necessarily how to create shaders using it. I have other tutorial breakdowns that go over creating specific shader effects if you&rsquo;re interested in that.</p>
-<p>Be aware that <strong>Shader Graph is not supported in the Built-in Pipeline</strong>.</p>
+<p>Be aware that <strong>Shader Graph is now supported in the Built-in Pipeline for Unity 2021.2+</strong>, though may be limited in some features. It is still not supported for previous versions.</p>
 <p>You may also see the “Lightweight Render Pipeline (LWRP)” mentioned online, which was renamed to URP during development. You may still find LWRP listed in the package manager but the newer versions (e.g. v7 onwards) should actually be identical to URP as far as I am aware. If you are installing the package manually, I&rsquo;d suggest just using the Universal RP one instead.</p>
 <p>If you aren&rsquo;t familiar with what <strong>shaders</strong> and <strong>materials</strong> are, I&rsquo;d recommend looking at my <a href="https://www.cyanilux.com/tutorials/intro-to-shaders">Intro to Shaders</a> post before reading this one, or other similar resources online.</p>
 <p>(Also note, any keyboard shortcuts will be based on Windows)</p>
@@ -351,15 +351,15 @@
 </p>
 <hr>
 <h2 id="install">Installing Shader Graph</h2>
-<p>As mentioned above, Shader Graph is a node based shader editor that is only available for the Scriptable Render Pipelines. It has support for both the Universal RP and High Definition RP and is already included in their packages so <strong>will automatically be installed alongside them</strong>.</p>
-<p>This means, in order to set up Shader Graph we only need to install URP or HDRP. This can be done by selecting one of the <strong>templates when starting a new project</strong> or by installing the package manually via the <strong>Package Manager</strong> (accessed via <strong>Window</strong> on the top menu).</p>
+<p>Shader Graph is a node based shader editor that is mostly intended for the Scriptable Render Pipelines. But it does also have some Built-in RP support now for Unity 2021.2+. If in that version or higher, you can install the Shader Graph package via the <strong>Package Manager</strong> (accessed via <strong>Window</strong> on the top menu).</p>
+<p>For the Universal RP and High Definition RP, Shader Graph is already included in their packages so <strong>will automatically be installed alongside them</strong>. Select one of the URP/HDRP <strong>templates when starting a new project</strong> or install the URP/HDRP package manually via the <strong>Package Manager</strong>.</p>
 <p>If installed manually, this will also require following some additional setup - such as creating and assigning a Pipeline Asset under the <strong>Project Settings → Graphics</strong> tab. The asset can also be overriden per Quality setting. You&rsquo;ll also need to convert materials to use the shaders from the appropiate pipeline, this can be done automatically from the <strong>Edit → Render Pipeline</strong> menu but will only work for the Standard built-in shaders. Any custom shaders cannot be upgraded automatically and will require rewriting. For additional setup instructions see the &ldquo;Getting Started&rdquo; tabs in the documentation :</p>
 <ul>
 <li><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@latest">Universal Render Pipeline Docs</a></li>
 <li><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@latest">High Definition Render Pipeline Docs</a></li>
 </ul>
-<p>I would mainly recommend that beginners start with URP as it is much simpler than HDRP, and most of my tutorials are written for URP. Some tutorials may also work in HDRP but may require some additional tweaks (due to differences like the normalised <b class="node">View Direction</b>, <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.2/manual/Camera-Relative-Rendering.html">Camera-Relative rendering</a> and different master nodes/stack).</p>
-<p>There is also documentation for Shader Graph, though this post will also go over most of the things listed there. The <strong>Node Library</strong> can be very useful for learning what each node does, but it can also be accessed in Shader Graph by right-clicking a node and selecting &ldquo;Open Documentation&rdquo;.</p>
+<p>I would mainly recommend that beginners start with URP as it is much simpler than HDRP (and most of my tutorials are written for URP). Some tutorials may also work in HDRP but may require some additional tweaks (due to differences like <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.2/manual/Camera-Relative-Rendering.html">Camera-Relative rendering</a> and different master nodes/stack).</p>
+<p>There is also documentation for Shader Graph. The <strong>Node Library</strong> in particular can be very useful for learning what each node does, but it can also be accessed in Shader Graph by right-clicking a node and selecting &ldquo;Open Documentation&rdquo;.</p>
 <ul>
 <li><a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@latest">Shader Graph Docs</a></li>
 </ul>
@@ -1560,9 +1560,9 @@ RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTextur
 <p class="img-text"></p>
 </div>
 <p>This will generate the code into a temporary file, allowing you to view it.</p>
-<p>If you plan to edit the code, you must first save the shader file somewhere in your <strong>Assets</strong> folder. It can then be treated exactly like any other code-written shader. It is completely separate from the graph now, so you&rsquo;ll need to switch materials to use the code version. Changes to the code will not update the graph, and vice versa.</p>
+<p>If you plan to edit the code, you must first save the shader file somewhere in your <strong>Assets</strong> folder. It can then be treated similarly to any other code-written shader (but still requires the Shader Graph package to be installed to function). It is separate from the graph asset now though, so you&rsquo;ll need to switch the shader on materials to use the code version. Changes to the code will also not update the graph, and vice versa.</p>
 <p>Sometimes Shader Graph can be a bit limited, so it can be useful to edit the generated code to extend what it is possible in graph form. For example, adding <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil</a> operations. (It&rsquo;s also possible to override this on the <strong>RenderObjects</strong> feature for the URP Forward Renderer. That is outside of the scope of this tutorial though, it&rsquo;s long enough already!)</p>
-<p>Be aware that the code might include two SubShaders, one intended for gles platforms (&amp; using shader model 2) and another for other platforms (using shader model 4.5), so if you&rsquo;re editing the code make sure you edit the one being used by your target (or both). The gles one seems to not include the <code>DOTS_INSTANCING_ON</code> multi_compile/keyword, so I would assume the reason for separating it into two versions is related to that.</p>
+<p>Be aware that the code might include multiple SubShaders depending on the targets under the Graph Settings. I&rsquo;ve also seen URP ones convert to two SubShaders, one intended for gles platforms (&amp; using shader model 2) and another for other platforms (using shader model 4.5). If you&rsquo;re editing the code make sure you edit the one being used by your target (or both). The gles one seems to not include the <code>DOTS_INSTANCING_ON</code> multi_compile/keyword, so I would assume the reason for separating it into two versions is related to that.</p>
 <br><hr>
 <p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
 <p style="text-align:center;">~ Cyan</p>

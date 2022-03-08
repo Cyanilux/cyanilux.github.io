@@ -18,7 +18,7 @@
 <meta itemprop="description" content="A forcefield shader using fresnel effect for glowing edges, scene depth for object intersections and scene colour to produce ripples/distortion">
 <meta itemprop="datePublished" content="2019-09-04T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-09-04T00:00:00+00:00" />
-<meta itemprop="wordCount" content="3073">
+<meta itemprop="wordCount" content="3160">
 <meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 
 
@@ -260,7 +260,8 @@
 </div>
 <p>Next we’ll handle the intersection effect with scene objects. To do this, we’ll create a <b class="node">Screen Position</b> node with the mode set to <strong>Raw</strong> and put it into a <b class="node">Split</b>. This gives us the <strong>depth</strong> of the pixel/fragment on the surface of the object in the <strong>W/A</strong> component. We will also need to create a <b class="node">Scene Depth</b> node set to the <strong>Eye</strong> sampling mode.</p>
 <p>Because we want this shader to support distortion later, this will be different from the intersection effect made in the simple version of this shader – as we cannot use the <strong>Two Sided</strong> mode but still want the intersection to show for both front and back faces. The method I’m using for this is similar to what was done in the <a href="https://www.cyanilux.com/tutorials/water-shader-breakdown">Water Shader Breakdown</a> for the caustics effect. By knowing the position, object depth and the scene depth we can reconstruct the world position in the scene for that fragment, which we can then use to test if the fragment is on the edge of a hemisphere.</p>
-<p>To reconstruct this world position based on depth, create a <b class="node">View Direction</b> node set to <strong>World</strong> space, and <b class="node">Divide</b> it by the object’s depth from the <strong>W/A</strong> component of the <b class="node">Split</b> node from earlier. Then <b class="node">Multiply</b> it by the output from the <b class="node">Scene Depth</b> node. Create a <b class="node">Camera</b> node, and take the <strong>Position</strong> output and <b class="node">Subtract</b> the output from our <b class="node">Multiply</b>. If you aren’t sure about how this works, see the water breakdown linked above.</p>
+<p>Important : Newer versions of Shader Graph (v11 / Unity 2021.1+) has changed the <b class="node">View Direction</b> node to be normalised in all pipelines. Now must use the <b class="node">View Vector</b> node to achieve the correct result. I&rsquo;ve updated the text below to account for this change, but images will still use the direction node instead. If you are using prior versions of URP, continue using the <b class="node">View Direction</b>. For HDRP, the graph at the end of the <a href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown">Fog Plane Shader Breakdown</a> may also provide an example.</p>
+<p>To reconstruct this world position based on depth, create a <b class="node">View Vector</b> node set to <strong>World</strong> space, and <b class="node">Divide</b> it by the object’s depth from the <strong>W/A</strong> component of the <b class="node">Split</b> node from earlier. Then <b class="node">Multiply</b> it by the output from the <b class="node">Scene Depth</b> node. Create a <b class="node">Camera</b> node, and take the <strong>Position</strong> output and <b class="node">Subtract</b> the output from our <b class="node">Multiply</b>. If you aren’t sure about how this works, see the water or fog-plane breakdowns linked above.</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="315" alt="(Image)" src="Graph2.png" />

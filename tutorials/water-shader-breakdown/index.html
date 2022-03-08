@@ -18,7 +18,7 @@
 <meta itemprop="description" content="A water shader that uses the scene color to produce distortion/refractions and reconstructs a position from the scene depth to project caustics on underwater objects">
 <meta itemprop="datePublished" content="2019-06-10T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-06-10T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1690">
+<meta itemprop="wordCount" content="1789">
 <meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 
 
@@ -279,17 +279,18 @@
 </a>
 <p class="img-text"></p>
 </div>
-<p>Next we’ll add the caustics effect. To do this we will use a <b class="node">Voronoi</b> node, with the <strong>Cell Density</strong> set to <strong>1</strong>. This node produces Voronoi noise, (also referred to as Cellular noise and Worley noise). If you want to know how this noise is generated, this Book Of Shaders page has a good explanation, also see my <a href="https://www.cyanilux.com/tutorials/voronoi">Voronoi</a> post.</p>
+<p>Next we’ll add the caustics effect. To do this we will use a <b class="node">Voronoi</b> node, with the <strong>Cell Density</strong> set to <strong>1</strong>. This node produces Voronoi noise, (also referred to as Cellular noise and Worley noise). If you want to know how this noise is generated, this Book Of Shaders page has a good explanation, also see my <a href="https://cyangamedev.wordpress.com/2019/07/16/voronoi/">Voronoi</a> post (on my old site).</p>
 <p>To animate it, create a <b class="node">Time</b> node and put the <strong>Time</strong> output into a <b class="node">Multiply</b> with a value of <strong>4</strong>, then put this into the <strong>Angle Offset</strong> input of the <b class="node">Voronoi</b>. We can then take the output and put it into a <b class="node">Power</b> node with a second input of <strong>5</strong>. We’ll then <b class="node">Multiply</b> this by <strong>0.5</strong>, <b class="node">Add</b> it to the output of our <b class="node">Scene Color</b> node, then replace the <strong>B</strong> input into the <b class="node">Lerp</b> with the output.</p>
 <p>This is the basis of the caustics effect, but rather than having it on the surface of the water, we want it projected onto everything underwater. In order to do this, we’ll reconstruct the world position from the <b class="node">Scene Depth</b> value we sampled earlier and use the <strong>X</strong> and <strong>Z</strong> components of the world position as the <strong>UVs</strong> input for the <b class="node">Voronoi</b>.</p>
-<p>In order to <strong>reconstruct the world position from the depth</strong> we first need to create a <b class="node">View Direction</b> node set to <strong>World</strong> space. In URP this obtains a vector from the fragment to the camera position, aka pixel on the water’s surface. The magnitude of this vector is the distance (between the camera and fragment), but this is not the same as depth. The depth is a distance from the fragment position to a <strong>plane that is perpendicular to the camera</strong>, not the camera position itself. This creates a triangle as shown in the image.</p>
+<p>Important : Newer versions of Shader Graph (v11 / Unity 2021.1+) has changed the <b class="node">View Direction</b> node to be normalised in all pipelines. Now must use the <b class="node">View Vector</b> node to achieve the correct result. I&rsquo;ve updated the text below to account for this change, but images will still use the direction node instead. If you are using prior versions of URP, continue using the <b class="node">View Direction</b>. For HDRP, the graph at the end of the <a href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown">Fog Plane Shader Breakdown</a> may also provide an example.</p>
+<p>In order to <strong>reconstruct the world position from the depth</strong> we first need to create a <b class="node">View Vector</b> node set to <strong>World</strong> space. This obtains a vector from the fragment (aka pixel on the water’s surface) to the camera position. The magnitude of this vector is the distance, but this is not the same as depth. The depth is a distance from the fragment position to a <strong>plane that is perpendicular to the camera</strong>, not the camera position itself. This creates a triangle as shown in the image.</p>
 <div class="img-center">
 <a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy"   alt="(Image)" src="https://www.cyanilux.com/ReconstructDepthWorldPos.png" />
 </a>
 <p class="img-text"></p>
 </div>
-<p>We need to extend this vector to the position in the scene behind the surface. To do this, we <b class="node">Divide</b> the <b class="node">View Direction</b> by the <strong>Raw Screen Position W/A depth</strong> and then <b class="node">Multiply</b> by the <b class="node">Scene Depth</b>. This works because the scene position we want creates another triangle as shown in the image, and this is the scale factor of that triangle compared to the other.</p>
+<p>We need to extend this vector to the position in the scene behind the surface. To do this, we <b class="node">Divide</b> the <b class="node">View Vector</b> by the <strong>Raw Screen Position W/A depth</strong> and then <b class="node">Multiply</b> by the <b class="node">Scene Depth</b>. This works because the scene position we want creates another triangle as shown in the image, and this is the scale factor of that triangle compared to the other.</p>
 <p>Currently this position moves with the camera&rsquo;s position so we now need to <b class="node">Subtract</b> the camera’s world <strong>Position</strong> from the <b class="node">Camera</b> node to get the actual scene world position. We’ll then <b class="node">Split</b> it, put the <strong>X/R</strong> and <strong>Z/B</strong> components into a <b class="node">Vector2</b> node, then into the <strong>UV</strong> input on the <b class="node">Voronoi</b> node.</p>
 <div class="img-center">
 <a href="Graph4.png" target="_blank" rel="noopener noreferrer">
@@ -297,7 +298,7 @@
 </a>
 <p class="img-text"></p>
 </div>
-<p>And that’s it! I also originally had a slight gradient applied to the depth at the surface, but I’m leaving the shader here as although it helped show the distortion more, it didn’t entirely make sense to have it and I feel it wasn’t implemented very well. To improve this water shader further you could apply fog by basing the water visibility on the depth or make deeper parts darker, and also add some specular parts to the water surface.</p>
+<p>And that’s it! I also originally had a slight gradient applied to the depth at the surface, but I’m leaving the shader here as although it helped show the distortion more, it didn’t entirely make sense to have it and I feel it wasn’t implemented very well. To improve this water shader further you could try applying a fog by basing the water visibility on the depth or make deeper parts darker, and also add some specular parts to the water surface (e.g. by using the Lit Graph and normal maps. Or Unlit Graph with <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Custom Lighting</a>).</p>
 <br><hr>
 <p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
 <p style="text-align:center;">~ Cyan</p>
