@@ -539,7 +539,7 @@
 <li>&ldquo;UniversalForward&rdquo; - Used to render objects in the <strong>Forward</strong> rendering path. Renders geometry with lighting.</li>
 <li>&ldquo;ShadowCaster&rdquo; - Used for casting shadows</li>
 <li>&ldquo;DepthOnly&rdquo; - Used by the <strong>Depth Prepass</strong> to create the <strong>Depth Texture</strong> (_CameraDepthTexture) if MSAA is enabled or the platform doesn&rsquo;t support copying the depth buffer</li>
-<li>&ldquo;DepthNormals&rdquo; - Used by the <strong>Depth Normals Prepass</strong> to create the <strong>Depth Texture</strong> (_CameraDepthTexture) and <strong>Normals Texture</strong> (_CameraNormalsTexture) if a renderer feature requests it (via <code>ConfigureInput(ScriptableRenderPassInput.Normal);</code> in the ScriptableRenderPass, see <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/Runtime/RendererFeatures/ScreenSpaceAmbientOcclusion.cs">SSAO feature</a> for example)</li>
+<li>&ldquo;DepthNormals&rdquo; - Used by the <strong>Depth Normals Prepass</strong> to create the <strong>Depth Texture</strong> (_CameraDepthTexture) and <strong>Normals Texture</strong> (_CameraNormalsTexture) if a renderer feature requests it (via <code>ConfigureInput(ScriptableRenderPassInput.Normal);</code> in the ScriptableRenderPass, see <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/RendererFeatures/ScreenSpaceAmbientOcclusion.cs">SSAO feature</a> for example)</li>
 <li>&ldquo;Meta&rdquo; - Used during Lightmap Baking</li>
 <li>&ldquo;Universal2D&rdquo; - Used for rendering when the 2D Renderer is enabled</li>
 <li>&ldquo;SRPDefaultUnlit&rdquo; - Default if no LightMode tag is included in a Pass. Can be used to draw extra passes (in both forward/deferred rendering), however this can break SRP Batcher compatibility. See <a href="#multi-pass">Multi-Pass</a> section below</li>
@@ -865,7 +865,7 @@ float3 a = vector.xyz;  <span style="color:#75715e">// or .rgb,		a = (1, 2, 3)
 <li><code>UNITY_MATRIX_I_P</code> - <strong>Inverse Projection</strong> Matrix, Converts from Clip space to View space</li>
 <li><code>UNITY_MATRIX_I_VP</code> - Inverse View Projection Matrix, Converts from Clip space to World space</li>
 </ul>
-<p>While you can use these matrices to convert between spaces via matrix multiplication (e.g. <code>mul(matrix, float4(position.xyz, 1))</code>), there is also helper functions in the SRP Core ShaderLibrary <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl">SpaceTransforms.hlsl</a>.</p>
+<p>While you can use these matrices to convert between spaces via matrix multiplication (e.g. <code>mul(matrix, float4(position.xyz, 1))</code>), there is also helper functions in the SRP Core ShaderLibrary <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl">SpaceTransforms.hlsl</a>.</p>
 <p>Something to be aware of is when dealing with matrix multiplciation, the order is important. Usually the matrix will be in the first input and the vector in the second. A Vector in the second input is treated like a Matrix consisting of up to 4 rows (depending on the size of the vector), and a single column. A Vector in the first input is instead treated as a Matrix consisting of 1 row and up to 4 columns.</p>
 <p>Each component in the matrix can also be accessed using either of the following :
 The zero-based row-column position:</p>
@@ -1365,7 +1365,7 @@ ENDHLSL</code></pre></td></tr></table>
 }</code></pre></td></tr></table>
 </div>
 </div>
-<p>It is possible for a shader to output to more than one render target though, known as <strong>Multi Render Target</strong> (MRT). This is used by the Deferred Rendering path, e.g. <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/UnityGBuffer.hlsl">see UnityGBuffer.hlsl</a> (which isn&rsquo;t fully supported in URP yet).</p>
+<p>It is possible for a shader to output to more than one render target though, known as <strong>Multi Render Target</strong> (MRT). This is used by the Deferred Rendering path, e.g. <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/UnityGBuffer.hlsl">see UnityGBuffer.hlsl</a> (which isn&rsquo;t fully supported in URP yet).</p>
 <p>If not using the deferred path, using MRT would require setup on the C# side, such as using <code>Graphics.SetRenderTarget</code> with a <code>RenderBuffer[]</code> array, or <code>CommandBuffer.SetRenderTarget</code> with a <code>RenderTargetIdentifier[]</code> array. MRT is not supported on all platforms however (e.g. GLES2)</p>
 <p>In the shader we would define the MRT output like so :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
@@ -1402,7 +1402,7 @@ FragOut <span style="color:#a6e22e">UnlitPassFragment</span>(Varyings input) {
 <hr>
 <h2 id="vertex-shader">Vertex Shader</h2>
 <p>The main thing that our vertex shader needs to do is convert the object space position from the mesh into a clip space position. This is required in order to correctly render fragments/pixels in the intended screen position.</p>
-<p>In built-in shaders you would do this with the <code>UnityObjectToClipPos</code> function, but this has been renamed to <code>TransformObjectToHClip</code> (which you can find in the SRP-core <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl">SpaceTransforms.hlsl</a>). That said, there’s another way to handle the transform in URP as shown below which makes conversions to other spaces much easier too.</p>
+<p>In built-in shaders you would do this with the <code>UnityObjectToClipPos</code> function, but this has been renamed to <code>TransformObjectToHClip</code> (which you can find in the SRP-core <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl">SpaceTransforms.hlsl</a>). That said, there’s another way to handle the transform in URP as shown below which makes conversions to other spaces much easier too.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -1447,7 +1447,7 @@ FragOut <span style="color:#a6e22e">UnlitPassFragment</span>(Varyings input) {
 }</code></pre></td></tr></table>
 </div>
 </div>
-<p>GetVertexPositionInputs computes the position in each of the commonly used spaces. It used to be a part of Core.hlsl, but was separated into it’s own file – <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.hlsl">ShaderVariablesFunctions.hlsl</a> in URP v9, but this file is automatically included when we include Core.hlsl anyway.</p>
+<p>GetVertexPositionInputs computes the position in each of the commonly used spaces. It used to be a part of Core.hlsl, but was separated into it’s own file – <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.hlsl">ShaderVariablesFunctions.hlsl</a> in URP v9, but this file is automatically included when we include Core.hlsl anyway.</p>
 <p>The function uses the object space position from the <code>Attributes</code> as an input and returns a <code>VertexPositionInputs</code> struct, which contains:</p>
 <ul>
 <li><code>positionWS</code> : the position in <strong>World</strong> space</li>
@@ -1854,7 +1854,7 @@ We can then use <code>#if defined(KEYWORD)</code> / <code>#ifdef KEYWORD</code> 
     surfaceData.smoothness, surfaceData.occlusion, surfaceData.emission, surfaceData.alpha);</code></pre></td></tr></table>
 </div>
 </div>
-<p>In v10+ the struct moved to it&rsquo;s own file, <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/SurfaceData.hlsl">SurfaceData.hlsl</a>, and the <code>UniversalFragmentPBR</code> function was updated so we can simply pass both structs through instead (for the <code>UniversalFragmentBlinnPhong</code> function a SurfaceData version is being added in v12 but current versions will need to split it. Examples shown later).</p>
+<p>In v10+ the struct moved to it&rsquo;s own file, <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/SurfaceData.hlsl">SurfaceData.hlsl</a>, and the <code>UniversalFragmentPBR</code> function was updated so we can simply pass both structs through instead (for the <code>UniversalFragmentBlinnPhong</code> function a SurfaceData version is being added in v12 but current versions will need to split it. Examples shown later).</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -1904,7 +1904,7 @@ We can then use <code>#if defined(KEYWORD)</code> / <code>#ifdef KEYWORD</code> 
 </code></pre></td></tr></table>
 </div>
 </div>
-<p>Again, we don&rsquo;t need to include this code as it&rsquo;s already in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/Input.hlsl">Input.hlsl</a> and that&rsquo;s automatically included when we include Core.hlsl anyway.</p>
+<p>Again, we don&rsquo;t need to include this code as it&rsquo;s already in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/Input.hlsl">Input.hlsl</a> and that&rsquo;s automatically included when we include Core.hlsl anyway.</p>
 <p>Since the lighting functions use these structs, we&rsquo;ll need to create them and set each variable it contains. To be more organised, we should do this in separate functions then call them in the fragment shader. The exact contents of the functions can vary slightly depending on what is actually needed for the lighting model.</p>
 <p>For now I&rsquo;m leaving the functions blank to first better see how the file is structured. The next few sections will go through the contents of the <code>InitializeSurfaceData</code> and <code>InitializeInputData</code> functions.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
@@ -2179,7 +2179,7 @@ half3 <span style="color:#a6e22e">GetWorldSpaceNormalizeViewDir</span>(float3 po
 </div>
 </div>
 <p>It&rsquo;s a bit difficult to go through every function here, so I hope most of this is self-explanatory. The only thing that might not be that clear is the normalizedScreenSpaceUV which is currently only used to sample the <strong>Screen Space Ambient Occlusion</strong> texture later. If you don&rsquo;t need to support that you could leave it out, but it also doesn&rsquo;t hurt to include it. If unused, the compiler will likely remove it anyway.</p>
-<p>Also in case it&rsquo;s not clear, <code>bakedGI</code> refers to the <strong>Baked Global Illumination</strong> (baked lighting) and <code>shadowMask</code> refers specifically to when that is set to <a href="https://docs.unity3d.com/Manual/LightMode-Mixed-Shadowmask.html">Shadowmask mode</a> as an additional shadow mask texture is then used. The <code>SAMPLE_GI</code> and <code>SAMPLE_SHADOWMASK</code> macros will change when compiled depending on specific keywords. You can find those functions in <a href="https://github.com/Unity-Technologies/Graphics/blob/v10.5.0/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl">Lighting.hlsl</a> (split/moved to <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/GlobalIllumination.hlsl">GlobalIllumination.hlsl</a> in v12), and <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl">Shadows.hlsl</a> of the URP ShaderLibrary.</p>
+<p>Also in case it&rsquo;s not clear, <code>bakedGI</code> refers to the <strong>Baked Global Illumination</strong> (baked lighting) and <code>shadowMask</code> refers specifically to when that is set to <a href="https://docs.unity3d.com/Manual/LightMode-Mixed-Shadowmask.html">Shadowmask mode</a> as an additional shadow mask texture is then used. The <code>SAMPLE_GI</code> and <code>SAMPLE_SHADOWMASK</code> macros will change when compiled depending on specific keywords. You can find those functions in <a href="https://github.com/Unity-Technologies/Graphics/blob/v10.5.0/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl">Lighting.hlsl</a> (split/moved to <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/GlobalIllumination.hlsl">GlobalIllumination.hlsl</a> in v12), and <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl">Shadows.hlsl</a> of the URP ShaderLibrary.</p>
 <h3 id="simple-lighting">Simple Lighting</h3>
 <p>The URP/SimpleLit shader uses the <code>UniversalFragmentBlinnPhong</code> function from Lighting.hlsl, which uses the <strong>Lambert</strong> and <strong>Blinn-Phong</strong> lighting models. If you aren&rsquo;t familiar with them I&rsquo;m sure there are better resources online, but I&rsquo;ll attempt to explain them quickly :</p>
 <p>Lambert models a perfectly <strong>diffuse</strong> surface, where light is reflected in all directions. This involves a <strong>dot product</strong> between the <strong>light direction</strong> and <strong>normal vector</strong> (both normalised).</p>
@@ -2353,7 +2353,7 @@ half3 <span style="color:#a6e22e">LightingSpecular</span>(half3 lightColor, half
 </div>
 <p>For a full example, see the <a href="https://github.com/Cyanilux/URP_ShaderCodeTemplates/blob/main/URP_SimpleLitTemplate.shader">URP_SimpleLitTemplate</a>.</p>
 <h3 id="pbr-lighting">PBR Lighting</h3>
-<p>The URP/Lit shader uses a more accurate <strong>Physically Based Rendering</strong> (PBR) model, which is based on Lambert and a <a href="http://www.thetenthplanet.de/archives/255">Minimalist CookTorrance model</a>. The exact implementation is slightly different according to the ShaderLibrary. If interested, you can find how it&rsquo;s implemented by looking at the <code>LightingPhysicallyBased</code> function in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl">Lighting.hlsl</a> and the DirectBRDFSpecular function in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/BRDF.hlsl">BRDF.hlsl</a>.</p>
+<p>The URP/Lit shader uses a more accurate <strong>Physically Based Rendering</strong> (PBR) model, which is based on Lambert and a <a href="http://www.thetenthplanet.de/archives/255">Minimalist CookTorrance model</a>. The exact implementation is slightly different according to the ShaderLibrary. If interested, you can find how it&rsquo;s implemented by looking at the <code>LightingPhysicallyBased</code> function in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl">Lighting.hlsl</a> and the DirectBRDFSpecular function in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/BRDF.hlsl">BRDF.hlsl</a>.</p>
 <p>We don&rsquo;t necessarily need to understand how it&rsquo;s implemented to use it though, we can just call the <code>UniversalFragmentPBR</code> function. As mentioned previously in v10+ it takes the two structs, InputData and SurfaceData. We&rsquo;ve already discussed creating the <code>InitializeInputData</code> function in a couple sections above. For the <code>InitializeSurfaceData</code> we&rsquo;ll use :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -2546,7 +2546,7 @@ half <span style="color:#a6e22e">SampleOcclusion</span>(float2 uv) {
 <h3 id="shadowcaster">ShadowCaster</h3>
 <p>The pass tagged with <code>&quot;LightMode&quot;=&quot;ShadowCaster&quot;</code> is responsible for allowing the object to cast realtime shadows.</p>
 <p>In a section earlier I mentioned that <code>UsePass</code> could be used to trigger the shader to use a pass from a different shader, however since this breaks the SRP Batching compatibility we need to instead define the pass in the shader itself.</p>
-<p>I find that the easiest way to handle this is let the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl">ShadowCasterPass.hlsl</a> do the work for us (used by shaders like URP/Lit). It contains the Attributes and Varyings structs and fairly simple Vertex and Fragment shaders, handling the shadow bias offsets and alpha clipping/cutout.</p>
+<p>I find that the easiest way to handle this is let the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl">ShadowCasterPass.hlsl</a> do the work for us (used by shaders like URP/Lit). It contains the Attributes and Varyings structs and fairly simple Vertex and Fragment shaders, handling the shadow bias offsets and alpha clipping/cutout.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -2680,7 +2680,7 @@ ENDHLSL</code></pre></td></tr></table>
 <h3 id="depthonly">DepthOnly</h3>
 <p>The pass tagged with <code>&quot;LightMode&quot;=&quot;DepthOnly&quot;</code> is responsible for writing the object&rsquo;s depth to the <strong>Camera Depth Texture</strong> - specifically, when the depth buffer cannot be copied or MSAA is enabled. If your shader is opaque and uses <code>ZWrite On</code> in the main pass, it should include a DepthOnly pass, regardless of it being lit/unlit. Transparent shaders can also include it but since the depth texture is generated before drawing transparent objects they won&rsquo;t appear in it.</p>
 <p>The DepthOnly pass is almost identical to what the ShadowCaster does above, except it does not use the shadow bias offsets in the vertex shader (uses the regular <code>TransformObjectToHClip(IN.positionOS.xyz)</code> instead of <code>GetShadowPositionHClip(input)</code>).</p>
-<p>Again similar to the above we can make use of the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/Shaders/DepthOnlyPass.hlsl">DepthOnlyPass.hlsl</a> used by shaders like URP/Lit to define the Attributes and Varyings structs and Vertex and Fragment shaders for us.</p>
+<p>Again similar to the above we can make use of the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Shaders/DepthOnlyPass.hlsl">DepthOnlyPass.hlsl</a> used by shaders like URP/Lit to define the Attributes and Varyings structs and Vertex and Fragment shaders for us.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -2784,7 +2784,7 @@ ENDHLSL</code></pre></td></tr></table>
 <p>The pass tagged with <code>&quot;LightMode&quot;=&quot;DepthNormals&quot;</code> is responsible for writing the object&rsquo;s depth to the <strong>Camera Depth Texture</strong> and normals to the <strong>Camera Normals Texture</strong> if requested by a <strong>Renderer Feature</strong> on the camera&rsquo;s Forward/Universal Renderer.</p>
 <p>For example, the <strong>Screen Space Ambient Occlusion</strong> feature can support using the <strong>Depth Normals</strong> as it&rsquo;s source, or can reconstruct normals from <strong>Depth</strong> (so use the DepthOnly pass instead) which avoids creating an additional buffer / render texture to store that <code>_CameraNormalsTexture</code>.</p>
 <p>If you&rsquo;re really sure that you don&rsquo;t need SSAO or other features that might use it you could exclude the pass, but I&rsquo;d recommend supporting it anyway to avoid later confusion when objects aren&rsquo;t appearing in the depth &amp; normals textures!</p>
-<p>Similar to the previous passes, we can use the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/Shaders/DepthNormalsPass.hlsl">DepthNormalsPass.hlsl</a>.</p>
+<p>Similar to the previous passes, we can use the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Shaders/DepthNormalsPass.hlsl">DepthNormalsPass.hlsl</a>.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -2887,11 +2887,11 @@ ENDHLSL</code></pre></td></tr></table>
 }</code></pre></td></tr></table>
 </div>
 </div>
-<p>It&rsquo;s worth mentioning that newer versions of URP (v12) use <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/Shaders/LitDepthNormalsPass.hlsl">LitDepthNormalsPass.hlsl</a> instead, which provides support for using the normal map and detail normal map, as well as parallax/height mapping (requiring the additional keywords commented in the above code too).</p>
+<p>It&rsquo;s worth mentioning that newer versions of URP (v12) use <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Shaders/LitDepthNormalsPass.hlsl">LitDepthNormalsPass.hlsl</a> instead, which provides support for using the normal map and detail normal map, as well as parallax/height mapping (requiring the additional keywords commented in the above code too).</p>
 <h3 id="meta">Meta</h3>
 <p>The pass tagged with <code>&quot;LightMode&quot;=&quot;Meta&quot;</code> is used when baking global illumination. If you aren&rsquo;t using baked GI then you could ignore this pass.</p>
-<p>For Unlit shaders, you may want to look into using the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/Shaders/UnlitMetaPass.hlsl">UnlitMetaPass.hlsl</a> similar to the above passes.</p>
-<p>For Lit shaders, we could probably use <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/Shaders/LitMetaPass.hlsl">LitMetaPass.hlsl</a>, however it wants a <code>InitializeStandardLitSurfaceData</code> function which isn&rsquo;t exactly what we&rsquo;re using and my PBR example also includes vertex colour so we would need to change the Varyings too. Instead I ended up using this instead :</p>
+<p>For Unlit shaders, you may want to look into using the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Shaders/UnlitMetaPass.hlsl">UnlitMetaPass.hlsl</a> similar to the above passes.</p>
+<p>For Lit shaders, we could probably use <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Shaders/LitMetaPass.hlsl">LitMetaPass.hlsl</a>, however it wants a <code>InitializeStandardLitSurfaceData</code> function which isn&rsquo;t exactly what we&rsquo;re using and my PBR example also includes vertex colour so we would need to change the Varyings too. Instead I ended up using this instead :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -3035,7 +3035,7 @@ ENDHLSL</code></pre></td></tr></table>
 <li>SubShader in URP uses the “RenderPipeline”=”UniversalPipeline” tag</li>
 <li>Passes in URP use some different &ldquo;LightMode&rdquo; tags than Built-In. The most common being &ldquo;UniversalForward&rdquo; or left out completely (which defaults it to &ldquo;SRPDefaultUnlit&rdquo;). See <a href="#lightmode-tag">LightMode Tag section</a> for list.</li>
 <li>Only the first UniversalForward pass is rendered. Multi-Pass shaders in URP is supported with additional passes using SRPDefaultUnlit, but it breaks SRP Batcher compatibility so is not recommended. See the <a href="#multi-pass">Multi-Pass section</a> for alternatives (i.e Second Material or RenderObjects feature).</li>
-<li>URP does not support GrabPass. Instead, a camera opaque texture is captured between rendering opaque and transparent objects which can be used for some distortion/refraction effects for shaders in the transparent queue. <code>#include</code> the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/DeclareOpaqueTexture.hlsl">DeclareOpaqueTexture.hlsl</a> file and use it&rsquo;s <code>SampleSceneColor</code> function with the ScreenPos (positionNDC) as the uv input. Other transparent objects will not appear in the texture. If you need that, an alternative may be to use a Custom Renderer Feature to render additive distortion objects into an offscreen buffer then distort the final screen result using <code>CommandBuffer.Blit</code>. The idea would be similar to this <a href="https://www.youtube.com/watch?v=xH5uUfeB2Go">Makin' Stuff Look Good in Unity video</a> but the code used there is still intended for built-in.</li>
+<li>URP does not support GrabPass. Instead, a camera opaque texture is captured between rendering opaque and transparent objects which can be used for some distortion/refraction effects for shaders in the transparent queue. <code>#include</code> the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareOpaqueTexture.hlsl">DeclareOpaqueTexture.hlsl</a> file and use it&rsquo;s <code>SampleSceneColor</code> function with the ScreenPos (positionNDC) as the uv input. Other transparent objects will not appear in the texture. If you need that, an alternative may be to use a Custom Renderer Feature to render additive distortion objects into an offscreen buffer then distort the final screen result using <code>CommandBuffer.Blit</code>. The idea would be similar to this <a href="https://www.youtube.com/watch?v=xH5uUfeB2Go">Makin' Stuff Look Good in Unity video</a> but the code used there is still intended for built-in.</li>
 </ul>
 <hr>
 <h2 id="summary-hlsl">HLSL : </h2>
@@ -3090,7 +3090,7 @@ ENDHLSL</code></pre></td></tr></table>
 </div>
 </div>
 <ul>
-<li>Instead of <code>_MainTex</code>, URP tends to use <code>_BaseMap</code> instead. It&rsquo;s mostly just a naming convention difference, and isn&rsquo;t too important unless you include <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/SurfaceInput.hlsl">SurfaceInput.hlsl</a> which defines the Albedo, Bump and Emission textures for you. <code>_MainTex</code> should still be used for image effects using <code>CommandBuffer.Blit</code> (i.e. <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Render Feature</a>) and obtaining the sprite from a SpriteRenderer component.</li>
+<li>Instead of <code>_MainTex</code>, URP tends to use <code>_BaseMap</code> instead. It&rsquo;s mostly just a naming convention difference, and isn&rsquo;t too important unless you include <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/SurfaceInput.hlsl">SurfaceInput.hlsl</a> which defines the Albedo, Bump and Emission textures for you. <code>_MainTex</code> should still be used for image effects using <code>CommandBuffer.Blit</code> (i.e. <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Render Feature</a>) and obtaining the sprite from a SpriteRenderer component.</li>
 <li>URP provides macros for defining textures, and uses the DX10+ style syntax which defines a Texture and Sampler separately :</li>
 </ul>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
@@ -3274,7 +3274,7 @@ Varyings <span style="color:#a6e22e">vert</span>(Attributes IN) {
 </tr>
 <tr>
 <td style="text-align:left"><code>ComputeScreenPos(positionCS)</code></td>
-<td style="text-align:left"><code>ComputeScreenPos(positionCS)</code>, though <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.deprecated.hlsl">deprecated in Unity 2021 / URP v11+</a>. Should use <code>GetVertexPositionInputs().positionNDC</code> instead</td>
+<td style="text-align:left"><code>ComputeScreenPos(positionCS)</code>, though <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.deprecated.hlsl">deprecated in Unity 2021 / URP v11+</a>. Should use <code>GetVertexPositionInputs().positionNDC</code> instead</td>
 </tr>
 <tr>
 <td style="text-align:left"><code>ComputeGrabScreenPos(positionCS)</code></td>
@@ -3286,7 +3286,7 @@ Varyings <span style="color:#a6e22e">vert</span>(Attributes IN) {
 </tr>
 <tr>
 <td style="text-align:left"><code>UnityWorldSpaceViewDir(positionWS)</code></td>
-<td style="text-align:left"><code>GetWorldSpaceViewDir(positionWS)</code> (added to <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.hlsl">ShaderVariablesFunctions.hlsl</a> in v9+). For versions prior, copy it out. If you need it normalised, can use <code>GetWorldSpaceNormalizeViewDir(positionWS)</code> instead.</td>
+<td style="text-align:left"><code>GetWorldSpaceViewDir(positionWS)</code> (added to <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.hlsl">ShaderVariablesFunctions.hlsl</a> in v9+). For versions prior, copy it out. If you need it normalised, can use <code>GetWorldSpaceNormalizeViewDir(positionWS)</code> instead.</td>
 </tr>
 <tr>
 <td style="text-align:left"><code>WorldSpaceLightDir(positionOS)</code></td>
@@ -3302,7 +3302,7 @@ Varyings <span style="color:#a6e22e">vert</span>(Attributes IN) {
 </tr>
 <tr>
 <td style="text-align:left"><code>ShadeVertexLights(vertex, normal)</code></td>
-<td style="text-align:left"><code>VertexLighting(positionWS, normalWS)</code> in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl">Lighting.hlsl</a></td>
+<td style="text-align:left"><code>VertexLighting(positionWS, normalWS)</code> in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl">Lighting.hlsl</a></td>
 </tr>
 <tr>
 <td style="text-align:left"><code>ShadeSH9(half4(worldNormal,1))</code></td>
@@ -3334,11 +3334,11 @@ Varyings <span style="color:#a6e22e">vert</span>(Attributes IN) {
 </tr>
 <tr>
 <td style="text-align:left"><code>ParallaxOffset(h, height, viewDirTS)</code></td>
-<td style="text-align:left"><code>ParallaxOffset1Step(h, amplitude, viewDirTS)</code> if in v10.1+ (for versions prior, copy function out). See <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.core/ShaderLibrary/ParallaxMapping.hlsl">ParallaxMapping.hlsl</a></td>
+<td style="text-align:left"><code>ParallaxOffset1Step(h, amplitude, viewDirTS)</code> if in v10.1+ (for versions prior, copy function out). See <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/ParallaxMapping.hlsl">ParallaxMapping.hlsl</a></td>
 </tr>
 <tr>
 <td style="text-align:left"><code>Luminance(rgb)</code></td>
-<td style="text-align:left"><code>Luminance(rgb)</code>, See <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl">Color.hlsl</a></td>
+<td style="text-align:left"><code>Luminance(rgb)</code>, See <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl">Color.hlsl</a></td>
 </tr>
 <tr>
 <td style="text-align:left"><code>V2F_SHADOW_CASTER</code></td>
@@ -3346,7 +3346,7 @@ Varyings <span style="color:#a6e22e">vert</span>(Attributes IN) {
 </tr>
 <tr>
 <td style="text-align:left"><code>TRANSFER_SHADOW_CASTER_NORMALOFFSET</code></td>
-<td style="text-align:left">See <code>GetShadowPositionHClip(input)</code> example in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl">ShadowCasterPass.hlsl</a>, also see above</td>
+<td style="text-align:left">See <code>GetShadowPositionHClip(input)</code> example in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl">ShadowCasterPass.hlsl</a>, also see above</td>
 </tr>
 <tr>
 <td style="text-align:left"><code>SHADOW_CASTER_FRAGMENT</code></td>

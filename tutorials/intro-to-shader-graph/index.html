@@ -1307,7 +1307,7 @@ Example section of a graph containing a couple grouped nodes. Helps to understan
 <li><b class="node">Scene Color</b></li>
 <li><b class="node">Scene Depth</b>
 <ul>
-<li>For URP, see <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl">here</a>. Would have to use :</li>
+<li>For URP, see <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl">here</a>. Would have to use :</li>
 </ul>
 </li>
 </ul>
@@ -1328,7 +1328,7 @@ RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTextur
 </span></code></pre></td></tr></table>
 </div>
 </div>
-<p>For HDRP, <code>SampleCameraDepth(float2 uv)</code> in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl">ShaderVariables.hlsl</a> actually already uses an LOD version, you may still need to handle it in a <b class="node">Custom Function</b> though.</p>
+<p>For HDRP, <code>SampleCameraDepth(float2 uv)</code> in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl">ShaderVariables.hlsl</a> actually already uses an LOD version, you may still need to handle it in a <b class="node">Custom Function</b> though.</p>
 <ul>
 <li><b class="node">Parallax Mapping</b> (v10.1+) : Uses texture sample, but would only ever be used in the fragment stage.</li>
 <li><b class="node">Parallax Occlusion Mapping</b> (v10.1+) : Technically I don&rsquo;t think this node uses anything that would prevent it working in the vertex stage, but it would only ever be used in the fragment stage so is still limited to fragment-only.</li>
@@ -1474,7 +1474,7 @@ RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTextur
 <li><strong>UnityTextureCube</strong></li>
 <li><strong>UnitySamplerState</strong></li>
 </ul>
-<p>Defined in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl">pipelines.core/ShaderLibrary/Texture.hlsl</a>.</p>
+<p>Defined in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl">pipelines.core/ShaderLibrary/Texture.hlsl</a>.</p>
 <p>These can be used as input/output arguments in a <b class="node">Custom Function</b> node as alternatives to the <strong>Texture2D</strong>, <strong>Texture2DArray</strong>, <strong>Texture3D</strong>, <strong>TextureCube</strong> and <strong>SamplerState</strong> objects (which are now referred to as &ldquo;bare&rdquo; types). The purpose of these new non-bare structs is to handle connections for the texture data types in a more consistent way.</p>
 <p>It&rsquo;s possible now to access the <strong>SamplerState</strong> from a <strong>Texture</strong> through <code>unityTex.samplerstate</code>, as well as the <strong>TexelSize</strong> through <code>unityTex.texelSize</code> (That one is UnityTexture2D only though). The texture is accessed via <code>unityTex.tex</code>, though the <code>SAMPLE_TEXTURE2D</code> macro can be used with new struct types too.</p>
 <p>Custom Function nodes created prior to this change will set their inputs/outputs as the &ldquo;Bare&rdquo; types when updated. This allows the function to still work as it was originally intended, but switching them to &ldquo;non-Bare&rdquo; allows you to use the new samplerstate/texelsize access.</p>
@@ -1495,7 +1495,7 @@ RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTextur
 <li><code>SHADERPASS_SPRITEUNLIT</code></li>
 <li><code>SHADERPASS_DEPTHNORMALSONLY</code></li>
 </ul>
-<p>For HDRP a similar list can be found <a href="https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl">here</a>.</p>
+<p>For HDRP a similar list can be found <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl">here</a>.</p>
 <p>Shader Graph also uses <code>SHADERPASS_PREVIEW</code> for it&rsquo;s previews. Though you can also check for this using :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
