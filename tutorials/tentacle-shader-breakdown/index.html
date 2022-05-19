@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
+	
+	<meta itemprop="name" content="Tentacle Shader Breakdown">
+<meta itemprop="description" content="A shader that uses vertex displacement to simulate a tentacle grabbing / wrapping around an object">
+<meta itemprop="datePublished" content="2022-05-19T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2022-05-19T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2328">
+<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+
+
+
+<meta itemprop="keywords" content="URP,Shader Graph," />
+
+	
+	
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/tentacle-shader-breakdown/Preview.png"/>
+<meta name="twitter:title" content="Tentacle Shader Breakdown"/>
+<meta name="twitter:description" content="A shader that uses vertex displacement to simulate a tentacle grabbing / wrapping around an object"/>
+
+	
+<meta property="og:title" content="Tentacle Shader Breakdown" />
+<meta property="og:description" content="A shader that uses vertex displacement to simulate a tentacle grabbing / wrapping around an object" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/tentacle-shader-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/tentacle-shader-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2022-05-19T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-05-19T00:00:00+00:00" />
+	
+	
+	
+    
+    
+    <title>Tentacle Shader Breakdown | Cyanilux</title>
+	
+	
+	
+		
+		
+		<meta name="description" content="A shader that uses vertex displacement to simulate a tentacle grabbing / wrapping around an object. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/tentacle-shader-breakdown/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<h1 class="title-no-margin">
+		<a class="link-plain" href="https://www.cyanilux.com">
+			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+		</a>
+		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+	</h1>
+	
+	<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	
+	<nav id="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		
+		Resources
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Tentacle Shader Breakdown</h1>
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+
+<time datetime="2022-05-19">&#128337 May 19, 2022</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eA tentacle made as part of \u003ca href=\"https://twitter.com/hashtag/TechnicallyAChallenge?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#TechnicallyAChallenge\u003c/a\u003e 🐙\u003cbr\u003eUsing some vertex displacement shader magic~ 😉✨\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/hnglGhYPdN\"\u003epic.twitter.com/hnglGhYPdN\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1524697139812573185?ref_src=twsrc%5Etfw\"\u003eMay 12, 2022\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1524697139812573185\">https://twitter.com/Cyanilux/status/1524697139812573185</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>Hey! I recently made this tentacle shader that wraps around a target object, as part of the current &ldquo;Technically A Challenge&rdquo;; a challenge run by the &ldquo;Technically Speaking&rdquo; discord, owned by Harry Alisavakis.</p>
+<p>The majority of the shader is in the vertex stage, involving displacing and rotating vertices around a position that is sent into the shader via a C# script. As with most of my shaders, I used Shader Graph to create this but the technique should translate to shader code fairly easily too.</p>
+<h2 id="breakdown">Breakdown</h2>
+<p>Before we begin with the shader, we&rsquo;ll first need a <strong>tentacle mesh</strong>. I&rsquo;ll also go through the <strong>C# script</strong> that will set properties that our shader will use, which will help later with testing the shader in the scene view after each step.</p>
+<h3 id="mesh">Mesh</h3>
+<p>I won&rsquo;t be going through the steps to create the mesh, as I&rsquo;m certainly no expert with Blender and I&rsquo;m sure there are optimisations that can be made here. That said, the image below shows what the mesh I&rsquo;m using looks like. I basically started with a cylinder (with circles of 16 vertices), then scaled the top and added a bunch of edge loops (Ctrl+R). The plain one is about 700 vertices, which is kinda needed for it to be able to bend properly (as the shader doesn&rsquo;t do any tessellation). I also added suckers to the mesh which increased the vertex count to around 2.7K.</p>
+<p>The orientation and scaling of the mesh may be important if you want to use the same axis &amp; values in my graphs later. It&rsquo;s aligned along the <strong>+Z axis</strong> when imported into Unity, with it&rsquo;s <strong>origin at the base of the tentacle</strong>. The length is about <strong>20m</strong>.</p>
+<div class="img-center">
+<a href="Mesh.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="497" alt="(Image)" src="Mesh.png" />
+</a>
+<p class="img-text">On the right : Tentacle Mesh (and a plain version I used while creating the shader & for images below). On the left : showing the UVs</p>
+</div>
+<p>The UVs are unwrapped using a cylindrical projection. In Blender while in edit mode, highlight all <strong>(A)</strong> -&gt; UV Mapping <strong>(U)</strong> -&gt; <strong>Cylinder Projection</strong>. Then expand the settings in the bottom left, set the Direction to <strong>Align to Object</strong>, and tick <strong>Scale to Bounds</strong>.</p>
+<p>I&rsquo;m then scaling it down to about a <strong>third</strong> of the 0-1 range to leave space for the suckers, which I&rsquo;ve separated into two parts to be able to mask them in the shader to colour them differently. Though in hindsight it may have made more sense to use vertex colours for that masking.</p>
+<p>Also, as Blender likes to export as cm, I&rsquo;ve unticked the <strong>Convert Units</strong> option on the model import in Unity, so the mesh looks correct at an object scale of <strong>(1,1,1)</strong> rather than 100 times that.</p>
+<h3 id="script">Script</h3>
+<p>The following <strong>C# script</strong> is applied to the <strong>GameObject</strong> with the <strong>tentacle mesh</strong>. It allows us to move another <strong>GameObject</strong> (e.g. Capsule, or just an empty one) around in our scene, and its position (local to the tentacle object) and scale will be used to set properties on the material.</p>
+<p>The shader will use these properties when calculating its displacement. The final result will look like it wraps around that object, like in the twitter gif at the top of this post.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">using</span> UnityEngine;
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">[ExecuteInEditMode]</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TentacleInteract</span> : MonoBehaviour {
+
+	<span style="color:#66d9ef">public</span> Material material;
+	<span style="color:#66d9ef">public</span> Transform obj;
+	<span style="color:#66d9ef">public</span> Vector3 offset;
+
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Update() {
+		<span style="color:#66d9ef">if</span> (material == <span style="color:#66d9ef">null</span> || obj == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span>;
+		<span style="color:#66d9ef">float</span> radius = obj.localScale.x - <span style="color:#ae81ff">0.5f</span>;
+		material.SetFloat(<span style="color:#e6db74">&#34;_Radius&#34;</span>, radius);
+		material.SetVector(<span style="color:#e6db74">&#34;_InteractPos&#34;</span>, transform.InverseTransformPoint(obj.position + offset * radius));
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>I&rsquo;m passing the <strong>Material</strong> (that will have our tentacle shader on) as a public field, though you could swap this out for a private one and use <code>material = GetComponent&lt;MeshRenderer&gt;().material</code> instead. That would create a material instance, so multiple tentacles can have different interaction points and move independently. (Be sure to <code>Destroy()</code> the material instance too, in the OnDestroy method!)</p>
+<p><code>[ExecuteInEditMode]</code> allows us to preview the tentacle wrapping around objects even when the game is not running.</p>
+<p>For testing I use a <strong>Capsule</strong> as the other GameObject, which I can manually move around in the scene to test the shader. For an actual game I&rsquo;d likely make that other object empty instead (as in, no components other than the Transform). We could then animate it via an Animation, or use another C# script to sync the position of that empty object with characters when they get close, with a lerp to keep the interaction smooth. There are also some positions which doesn&rsquo;t work well with the shader (e.g. far out of reach, or behind where the tentacle starts), so we&rsquo;d want to prevent targetting characters in those areas. That&rsquo;s a bit beyond this breakdown though.</p>
+<h3 id="shader-graph">Shader Graph</h3>
+<p>In a new Lit Shader Graph, We&rsquo;ll first create the properties that our script uses, via the <strong>Blackboard</strong> window :</p>
+<ul>
+<li><strong>Vector3</strong> &ldquo;_InteractPos&rdquo;</li>
+<li><strong>Float</strong> &ldquo;_Radius&rdquo;</li>
+</ul>
+<p>(Could alternatively combine these into a <strong>Vector4</strong> property and use <b class="node">Swizzle</b> nodes to obtain the &ldquo;xyz&rdquo; and &ldquo;w&rdquo; parts separately)</p>
+<p>In the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window, make sure that the <strong>Reference</strong> of these properties match the strings used in the C# script.</p>
+<h3 id="vertex-stage">Vertex Stage</h3>
+<p>To start, we need to <b class="node">Subtract</b> our <strong>InteractPos</strong> property from the vertex position (<b class="node">Position</b> node, set to <strong>Object</strong> space). We only need the <strong>Z</strong> axis here though, so to obtain that use a <b class="node">Split</b> (<strong>B</strong> output) or <b class="node">Swizzle</b> node with string set to &ldquo;b&rdquo; or &ldquo;z&rdquo;.</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="475" height="226" alt="(Image)" src="Graph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Outputting this temporarily to the <strong>Base Color</strong> on the <strong>Master Stack</strong>, then saving the graph (<strong>Save Asset</strong> in top left), should look like :</p>
+<div class="img-center">
+<a href="Tentacle1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="237" alt="(Image)" src="Tentacle1.png" />
+</a>
+<p class="img-text">(For preview purposes, also put through a <b class="node">Saturate</b> node to clamp colours)</p>
+</div>
+<p>This gives us a value of <strong>0</strong> for vertices near the <strong>InteractPos</strong> (where the black begins, before this are negative values). It fades to white along the <strong>+Z</strong> axis as the value increases.</p>
+<p>With a bit of scaling (<b class="node">Multiply</b> by <strong>0.1</strong>) we can spread the gradient out more and use an <b class="node">Absolute</b> node to flip the negative values into the postive range. I then use a <b class="node">Smoothstep</b> node, which produces a less linear gradient/shape, and at the same time also inverts the result as the <strong>Edge1</strong> value is larger (<strong>Edge1</strong> is set to <strong>1</strong>, <strong>Edge2</strong> is set to <strong>0</strong>).</p>
+<p>We&rsquo;ll use the result to offset the vertex positions along the <strong>-X</strong> axis. <b class="node">Multiply</b> by 2 (so we offset by a maximum of 2 units), then put it into the <strong>X</strong> input on a <b class="node">Vector3</b> node and <b class="node">Subtract</b> it from the <b class="node">Position</b> node (<strong>Object</strong> space).</p>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="302" alt="(Image)" src="Graph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Putting this into the <strong>Position</strong> port of the <strong>Vertex</strong> stage of the <strong>Master Stack</strong> temporarily allows us to preview what this does. The <b class="node">Smoothstep</b> here is also put into the <strong>Base Color</strong> so we can preview that too. (Note : If you want to do this, attach the fragment stage first or it can lock nodes to vertex-stage and prevent you connecting!)</p>
+<div class="img-center">
+<a href="Tentacle2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="237" alt="(Image)" src="Tentacle2.png" />
+</a>
+<p class="img-text">Previewing the offset. Note how the more white parts offset downwards by a larger amount</p>
+</div>
+<p>Before we can handle any rotation, we first need to clamp the <strong>Z</strong> positions of vertices beyond the <strong>InteractPos</strong>. If we don&rsquo;t do this, then when we rotate the vertices around the <strong>InteractPos</strong>, they will spiral outwards - which isn&rsquo;t what we want.</p>
+<p>To handle this clamping, we <b class="node">Split</b> the <b class="node">Position</b> node and connect the <strong>R</strong> and <strong>G</strong> outputs to the <strong>X</strong> and <strong>Y</strong> on a <b class="node">Vector3</b> node (as we don&rsquo;t want to alter these axis). For the <strong>B</strong> output, we put it into a <b class="node">Minimum</b> node, with the other input set to the <strong>InteractPos</strong> property put into a <b class="node">Swizzle</b> node with &ldquo;z&rdquo;.</p>
+<p>The output of the <b class="node">Minimum</b> is put into the <strong>Z</strong> port of the <b class="node">Vector3</b>.</p>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="747" height="365" alt="(Image)" src="Graph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>This group will replace the <b class="node">Position</b> node used in the last step (first input of the <b class="node">Subtract</b> node)</p>
+<p>Previewing this in the scene now looks like :</p>
+<div class="img-center">
+<a href="Tentacle3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="237" alt="(Image)" src="Tentacle3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The end of our tentacle might look a bit strange, but since the vertices at the end of the tentacle mesh gets closer to the InteractPos, as we rotate them it will make the resulting tentacle also spiral inwards. (If for some reason we wanted to prevent this, we could replace the <b class="node">Absolute</b> node earlier with a <b class="node">Negate</b> into a <b class="node">Saturate</b> node instead. That would keep it being a circle, but it would also end up passing through itself after a full rotation. This isn&rsquo;t needed but thought I&rsquo;d mention it)</p>
+<p>We can now handle the rotation,</p>
+<p>Use a <b class="node">Swizzle</b> node with &ldquo;z&rdquo; on the <strong>InteractPos</strong> property, and put it into the <strong>Z</strong> input on a <b class="node">Vector3</b> node. We also want to connect our <strong>Radius</strong> property to the <strong>X</strong> input here, and leave the <strong>Y</strong> set to <strong>0</strong>. We want to rotate our vertices around this position - so think of this <b class="node">Vector3</b> as the &ldquo;<strong>Center</strong>&rdquo;.</p>
+<p>Shader Graph luckily makes it very easy to handle the rotation as there is a <b class="node">Rotate About Axis</b> node. If you&rsquo;re translating this tutorial into shader code, you can see the generated code for the node on its <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@12.1/manual/Rotate-About-Axis-Node.html">docs page</a>.</p>
+<p>The center of the rotation for this node is always <strong>(0,0,0)</strong> so we&rsquo;ll need to temporarily offset (<b class="node">Subtract</b>) by our <strong>Center</strong> position (that <b class="node">Vector3</b> we just made). This can then go into the <strong>In</strong> input on a <b class="node">Rotate About Axis</b> node. We then <b class="node">Add</b> the <strong>Center</strong> (<b class="node">Vector3</b> node) back onto this output.</p>
+<div class="img-center">
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="349" alt="(Image)" src="Graph4.png" />
+</a>
+<p class="img-text">(Click image to view full size in new tab)</p>
+</div>
+<p>For the <strong>Axis</strong> port, I&rsquo;m using <strong>(1, 1, 0)</strong>. I thought this produced a nice result as it doesn&rsquo;t just spiral inwards (like an axis of <strong>(0,1,0)</strong> would do), but also a bit upwards / diagonally.</p>
+<p>For the <strong>Rotation</strong> input, we&rsquo;ll take the group from Step 1 (I labelled it &ldquo;Strength&rdquo;, the <b class="node">Swizzle</b> node output), put into a <b class="node">Maximum</b> with <strong>0</strong> to clamp any negative values. (The <b class="node">Multiply</b> here is kinda optional. <b class="node">Float</b> node also does nothing here, but I&rsquo;m using it prevent elbow/redirects turning into Vector4 from the multiply output, due to a bug in Shader Graph with the dynamic port type it uses)</p>
+<div class="img-center">
+<a href="Tentacle4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="237" alt="(Image)" src="Tentacle4.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We&rsquo;re almost there, but the tentacle currently only matches the <strong>InteractPos</strong> on the <strong>Z</strong> axis, and ideally we want it to wrap around this position properly.</p>
+<p>Since the <strong>InteractPos</strong> input is in object/local space, if we were to <b class="node">Add</b> it to our current result it would shift the origin of the tentacle (which is at (0,0,0)) to the <strong>InteractPos</strong>. We don&rsquo;t want to alter the <strong>Z</strong> coordinate, but that does align the <strong>X</strong> and <strong>Y</strong>! Of course this moves the whole tentacle too, so we&rsquo;ll need to mask it so that it only affects the end.</p>
+<p>To handle this masking, we&rsquo;ll take the <strong>Y</strong> axis of our <b class="node">UV</b> (by using a <b class="node">Swizzle</b> node, set to &ldquo;y&rdquo;, or alternatively <b class="node">Split</b> and use the <strong>G</strong> output). Put this into a <b class="node">Smoothstep</b> node with an <strong>Edge1</strong> of <strong>0</strong> and <strong>Edge2</strong> of <strong>0.5</strong>. We&rsquo;ll then <b class="node">Multiply</b> this with the <strong>InteractPos</strong> (optionally put through a <b class="node">Swizzle</b> with &ldquo;xy&rdquo; to obtain the <strong>X</strong> and <strong>Y</strong> axis - though not important as the <strong>Z</strong> is unused anyway).</p>
+<p>We then <b class="node">Split</b> the result and connect the <strong>R</strong> and <strong>G</strong> outputs to the <strong>X</strong> and <strong>Y</strong> inputs on a <b class="node">Vector3</b> node, leaving the <strong>Z</strong> coordinate set to <strong>0</strong>. Put this into an <b class="node">Add</b> node with the output from our &ldquo;Rotate&rdquo; group. This should then go into the <strong>Position</strong> port on the <strong>Vertex</strong> stage of the <strong>Master Stack</strong>.</p>
+<p><div class="img-center">
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="381" alt="(Image)" src="Graph5.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<div class="img-center">
+<a href="Tentacle5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="237" alt="(Image)" src="Tentacle5.png" />
+</a>
+<p class="img-text"></p>
+</div></p>
+<p>Finally, we should also handle the same rotation on the Normal Vector, so the shading is correct. This involves another <b class="node">Rotate About Axis</b> node, with the same <strong>Axis</strong> and <strong>Rotation</strong> inputs, but with the <strong>In</strong> input set to a <b class="node">Normal Vector</b> node (set to <strong>Object</strong> space).</p>
+<p><div class="img-center">
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="289" alt="(Image)" src="Graph6.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<div class="img-center">
+<a href="Tentacle6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="237" alt="(Image)" src="Tentacle6.png" />
+</a>
+<p class="img-text"></p>
+</div></p>
+<h3 id="additional-vertex-adjustments">Additional Vertex Adjustments</h3>
+<p>Our tentacle can now wrap around an object, but it is currently quite static when that object isn&rsquo;t moving. Since it is meant to be more alive, we&rsquo;ll add some <strong>slight scaling</strong> - which will make the tentacle look like it grows/shrinks in length a bit. We can also make it <strong>pulsate</strong> - which I&rsquo;ve applied to the whole mesh, but it is most visible on the suckers. This involves shifting the vertex position slightly in the direction of the normal vectors.</p>
+<p>This will be applied straight after the &ldquo;Vertex Position (clamped z)&rdquo; group. (Though you could alternatively handle the pulsating part after <em>everything</em>, but using the rotated normal, if you prefer)</p>
+<div class="img-center">
+<a href="Graph7.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="374" alt="(Image)" src="Graph7.png" />
+</a>
+<p class="img-text">(Click image to view full size in new tab)</p>
+</div>
+<p>For the slight scaling, I&rsquo;ve used the <strong>Sine Time</strong> output from the <b class="node">Time</b> node. <b class="node">Multiply</b> by a small amount (e.g. <strong>0.02</strong>), then <b class="node">Add</b> <strong>1</strong> and <b class="node">Multiply</b> this with the output from our clamped Vertex Position group.</p>
+<p>For the pulsating, I <b class="node">Multiply</b> the <strong>Time</strong> output from the <b class="node">Time</b> node by <strong>4</strong>. Use a <b class="node">Swizzle</b> node with &ldquo;y&rdquo; on a <b class="node">UV</b> node and <b class="node">Add</b> these together. Then use a <b class="node">Sine</b> node, <b class="node">Multiply</b> by a small amount (<strong>0.04</strong>), <b class="node">Add</b> <strong>0.1</strong> and <b class="node">Multiply</b> by the <b class="node">Normal Vector</b>. We can then <b class="node">Add</b> this onto the output after scaling.</p>
+<p>The output of this <b class="node">Add</b> node will replace the port that the clamped Vertex Position group was being put into (the first input on the <b class="node">Subtract</b> node in the &ldquo;Offset&rdquo; group)</p>
+<h3 id="fragment-stage">Fragment Stage</h3>
+<p>This is the graph for the fragment stage if interested. I won&rsquo;t explain this as it&rsquo;s only applying some basic colours, and quite specific to the mesh/UVs I&rsquo;ve used.</p>
+<div class="img-center">
+<a href="GraphFrag.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="303" alt="(Image)" src="GraphFrag.png" />
+</a>
+<p class="img-text">(Click image to view full size in new tab)</p>
+</div>
+<br><hr>
+<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
+<p style="text-align:center;">~ Cyan</p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>
