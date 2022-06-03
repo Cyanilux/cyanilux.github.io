@@ -18,7 +18,7 @@
 <meta itemprop="description" content="Explains how shader code (ShaderLab &amp; HLSL) is written to support the Universal RP">
 <meta itemprop="datePublished" content="2021-05-17T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-05-17T00:00:00+00:00" />
-<meta itemprop="wordCount" content="14981">
+<meta itemprop="wordCount" content="15106">
 
 
 
@@ -1315,7 +1315,8 @@ ENDHLSL</code></pre></td></tr></table>
 </span></code></pre></td></tr></table>
 </div>
 </div>
-<p>The <strong>Attributes</strong> struct will be the input to the vertex shader. It allows us to obtain the per-vertex data from the mesh, using the strings (most of which are all in caps) which are known as <a href="https://docs.microsoft.com/en-gb/windows/win32/direct3dhlsl/dx-graphics-hlsl-semantics">semantics</a>. This includes :</p>
+<p>The <strong>Attributes</strong> struct will be the input to the vertex shader. It allows us to obtain the per-vertex data from the mesh, using the strings (most of which are all in caps) which are known as <a href="https://docs.microsoft.com/en-gb/windows/win32/direct3dhlsl/dx-graphics-hlsl-semantics">semantics</a>.</p>
+<p>Can find the full list of semantics via that link, but here&rsquo;s some semantics commonly used in the vertex input :</p>
 <ul>
 <li><code>POSITION</code> : Vertex position</li>
 <li><code>COLOR</code> : Vertex colour</li>
@@ -1323,6 +1324,7 @@ ENDHLSL</code></pre></td></tr></table>
 <li><code>NORMAL</code> : Vertex Normals (used for lighting calculations. This is unlit currently so isn&rsquo;t needed)</li>
 <li><code>TANGENT</code> : Vertex Tangents (used to define &ldquo;tangent space&rdquo;, important for normal maps and parallax effects)</li>
 </ul>
+<p>There&rsquo;s also some more special semantics, like <code>SV_VertexID</code> (requires <code>#pragma target 3.5</code>), which allows you to obtain an identifer per-vertex (<code>uint</code> type). Useful for use with a ComputeBuffer.</p>
 <h3 id="varyings">Varyings (FragmentInput)</h3>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -1347,8 +1349,16 @@ ENDHLSL</code></pre></td></tr></table>
 </div>
 <p>The <strong>Varyings</strong> struct will be the input to the fragment shader, and the output of the vertex shader (assuming there’s no geometry shader in-between, which might need another struct, but we aren’t going through that in this post).</p>
 <p>Unlike the previous struct, we use <code>SV_POSITION</code> instead of <code>POSITION</code>, which stores the <strong>clip space position</strong> from the vertex shader output. It&rsquo;s important to convert the geometry to fragments/pixels on the screen at the correct location.</p>
-<p>We also use the <code>COLOR</code> and/or <code>TEXCOORD0-7</code> semantics but unlike before don&rsquo;t have to correspond to the mesh vertex colors / uvs at all. Instead they are used to interpolate data across the triangle. <code>NORMAL/TANGENT</code> is typically not used in the Varyings struct, and although I have seen them still work (along with completely custom semantics), I assume the compiler is converting them but that behaviour might not supported on all platforms so I&rsquo;d stick to TEXCOORD to be safe.</p>
-<p>Depending on the compile target (e.g. <code>#pragma target 3.0</code>) there can also be additional TEXCOORD interpolators that can be used. Shader Model 2 supports up to 8 of these interpolators (and two COLOR semantics, probably COLOR/COLOR0 and COLOR1 though I&rsquo;ve never used that). Shader Model 3 combined these so supports up to 10 (so just TEXCOORD0-9, or COLOR &amp; TEXCOORD0-8). More interpolators might also be available in other targets but also might not be supported on all platforms. See the <a href="https://docs.unity3d.com/Manual/SL-ShaderCompileTargets.html">Shader Compile Targets docs page</a> for more info.</p>
+<p>We also use the <code>COLOR</code> and/or <code>TEXCOORDn</code> (where n is a number) semantics but unlike before don&rsquo;t have to correspond to the mesh vertex colors / uvs at all. Instead they are used to <strong>interpolate data across the triangle</strong>. <code>NORMAL/TANGENT</code> is typically not used in the Varyings struct, and although I have seen them still work (along with completely custom semantics, e.g. Shader Graph uses <code>INTERPn</code>), it might not supported on all platforms so I&rsquo;d stick to <code>TEXCOORDn</code> to be safe.</p>
+<p>Depending on the platform &amp; compile target, the number of interpolators available can vary :</p>
+<ul>
+<li>OpenGL ES 2.0 (Android), Direct3D 11 9.x level (Windows Phone), and Direct3D 9 Shader Model 2.0 (<code>#pragma target 2.0</code>) supports up to <strong>8</strong> interpolators (e.g. <code>TEXCOORD0-7</code>)</li>
+<li>Direct3D 9 Shader Model 3.0 (<code>#pragma target 3.0</code>) supports up to <strong>10</strong> (e.g. <code>TEXCOORD0-9</code>)</li>
+<li>OpenGL ES 3.0 (Android) and Metal (iOS) platforms support up to <strong>16</strong> (e.g. <code>TEXCOORD0-15</code>)</li>
+<li>Direct3D 10 Shader Model 4.0 (<code>#pragma target 4.0</code>) supports up to <strong>32</strong> (e.g. <code>TEXCOORD0-31</code>)</li>
+</ul>
+<p>Another useful semantic, used with <code>Cull Off</code>, is <code>VFACE</code> (float type, available in Direct3D 9 Shader Model 3). A negative value means it is a back face, while a positive value indicates a front face. So could use a ternary like <code>(face &gt; 0) ? _ColorFront : _ColorBack</code> to apply colours to different sides. Direct3D 10 has a similar <code>SV_IsFrontFace</code> but is a bool type rather than float.</p>
+<p>See the <a href="https://docs.unity3d.com/Manual/SL-ShaderSemantics.html">Shader Semantics docs page</a> and <a href="https://docs.unity3d.com/Manual/SL-ShaderCompileTargets.html">Shader Compile Targets docs page</a> for more info.</p>
 <h3 id="fragment-output">FragmentOutput</h3>
 <p>The fragment shader can also provide an output struct. However it&rsquo;s usually not needed as it typically only uses a single output semantic, <code>SV_Target</code>, which is used to write the fragment/pixel colour to the current render target. In this case we can just define it with the function like :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">

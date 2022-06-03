@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Resources">
 <meta itemprop="description" content="Useful Links to Resources/Tutorials/Docs related to Unity or Gamedev">
 
-<meta itemprop="wordCount" content="449">
+<meta itemprop="wordCount" content="485">
 
 
 
@@ -206,25 +206,34 @@
 
 
 
-<p>Below links external resources, mostly related to <strong>Shaders</strong> and <strong>Unity</strong> (various pipelines).</p>
-<p>I&rsquo;ve mostly favoured articles / written tutorials. If you&rsquo;re looking for Youtube video tutorials you could just search there instead so I tend not to add those as much. If you have suggestions of links to add, you can put them in the <code>#resources</code> section of my <a href="http://discord.gg/2V93q9w">discord</a>. If the owners of any of these resources want to be removed from the list can also ask me on discord or <a href="https://twitter.com/Cyanilux">twitter</a>.</p>
-<p>The list is loaded from a <a href="https://gist.github.com/Cyanilux/69e4f228206b1a70c3f8a0ab4f22ef75">Github gist</a> (so I don&rsquo;t have to update the entire site to add entries). If it fails to load for some reason (won&rsquo;t be supported for Internet Explorer) can optionally view that instead.</p>
+<p>The list below links external resources, mostly related to <strong>Shaders</strong> and <strong>Unity</strong> (various pipelines). It is loaded from a <a href="https://gist.github.com/Cyanilux/69e4f228206b1a70c3f8a0ab4f22ef75">Github gist</a> (so I don&rsquo;t have to update the entire site to add entries). If it fails to load for some reason (won&rsquo;t be supported for Internet Explorer) can optionally view that instead.</p>
+<p>It contains mostly articles &amp; written tutorials. If you&rsquo;re looking for video tutorials you could just search Youtube instead so I tend not to add those as much. If you have suggestions of links to add, you can put them in the <code>#resources</code> section of my <a href="http://discord.gg/2V93q9w">discord</a>. If the owners of any of these resources want to be removed from the list can also ask me on discord or <a href="https://twitter.com/Cyanilux">twitter</a>.</p>
 <ul>
-<li>Entries are grouped under various headings, but you can also use the filter below to find things easier. Note that some entries may be for other engines (e.g. Unreal) but can still translate to Unity. Some entries may also use HLSL vs Shader Graph vs Amplify Shader Editor (etc.), but again can still translate</li>
-<li>It searches for the exact string/keyword (not case sensitive) anywhere in text (including tags at side)</li>
-<li>Can use multiple keywords, separate each with <code>&quot;&amp;&quot;</code> or <code>&quot;,&quot;</code> (for AND), <code>&quot;|&quot;</code> (for OR), and use <code>&quot;(&quot;</code> and <code>&quot;)&quot;</code> for grouping. Example : <code>&quot;(BiRP | URP) &amp; (CG | HLSL)&quot;</code></li>
+<li>Entries are grouped under various headings. You can also use the filter below to locate things easier, but bear in mind that some entries may be for other engines (e.g. Unreal) but could still translate to Unity. Same for HLSL vs Shader Graph vs Amplify Shader Editor (etc.)</li>
+<li>It searches for the <strong>exact string/keyword</strong> (not case sensitive) anywhere in text (including tags at side)</li>
+<li>Can use multiple keywords, separate each with <code>&quot;&amp;&quot;</code> or <code>&quot;,&quot;</code> (for AND), <code>&quot;|&quot;</code> (for OR), and use <code>&quot;(&quot;</code> and <code>&quot;)&quot;</code> for grouping. Example : <code>&quot;(BiRP | URP) &amp; HLSL&quot;</code>
+<ul>
 <li>Note if you don&rsquo;t group, AND takes precedence, so <code>&quot;a | b &amp; c | d&quot;</code> is the same as <code>&quot;a | (b &amp; c) | d&quot;</code></li>
+</ul>
+</li>
 <li>Starting a keyword with &ldquo;!&rdquo; (e.g. <code>&quot;!HDRP&quot;</code>) will instead hide entries, but this can only be done per-keyword, not on groups (sorry). If you want something like <code>&quot;!(a &amp; b)&quot;</code>, use the opposite form instead : <code>&quot;!a | !b&quot;</code> (swap AND/OR and invert each keyword)</li>
 </ul>
 
-
-<label for="searchBox">Filters : </label>
-<input placeholder="(showing all entries)" type="text" name="searchBox" id="searchBox" size="40" />
-<div id="results"></div>
-
+<br>
+<hr>
+<p style="font-size: 20px;">
+<label style="padding-right:20px;" for="searchBox">Filters : </label>
+<input style="font-size: 20px;" placeholder="(showing all entries)" type="text" name="searchBox" id="searchBox" size="30" />
+</p>
+<hr>
+<div style="padding-top:10px;" id="results"></div>
 <script>
 
 
+
+const searchBox = document.getElementById("searchBox");
+const s = window.location.search;
+searchBox.value = decodeURI(s.substring(s.indexOf("=")+1));
 
 
 const results = document.getElementById("results");
@@ -417,8 +426,18 @@ function printArr(arr) {
 }
 
 function onTextInput2(text) {
-	console.clear();
-	var inputText = text.toLowerCase();
+	var inputText = text.toLowerCase().trim();
+	
+	
+	if (history.pushState) {
+		var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+		if (inputText.length > 0){
+			newurl = newurl + '?filter=' + searchBox.value;
+		}
+		window.history.pushState({path:newurl}, '', newurl);
+	}
+
+	
 	
 	
 
@@ -432,7 +451,7 @@ function onTextInput2(text) {
 		switch(c){
 		case '(':
 			scope.push(current);
-			console.log("start scope, stored :" + printArr(scope));
+			
 			current = [];
 			break;
 		case ')':
@@ -445,7 +464,7 @@ function onTextInput2(text) {
 				pop.push(current);
 				current = pop;
 			}
-			console.log("end scope, current :" + printArr(current));
+			
 			break;
 		case ',':
 		case '&':
@@ -457,14 +476,14 @@ function onTextInput2(text) {
 			}else if (current[0] == '|'){
 				
 				scope.push(current);
-				console.log("forced start scope, stored :" + printArr(scope));
+				
 				current = [];
 				current.push('&');
 				if (keyword !== "") current.push(keyword);
 			}else{
 				add(current, keyword);
 			}
-			console.log("and - " + printArr(current));
+			
 			break;
 		case '|':
 			keyword = keyword.trimEnd();
@@ -477,7 +496,7 @@ function onTextInput2(text) {
 				if (pop != null && pop.length != 0){
 					pop.push(current);
 					current = pop;
-					console.log("forced end scope, current :" + printArr(current));
+					
 				}
 			}
 			
@@ -492,7 +511,7 @@ function onTextInput2(text) {
 				or.push(current);
 				current = or;
 			}
-			console.log("or - " + printArr(current));
+			
 			break;
 		case ' ':
 			if (keyword.length == 0) break; 
@@ -508,7 +527,7 @@ function onTextInput2(text) {
 	if (current.length != 0){
 		var pop = scope.pop();
 		if (pop != null && pop.length != 0){
-			console.log("forced end scope, stored :" + printArr(scope));
+			
 			pop.push(current);
 			current = pop;
 		}
@@ -545,7 +564,7 @@ function onTextInput2(text) {
 		
 		var textContent = child.textContent.toLowerCase();
 		var showChild = checkText(textContent, logic);
-		console.log(j + " : " + showChild);
+		
 		if (showChild){
 			child.style.display = "flex";
 			
@@ -601,6 +620,8 @@ function checkText(textContent, logicArray){
 	}
 	return and;
 }
+
+onTextInput2(searchBox.value);
 
 
 
