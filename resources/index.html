@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Resources">
 <meta itemprop="description" content="Useful Links to Resources/Tutorials/Docs related to Unity or Gamedev">
 
-<meta itemprop="wordCount" content="485">
+<meta itemprop="wordCount" content="464">
 
 
 
@@ -238,20 +238,6 @@ searchBox.value = decodeURI(s.substring(s.indexOf("=")+1));
 
 const results = document.getElementById("results");
 
-if (webStorageSupported){
-	
-	
-	
-	let data = sessionStorage.getItem('resources');
-	if (data == null){
-		setTimeout(doFetch, 100);
-	}else{
-		loadEntries(data);
-	}
-} else {
-	setTimeout(doFetch, 100);
-}
-
 function doFetch() {
 	
 	fetch('https:\/\/gist.githubusercontent.com\/Cyanilux\/69e4f228206b1a70c3f8a0ab4f22ef75\/raw\/').then(response => {
@@ -395,6 +381,9 @@ function loadEntries(contents) {
 		
 		results.appendChild(div);
 	}
+	
+	
+	onTextInput2(searchBox.value);
 }
 
 
@@ -621,7 +610,19 @@ function checkText(textContent, logicArray){
 	return and;
 }
 
-onTextInput2(searchBox.value);
+if (webStorageSupported){
+	
+	
+	
+	let data = sessionStorage.getItem('resources');
+	if (data == null){
+		setTimeout(doFetch, 100);
+	}else{
+		loadEntries(data);
+	}
+} else {
+	setTimeout(doFetch, 100);
+}
 
 
 
