@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Resources">
 <meta itemprop="description" content="Useful Links to Resources/Tutorials/Docs related to Unity or Gamedev">
 
-<meta itemprop="wordCount" content="464">
+<meta itemprop="wordCount" content="476">
 
 
 
@@ -206,18 +206,26 @@
 
 
 
-<p>The list below links external resources, mostly related to <strong>Shaders</strong> and <strong>Unity</strong> (various pipelines). It is loaded from a <a href="https://gist.github.com/Cyanilux/69e4f228206b1a70c3f8a0ab4f22ef75">Github gist</a> (so I don&rsquo;t have to update the entire site to add entries). If it fails to load for some reason (won&rsquo;t be supported for Internet Explorer) can optionally view that instead.</p>
-<p>It contains mostly articles &amp; written tutorials. If you&rsquo;re looking for video tutorials you could just search Youtube instead so I tend not to add those as much. If you have suggestions of links to add, you can put them in the <code>#resources</code> section of my <a href="http://discord.gg/2V93q9w">discord</a>. If the owners of any of these resources want to be removed from the list can also ask me on discord or <a href="https://twitter.com/Cyanilux">twitter</a>.</p>
+<p>The list below links external resources, mostly related to <strong>Shaders</strong> and <strong>Unity</strong> (various pipelines).</p>
+<p>It contains mostly articles &amp; written tutorials. (If you&rsquo;re looking for video tutorials you can search on Youtube instead). If you have suggestions of links to add, you can put them in the <code>#resources</code> section of my <a href="http://discord.gg/2V93q9w">discord</a>. If the owners of any of these want to be removed from the list, can ask me on discord or <a href="https://twitter.com/Cyanilux">twitter</a>.</p>
+<button type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+    } else {
+      content.style.display = 'block';
+    }
+">❯ More Info</button>
+<div class="foldout">
 <ul>
+<li>The list is loaded from a <a href="https://gist.github.com/Cyanilux/69e4f228206b1a70c3f8a0ab4f22ef75">Github gist</a> (so I don&rsquo;t have to update the entire site to add entries). If it fails to load for some reason (won&rsquo;t be supported for Internet Explorer) can optionally view that instead.</li>
 <li>Entries are grouped under various headings. You can also use the filter below to locate things easier, but bear in mind that some entries may be for other engines (e.g. Unreal) but could still translate to Unity. Same for HLSL vs Shader Graph vs Amplify Shader Editor (etc.)</li>
-<li>It searches for the <strong>exact string/keyword</strong> (not case sensitive) anywhere in text (including tags at side)</li>
-<li>Can use multiple keywords, separate each with <code>&quot;&amp;&quot;</code> or <code>&quot;,&quot;</code> (for AND), <code>&quot;|&quot;</code> (for OR), and use <code>&quot;(&quot;</code> and <code>&quot;)&quot;</code> for grouping. Example : <code>&quot;(BiRP | URP) &amp; HLSL&quot;</code>
-<ul>
-<li>Note if you don&rsquo;t group, AND takes precedence, so <code>&quot;a | b &amp; c | d&quot;</code> is the same as <code>&quot;a | (b &amp; c) | d&quot;</code></li>
-</ul>
-</li>
+<li>It searches for the <strong>exact string/keyword</strong> (not case sensitive) anywhere in text (including tags at side), but you can use multiple keywords, separate each with <code>&quot;&amp;&quot;</code> or <code>&quot;,&quot;</code> (for AND), <code>&quot;|&quot;</code> (for OR), and use <code>&quot;(&quot;</code> and <code>&quot;)&quot;</code> for grouping. Example : <code>&quot;(BiRP | URP) &amp; HLSL&quot;</code>. Note if you don&rsquo;t group, AND takes precedence, so <code>&quot;a | b &amp; c | d&quot;</code> is the same as <code>&quot;a | (b &amp; c) | d&quot;</code></li>
 <li>Starting a keyword with &ldquo;!&rdquo; (e.g. <code>&quot;!HDRP&quot;</code>) will instead hide entries, but this can only be done per-keyword, not on groups (sorry). If you want something like <code>&quot;!(a &amp; b)&quot;</code>, use the opposite form instead : <code>&quot;!a | !b&quot;</code> (swap AND/OR and invert each keyword)</li>
 </ul>
+
+</div>
 
 <br>
 <hr>
@@ -227,6 +235,7 @@
 </p>
 <hr>
 <div style="padding-top:10px;" id="results"></div>
+<p id="noResultsMsg">( No results sorry, Try a different filter!~ )</p>
 <script>
 
 
@@ -237,6 +246,7 @@ searchBox.value = decodeURI(s.substring(s.indexOf("=")+1));
 
 
 const results = document.getElementById("results");
+const noResultsMsg = document.getElementById("noResultsMsg");
 
 function doFetch() {
 	
@@ -533,13 +543,14 @@ function onTextInput2(text) {
 	console.log("Filter Logic : " + printArr(logic));
 	var children = results.querySelectorAll("#results > *");
 	var header = null;
+	var atLeastOneChildVisible = false;
 	var atLeastOneVisible = false;
 	for (let j = 0; j < children.length; j++) {
 		var child = children[j];
 		
 		if (child.nodeName == "H3"){
 			if (header != null){
-				if(!atLeastOneVisible){
+				if(!atLeastOneChildVisible){
 					header.style.display = "none";
 				}else{
 					header.style.display = "block";
@@ -547,7 +558,7 @@ function onTextInput2(text) {
 			}
 			
 			header = child;
-			atLeastOneVisible = false;
+			atLeastOneChildVisible = false;
 			continue;
 		}
 		
@@ -557,6 +568,7 @@ function onTextInput2(text) {
 		if (showChild){
 			child.style.display = "flex";
 			
+			atLeastOneChildVisible = true;
 			atLeastOneVisible = true;
 		}else {
 			child.style.display = "none";
@@ -565,11 +577,17 @@ function onTextInput2(text) {
 	}
 	
 	if (header != null){
-		if(!atLeastOneVisible){
+		if(!atLeastOneChildVisible){
 			header.style.display = "none";
 		}else{
 			header.style.display = "block";
 		}
+	}
+	
+	if(atLeastOneVisible){
+		noResultsMsg.style.display = "none";
+	}else{
+		noResultsMsg.style.display = "block";
 	}
 }
 

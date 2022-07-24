@@ -496,3 +496,30 @@ video {
 .cookie-accept-btn:hover {
 	background: #11bbcc;
 }
+
+/* foldout */
+
+.foldout_button {
+	background-color: #282828;
+	color: #00aabb;
+	/*cursor: pointer;*/
+	padding: 5px 35px 5px 15px;
+	border: none;
+	text-align: left;
+	font-size: 15px;
+	border-radius : 10px;
+	display: flex;
+}
+
+.foldout_active, .foldout_button:hover {
+	background-color: #303030;
+}
+
+.foldout {
+	margin-top: 5px;
+	padding: 10px 15px 10px 0px;
+	display: none;
+	overflow: hidden;
+	background-color: #282828;
+	border-radius : 10px;
+}

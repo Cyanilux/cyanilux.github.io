@@ -18,7 +18,7 @@
 <meta itemprop="description" content="A detailed introduction on how to use Unity Shader Graph (including v10&#43; changes). Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!">
 <meta itemprop="datePublished" content="2021-03-05T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-03-05T00:00:00+00:00" />
-<meta itemprop="wordCount" content="15782">
+<meta itemprop="wordCount" content="17177">
 
 
 
@@ -226,7 +226,7 @@
 
 
 <p>Hey! This post is a detailed introduction to using <strong>Shader Graph</strong> - a node based shader editor for Unity that is provided for the <strong>Scriptable Render Pipelines</strong> (SRPs), including the <strong>Universal Render Pipeline</strong> (URP) and <strong>High Definition Render Pipeline</strong> (HDRP). We&rsquo;ll be going over how to use the tool and it&rsquo;s features, not necessarily how to create shaders using it. I have other tutorial breakdowns that go over creating specific shader effects if you&rsquo;re interested in that.</p>
-<p>Be aware that <strong>Shader Graph is now supported in the Built-in Pipeline for Unity 2021.2+</strong>, though may be limited in some features. It is still not supported for previous versions.</p>
+<p>Be aware that <strong>Shader Graph is also now supported in the Built-in Pipeline for Unity 2021.2+</strong>, though may be limited in some features. It is not supported for previous versions.</p>
 <p>You may also see the “Lightweight Render Pipeline (LWRP)” mentioned online, which was renamed to URP during development. You may still find LWRP listed in the package manager but the newer versions (e.g. v7 onwards) should actually be identical to URP as far as I am aware. If you are installing the package manually, I&rsquo;d suggest just using the Universal RP one instead.</p>
 <p>If you aren&rsquo;t familiar with what <strong>shaders</strong> and <strong>materials</strong> are, I&rsquo;d recommend looking at my <a href="https://www.cyanilux.com/tutorials/intro-to-shaders">Intro to Shaders</a> post before reading this one, or other similar resources online.</p>
 <p>(Also note, any keyboard shortcuts will be based on Windows)</p>
@@ -291,6 +291,7 @@
 <li><a href="#keyword-scope">Scope</a>, <a href="#keyword-exposed">Exposed</a>, <a href="#keyword-definition">Definition</a>, <a href="#setting-keywords">Setting Keywords from C#</a></li>
 </ul>
 </li>
+<li><a href="#categories">Categories</a></li>
 </ul>
 </li>
 <li><strong><a href="#groups">Grouping Nodes</a></strong></li>
@@ -300,11 +301,18 @@
 <ul>
 <li><a href="#sub-graph-outputs">Outputs</a></li>
 <li><a href="#sub-graph-inputs">Inputs</a></li>
+<li><a href="#sub-graph-branch">Branch On Input Connection</a></li>
 </ul>
 </li>
 <li><strong><a href="#fragment-only-nodes">Fragment-Only Nodes</a></strong></li>
 <li><strong><a href="#advanced">Advanced</a></strong>
 <ul>
+<li><a href="#custom-interpolators">Custom Interpolators</a>
+<ul>
+<li><a href="#custom-interpolators-example-1">Example 1 - Undistorted Position</a></li>
+<li><a href="#custom-interpolators-example-2">Example 2 - Vertex Based Distortion</a></li>
+</ul>
+</li>
 <li><a href="#custom-functions">Custom Functions</a></li>
 <li><a href="#better-texture-data-types">Better Texture Data Types</a></li>
 <li><a href="#shader-pass-defines">Shader Pass Defines</a></li>
@@ -470,7 +478,10 @@
 <p class="img-text"></p>
 </div></p>
 <p>Blocks can also be added manually by hovering over gaps between two blocks, or at the end of the last block. Right-click and select <strong>Create Node</strong>, or press <strong>Space</strong>. While you can add blocks, they&rsquo;ll still be greyed out if the graph type doesn&rsquo;t use them.</p>
-<p>The stack also provides a clearer distinction between the <strong>Vertex</strong> and <strong>Fragment</strong> stages of the shader, and different blocks are available for each. If you are unfamiliar, the Vertex stage runs for each vertex in the mesh being rendered. Triangles from the mesh then become fragments (which are basically pixels. This step is known as rasterisation). The Fragment stage then runs for each fragment/pixel created and outputs the colour to the screen. This is discussed in slightly more detail in my <a href="https://www.cyanilux.com/tutorials/intro-to-shaders">Intro to Shaders</a> post.</p>
+<p>The stack also provides a clearer distinction between the <strong>Vertex</strong> and <strong>Fragment</strong> stages of the shader, and different blocks are available for each.</p>
+<p>If you are unfamiliar, the Vertex stage runs for each vertex in the mesh being rendered, transforming the vertex positions onto the screen. Then rasterisation occurs, which produces fragments (basically pixels) from the triangles in the mesh. The Fragment stage then runs for each fragment/pixel created and outputs the colour to the screen. This is discussed in slightly more detail in my <a href="https://www.cyanilux.com/tutorials/intro-to-shaders">Intro to Shaders</a> post.</p>
+<p>The Vertex stage is also responsible for passing through any data (e.g. from the mesh) that may be needed in Fragment stage calculations. This is known as <strong>interpolators</strong> (as this data for each vertex is interpolated across the triangle). It is mostly handled automatically by Shader Graph - e.g. For nodes requiring UVs, the <b class="node">Position</b> node, <b class="node">Normal Vector</b> and other nodes in the <strong>Input → Geometry</strong> heading under the Create Node menu.</p>
+<p>But in some cases (discussed later), we may also want to pass our own custom data between the two stages. In Shader Graph <strong>v12</strong> (Unity <strong>2021.2+</strong>), we can do this by adding <strong>Custom Interpolator</strong> blocks to the <strong>Vertex</strong> stage. I&rsquo;ll discuss this in more detail <a href="#custom-interpolators">near the end of the article</a>.</p>
 <hr>
 <h2 id="save-graph">Save Graph</h2>
 <p>While I haven&rsquo;t explained the other parts of a graph yet, this is something that is a common problem for beginners so I&rsquo;m mentioning it early. To save your Graph you <strong>must</strong> use the <strong>Save Asset</strong> button in the top left corner of the graph. Ctrl+S will not save the graph, it only saves the active scene you are working in.</p>
@@ -539,7 +550,7 @@ A collection of nodes showing different previews
 </p>
 </div>
 <p>Nodes like <b class="node">Position</b> and <b class="node">Normal Vector</b> use a <strong>3D/Sphere</strong> version of the Preview rather than the <strong>2D/Quad</strong> one, as they are meant to show 3D positions/vectors. All nodes in the chain after it will also switch to using the 3D one when connected.</p>
-<p>I personally find this quite annoying, but in v11+ (currently only in beta versions of Unity) it is possible to switch between the 2D and 3D versions of the preview, on a per-node basis in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window, or toggled for the entire graph using the <strong>Graph Settings</strong> tab. (This was something I suggested, though some others may have too. I&rsquo;m very happy to see it included and look forward to those versions being more stable!)</p>
+<p>In Shader Graph <strong>v11+</strong> (Unity <strong>2021.2+</strong>) it is also now possible to choose between the 2D and 3D versions of the preview on a per-node basis. Can do this in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window. (This was something I suggested, though some others may have too. Still, I&rsquo;m very happy to see it included). For Sub Graphs you can also find a setting in the <strong>Graph Settings</strong> to select it&rsquo;s default preview state.</p>
 <p>Before we can go into exactly what these previews are showing, we need to understand the different data types included in Shader Graph :</p>
 <hr>
 <h2 id="data-types">Data Types</h2>
@@ -1017,9 +1028,10 @@ Example Main Preview for a Soft Foliage Shader, showing a custom mesh
 <p>The settings available for each property can vary slightly but most types will have <strong>Reference</strong>, <strong>Exposed</strong>, <strong>Default</strong> and <strong>Precision</strong> options. Some also have additional <strong>Modes</strong>. I&rsquo;ll discuss these in the sections below.</p>
 <p>Some may also include a &ldquo;<strong>Override Property Declaration</strong>&rdquo; (or &ldquo;Hybrid Instanced&rdquo; prior to v10). The <strong>Hybrid Per-Instance</strong> option on this is related to the <a href="https://docs.unity3d.com/Packages/com.unity.rendering.hybrid@latest">DOTS Hybrid Renderer</a>. I&rsquo;m not very familiar with DOTS, so if you want more information about it, see <a href="https://learn.unity.com/tutorial/what-is-dots-and-why-is-it-important">here</a> and <a href="https://unity.com/dots">here</a>. There&rsquo;s also <strong>Global</strong> and <strong>Per-Material</strong> options but I would avoid overriding the property declaration unless you are using the Hybrid Renderer as it can break the <a href="https://www.cyanilux.com/tutorials/intro-to-shaders/#srp-batcher">SRP Batcher</a> compatibility.</p>
 <h4 id="property-reference">Reference</h4>
-<p>The settings for each property can vary slightly, but all will have a <strong>Reference</strong> field which defaults to an auto-generated string. This reference field is important for setting the property from a C# script, which will be discussed in a later section.</p>
-<p>You can edit this to something more readable if you&rsquo;d like. It&rsquo;s recommended to make the reference begin with an underscore (&quot;_&quot;) as this helps avoid issues with certain words - specifically words that are used as important keywords in HLSL or the Shaderlab section of the generated shader code.</p>
-<p>For example, &ldquo;Cull&rdquo;, &ldquo;Offset&rdquo;, &ldquo;float&rdquo;, &ldquo;void&rdquo; will cause the graph to break. Might show a similar error to <code>syntax error: unexpected TOK_CULL, expecting TVAL_ID or TVAL_VARREF</code>. But &ldquo;_Cull&rdquo;, &ldquo;_Offset&rdquo;, etc would work fine (though have nothing to do with the actual Cull/Offset functions, it&rsquo;s just a string/name used to identify the property). In v12+ I believe Shader Graph will automatically fix references like this for you to prevent errors, but for now it must be handled manually.</p>
+<p>The settings for each property can vary slightly, but all will have a <strong>Reference</strong> field.</p>
+<p>Prior to v12 (Unity 2021.2) this defaults to an auto-generated string, while v12+ attempts to use the same as the name, but with &ldquo;_&rdquo; appended to the front (and in place of any spaces/hyphens/other symbols). This reference field is important for setting the property from a C# script, which will be discussed in a later section.</p>
+<p>You can edit this reference if you&rsquo;d like. I&rsquo;d recommend making it begin with an underscore (&quot;_&quot;) as this helps avoid issues with certain words - specifically words that are used as important keywords in HLSL or the Shaderlab section of the generated shader code.</p>
+<p>For example, &ldquo;Cull&rdquo;, &ldquo;Offset&rdquo;, &ldquo;float&rdquo;, &ldquo;void&rdquo; will cause the graph to break. Might show a similar error to <code>syntax error: unexpected TOK_CULL, expecting TVAL_ID or TVAL_VARREF</code>. But &ldquo;_Cull&rdquo;, &ldquo;_Offset&rdquo;, etc would work fine (though have nothing to do with the actual Cull/Offset functions, it&rsquo;s just a string/name used to identify the property). Note that in v12+ Shader Graph automatically attempts fix references like this in order to prevent errors.</p>
 <p>Note that the SamplerState node generates it&rsquo;s reference based on the other settings so it cannot be edited. That data type also cannot be set through C# though.</p>
 <h4 id="property-exposed">Exposed</h4>
 <p>Most properties will also have an <strong>Exposed</strong> tickbox.</p>
@@ -1054,10 +1066,11 @@ Example Main Preview for a Soft Foliage Shader, showing a custom mesh
 <ul>
 <li><strong>White</strong> : Defaults to white (1,1,1,1) when a texture isn&rsquo;t assigned.</li>
 <li><strong>Black</strong> : Defaults to black (0,0,0,0) when a texture isn&rsquo;t assigned.</li>
-<li><strong>Grey</strong> : Defaults to grey (0.5,0.5,0.5,0.5) when a texture isn&rsquo;t assigned.</li>
-<li><strong>Bump</strong> : Defaults to (0.5,0.5,1,0.5) when a texture isn&rsquo;t assigned. This should always be used for tangent space bump/normals maps. The colour converts to a normal direction of (0,0,1).</li>
+<li><strong>Grey</strong> : Defaults to grey (0.5,0.5,0.5) in <strong>Gamma</strong> colour space only, when a texture isn&rsquo;t assigned. Alpha of 0.5 in both colour spaces.</li>
+<li><strong>Bump</strong> (renamed to <strong>Normal Map</strong> in v12+) : Defaults to (0.5,0.5,1,0.5) when a texture isn&rsquo;t assigned. This should always be used for tangent space bump/normals maps. The colour converts to a normal direction of (0,0,1).</li>
+<li><strong>Linear Grey (v12+)</strong> : Defaults to (0.5,0.5,0.5,0.5) in both <strong>Linear</strong> and <strong>Gamma</strong> colour spaces, when a texture isn&rsquo;t assigned. See the [LinearOrGammaWorkflow docs page] for more information on color spaces.</li>
 </ul>
-<p>The other texture types will default to a <strong>Grey</strong> (0.5,0.5,0.5,0.5) texture when not assigned.</p>
+<p>Note that other texture types (Texture3D, Texture2DArray, Cubemap, etc) default to the <strong>Grey</strong> mode when a texture (despite the generated code trying to use <code>&quot;white&quot;</code>, which isn&rsquo;t a valid mode for those types)</p>
 <p>The SamplerState also has dropdowns for the <a href="#filter-modes">Filter</a> and <a href="#wrap-modes">Wrap</a> modes as listed earlier.</p>
 <h4 id="property-precision">Precision</h4>
 <p>All properties will also have a <strong>Precision</strong> option, which can be changed between <strong>Inherit</strong>, <strong>Single</strong> (32-bit) and <strong>Half</strong> (16-bit). If set to <strong>Inherit</strong> the properties will default to the <strong>Precision</strong> in the <strong>Graph Settings</strong> tab of the <strong>Graph Inspector</strong>.</p>
@@ -1176,6 +1189,18 @@ material.DisableKeyword(<span style="color:#e6db74">&#34;ENUM_C&#34;</span>);
 </div>
 </div>
 <hr>
+<h3 id="categories">Categories</h3>
+<div class="img-right">
+<a href="Categories.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="317" height="455" alt="(Image)" src="Categories.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>In v12+ it is also now possible to create <strong>Categories</strong>, to better organise the properties in the <strong>Blackboard</strong> (and in the Inspector when viewing the material).</p>
+<p>Can create them from the <strong>+</strong> button (same that you would use to add a property/keyword), then rename by double-clicking the Grey &ldquo;Category&rdquo; text.</p>
+<p>They are also collapsable (by pressing the triangle to the left) which is useful if the graph has a large amount of properties.</p>
+<p class="img-clearfix"></p>
+<hr>
 <h2 id="groups">Grouping Nodes</h2>
 <p>To help with organising your graphs, you can group sections of nodes together. Drag a selection box over multiple nodes, right-click on one of those selected nodes, then choose <strong>Group Selection</strong>. Or use the <strong>Ctrl+G</strong> shortcut.</p>
 <div class="img-center">
@@ -1207,7 +1232,7 @@ Example section of a graph containing a couple grouped nodes. Helps to understan
 <li>Fit To Text : Resizes the Sticky Note so that it precisely fits it&rsquo;s contents. It will resize horizontally to fit the title on a single line.</li>
 <li>Delete : Deletes the Sticky Note</li>
 </ul>
-<p>In v11+ (currently only in beta versions of Unity) it should also be possible to use <a href="https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/StyledText.html">Rich Text</a> to add additional formatting like bold (using <code>&lt;b&gt;example&lt;/b&gt;</code>), italics <code>&lt;i&gt;example&lt;/i&gt;</code>, colors (<code>&lt;color=red&gt;example&lt;/color&gt;</code>), etc.</p>
+<p>In <strong>v11+</strong> (Unity <strong>2021.1+</strong>) it should also now be possible to use <a href="https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/StyledText.html">Rich Text</a> to add additional formatting like bold (using <code>&lt;b&gt;example&lt;/b&gt;</code>), italics <code>&lt;i&gt;example&lt;/i&gt;</code>, colors (<code>&lt;color=red&gt;example&lt;/color&gt;</code>), etc.</p>
 <hr>
 <h2 id="shortcuts">Shortcut Keys</h2>
 <p>There are a few keyboard shortcuts available to speed up working with Shader Graph. Some of these might have been mentioned in other sections. These shortcuts include:</p>
@@ -1244,7 +1269,7 @@ Example section of a graph containing a couple grouped nodes. Helps to understan
 <p class="img-text"></p>
 </div>
 <h3 id="sub-graph-outputs">Outputs</h3>
-<p>In v10+ we can adjust the number of outputs and change their data types by selecting the <b class="node">Output</b> node (left-click on it). A list will appear in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window, (It&rsquo;s incorrectly labelled as &ldquo;Inputs&rdquo;, in v10/v11 at least, but this might be fixed in the future).</p>
+<p>In v10+ we can adjust the number of outputs and change their data types by selecting the <b class="node">Output</b> node (left-click on it). A list will appear in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window, (It&rsquo;s incorrectly labelled as &ldquo;Inputs&rdquo;, in v12 at least, but this might be fixed in the future).</p>
 <p>Prior to v10 a cog/gear could be found on the <b class="node">Output</b> node to adjust these instead.</p>
 <div class="img-center">
 <a href="SubGraphOutputs.png" target="_blank" rel="noopener noreferrer">
@@ -1257,6 +1282,32 @@ Example section of a graph containing a couple grouped nodes. Helps to understan
 <h3 id="sub-graph-inputs">Inputs</h3>
 <p>It&rsquo;s also possible to create <strong>Inputs</strong> for the <strong>Sub Graph</strong>, which uses <strong>Properties</strong> that can be created from the <strong>Blackboard</strong>. See the <a href="#properties">Properties</a> section above for more information. Note however that some settings (like modes) will be hidden.</p>
 <p>These inputs will always show as ports when the <strong>Sub Graph</strong> is added to another graph as a <strong>node</strong> and cannot be exposed to the <strong>Material Inspector</strong>.</p>
+<h3 id="sub-graph-branch">Branch On Input Connection</h3>
+<p>A pretty neat feature added in <strong>v12+</strong> (Unity <strong>2021.2+</strong>) is the <b class="node">Branch On Input Connection</b> node, which is available for Sub Graphs. It&rsquo;s purpose is to allow you to create a Branch (graph selects between two options) based on whether a node is connected to the Input port when the subgraph is used.</p>
+<p>To use this, we first need to enable the <strong>Use Custom Binding</strong> option on the Input, which is found in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window when the Input is selected.</p>
+<p>When ticked, a text field for a <strong>Label</strong> appears. This will be the text that appears next to the port when nothing is connected to the <b class="node">Sub Graph</b> node (Similar to how &ldquo;AbsoluteWorld Space&rdquo; and &ldquo;World Space&rdquo; appear on the <strong>Position</strong> and <strong>Normal</strong> ports on the <b class="node">Triplanar</b> node).</p>
+<div class="img-center">
+<a href="UseCustomBinding.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="615" height="302" alt="(Image)" src="UseCustomBinding.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>In the Sub Graph, we can then add the <b class="node">Branch On Input Connection</b> node and connect our Input to the <strong>Input</strong> port, as well as the <strong>Connected</strong> port as we want to use it&rsquo;s value.</p>
+<div class="img-center">
+<a href="BranchOnInputConnection.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="743" height="328" alt="(Image)" src="BranchOnInputConnection.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>In this example I&rsquo;m using the <b class="node">Normal Vector</b> node (mesh normal) for a custom lighting calculation. By using the <b class="node">Branch On Input Connection</b> it allows us to optionally connect a Vector3, allowing for this custom lighting to support normal maps.</p>
+<p>Having this in our Sub Graph is much better than not providing support for normal maps, or having to expose a regular Vector3 port and making the user connect a <b class="node">Normal Vector</b> node (or normal map transformed into World space) for it to function correctly.</p>
+<div class="img-center">
+<a href="BranchOnInputConnectionExample.gif" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="335" alt="(Image)" src="BranchOnInputConnectionExample.gif" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>In this case I haven&rsquo;t got a proper normal map so instead of using a <b class="node">Sample Texture 2D</b> node with <strong>Normal</strong> mode, I&rsquo;m using the <b class="node">Normal From Texture</b> node which converts a height map into a normal map by using 3 texture samples (though may be less accurate). See <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@12.1/manual/Normal-From-Texture-Node.html">Normal From Texture docs page</a> for more info.</p>
 <hr>
 <h2 id="fragment-only-nodes">Fragment-Only Nodes</h2>
 <p>Some features of shaders are limited to the <strong>Fragment</strong> shader stage :</p>
@@ -1339,6 +1390,74 @@ RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTextur
 <h2 id="advanced">Advanced</h2>
 <p>This final section includes some additional features of Shader Graph that I&rsquo;d consider to be more advanced. Learning these might not be necessary to get started, but might be useful things to come back to! If you stop reading here, thanks for reading! Please consider sharing a link to others if you found this useful! &lt;3</p>
 <p>(I would have put some of the content in the <a href="#gradient">Gradient</a> &amp; <a href="#array">Array</a> sections here instead, as that was also more advanced than I wanted the post to be, but felt it fits better to keep that under the <a href="#data-types">Data Types</a> section/heading)</p>
+<hr>
+<h3 id="custom-interpolators">Custom Interpolators</h3>
+<p>The Vertex stage is responsible for passing through any data (e.g. from the mesh) that may be needed in Fragment stage calculations. This is known as <strong>interpolators</strong> (as this data for each vertex is interpolated across the triangle). It is mostly handled automatically by Shader Graph - e.g. For nodes requiring UVs, the <b class="node">Position</b> node, <b class="node">Normal Vector</b> and other nodes in the <strong>Input → Geometry</strong> heading under the Create Node menu.</p>
+<p>But in some cases we may also want to pass our own custom data between the two stages. In Shader Graph <strong>v12</strong> (Unity <strong>2021.2+</strong>), we can do this by adding <strong>Custom Interpolator</strong> blocks to the <strong>Vertex</strong> stage (by right-clicking, then selecting <strong>Add Block Node</strong>). There is a <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@14.0/manual/Custom-Interpolators.html">docs page here</a> for this, but below also explains how to use it and some usage examples.</p>
+<div class="img-center">
+<a href="CustomInterpolator1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="238" alt="(Image)" src="CustomInterpolator1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We can then change the name and type in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window while the block is selected.
+<div class="img-center">
+<a href="CustomInterpolator2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="208" alt="(Image)" src="CustomInterpolator2.png" />
+</a>
+<p class="img-text"></p>
+</div></p>
+<p>You can have multiple interpolators. The maximum is 32, though the actual amount you can use will depend on the target platform (I believe gles platforms may be limited to 8, as they use the SubShader with target 2.0, even though gles3 can actually support more). The <a href="https://docs.unity3d.com/Manual/SL-ShaderCompileTargets.html">Shader Compile Targets</a> docs page has some related info.</p>
+<p>Also note that :</p>
+<ul>
+<li>As mentioned above, some interpolators will be taken up when using nodes that require the data in the fragment stage (nodes under <strong>Input → Geometry</strong> in Create Node menu)</li>
+<li>Interpolators can be up to <code>float4</code>, and in the actual generated shader code it will try to pack multiple together to fit that (e.g. a Vector3 and Float, or two Vector2s), so counting the blocks won&rsquo;t necessarily be accurate to the interpolator count used. It is better to check the <code>PackedVaryings</code> struct in the <a href="#generated-shader-code">generated code</a>.</li>
+</ul>
+<p>Some uses of Custom Interpolators :</p>
+<ul>
+<li>Meshes tend to have less vertices than fragments produced, so doing calculations in the vertex shader can be much cheaper, (but may not look as accurate).
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Gouraud_shading">Gouraud shading</a> for example, is when lighting models (e.g. Phong) are calculated per-vertex but this can result in geometry being fairly obvious (especially when low-poly).</li>
+</ul>
+</li>
+<li>Obtaining the interpolated vertex position (<b class="node">Position</b> node), or <b class="node">Screen Position</b>, before vertex displacement (see below for examples)</li>
+<li>To pass something based on <b class="node">Vertex ID</b> node to the fragment (e.g. see <code>SV_VertexID</code> example on the <a href="https://docs.unity3d.com/Manual/SL-ShaderSemantics.html">SL-ShaderSemantics docs page</a>.</li>
+</ul>
+<h4 id="custom-interpolators-example-1">Custom Interpolators Example 1 - Undisplaced Position</h4>
+<p>When using the <b class="node">Position</b> node in the <strong>Fragment</strong> stage, it will always have any vertex displacement applied (from calculation passed into the <strong>Position</strong> port on the <strong>Vertex</strong> stage). As an example, here we can use a <strong>Custom Interpolator</strong> block to pass the un-displaced position through.</p>
+<div class="img-center">
+<a href="CustomInterpolator3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="285" alt="(Image)" src="CustomInterpolator3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>In the fragment we can create the interpolator node (found under <strong>Create Node → Custom Interpolator</strong>)</p>
+<p>Now compare our interpolator with the regular <b class="node">Position</b> node in the <strong>Fragment</strong> stage (can use the <strong>Main Preview</strong> for this. Can right-click in that window to swap the mesh for a <strong>Plane</strong>). The <strong>Y</strong> axis of the interpolator produces a completely black result (as the vertex positions are at <strong>Y=0</strong>). But with the <b class="node">Position</b> node version, we can see a gradient (specifically from <strong>-1 to 1</strong>, though the negative values also show as black here).
+<div class="img-center">
+<a href="CustomInterpolator4.gif" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="689" height="457" alt="(Image)" src="CustomInterpolator4.gif" />
+</a>
+<p class="img-text"></p>
+</div></p>
+<p>Of course, you&rsquo;d only do this if the black result is what you required. I used this recently, <a href="https://twitter.com/Cyanilux/status/1546404927978741760">to colour an fried egg shader</a>. As the egg yolk has higher vertices and I <em>(somewhat lazily)</em> used a <b class="node">Step</b> node (then into a <b class="node">Lerp</b>) rather than applying a texture or vertex colors. But this required the undisplaced position otherwise other parts of the egg would appear yellow too as it displaces upwards.</p>
+<h4 id="custom-interpolators-example-2">Custom Interpolators Example 2 - Vertex Based Distortion</h4>
+<p>Perhaps you&rsquo;d also use this if you are applying a texture by using a projection via <b class="node">Position</b> node (usually known as worldspace planar mapping, somewhat of a precursor to triplanar mapping). If we want the texture to distort as the vertices move rather than stay static, then we need to handle the mapping with the position prior to the distortion. Here&rsquo;s an example using <b class="node">Gradient Noise</b> for displacement (on all XYZ axis) :</p>
+<div class="img-center">
+<a href="CustomInterpolator5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="280" alt="(Image)" src="CustomInterpolator5.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>And then <strong>Fragment</strong>, comparing the result with the <strong>Main Preview</strong> (with <strong>Plane</strong> mesh) :</p>
+<div class="img-center">
+<a href="CustomInterpolator6.gif" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="262" alt="(Image)" src="CustomInterpolator6.gif" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We could also do the same thing but with the <b class="node">Screen Position</b> node instead for a screenspace mapping.</p>
+<p>As mentioned previously, this is likely cheaper than a per-pixel approach to distortion (which is essentially the same calculation but all in the Fragment stage), but it definitely doesn&rsquo;t look as accurate and would likely only fit in a old-PS1 style (or similar platforms around that time) or low-poly style (though this plane may need to be fairly high-poly still).</p>
+<hr>
 <h3 id="custom-functions">Custom Functions</h3>
 <p>Shader Graph is a powerful tool, but it can&rsquo;t do everything. Some things might require code snippets to be used instead, which is where the <b class="node">Custom Function</b> node would be used. It would also be useful for complex calculations as writing out math in code can be a lot easier than in node form.</p>
 <p>Back in Unity 2018.1, there was a method of creating custom nodes using the <code>CodeFunctionNode</code> class in the <code>UnityEditor.ShaderGraph</code> namespace. This method is <strong>no longer accessible</strong> and will error if you attempt to use CodeFunctionNode in Shader Graph/URP/HDRP versions for Unity 2019.1+. The replacement was the in-graph node :</p>
@@ -1465,6 +1584,7 @@ RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTextur
 </div>
 <p>The <strong>Name</strong> of the function isn&rsquo;t too important if using the <strong>String</strong> mode but they must be unique or the function may override another. If using the <strong>File</strong> mode the <strong>Name</strong> must match the name of the function you want to use, without the precision prefix. A file can contain multiple functions, but the <b class="node">Custom Function</b> node will only use the one with the name you set.</p>
 <p>A common use for custom functions is for <strong>custom lighting models</strong> (e.g. Toon shaders). I have shared the functions and Sub Graphs that I use for this on my <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Github</a> (It&rsquo;s also a package so can be added to a project using the HTTPs link (ending with .git) in the Package Manager using the &ldquo;Add package from Git URL&rdquo; option)</p>
+<hr>
 <h3 id="better-texture-data-types">Better Texture Data Types</h3>
 <p>In Shader Graph v10.3+, Unity added the following data structures, four for Textures and one for the SamplerState data type :</p>
 <ul>
@@ -1551,6 +1671,7 @@ RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTextur
 <p>(Thanks to ElliotB who shared their findings on the changes to this in v10+ on the Unity discord &amp; <a href="https://forum.unity.com/threads/shaderpass_shadowcaster-and-testing-for-the-shadowcaster-pass.1033108/">forums</a>).</p>
 <p>As for HDRP, they correctly include their <code>ShaderPass.cs.hlsl</code> file. Note that their shadow pass is <code>SHADERPASS_SHADOWS</code> instead.</p>
 <p>While I&rsquo;ve used the <code>SHADERPASS_SHADOWCASTER</code> as an example, if you actually wanted to have an object cast shadows without rendering normally, or only remove shadows, you can easily do this by changing the <strong>Cast Shadows</strong> option on the <strong>Mesh Renderer</strong> component, to <strong>Shadows Only</strong> or <strong>Off</strong>. The function here is just an example. The 0 and 1 used as the output could be replaced with two inputs for more control over which values are used, and would allow them to be different per fragment/pixel (e.g. based on <b class="node">Simple Noise</b> or the result of a <b class="node">Sample Texture 2D</b>).</p>
+<hr>
 <h3 id="generated-shader-code">Viewing/Editing Generated Shader Code</h3>
 <p>Behind the scenes, Shader Graph generates shader code specific to the render pipeline you&rsquo;re working in (URP/HDRP). In v10+ it&rsquo;s possible to view this code using the <strong>View Generated Shader</strong> button in Unity&rsquo;s <strong>Inspector</strong> window when the <strong>Shader Graph Asset</strong> is selected in the <strong>Project</strong> window. Prior to v10 you could instead right-click the <b class="node">Master</b> node to find this option.</p>
 <div class="img-center">
