@@ -15,16 +15,10 @@
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Liquid Shader Breakdown">
-<meta itemprop="description" content="A shader that discards pixels above a certain Y position and renders back faces to fake the top surface of the liquid">
-<meta itemprop="datePublished" content="2019-05-06T00:00:00+00:00" />
+<meta itemprop="description" content="A shader that discards pixels above a certain Y position and renders back faces to fake the top surface of the liquid"><meta itemprop="datePublished" content="2019-05-06T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-05-06T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1152">
-<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
-
-
-
+<meta itemprop="wordCount" content="1058"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="URP,Shader Graph," />
-
 	
 	
 	<meta name="twitter:card" content="summary_large_image"/>
@@ -203,6 +197,12 @@
 		</a></b>
 		</li>
 		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		
+		FAQ
+		</a></b>
+		</li>
+		
 	</ul>
 	</nav>
 </div>
@@ -230,7 +230,7 @@
 
 <script>
 	if (cookiesAccepted){
-		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eI tweeted a liquid shader like this at the start of the year, but I never shared the \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e (see thread).🥤I\u0026#39;m also working on something more interesting which uses this technique, which I\u0026#39;ll tweet in a few days or so! 😀 \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/gamedev?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#gamedev\u003c/a\u003e \u003ca href=\"https://t.co/wausClRGDY\"\u003epic.twitter.com/wausClRGDY\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ❄ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1121049841617047557?ref_src=twsrc%5Etfw\"\u003eApril 24, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eI tweeted a liquid shader like this at the start of the year, but I never shared the \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e (see thread).🥤I\u0026#39;m also working on something more interesting which uses this technique, which I\u0026#39;ll tweet in a few days or so! 😀 \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/gamedev?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#gamedev\u003c/a\u003e \u003ca href=\"https://t.co/wausClRGDY\"\u003epic.twitter.com/wausClRGDY\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1121049841617047557?ref_src=twsrc%5Etfw\"\u003eApril 24, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
 	}else{
 		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1121049841617047557\">https://twitter.com/Cyanilux/status/1121049841617047557</a><p>"+
 		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
@@ -246,7 +246,7 @@
 <h2 id="notes">Notes</h2>
 <ul>
 <li>Models that use this technique need to have a <strong>pivot</strong> roughly in their <strong>center of mass</strong>, in order for the liquid distribution to look correct.</li>
-<li>I&rsquo;m using an <strong>Unlit</strong> graph. If you want lit, note that since the liquid surface is faked with back faces they won&rsquo;t have the correct normals to produce the correct lighting. You&rsquo;ll need to override the normals for the backfaces (using the <b class="node">Is Front Face</b> and <b class="node">Branch</b> nodes), maybe setting them to a <b class="node">Vector3</b> <!-- raw HTML omitted -->(0, 1, 0)<!-- raw HTML omitted --> (or passing a Vector3 property in) when <strong>False</strong>, and use the regular <b class="node">Normal Vector</b> when <strong>True</strong>.</li>
+<li>I&rsquo;m using an <strong>Unlit</strong> graph. If you want lit, note that since the liquid surface is faked with back faces they won&rsquo;t have the correct normals to produce the correct lighting. You&rsquo;ll need to override the normals for the backfaces (using the <b class="node">Is Front Face</b> and <b class="node">Branch</b> nodes), maybe setting them to a <b class="node">Vector3</b> <b>(0, 1, 0)</b> (or passing a Vector3 property in) when <strong>False</strong>, and use the regular <b class="node">Normal Vector</b> when <strong>True</strong>.</li>
 <li>If you want to apply a texture to the fake top face, you&rsquo;ll need to calculate the correct UVs which requires the shader to know the normal and tangent of the plane that is used to clip the mesh (won&rsquo;t work if additional sine movement is involved). Remy (from Unity) has an amazing <a href="https://github.com/Remy-Maetz/ShaderGraph_Doodles/tree/master/Assets/Shaders/CrossSection">CrossSection example</a> that does this.</li>
 <li>Glass shader not included.</li>
 </ul>

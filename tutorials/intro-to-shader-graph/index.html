@@ -15,24 +15,19 @@
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Intro to Shader Graph">
-<meta itemprop="description" content="A detailed introduction on how to use Unity Shader Graph (including v10&#43; changes). Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!">
-<meta itemprop="datePublished" content="2021-03-05T00:00:00+00:00" />
+<meta itemprop="description" content="A detailed introduction on how to use Unity Shader Graph (updated for v12&#43;)! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!"><meta itemprop="datePublished" content="2021-03-05T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-03-05T00:00:00+00:00" />
 <meta itemprop="wordCount" content="17177">
-
-
-
 <meta itemprop="keywords" content="Shader Graph,URP,HDRP," />
-
 	
 	
 	<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Intro to Shader Graph"/>
-<meta name="twitter:description" content="A detailed introduction on how to use Unity Shader Graph (including v10&#43; changes). Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!"/>
+<meta name="twitter:description" content="A detailed introduction on how to use Unity Shader Graph (updated for v12&#43;)! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!"/>
 
 	
 <meta property="og:title" content="Intro to Shader Graph" />
-<meta property="og:description" content="A detailed introduction on how to use Unity Shader Graph (including v10&#43; changes). Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!" />
+<meta property="og:description" content="A detailed introduction on how to use Unity Shader Graph (updated for v12&#43;)! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.cyanilux.com/tutorials/intro-to-shader-graph/" />
 
@@ -50,7 +45,7 @@
 	
 		
 		
-		<meta name="description" content="A detailed introduction on how to use Unity Shader Graph (including v10&#43; changes). Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!. Shader Graph, URP, HDRP | Unity Shader Tutorials, @Cyanilux" />
+		<meta name="description" content="A detailed introduction on how to use Unity Shader Graph (updated for v12&#43;)! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!. Shader Graph, URP, HDRP | Unity Shader Tutorials, @Cyanilux" />
 		
 	
 	
@@ -193,6 +188,12 @@
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
 		
 		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		
+		FAQ
 		</a></b>
 		</li>
 		
@@ -502,9 +503,7 @@
 <a href="Nodes.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="678" height="509" alt="(Image)" src="Nodes.png" />
 </a>
-<p class="img-text">
-A small collection nodes, showing connections and various previews.
-</p>
+<p class="img-text">A small collection nodes, showing connections and various previews.</p>
 </div>
 <p>You can create connections between nodes by clicking on the port. While still holding the mouse button, drag over to another port and a connection will be made. You can only connect an output to an input. It&rsquo;s not possible to connect an input to another input, or output to another output. Output ports can also have multiple connections to other nodes, but input ports must only have a single connection.</p>
 <p>(The documentation refers to these connections as &ldquo;Edges&rdquo; but I&rsquo;ve <em>never</em> heard anyone actually call them that, except for Unity that is. I&rsquo;m just going to refer to them as connections)</p>
@@ -524,9 +523,7 @@ A small collection nodes, showing connections and various previews.
 <a href="RedirectNodeExample.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="313" alt="(Image)" src="RedirectNodeExample.png" />
 </a>
-<p class="img-text">
-An example using (probably way to many unncessary) redirect nodes, (but hopefully you get the point).
-</p>
+<p class="img-text">An example using (probably way to many unncessary) redirect nodes, (but hopefully you get the point).</p>
 </div>
 <p>Versions prior to v10 did not have this feature, but the <b class="node">Preview</b> node could be used instead, with the preview collapsed to make the node smaller to work with.</p>
 <h3 id="selection">Selecting Nodes</h3>
@@ -545,9 +542,7 @@ An example using (probably way to many unncessary) redirect nodes, (but hopefull
 <a href="NodePreviews.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="188" alt="(Image)" src="NodePreviews.png" />
 </a>
-<p class="img-text">
-A collection of nodes showing different previews
-</p>
+<p class="img-text">A collection of nodes showing different previews</p>
 </div>
 <p>Nodes like <b class="node">Position</b> and <b class="node">Normal Vector</b> use a <strong>3D/Sphere</strong> version of the Preview rather than the <strong>2D/Quad</strong> one, as they are meant to show 3D positions/vectors. All nodes in the chain after it will also switch to using the 3D one when connected.</p>
 <p>In Shader Graph <strong>v11+</strong> (Unity <strong>2021.2+</strong>) it is also now possible to choose between the 2D and 3D versions of the preview on a per-node basis. Can do this in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window. (This was something I suggested, though some others may have too. Still, I&rsquo;m very happy to see it included). For Sub Graphs you can also find a setting in the <strong>Graph Settings</strong> to select it&rsquo;s default preview state.</p>
@@ -594,10 +589,8 @@ A collection of nodes showing different previews
 <a href="VectorPromote.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="246" alt="(Image)" src="VectorPromote.png" />
 </a>
-<p class="img-text">
-On the left, the Float is promoted to the Vector3 size, (0.5, 0.5, 0.5). After the add, resulting in (0.5, 0.5, 1).
-</br>On the right, the Vector3 is truncated to the Vector2 size, (0, 0). After the add, resulting in (0.5, 0).
-</p>
+<p class="img-text">On the left, the Float is promoted to the Vector3 size, (0.5, 0.5, 0.5). After the add, resulting in (0.5, 0.5, 1).
+</br>On the right, the Vector3 is truncated to the Vector2 size, (0, 0). After the add, resulting in (0.5, 0).</p>
 </div>
 <p>If a <strong>Float</strong> is connected to a <strong>Vector</strong> port, it is promoted where <strong>all components are filled with the float value</strong>. e.g. 0.5 would become (0.5,0.5,0.5,0.5) if connected to a Vector4 port. The alpha value would not default to 1 in this case too, which is something to be aware of.</p>
 <p>If you wanted more control over promotion, you could handle it manually, using the Vector node that corresponds to the size you want. e.g. <b class="node">Vector2</b>, <b class="node">Vector3</b> or <b class="node">Vector4</b>. Or use the <b class="node">Combine</b> node which gives you an output for all sizes.</p>
@@ -610,9 +603,7 @@ On the left, the Float is promoted to the Vector3 size, (0.5, 0.5, 0.5). After t
 <a href="DynamicVectorPorts.gif" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="484" height="208" alt="(Image)" src="DynamicVectorPorts.gif" />
 </a>
-<p class="img-text">
-Add node with ports switching between Float, Vector3 and Vector2 depending on what is connected
-</p>
+<p class="img-text">Add node with ports switching between Float, Vector3 and Vector2 depending on what is connected</p>
 </div>
 <p>In most cases, these dynamic vector ports <strong>truncate both to the same size</strong>, based on the <strong>lowest size passed in</strong> (so if a <strong>Vector3</strong> and <strong>Vector2</strong> is passed in to each port, both ports will be a <strong>Vector2</strong>). However a <strong>Float/Vector1</strong> will always be <strong>promoted to the same size as the other input</strong>.</p>
 <p>The <b class="node">Multiply</b> node ports are also dynamic, but also has a special case where a <strong>Matrix</strong> (will be explained below) can also be connected. Similar to the Vectors, the Dynamic ports are <strong>truncated to the smallest of the two matrix sizes</strong> (the output also changes to a matrix type of the same size). If a matrix and vector is connected, the size of the matrix is used and the Vector will be promoted or truncated to match.</p>
@@ -635,9 +626,7 @@ Add node with ports switching between Float, Vector3 and Vector2 depending on wh
 <a href="BranchNode.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="711" height="363" alt="(Image)" src="BranchNode.png" />
 </a>
-<p class="img-text">
-Example showing a Branch based on a Boolean Property. Allows switching between two different UV types. Planar projected / regular model UVs.
-</p>
+<p class="img-text">Example showing a Branch based on a Boolean Property. Allows switching between two different UV types. Planar projected / regular model UVs.</p>
 </div>
 <p>Internally the type is actually treated as a Float with a value of 0 or 1, so can be set from C# using <code>material.SetFloat</code> (or <code>SetInteger</code>).</p>
 <p>Don&rsquo;t confuse the <strong>Boolean</strong> type/property with a <strong>Boolean Keyword</strong> - these are not the same! I&rsquo;ll be explaining keywords in a later section.</p>
@@ -658,9 +647,7 @@ Example showing a Branch based on a Boolean Property. Allows switching between t
 <a href="MipmapExample.gif" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="484" height="295" alt="(Image)" src="MipmapExample.gif" />
 </a>
-<p class="img-text">
-Mipmap levels of an example noise texture
-</p>
+<p class="img-text">Mipmap levels of an example noise texture</p>
 </div>
 <h4 id="wrap-modes">Wrap Modes</h4>
 <p>This filtering method is stored in the sampler (<strong>SamplerState</strong>), along with a <strong>Wrap Mode</strong> :</p>
@@ -695,29 +682,28 @@ Mipmap levels of an example noise texture
 <p class="img-text"></p>
 </div>
 <p>The gradient type is a bit of an odd one. The type does not exist in regular shaders, It is something specific to shader graph and is actually defined as a struct containing an array of up to 8 colour and alpha values.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Gradient</span>
-{
-    <span style="color:#66d9ef">int</span> type;
-    <span style="color:#66d9ef">int</span> colorsLength;
-    <span style="color:#66d9ef">int</span> alphasLength;
-    float4 colors[<span style="color:#ae81ff">8</span>];
-    float2 alphas[<span style="color:#ae81ff">8</span>];
-};
-<span style="color:#75715e">// From com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl
-</span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Gradient</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> type;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> colorsLength;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> alphasLength;
+</span></span><span style="display:flex;"><span>    float4 colors[<span style="color:#ae81ff">8</span>];
+</span></span><span style="display:flex;"><span>    float2 alphas[<span style="color:#ae81ff">8</span>];
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// From com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl</span></span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>The values are currently something that gets <strong>hardcoded into the generated shader code</strong>, so the Gradient type (created from the Blackboard at least) <strong>cannot be exposed</strong> or set by C# scripts.</p>
@@ -735,119 +721,117 @@ Mipmap levels of an example noise texture
 <li>A common option to avoid the need to create many colour properties, is to use a <strong>Texture2D</strong> instead. We can sample it with the <b class="node">Sample Texture 2D</b> with the <strong>UV</strong> coordinate as the same &ldquo;<strong>Time</strong>&rdquo; value that would have been used in the <b class="node">Sample Gradient</b> node. This gives us the flexibity of more colours, but a texture sample might end up being be more expensive than a math-based method, and it might suffer from colour banding issues if the colours are remapped in the shader. (Might be able to try different texture formats to minimise that).</li>
 </ul>
 <p>For creating the gradient texture, it can either be done manually in your preferred image manipulation software (e.g. Photoshop, GIMP, etc), or baked from a C# Gradient object. For example, using a function like :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#75715e">// Converts Gradient to Texture2D
-</span><span style="color:#75715e">// width defaults to 256, but can be changed if a different resolution is needed
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> Texture2D CreateGradientTexture(Gradient gradient, <span style="color:#66d9ef">int</span> width = <span style="color:#ae81ff">256</span>) {
-    Color32[] colors = <span style="color:#66d9ef">new</span> Color32[width];
-    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; width; i++) {
-        colors[i] = gradient.Evaluate((<span style="color:#66d9ef">float</span>)i / width);
-    }
-    Texture2D tex = <span style="color:#66d9ef">new</span> Texture2D(width, <span style="color:#ae81ff">1</span>, TextureFormat.ARGB32, <span style="color:#66d9ef">false</span>);
-    tex.SetPixels32(colors, <span style="color:#ae81ff">0</span>);
-    tex.wrapMode = TextureWrapMode.Clamp;
-    tex.Apply();
-    <span style="color:#66d9ef">return</span> tex;
-}
-
-<span style="color:#75715e">// To save it as an asset, if that&#39;s what you want to do
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> SaveTexture2DAsset(Texture2D texture, <span style="color:#66d9ef">string</span> path = <span style="color:#e6db74">&#34;Assets/Texture.asset&#34;</span>) {
-<span style="color:#75715e">#if UNITY_EDITOR
-</span><span style="color:#75715e"></span>    UnityEditor.AssetDatabase.CreateAsset(texture, path);
-<span style="color:#75715e">#endif
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// Or could use this instead, to write to png : (path must end in .png)
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// byte[] png = texture.EncodeToPNG();
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// System.IO.File.WriteAllBytes(path, png);
-</span><span style="color:#75715e"></span>}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// Converts Gradient to Texture2D</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// width defaults to 256, but can be changed if a different resolution is needed</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Texture2D CreateGradientTexture(Gradient gradient, <span style="color:#66d9ef">int</span> width = <span style="color:#ae81ff">256</span>) {
+</span></span><span style="display:flex;"><span>    Color32[] colors = <span style="color:#66d9ef">new</span> Color32[width];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; width; i++) {
+</span></span><span style="display:flex;"><span>        colors[i] = gradient.Evaluate((<span style="color:#66d9ef">float</span>)i / width);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    Texture2D tex = <span style="color:#66d9ef">new</span> Texture2D(width, <span style="color:#ae81ff">1</span>, TextureFormat.ARGB32, <span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>    tex.SetPixels32(colors, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    tex.wrapMode = TextureWrapMode.Clamp;
+</span></span><span style="display:flex;"><span>    tex.Apply();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> tex;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// To save it as an asset, if that&#39;s what you want to do</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> SaveTexture2DAsset(Texture2D texture, <span style="color:#66d9ef">string</span> path = <span style="color:#e6db74">&#34;Assets/Texture.asset&#34;</span>) {
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#if UNITY_EDITOR</span>
+</span></span><span style="display:flex;"><span>    UnityEditor.AssetDatabase.CreateAsset(texture, path);
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span>endif
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Or could use this instead, to write to png : (path must end in .png)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// byte[] png = texture.EncodeToPNG();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// System.IO.File.WriteAllBytes(path, png);</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <ul>
 <li>It is also technically possible to create a Gradient object in a <b class="node">Custom Function</b> and pass it out. This is a node that allows us to write HLSL code, which is useful for accessing things that Shader Graph can&rsquo;t handle, like arrays and loops. This method still cannot be exposed to the material inspector, but can be set through C# - but only globally.</li>
 </ul>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">int</span> _GradientType;
-<span style="color:#66d9ef">int</span> _GradientColorsLength;
-<span style="color:#66d9ef">int</span> _GradientAlphasLength;
-float4 _GradientColors[<span style="color:#ae81ff">8</span>];
-<span style="color:#66d9ef">float</span> _GradientAlphas[<span style="color:#ae81ff">16</span>];
-
-<span style="color:#66d9ef">void</span> Gradient_float(<span style="color:#66d9ef">out</span> Gradient output){
-	float2 Alphas[<span style="color:#ae81ff">8</span>];
-	<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i=<span style="color:#ae81ff">0</span>;i&lt;<span style="color:#ae81ff">8</span>;i++){
-		Alphas[i] = float2(_GradientAlphas[i*<span style="color:#ae81ff">2</span>], _GradientAlphas[i*<span style="color:#ae81ff">2</span>+<span style="color:#ae81ff">1</span>]);
-	}
-
-	Gradient g = {
-	_GradientType,
-	_GradientColorsLength,
-	_GradientAlphasLength,
-	_GradientColors,
-	Alphas
-	};
-	output = g;
-}
-
-<span style="color:#75715e">// Required to make Gradients work as inputs/outputs
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">bool</span> isfinite(Gradient g) {
-   <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> _GradientType;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> _GradientColorsLength;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> _GradientAlphasLength;
+</span></span><span style="display:flex;"><span>float4 _GradientColors[<span style="color:#ae81ff">8</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> _GradientAlphas[<span style="color:#ae81ff">16</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> Gradient_float(<span style="color:#66d9ef">out</span> Gradient output){
+</span></span><span style="display:flex;"><span>	float2 Alphas[<span style="color:#ae81ff">8</span>];
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i=<span style="color:#ae81ff">0</span>;i&lt;<span style="color:#ae81ff">8</span>;i++){
+</span></span><span style="display:flex;"><span>		Alphas[i] = float2(_GradientAlphas[i*<span style="color:#ae81ff">2</span>], _GradientAlphas[i*<span style="color:#ae81ff">2</span>+<span style="color:#ae81ff">1</span>]);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	Gradient g = {
+</span></span><span style="display:flex;"><span>	_GradientType,
+</span></span><span style="display:flex;"><span>	_GradientColorsLength,
+</span></span><span style="display:flex;"><span>	_GradientAlphasLength,
+</span></span><span style="display:flex;"><span>	_GradientColors,
+</span></span><span style="display:flex;"><span>	Alphas
+</span></span><span style="display:flex;"><span>	};
+</span></span><span style="display:flex;"><span>	output = g;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Required to make Gradients work as inputs/outputs</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">bool</span> isfinite(Gradient g) {
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>The problem here is that these aren&rsquo;t defined as properties (and arrays can&rsquo;t be) so should be set through the <strong>Shader.SetGlobalX</strong> functions, not as per-material ones to avoid batching-related issues.</p>
@@ -858,33 +842,32 @@ float4 _GradientColors[<span style="color:#ae81ff">8</span>];
 <p>While not a type in Shader Graph, shaders also have array types and it is possible to define them in a <b class="node">Custom Function</b> node (allows us to use HLSL code, there&rsquo;s a <a href="#custom-functions">Custom Function</a> section near the end of the post that goes into more detail). This can be somewhat complicated so I don&rsquo;t expect beginners to understand it, but I felt it was important to include this too.</p>
 <p>Some of these arrays were briefly included in the code in the above Gradient section. Defining arrays can only be done with the <strong>File</strong> mode on the <b class="node">Custom Function</b>, as it needs to be outside the scope of the function itself. Arrays can also only be set from C# and won&rsquo;t appear in the material inspector. They can also only really be defined globally.</p>
 <p>For example :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">float4 _VectorArray[<span style="color:#ae81ff">10</span>]; <span style="color:#75715e">// Vector array
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> _FloatArray[<span style="color:#ae81ff">10</span>]; <span style="color:#75715e">// Float array
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">void</span> ArrayExample_float(<span style="color:#66d9ef">out</span> <span style="color:#66d9ef">float</span> Out){
-	<span style="color:#66d9ef">float</span> <span style="color:#66d9ef">add</span> = <span style="color:#ae81ff">0</span>;
-<span style="color:#a6e22e">	[unroll]</span>
-    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; <span style="color:#ae81ff">10</span>; i++){
-		<span style="color:#66d9ef">add</span> += _FloatArray[i];
-	}
-	Out = <span style="color:#66d9ef">add</span>;
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>float4 _VectorArray[<span style="color:#ae81ff">10</span>]; <span style="color:#75715e">// Vector array</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> _FloatArray[<span style="color:#ae81ff">10</span>]; <span style="color:#75715e">// Float array</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> ArrayExample_float(<span style="color:#66d9ef">out</span> <span style="color:#66d9ef">float</span> Out){
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">float</span> <span style="color:#66d9ef">add</span> = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">	[unroll]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; <span style="color:#ae81ff">10</span>; i++){
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">add</span> += _FloatArray[i];
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	Out = <span style="color:#66d9ef">add</span>;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>In this example the values in the float array are added together and output. Typically you&rsquo;ll need a loop inside the function in order to handle the array, (unless you just need a single value at a given index or something). You might want to try something more exciting that just adding the values together though! I have a <a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/">Forcefield Shader Breakdown</a> that includes ripples using an array.</p>
@@ -994,9 +977,7 @@ float4 _GradientColors[<span style="color:#ae81ff">8</span>];
 <a href="MainPreview.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="368" height="368" alt="(Image)" src="MainPreview.png" />
 </a>
-<p class="img-text">
-Example Main Preview for a Soft Foliage Shader, showing a custom mesh
-</p>
+<p class="img-text">Example Main Preview for a Soft Foliage Shader, showing a custom mesh</p>
 </div>
 <p>Use the button in the top right of the graph to toggle the <strong>Main Preview</strong> window. The window can be resized by dragging the bottom right corner of it (same goes for the other windows). Unlike node previews, this will show alpha/transparency.</p>
 <p>Dragging will rotate the model. It doesn&rsquo;t move the camera or light direction though so this isn&rsquo;t always useful.</p>
@@ -1134,58 +1115,56 @@ Example Main Preview for a Soft Foliage Shader, showing a custom mesh
 <p>Keywords using the <strong>Local</strong> scope can only be set through methods in the <a href="https://docs.unity3d.com/ScriptReference/Material.html">Material</a> class.</p>
 <p>It is also recommended to only adjust <strong>Multi Compile</strong> keywords at runtime, see <a href="#keyword-definition">Definition</a> section below for more information.</p>
 <p>For example, for <strong>Boolean Keywords</strong> :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">Material material = GetComponent&lt;Renderer&gt;().sharedMaterial;
-<span style="color:#75715e">// Or use material, if you want to create an instance.
-</span><span style="color:#75715e">// This would be important if you only want to enable the keyword for this GameObject/Renderer
-</span><span style="color:#75715e">// See https://www.cyanilux.com/tutorials/intro-to-shaders/#material-instances
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e">// Enables EXAMPLE_KEYWORD on material
-</span><span style="color:#75715e"></span>material.EnableKeyword(<span style="color:#e6db74">&#34;EXAMPLE_KEYWORD&#34;</span>);
-
-<span style="color:#75715e">// Disable EXAMPLE_KEYWORD on material
-</span><span style="color:#75715e"></span>material.DisableKeyword(<span style="color:#e6db74">&#34;EXAMPLE_KEYWORD&#34;</span>);
-
-<span style="color:#75715e">// Enable Globally, (Only for Global Scope)
-</span><span style="color:#75715e"></span>Shader.EnableKeyword(<span style="color:#e6db74">&#34;EXAMPLE_KEYWORD&#34;</span>);
-
-<span style="color:#75715e">// Disable Globally, (Only for Global Scope)
-</span><span style="color:#75715e"></span>Shader.DisableKeyword(<span style="color:#e6db74">&#34;EXAMPLE_KEYWORD&#34;</span>);
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>Material material = GetComponent&lt;Renderer&gt;().sharedMaterial;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Or use material, if you want to create an instance.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// This would be important if you only want to enable the keyword for this GameObject/Renderer</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// See https://www.cyanilux.com/tutorials/intro-to-shaders/#material-instances</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Enables EXAMPLE_KEYWORD on material</span>
+</span></span><span style="display:flex;"><span>material.EnableKeyword(<span style="color:#e6db74">&#34;EXAMPLE_KEYWORD&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Disable EXAMPLE_KEYWORD on material</span>
+</span></span><span style="display:flex;"><span>material.DisableKeyword(<span style="color:#e6db74">&#34;EXAMPLE_KEYWORD&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Enable Globally, (Only for Global Scope)</span>
+</span></span><span style="display:flex;"><span>Shader.EnableKeyword(<span style="color:#e6db74">&#34;EXAMPLE_KEYWORD&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Disable Globally, (Only for Global Scope)</span>
+</span></span><span style="display:flex;"><span>Shader.DisableKeyword(<span style="color:#e6db74">&#34;EXAMPLE_KEYWORD&#34;</span>);</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>For an <strong>Enum Keyword</strong> you need to append the <strong>Entry&rsquo;s Reference</strong> to the <strong>Keyword Reference</strong>, separated with &ldquo;_&rdquo; to obtain the full string to use in the C# methods. The references for each entry is shown in the table in the <strong>Node Settings</strong> tab.</p>
 <p>As an example, a <strong>Keyword</strong> with a <strong>Reference</strong> of &ldquo;ENUM&rdquo; and the entry &ldquo;A&rdquo;, can be toggled using &ldquo;ENUM_A&rdquo;. You also shouldn&rsquo;t enable multiple entries at the same time. To switch between entires, you should always disable the others or the variant used might not change properly. e.g.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">material.EnableKeyword(<span style="color:#e6db74">&#34;ENUM_A&#34;</span>);
-material.DisableKeyword(<span style="color:#e6db74">&#34;ENUM_B&#34;</span>);
-material.DisableKeyword(<span style="color:#e6db74">&#34;ENUM_C&#34;</span>);
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>material.EnableKeyword(<span style="color:#e6db74">&#34;ENUM_A&#34;</span>);
+</span></span><span style="display:flex;"><span>material.DisableKeyword(<span style="color:#e6db74">&#34;ENUM_B&#34;</span>);
+</span></span><span style="display:flex;"><span>material.DisableKeyword(<span style="color:#e6db74">&#34;ENUM_C&#34;</span>);</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <hr>
@@ -1207,9 +1186,7 @@ material.DisableKeyword(<span style="color:#e6db74">&#34;ENUM_C&#34;</span>);
 <a href="NodeGroup.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="305" alt="(Image)" src="NodeGroup.png" />
 </a>
-<p class="img-text">
-Example section of a graph containing a couple grouped nodes. Helps to understand what the nodes are doing at a quick glance.
-</p>
+<p class="img-text">Example section of a graph containing a couple grouped nodes. Helps to understand what the nodes are doing at a quick glance.</p>
 </div>
 <p>Once a group is created you can give it a name which appears at the top in a large text size.  The group can also be renamed at any time by double-clicking the name. The name will always be on a single line and affect the width of the group so it&rsquo;s a good idea to keep it short.</p>
 <p>A group can be moved around (along with it&rsquo;s contents) by dragging the group&rsquo;s name.</p>
@@ -1362,21 +1339,20 @@ Example section of a graph containing a couple grouped nodes. Helps to understan
 </ul>
 </li>
 </ul>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#960050;background-color:#1e0010">#</span>include <span style="color:#e6db74">&#34;Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl&#34;</span>
-RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTexture, UnityStereoTransformScreenSpaceTex(uv), <span style="color:#ae81ff">0</span>).r;
-<span style="color:#75715e">// If you need a different sampling mode/space :
-</span><span style="color:#75715e">//LinearDepth = Linear01Depth(RawDepth, _ZBufferParams);
-</span><span style="color:#75715e">//EyeDepth = LinearEyeDepth(RawDepth, _ZBufferParams);
-</span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span>include <span style="color:#e6db74">&#34;Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl&#34;</span>
+</span></span><span style="display:flex;"><span>RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTexture, UnityStereoTransformScreenSpaceTex(uv), <span style="color:#ae81ff">0</span>).r;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// If you need a different sampling mode/space :</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//LinearDepth = Linear01Depth(RawDepth, _ZBufferParams);</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//EyeDepth = LinearEyeDepth(RawDepth, _ZBufferParams);</span></span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>For HDRP, <code>SampleCameraDepth(float2 uv)</code> in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl">ShaderVariables.hlsl</a> actually already uses an LOD version, you may still need to handle it in a <b class="node">Custom Function</b> though.</p>
@@ -1473,113 +1449,114 @@ RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTextur
 <ul>
 <li><strong>String</strong> : We can write HLSL code directly in the <strong>Body</strong> field that appears. For example, with two inputs A and B :</li>
 </ul>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">Out <span style="color:#f92672">=</span> A <span style="color:#f92672">+</span> B;</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Out <span style="color:#f92672">=</span> A <span style="color:#f92672">+</span> B;</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <ul>
 <li><strong>File</strong> : We can use an external .hlsl (or .cginc) file and set the node to use it with the <strong>Source</strong> field that appears. The file should use a specific template. Some examples are below :</li>
 </ul>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#ifndef MYHLSLINCLUDE_INCLUDED
-</span><span style="color:#75715e">#define MYHLSLINCLUDE_INCLUDED
-</span><span style="color:#75715e"></span><span style="color:#75715e">// This define is important to prevent the file being included multiple
-</span><span style="color:#75715e">// times if the file is used in multiple Custom Function nodes
-</span><span style="color:#75715e">// You should change it to be unique for each file you create.
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e">// The function name &#34;MyFunction&#34; will be the Name used in the Custom Function.
-</span><span style="color:#75715e">// The _float suffix is used to support the Float/Single precision.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">MyFunction_float</span>(float3 A, <span style="color:#66d9ef">float</span> B, out float3 Out) {
-	<span style="color:#75715e">// A is a Vector3 input, which in code is float3 (or half3 if using Half precision)
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// B is a Float/Vector1 input, which in code is float (or half)
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// Outputs use the &#34;out&#34; term in the function arguments/parameters.
-</span><span style="color:#75715e"></span>    Out <span style="color:#f92672">=</span> A <span style="color:#f92672">+</span> B;
-}
-
-<span style="color:#75715e">// If we need to support the half precision too,
-</span><span style="color:#75715e">// we can define the same function but with the _half suffix.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">MyFunction_half</span>(half3 A, half B, out half3 Out) {
-    Out <span style="color:#f92672">=</span> A <span style="color:#f92672">+</span> B;
-}
-
-<span style="color:#75715e">// We can also define multiple functions in the same file,
-</span><span style="color:#75715e">// and even include other files to use functions from them.
-</span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Assets/OtherFile.hlsl&#34;</span><span style="color:#75715e">
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e">// This function doesn&#39;t use an output, instead returns float3.
-</span><span style="color:#75715e">// This can&#39;t really be used in the Custom Function node as that requires an out parameter
-</span><span style="color:#75715e">// but it can still be used by other functions below.
-</span><span style="color:#75715e"></span>float3 <span style="color:#a6e22e">NonGraphFunction</span>(float3 In) {
-    <span style="color:#66d9ef">return</span> In <span style="color:#f92672">*</span> In;
-}
-
-<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">AnotherFunction_float</span>(float3 A, out float3 Out) {
-	<span style="color:#75715e">#ifdef SHADERGRAPH_PREVIEW
-</span><span style="color:#75715e"></span>		<span style="color:#75715e">// Code in here will be used by previews
-</span><span style="color:#75715e"></span>		Out <span style="color:#f92672">=</span> FunctionInThatOtherFile(A);
-	<span style="color:#75715e">#else
-</span><span style="color:#75715e"></span>		<span style="color:#75715e">// Code in here will be used by the actual shader
-</span><span style="color:#75715e"></span>		Out <span style="color:#f92672">=</span> NonGraphFunction(A);
-	<span style="color:#75715e">#endif
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// Note that all Outputs must be set in all code paths, or it will error.
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// Meaning, if we use #if or #ifdef, we should always use an #else
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// as well, or set the outputs at the start outside the conditional block.
-</span><span style="color:#75715e"></span>}
-
-<span style="color:#75715e">#endif // ends the MYHLSLINCLUDE_INCLUDED check at the beginning of the file.</span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifndef MYHLSLINCLUDE_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define MYHLSLINCLUDE_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">// This define is important to prevent the file being included multiple
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// times if the file is used in multiple Custom Function nodes
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// You should change it to be unique for each file you create.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// The function name &#34;MyFunction&#34; will be the Name used in the Custom Function.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// The _float suffix is used to support the Float/Single precision.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">MyFunction_float</span>(float3 A, <span style="color:#66d9ef">float</span> B, out float3 Out) {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// A is a Vector3 input, which in code is float3 (or half3 if using Half precision)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// B is a Float/Vector1 input, which in code is float (or half)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// Outputs use the &#34;out&#34; term in the function arguments/parameters.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Out <span style="color:#f92672">=</span> A <span style="color:#f92672">+</span> B;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// If we need to support the half precision too,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// we can define the same function but with the _half suffix.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">MyFunction_half</span>(half3 A, half B, out half3 Out) {
+</span></span><span style="display:flex;"><span>    Out <span style="color:#f92672">=</span> A <span style="color:#f92672">+</span> B;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// We can also define multiple functions in the same file,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// and even include other files to use functions from them.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Assets/OtherFile.hlsl&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// This function doesn&#39;t use an output, instead returns float3.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// This can&#39;t really be used in the Custom Function node as that requires an out parameter
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// but it can still be used by other functions below.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>float3 <span style="color:#a6e22e">NonGraphFunction</span>(float3 In) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> In <span style="color:#f92672">*</span> In;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">AnotherFunction_float</span>(float3 A, out float3 Out) {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#ifdef SHADERGRAPH_PREVIEW
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// Code in here will be used by previews
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Out <span style="color:#f92672">=</span> FunctionInThatOtherFile(A);
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#else
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// Code in here will be used by the actual shader
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Out <span style="color:#f92672">=</span> NonGraphFunction(A);
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// Note that all Outputs must be set in all code paths, or it will error.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// Meaning, if we use #if or #ifdef, we should always use an #else
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// as well, or set the outputs at the start outside the conditional block.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif </span><span style="color:#75715e">// ends the MYHLSLINCLUDE_INCLUDED check at the beginning of the file.
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>The <strong>Name</strong> of the function isn&rsquo;t too important if using the <strong>String</strong> mode but they must be unique or the function may override another. If using the <strong>File</strong> mode the <strong>Name</strong> must match the name of the function you want to use, without the precision prefix. A file can contain multiple functions, but the <b class="node">Custom Function</b> node will only use the one with the name you set.</p>
@@ -1617,54 +1594,54 @@ RawDepth = SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTextur
 </ul>
 <p>For HDRP a similar list can be found <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl">here</a>.</p>
 <p>Shader Graph also uses <code>SHADERPASS_PREVIEW</code> for it&rsquo;s previews. Though you can also check for this using :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#ifdef SHADERGRAPH_PREVIEW
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// Code for previews only
-</span><span style="color:#75715e"></span><span style="color:#75715e">#else
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// Code for actual shader
-</span><span style="color:#75715e"></span><span style="color:#75715e">#endif</span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifdef SHADERGRAPH_PREVIEW
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// Code for previews only
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#else
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// Code for actual shader
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#endif</span></span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>This can be important for some code that isn&rsquo;t available in the preview stage.</p>
 <p>To use one of the pass defines in v10+ to output different values for a specific pass, the following <b class="node">Custom Function</b> could be used :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#ifdef SHADERGRAPH_PREVIEW
-</span><span style="color:#75715e"></span>	Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
-<span style="color:#75715e">#else
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// For URP this is needed :
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl&#34;</span><span style="color:#75715e">
-</span><span style="color:#75715e"></span>	
-	<span style="color:#75715e">// Test if we are in the SHADOWCASTER pass
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">#if (SHADERPASS == SHADERPASS_SHADOWCASTER)
-</span><span style="color:#75715e"></span>		Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
-	<span style="color:#75715e">#else
-</span><span style="color:#75715e"></span>		Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-	<span style="color:#75715e">#endif
-</span><span style="color:#75715e">#endif</span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifdef SHADERGRAPH_PREVIEW
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#else
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// For URP this is needed :
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Test if we are in the SHADOWCASTER pass
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">#if (SHADERPASS == SHADERPASS_SHADOWCASTER)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#else
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#endif</span></span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Here I&rsquo;m using the <strong>String</strong> mode, but you could also use the <strong>File</strong> mode and the <code>#include</code> could then be moved outside the function too. The <code>ShaderPass.hlsl</code> file is only important for defining values to each of the <code>SHADERPASS</code> defines I listed before. I find it a bit strange that Shader Graph isn&rsquo;t generating the include for this file automatically (in URP v10.2.2 at least). It is using the defines from that file so really should be including it. I would assume this is a bug.</p>

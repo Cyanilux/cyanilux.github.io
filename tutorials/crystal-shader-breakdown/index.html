@@ -15,16 +15,10 @@
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Crystal Shader Breakdown">
-<meta itemprop="description" content="An unlit/glowing crystal shader with a colour gradient based on object space Y position, and refraction via Scene Color node">
-<meta itemprop="datePublished" content="2021-02-01T00:00:00+00:00" />
+<meta itemprop="description" content="An unlit/glowing crystal shader with a colour gradient based on object space Y position, and refraction via Scene Color node"><meta itemprop="datePublished" content="2021-02-01T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-02-01T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1505">
-<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
-
-
-
+<meta itemprop="wordCount" content="1364"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="URP,Shader Graph," />
-
 	
 	
 	<meta name="twitter:card" content="summary_large_image"/>
@@ -203,6 +197,12 @@
 		</a></b>
 		</li>
 		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		
+		FAQ
+		</a></b>
+		</li>
+		
 	</ul>
 	</nav>
 </div>
@@ -230,7 +230,7 @@
 
 <script>
 	if (cookiesAccepted){
-		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eSome luminous crystals ~ 💎✨\u003cbr\u003e\u003cbr\u003eFairly simple shader with a colour gradient based on World space Y position. Fresnel effect used for opacity so edges are more opaque \u0026amp; glow more (for bloom). Bit of refraction. Also using point lights. Graph in replies! 💙\u003ca href=\"https://twitter.com/hashtag/unity3d?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3d\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://t.co/Qi5kv8AZy6\"\u003epic.twitter.com/Qi5kv8AZy6\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ❄ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1332335315848224769?ref_src=twsrc%5Etfw\"\u003eNovember 27, 2020\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eSome luminous crystals ~ 💎✨\u003cbr\u003e\u003cbr\u003eFairly simple shader with a colour gradient based on World space Y position. Fresnel effect used for opacity so edges are more opaque \u0026amp; glow more (for bloom). Bit of refraction. Also using point lights. Graph in replies! 💙\u003ca href=\"https://twitter.com/hashtag/unity3d?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3d\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://t.co/Qi5kv8AZy6\"\u003epic.twitter.com/Qi5kv8AZy6\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1332335315848224769?ref_src=twsrc%5Etfw\"\u003eNovember 27, 2020\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
 	}else{
 		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1332335315848224769\">https://twitter.com/Cyanilux/status/1332335315848224769</a><p>"+
 		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
@@ -291,16 +291,14 @@
 <a href="Graph4.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="414" alt="(Image)" src="Graph4.png" />
 </a>
-<p class="img-text">
-(Click to show full image in new tab)
-</p>
+<p class="img-text">(Click to show full image in new tab)</p>
 </div>
 <p>Finally, I&rsquo;ve also added a <b class="node">Multiply</b> by a <strong>Vector1 &ldquo;Glow&rdquo; property</strong> before putting the result into the <strong>Color</strong> input on the <b class="node">Master</b> node as shown above. (<strong>Base Color</strong> on <b class="node">Master Stack (Fragment)</b> if using URP v10+).</p>
 <p>Set the default value of this property to 1 for &ldquo;no effect&rdquo;. The whole effect is unlit, but we can increase the value to make the colour brighter. If we&rsquo;re using <strong>HDR</strong> colour mode (on the URP Asset) and <strong>Bloom</strong> in the <strong>Post Processing Volume</strong> it&rsquo;ll make it appear to glow. For actually affecting the scene we would need to use Point Lights though.</p>
 <p>Since the graph contains properties, you can also change them per-material to create a few different coloured crystals.</p>
 <script>
 	if (cookiesAccepted){
-		document.write("\u003cblockquote class=\"twitter-tweet\" data-conversation=\"none\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eSome alternative colours ✨ \u003ca href=\"https://t.co/st5FfcsvCQ\"\u003epic.twitter.com/st5FfcsvCQ\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ❄ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1332702853476081666?ref_src=twsrc%5Etfw\"\u003eNovember 28, 2020\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-conversation=\"none\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eSome alternative colours ✨ \u003ca href=\"https://t.co/st5FfcsvCQ\"\u003epic.twitter.com/st5FfcsvCQ\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1332702853476081666?ref_src=twsrc%5Etfw\"\u003eNovember 28, 2020\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
 	}else{
 		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1332702853476081666\">https://twitter.com/Cyanilux/status/1332702853476081666</a><p>"+
 		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+

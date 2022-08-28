@@ -17,12 +17,8 @@
 	<meta itemprop="name" content="Resources">
 <meta itemprop="description" content="Useful Links to Resources/Tutorials/Docs related to Unity or Gamedev">
 
-<meta itemprop="wordCount" content="476">
-
-
-
+<meta itemprop="wordCount" content="293">
 <meta itemprop="keywords" content="" />
-
 	
 	
 	<meta name="twitter:card" content="summary"/>
@@ -193,6 +189,12 @@
 		</a></b>
 		</li>
 		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		
+		FAQ
+		</a></b>
+		</li>
+		
 	</ul>
 	</nav>
 </div>
@@ -208,15 +210,23 @@
 
 <p>The list below links external resources, mostly related to <strong>Shaders</strong> and <strong>Unity</strong> (various pipelines).</p>
 <p>It contains mostly articles &amp; written tutorials. (If you&rsquo;re looking for video tutorials you can search on Youtube instead). If you have suggestions of links to add, you can put them in the <code>#resources</code> section of my <a href="http://discord.gg/2V93q9w">discord</a>. If the owners of any of these want to be removed from the list, can ask me on discord or <a href="https://twitter.com/Cyanilux">twitter</a>.</p>
-<button type="button" class="foldout_button" onclick="
+<button id="" type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
     if (content.style.display === 'block') {
       content.style.display = 'none';
+      this.innerHTML = '<b>⯈ More Info</b>';
     } else {
       content.style.display = 'block';
+      this.innerHTML = '<b>⯆ More Info</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
     }
-">❯ More Info</button>
+"><b>⯈ More Info</b></button>
 <div class="foldout">
 <ul>
 <li>The list is loaded from a <a href="https://gist.github.com/Cyanilux/69e4f228206b1a70c3f8a0ab4f22ef75">Github gist</a> (so I don&rsquo;t have to update the entire site to add entries). If it fails to load for some reason (won&rsquo;t be supported for Internet Explorer) can optionally view that instead.</li>

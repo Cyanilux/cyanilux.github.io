@@ -15,16 +15,10 @@
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Cloud Shader Breakdown">
-<meta itemprop="description" content="A shader applied to a flat subdivided plane where vertices are offset vertically based on layered noise, moving at different rates, to create a cloud effect. Also uses scene depth to produce a softer transition with intersecting game objects">
-<meta itemprop="datePublished" content="2019-09-25T00:00:00+00:00" />
+<meta itemprop="description" content="A shader applied to a flat subdivided plane where vertices are offset vertically based on layered noise, moving at different rates, to create a cloud effect. Also uses scene depth to produce a softer transition with intersecting game objects"><meta itemprop="datePublished" content="2019-09-25T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-09-25T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1684">
-<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
-
-
-
+<meta itemprop="wordCount" content="1602"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="URP,Shader Graph," />
-
 	
 	
 	<meta name="twitter:card" content="summary_large_image"/>
@@ -203,6 +197,12 @@
 		</a></b>
 		</li>
 		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		
+		FAQ
+		</a></b>
+		</li>
+		
 	</ul>
 	</nav>
 </div>
@@ -230,7 +230,7 @@
 
 <script>
 	if (cookiesAccepted){
-		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eSaw a few others doing cloud shaders last week, so I might as well join in! Really happy with how this turned out. ☁️🌥️☁️ (See thread for \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e + info) \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/LfUDykwtix\"\u003epic.twitter.com/LfUDykwtix\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ❄ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1172472087673393152?ref_src=twsrc%5Etfw\"\u003eSeptember 13, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eSaw a few others doing cloud shaders last week, so I might as well join in! Really happy with how this turned out. ☁️🌥️☁️ (See thread for \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e + info) \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/LfUDykwtix\"\u003epic.twitter.com/LfUDykwtix\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1172472087673393152?ref_src=twsrc%5Etfw\"\u003eSeptember 13, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
 	}else{
 		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1172472087673393152\">https://twitter.com/Cyanilux/status/1172472087673393152</a><p>"+
 		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
@@ -301,20 +301,20 @@
 <p class="img-text"></p>
 </div>
 <p>Note : Also make sure the <strong>Alpha Clip Threshold</strong> on the <b class="node">Master</b> node to <strong>0</strong> for URP. In older versions of LWRP the value would do nothing unless a node was connected but this has been changed. You may want to use an additional property to control this threshold in order to correctly render shadows if required, but this will create a hard-cutoff. If you don&rsquo;t want to affect the normal visuals, you can create a <strong>Boolean Keyword</strong> with the reference of SHADERPASS_SHADOWCASTER to output different values when that is true, or use a <b class="node">Custom Function</b> containing something like :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#ifdef SHADERPASS_SHADOWCASTER
-</span><span style="color:#75715e"></span>	Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5</span>; <span style="color:#75715e">// or maybe pass a Vector1 property in
-</span><span style="color:#75715e"></span><span style="color:#75715e">#else
-</span><span style="color:#75715e"></span>	Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-<span style="color:#75715e">#endif</span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifdef SHADERPASS_SHADOWCASTER
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5</span>; <span style="color:#75715e">// or maybe pass a Vector1 property in
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#else
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif</span></span></span></code></pre></td></tr></table>
 </div>
 </div>
 <h3 id="fixing-issues">Fixing Issues</h3>

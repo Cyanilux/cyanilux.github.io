@@ -332,7 +332,6 @@ nav {
 
 img {
 	max-width: 100%;
-	margin : 10px;
 	object-fit: scale-down;
 }
 
@@ -509,6 +508,8 @@ video {
 	font-size: 15px;
 	border-radius : 10px;
 	display: flex;
+	margin-top: 5px;
+	line-height: 25px;
 }
 
 .foldout_active, .foldout_button:hover {
@@ -517,9 +518,20 @@ video {
 
 .foldout {
 	margin-top: 5px;
-	padding: 10px 15px 10px 0px;
+	margin-bottom: 10px;
+	padding: 0px 15px 0px 10px;
 	display: none;
 	overflow: hidden;
 	background-color: #282828;
+	border-radius : 10px;
+}
+
+.foldout > ul {
+	padding-left: 20px;
+}
+
+.foldout img {
+	background-color: #202020;
+	border: 2px solid #151515;
 	border-radius : 10px;
 }

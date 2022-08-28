@@ -15,15 +15,10 @@
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Intro to Shaders">
-<meta itemprop="description" content="An introduction to what a Mesh, Shader and Material is in Unity, how to set Shader Properties from C#, a brief look at Forward vs Deferred rendering and some information about Material instances and Batching">
-<meta itemprop="datePublished" content="2021-01-10T00:00:00+00:00" />
+<meta itemprop="description" content="An introduction to what a Mesh, Shader and Material is in Unity, how to set Shader Properties from C#, a brief look at Forward vs Deferred rendering and some information about Material instances and Batching"><meta itemprop="datePublished" content="2021-01-10T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-01-10T00:00:00+00:00" />
 <meta itemprop="wordCount" content="3730">
-
-
-
 <meta itemprop="keywords" content="HLSL," />
-
 	
 	
 	<meta name="twitter:card" content="summary"/>
@@ -196,6 +191,12 @@
 		</a></b>
 		</li>
 		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		
+		FAQ
+		</a></b>
+		</li>
+		
 	</ul>
 	</nav>
 </div>
@@ -239,9 +240,7 @@
 <a href="Cube.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="412" height="389" alt="(Image)" src="Cube.png" />
 </a>
-<p class="img-text">
-Example Cube Mesh, consisting of 12 triangles. In Blender (3D modelling software), this has 8 vertices, however this value may change when importing into Unity depending on whether it's per-vertex data is the same between shared vertices.
-</p>
+<p class="img-text">Example Cube Mesh, consisting of 12 triangles. In Blender (3D modelling software), this has 8 vertices, however this value may change when importing into Unity depending on whether it&rsquo;s per-vertex data is the same between shared vertices.</p>
 </div>
 <p>The terms “mesh” and “model” are usually used as interchangeable words. But if we are being specific, a mesh always refers to the geometry (vertices/triangles) while a model may refer to the imported file, which can actually contain multiple mesh objects, sub-meshes, as well as materials, animations, etc.</p>
 <p>A model is commonly made in external 3D modelling programs, such as Blender, and imported into unity (usually using the .FBX format) but we can also generate (and/or edit) a Mesh at runtime using the methods in the <a href="https://docs.unity3d.com/ScriptReference/Mesh.html">C# Mesh class</a>.</p>
@@ -258,9 +257,7 @@ Example Cube Mesh, consisting of 12 triangles. In Blender (3D modelling software
 <a href="CubeNormals.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="716" height="351" alt="(Image)" src="CubeNormals.png" />
 </a>
-<p class="img-text">
-Example Cube Mesh. Both have <b>12</b> triangles but the left has <b>24</b> vertices, while the right has <b>8</b> vertices.
-</p>
+<p class="img-text">Example Cube Mesh. Both have <b>12</b> triangles but the left has <b>24</b> vertices, while the right has <b>8</b> vertices.</p>
 </div>
 <p>This is quite common if a model has <strong>flat shading</strong> rather than <strong>smooth shading</strong> like in the image above. Flat shading will increase the number of vertices because the <strong>Vertex Normals</strong> need to point in different directions depending on which face they are a part of. (This might not happen in the modelling program itself, but would when it’s exported to Unity). Smooth shading instead takes an <strong>average</strong> of these directions, so those vertices can be shared, assuming all other data is also the same!</p>
 <h2 id="shader">What is a Shader?</h2>
@@ -285,53 +282,52 @@ Example Cube Mesh. Both have <b>12</b> triangles but the left has <b>24</b> vert
 <p>Alternatively there are also node-based shader editors, such as <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@latest">Shader Graph</a> (official, avaliable for URP or HDRP), <a href="https://assetstore.unity.com/packages/tools/visual-scripting/amplify-shader-editor-68570">Amplify Shader Editor</a> (works in all pipelines, but not free), and <a href="https://github.com/FreyaHolmer/ShaderForge">Shader Forge</a> (no longer developed, only works on older Unity versions).</p>
 <h2 id="passes">Shader Passes</h2>
 <p>Typically shaders will include a main pass that either doesn&rsquo;t have a <strong>LightMode tag</strong> or uses one like &ldquo;UniversalForward&rdquo; (URP), &ldquo;ForwardBase&rdquo; (Built-in Pipeline) or &ldquo;Forward&rdquo; (HDRP), assuming the shader is intended for use in Forward Rendering rather than Deferred Rendering (the next section will explain this a little).</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#75715e">// e.g.
-</span><span style="color:#75715e"></span>SubShader {
-	Tags { <span style="color:#e6db74">&#34;RenderType&#34;</span>=<span style="color:#e6db74">&#34;Opaque&#34;</span> <span style="color:#e6db74">&#34;RenderPipeline&#34;</span>=<span style="color:#e6db74">&#34;UniversalPipeline&#34;</span> }
-	Pass {
-		Name <span style="color:#e6db74">&#34;Example&#34;</span>
-		Tags { <span style="color:#e6db74">&#34;LightMode&#34;</span>=<span style="color:#e6db74">&#34;UniversalForward&#34;</span> }
-	 
-		HLSLPROGRAM
-			...
-		ENDHLSL
-	}
-	Pass {
-		Name <span style="color:#e6db74">&#34;Example2&#34;</span>
-		Tags { <span style="color:#e6db74">&#34;LightMode&#34;</span>=<span style="color:#e6db74">&#34;ShadowCaster&#34;</span> }
-	 
-		HLSLPROGRAM
-			...
-		ENDHLSL
-	}
-	<span style="color:#75715e">// etc.
-</span><span style="color:#75715e"></span>}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// e.g.</span>
+</span></span><span style="display:flex;"><span>SubShader {
+</span></span><span style="display:flex;"><span>	Tags { <span style="color:#e6db74">&#34;RenderType&#34;</span>=<span style="color:#e6db74">&#34;Opaque&#34;</span> <span style="color:#e6db74">&#34;RenderPipeline&#34;</span>=<span style="color:#e6db74">&#34;UniversalPipeline&#34;</span> }
+</span></span><span style="display:flex;"><span>	Pass {
+</span></span><span style="display:flex;"><span>		Name <span style="color:#e6db74">&#34;Example&#34;</span>
+</span></span><span style="display:flex;"><span>		Tags { <span style="color:#e6db74">&#34;LightMode&#34;</span>=<span style="color:#e6db74">&#34;UniversalForward&#34;</span> }
+</span></span><span style="display:flex;"><span>	 
+</span></span><span style="display:flex;"><span>		HLSLPROGRAM
+</span></span><span style="display:flex;"><span>			...
+</span></span><span style="display:flex;"><span>		ENDHLSL
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	Pass {
+</span></span><span style="display:flex;"><span>		Name <span style="color:#e6db74">&#34;Example2&#34;</span>
+</span></span><span style="display:flex;"><span>		Tags { <span style="color:#e6db74">&#34;LightMode&#34;</span>=<span style="color:#e6db74">&#34;ShadowCaster&#34;</span> }
+</span></span><span style="display:flex;"><span>	 
+</span></span><span style="display:flex;"><span>		HLSLPROGRAM
+</span></span><span style="display:flex;"><span>			...
+</span></span><span style="display:flex;"><span>		ENDHLSL
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// etc.</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>The <strong>LightMode</strong> tag is important to tell Unity what the pass is used for. The <strong>RenderPipeline</strong> tag is also useful to tell Unity which pipeline the SubShader is intended for if the shader needs to support multiple pipelines.</p>
@@ -362,9 +358,7 @@ Example Cube Mesh. Both have <b>12</b> triangles but the left has <b>24</b> vert
 <a href="Pipeline.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="681" height="105" alt="(Image)" src="Pipeline.png" />
 </a>
-<p class="img-text">
-Shows how these extra stages fit into the pipeline.</br>(Though this is simplified and doesn't include steps like clipping, face culling, early z-test, z-test, blending, etc)
-</p>
+<p class="img-text">Shows how these extra stages fit into the pipeline.</br>(Though this is simplified and doesn&rsquo;t include steps like clipping, face culling, early z-test, z-test, blending, etc)</p>
 </div>
 <p>These additional shader stages aren’t needed for every shader program, and aren’t always supported on each platform/GPU. Both of these also aren’t included/possible in Shader Graph (yet), so I won’t be going over them in this post. You can likely find some examples for shader code online though, such as :</p>
 <ul>
@@ -373,7 +367,7 @@ Shows how these extra stages fit into the pipeline.</br>(Though this is simplifi
 <li><a href="https://roystan.net/articles/grass-shader.html">https://roystan.net/articles/grass-shader.html</a></li>
 <li><a href="https://github.com/Cyanilux/URP_GrassGeometryShader">https://github.com/Cyanilux/URP_GrassGeometryShader</a></li>
 </ul>
-<p>There is also <strong>Compute</strong> shaders, which run separately from the other shaders mentioned above. They are typically used for generating textures (e.g. an output using RWTexture2D<!-- raw HTML omitted -->) or geometry / other arbitrary data (e.g. RWStructuredBuffer<!-- raw HTML omitted -->, or with int, or a custom struct). These aren’t the focus of this article though. If you’re interested in learning more about compute shaders, take a look at tutorials like :</p>
+<p>There is also <strong>Compute</strong> shaders, which run separately from the other shaders mentioned above. They are typically used for generating textures (e.g. an output using RWTexture2D<float4>) or geometry / other arbitrary data (e.g. RWStructuredBuffer<float3>, or with int, or a custom struct). These aren’t the focus of this article though. If you’re interested in learning more about compute shaders, take a look at tutorials like :</p>
 <ul>
 <li><a href="https://www.ronja-tutorials.com/2020/07/26/compute-shader.html">https://www.ronja-tutorials.com/2020/07/26/compute-shader.html</a></li>
 <li><a href="http://kylehalladay.com/blog/tutorial/2014/06/27/Compute-Shaders-Are-Nifty.html">http://kylehalladay.com/blog/tutorial/2014/06/27/Compute-Shaders-Are-Nifty.html</a></li>
@@ -381,90 +375,86 @@ Shows how these extra stages fit into the pipeline.</br>(Though this is simplifi
 </ul>
 <h2 id="materials">Materials &amp; Properties</h2>
 <p>From a shader we can create <strong>Materials</strong>, which acts as containers for certain data (such as floats, vectors, textures, etc). This data is exposed by the shader using the <a href="https://docs.unity3d.com/Manual/SL-Properties.html">Properties</a> section of the Shaderlab syntax (or the Blackboard in the case of Shader Graph). These properties can then be edited for each material in the inspector.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">Shader <span style="color:#e6db74">&#34;Example&#34;</span> {
-    Properties {
-		<span style="color:#75715e">// Property Name/Reference ( &#34;Display Name&#34;, Type) = Default Value
-</span><span style="color:#75715e"></span>		_ExampleTex(<span style="color:#e6db74">&#34;Example Texture&#34;</span>, <span style="color:#ae81ff">2D</span>) = <span style="color:#e6db74">&#34;white&#34;</span> {}
-		_ExampleColor(<span style="color:#e6db74">&#34;Example Colour&#34;</span>, Color) = (<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>)
-		_ExampleRange(<span style="color:#e6db74">&#34;Example Float Range&#34;</span>, Range(<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">1.0</span>)) = <span style="color:#ae81ff">0.5</span>
-		_ExampleFloat(<span style="color:#e6db74">&#34;Example Float&#34;</span>, Float) = <span style="color:#ae81ff">1.0</span>
-		_ExampleVector(<span style="color:#e6db74">&#34;Example Vector&#34;</span>, Vector) = (<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>)
-		...
-		<span style="color:#75715e">// See ShaderLab Properties docs page linked above for more info
-</span><span style="color:#75715e"></span>	}
-	...
-	<span style="color:#75715e">// Rest of the shader (SubShader, Passes, etc.)
-</span><span style="color:#75715e"></span>}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>Shader <span style="color:#e6db74">&#34;Example&#34;</span> {
+</span></span><span style="display:flex;"><span>    Properties {
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Property Name/Reference ( &#34;Display Name&#34;, Type) = Default Value</span>
+</span></span><span style="display:flex;"><span>		_ExampleTex(<span style="color:#e6db74">&#34;Example Texture&#34;</span>, <span style="color:#ae81ff">2D</span>) = <span style="color:#e6db74">&#34;white&#34;</span> {}
+</span></span><span style="display:flex;"><span>		_ExampleColor(<span style="color:#e6db74">&#34;Example Colour&#34;</span>, Color) = (<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>		_ExampleRange(<span style="color:#e6db74">&#34;Example Float Range&#34;</span>, Range(<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">1.0</span>)) = <span style="color:#ae81ff">0.5</span>
+</span></span><span style="display:flex;"><span>		_ExampleFloat(<span style="color:#e6db74">&#34;Example Float&#34;</span>, Float) = <span style="color:#ae81ff">1.0</span>
+</span></span><span style="display:flex;"><span>		_ExampleVector(<span style="color:#e6db74">&#34;Example Vector&#34;</span>, Vector) = (<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>		...
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// See ShaderLab Properties docs page linked above for more info</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	...
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Rest of the shader (SubShader, Passes, etc.)</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>This allows multiple materials to share the same shader, but we can change textures and other settings to change how the result looks.</p>
 <p>For example, the Standard shader that Unity provides (or URP/Lit, HDRP/Lit), can replicate many basic materials fairly well (e.g. plastic, metal, wood, stone, etc.) with the correct texture maps and other values (Albedo, Normal, Occlusion, Metallic/Specular, etc)</p>
 <h2 id="properties">Setting Properties from C#</h2>
 <p>In order to set one of these properties from C#, we need a reference to the Material object and need to know the property name (Reference field in Shader Graph). In order to get the material we can do a few different things. One way is to use a public field :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> Material material;
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Material material;</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Then assign the material in the inspector. Setting the properties on the material using this method will always affect all objects that share that material though.</p>
 <p>Alternatively, we can keep the material private and set it based on the value in the Renderer. e.g.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">private</span> Material material;
-
-<span style="color:#66d9ef">void</span> Start(){
-	Renderer renderer = GetComponent&lt;Renderer&gt;();
-	material = renderer.sharedMaterial;
-	<span style="color:#75715e">// or :
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// material = renderer.material;
-</span><span style="color:#75715e"></span>}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Material material;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> Start(){
+</span></span><span style="display:flex;"><span>	Renderer renderer = GetComponent&lt;Renderer&gt;();
+</span></span><span style="display:flex;"><span>	material = renderer.sharedMaterial;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// or :</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// material = renderer.material;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>This assumes the script is on the same GameObject as the Renderer (e.g. MeshRenderer).</p>
 <p>We can then set a property using one of the “Set” functions. e.g. SetFloat, SetVector, SetTexture, SetColor listed under the <a href="https://docs.unity3d.com/ScriptReference/Material.html">Materials docs scripting page</a>. This could be in Start or Update (though it’s better to only call it when the value actually needs to be changed).</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#75715e">// e.g.
-</span><span style="color:#75715e"></span>material.SetColor(<span style="color:#e6db74">&#34;_ExampleColor&#34;</span>, Color.red);
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// e.g.</span>
+</span></span><span style="display:flex;"><span>material.SetColor(<span style="color:#e6db74">&#34;_ExampleColor&#34;</span>, Color.red);</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Here the &ldquo;_ExampleColor&rdquo; would be the name/reference of the property as defined in the shader. Typically, if you select the .shader (or .shadergraph) file in the Project window it will list the properties it has in the Inspector window.</p>
@@ -472,15 +462,14 @@ Shows how these extra stages fit into the pipeline.</br>(Though this is simplifi
 <p>Typically the reference starts with &ldquo;_&rdquo; as a naming convention. I believe this also helps to avoid errors as without it the reference might be something that is used by the shaderlab syntax already, but don&rsquo;t quote me on that. (e.g. &ldquo;Offset&rdquo; might error because of its <a href="https://docs.unity3d.com/Manual/SL-CullAndDepth.html">shaderlab usage</a>, but &ldquo;_Offset&rdquo; wont? Same with Cull, ZTest, Blend etc.)</p>
 <h2 id="properties-global">Global Shader Properties</h2>
 <p>There are also Global shader properties, which can be set through the <a href="https://docs.unity3d.com/ScriptReference/Shader.html">Shader class</a> and it’s static “SetGlobal” functions. e.g. SetGlobalFloat, SetGlobalVector, SetGlobalTexture, SetGlobalColor, etc.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#75715e">// e.g.
-</span><span style="color:#75715e"></span>Shader.SetGlobalColor(<span style="color:#e6db74">&#34;_GlobalColor&#34;</span>, Color.red);
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// e.g.</span>
+</span></span><span style="display:flex;"><span>Shader.SetGlobalColor(<span style="color:#e6db74">&#34;_GlobalColor&#34;</span>, Color.red);</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>In this example, the &ldquo;_GlobalColor&rdquo; property can be defined by any shader that needs access to the colour in the same way a regular property would be used, except it doesn&rsquo;t need to be in the exposed Shaderlab Properties section.</p>
@@ -489,35 +478,34 @@ Shows how these extra stages fit into the pipeline.</br>(Though this is simplifi
 <p>It’s important to understand the difference between <code>renderer.sharedMaterial</code> and <code>renderer.material</code> when dealing with obtaining the material to change it&rsquo;s properties.</p>
 <p>Using <code>.sharedMaterial</code>, as the name might suggest gives you the material shared by all objects. This means that changing a property on it will affect <strong>all</strong> objects (similar to setting properties on a <code>public Material</code>).</p>
 <p>Using <code>.material</code> instead <strong>creates a new instance</strong> (clone) of the material the first time it is called, and automatically assigns it to the renderer. Setting a property using this will only affect that object. However note that it is also your responsibility to destroy this material instance when it is no longer needed. e.g. in OnDestroy :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">private</span> Material material;
-
-<span style="color:#66d9ef">void</span> Start(){
-	Renderer renderer = GetComponent&lt;Renderer&gt;();
-	material = renderer.material;
-}
-	
-<span style="color:#66d9ef">void</span> OnDestroy(){
-	<span style="color:#75715e">// if using renderer.material, need to destroy the instance when it is no longer used :
-</span><span style="color:#75715e"></span>	Destroy(material);
-	<span style="color:#75715e">// or Destroy(GetComponent&lt;Renderer&gt;().material); if not caching it in a private variable
-</span><span style="color:#75715e"></span>}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Material material;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> Start(){
+</span></span><span style="display:flex;"><span>	Renderer renderer = GetComponent&lt;Renderer&gt;();
+</span></span><span style="display:flex;"><span>	material = renderer.material;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> OnDestroy(){
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// if using renderer.material, need to destroy the instance when it is no longer used :</span>
+</span></span><span style="display:flex;"><span>	Destroy(material);
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// or Destroy(GetComponent&lt;Renderer&gt;().material); if not caching it in a private variable</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Typically for the built-in pipeline using many material instances is bad, as it breaks something called <strong>Batching</strong>, which combines meshes that use the same material together so they can be drawn all at once, rather than separately. This helps with performance - though it is worth noting that since it combines meshes, certain data (like the Model matrix, <code>UNITY_MATRIX_M</code> / <code>Unity_ObjectToWorld</code> and inverse ones) is no longer on a per-object basis which may lead to unintended results if the shader relies on Object space.</p>
@@ -535,32 +523,32 @@ Shows how these extra stages fit into the pipeline.</br>(Though this is simplifi
 <p>This means in URP and HDRP, it&rsquo;s actually safe to use <code>renderer.material</code> to create material instances and change properties as explained in the previous section. They&rsquo;ll produce some memory overhead but can still be batched together! You should of course still also use material.sharedMaterial if you don&rsquo;t actually want different property values, in order to avoid unnecessary material instances.</p>
 <p>Also, since the SRP Batcher doesn&rsquo;t combine meshes, the Model matrix and it&rsquo;s inverse stays intact (assuming those GameObjects also aren&rsquo;t using static batching). Object space can be used in the shader without the unintended results you would get with the other batching methods.</p>
 <p>Shaders created using Shader Graph will automatically support the SRP Batcher, but custom HLSL code shaders need to define a <strong>UnityPerMaterial CBUFFER</strong>. This should contain all the per-material properties except for textures. Every pass in the shader needs to use the same CBUFFER values, so I&rsquo;d recommend putting it inside the SubShader in HLSLINCLUDE tags, as this will automatically include it in every pass for you. For example the following should work for URP :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">HLSLINCLUDE
-    <span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl&#34;</span><span style="color:#75715e">
-</span><span style="color:#75715e"></span>    CBUFFER_START(UnityPerMaterial)
-    float4 _ExampleTexture_ST; <span style="color:#75715e">// Tiling &amp; Offset values for a texture
-</span><span style="color:#75715e"></span>    float4 _ExampleColor;
-	<span style="color:#66d9ef">float</span> _ExampleRange;
-	<span style="color:#66d9ef">float</span> _ExampleFloat;
-    float4 _ExampleVector;
-	<span style="color:#75715e">// etc.
-</span><span style="color:#75715e"></span>    CBUFFER_END
-ENDHLSL</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>HLSLINCLUDE
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    CBUFFER_START(UnityPerMaterial)
+</span></span><span style="display:flex;"><span>    float4 _ExampleTexture_ST; <span style="color:#75715e">// Tiling &amp; Offset values for a texture
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    float4 _ExampleColor;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">float</span> _ExampleRange;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">float</span> _ExampleFloat;
+</span></span><span style="display:flex;"><span>    float4 _ExampleVector;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// etc.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    CBUFFER_END
+</span></span><span style="display:flex;"><span>ENDHLSL</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>You can find some full examples in my <a href="https://cyangamedev.wordpress.com/2020/06/05/urp-shader-code/">Writing Shader Code for URP</a> post (currently only on my old wordpress site, sorry for the ads).</p>

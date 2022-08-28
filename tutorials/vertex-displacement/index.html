@@ -15,15 +15,10 @@
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Vertex Displacement">
-<meta itemprop="description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies">
-<meta itemprop="datePublished" content="2019-06-14T00:00:00+00:00" />
+<meta itemprop="description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies"><meta itemprop="datePublished" content="2019-06-14T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-06-14T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1540">
-
-
-
+<meta itemprop="wordCount" content="1457">
 <meta itemprop="keywords" content="Shader Graph," />
-
 	
 	
 	<meta name="twitter:card" content="summary"/>
@@ -196,6 +191,12 @@
 		</a></b>
 		</li>
 		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		
+		FAQ
+		</a></b>
+		</li>
+		
 	</ul>
 	</nav>
 </div>
@@ -243,15 +244,14 @@
 <p>We can also use a <b class="node">Time</b> node to animate the offset over <strong>Time</strong> (or <strong>Sine Time</strong>, etc). There will be more examples later in the post including a swaying effect for grass/plants and animating fish or butterflies.</p>
 <h2 id="bounds">Bounds</h2>
 <p>Shaders run on the <strong>GPU</strong>, so it&rsquo;s important to understand that it will not actually update the CPU-side mesh vertices, mesh bounds or affect colliders. If the camera goes outside the original bounds, the mesh renderer will be culled, which can sometimes be a problem if our displaced vertices are outisde of these bounds. We either need to keep scaling/offsetting small, or override the bounds on the mesh. e.g.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">Mesh mesh = GetComponent&lt;MeshFilter&gt;().mesh;
-mesh.bounds = <span style="color:#66d9ef">new</span> Bounds(origin, size);
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>Mesh mesh = GetComponent&lt;MeshFilter&gt;().mesh;
+</span></span><span style="display:flex;"><span>mesh.bounds = <span style="color:#66d9ef">new</span> Bounds(origin, size);</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Note that this creates a new mesh instance, see <a href="https://docs.unity3d.com/ScriptReference/MeshFilter-mesh.html">MeshFilter.mesh</a>. You are responsible for cleanup, so be sure to Destroy(mesh) in the MonoBehaviour.OnDestroy function! You&rsquo;d usually use .sharedMesh instead if you don’t want to create a mesh instance. However then all objects that use that mesh will share those bounds, (and I&rsquo;m unsure if you can even edit the bounds of a mesh from an imported model?)</p>
@@ -265,7 +265,7 @@ mesh.bounds = <span style="color:#66d9ef">new</span> Bounds(origin, size);
 <li>Creating various effects such as melting and wobbling. (I&rsquo;ve done a <a href="https://twitter.com/Cyanilux/status/1180084819906220032">melting candle effect</a>, only shared on twitter though)</li>
 <li>Simulating wind on grass, plants and trees, see example below.</li>
 <li>Adding simple animation to regular meshes, instead of using skinned meshes. See below for examples of the motion of swimming fish and flapping butterfly/bird wings, which are fairly simple to simulate. The game ABZÛ also uses this a lot, see this <a href="https://www.youtube.com/watch?v=l9NX06mvp2E">ABZÛ GDC Talk</a>.</li>
-<li>It&rsquo;s also possible to bake actual skinned mesh animations to textures, and use the Vertex ID (SV_VertexID) to read the texture. While I haven&rsquo;t used it, I am aware of <a href="https://github.com/ryanslikesocool/Mecanim2Texture">this
+<li>It&rsquo;s also possible to bake actual skinned mesh animations to textures, and use the Vertex ID (SV_VertexID) to read the texture. While I haven&rsquo;t used it, I am aware of <a href="https://github.com/ryanslikesocool/Mecanim2Texture">this 
 Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking Vertex IDs into a UV channel (as shader graph can&rsquo;t use SV_VertexID yet), and some custom nodes for playback of the animations.</li>
 </ul>
 <h2 id="examples">Examples</h2>
@@ -282,7 +282,7 @@ Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking
 <h3 id="fish">Swimming Motion (Fish)</h3>
 <script>
 	if (cookiesAccepted){
-		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eContinuing with vertex displacement stuff, made some simple fish and butterfly shaders. New blog post of this is also up, see thread for link! (And yes, Animal Crossing themed) 😀 \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://t.co/hb90roIaoM\"\u003epic.twitter.com/hb90roIaoM\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ❄ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1139493685073252359?ref_src=twsrc%5Etfw\"\u003eJune 14, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eContinuing with vertex displacement stuff, made some simple fish and butterfly shaders. New blog post of this is also up, see thread for link! (And yes, Animal Crossing themed) 😀 \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://t.co/hb90roIaoM\"\u003epic.twitter.com/hb90roIaoM\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1139493685073252359?ref_src=twsrc%5Etfw\"\u003eJune 14, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
 	}else{
 		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1139493685073252359\">https://twitter.com/Cyanilux/status/1139493685073252359</a><p>"+
 		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
@@ -300,13 +300,12 @@ Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking
 <p class="img-text"></p>
 </div>
 <p>In terms of code, this would be something along the lines of :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">vertex.x += sin(vertex.y * <span style="color:#ae81ff">2</span> + _Time.y * <span style="color:#ae81ff">4</span>) * (vertex.y - <span style="color:#ae81ff">1</span>) * <span style="color:#ae81ff">0.25</span>;
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>vertex.x += sin(vertex.y * <span style="color:#ae81ff">2</span> + _Time.y * <span style="color:#ae81ff">4</span>) * (vertex.y - <span style="color:#ae81ff">1</span>) * <span style="color:#ae81ff">0.25</span>;</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Note that values may vary based on the scale of the fish mesh. This was based on a model with 2 units length, with the origin being in the center.</p>
@@ -321,21 +320,20 @@ Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking
 <p class="img-text"></p>
 </div>
 <p>In terms of code, this would be something along the lines of :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">float</span> mask = abs(vertex.x) - <span style="color:#ae81ff">0.2</span>;
-<span style="color:#66d9ef">float</span> s = sin(_Time.y * <span style="color:#ae81ff">15.0</span>); <span style="color:#75715e">// for butterfly
-</span><span style="color:#75715e">// or : float s = sin(_Time.y * 10.0 + mask) // for bird
-</span><span style="color:#75715e"></span>vertex.x += saturate(s * <span style="color:#ae81ff">0.6</span>) * saturate(mask) * -<span style="color:#ae81ff">1.0</span> * sign(vertex.x);
-vertex.z += (s + <span style="color:#ae81ff">0.5</span>) * <span style="color:#ae81ff">0.75</span> * mask;
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">float</span> mask = abs(vertex.x) - <span style="color:#ae81ff">0.2</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> s = sin(_Time.y * <span style="color:#ae81ff">15.0</span>); <span style="color:#75715e">// for butterfly</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// or : float s = sin(_Time.y * 10.0 + mask) // for bird</span>
+</span></span><span style="display:flex;"><span>vertex.x += saturate(s * <span style="color:#ae81ff">0.6</span>) * saturate(mask) * -<span style="color:#ae81ff">1.0</span> * sign(vertex.x);
+</span></span><span style="display:flex;"><span>vertex.z += (s + <span style="color:#ae81ff">0.5</span>) * <span style="color:#ae81ff">0.75</span> * mask;</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Note that values may vary based on the scale of the butterfly mesh. This was based on a model of 2 by 2 units, with the origin being in the center.</p>

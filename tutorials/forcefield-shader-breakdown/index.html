@@ -15,16 +15,10 @@
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css">
 	
 	<meta itemprop="name" content="Forcefield Shader Breakdown">
-<meta itemprop="description" content="A forcefield shader using fresnel effect for glowing edges, scene depth for object intersections and scene colour to produce ripples/distortion">
-<meta itemprop="datePublished" content="2019-09-04T00:00:00+00:00" />
+<meta itemprop="description" content="A forcefield shader using fresnel effect for glowing edges, scene depth for object intersections and scene colour to produce ripples/distortion"><meta itemprop="datePublished" content="2019-09-04T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-09-04T00:00:00+00:00" />
-<meta itemprop="wordCount" content="3160">
-<meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
-
-
-
+<meta itemprop="wordCount" content="3084"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="URP,Shader Graph," />
-
 	
 	
 	<meta name="twitter:card" content="summary_large_image"/>
@@ -203,6 +197,12 @@
 		</a></b>
 		</li>
 		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		
+		FAQ
+		</a></b>
+		</li>
+		
 	</ul>
 	</nav>
 </div>
@@ -230,7 +230,7 @@
 
 <script>
 	if (cookiesAccepted){
-		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eHey! This week I\u0026#39;ve been making Jellyfish, animated using vertex displacement in the shader. Inspired by the amazing work by \u003ca href=\"https://twitter.com/ZappForThat?ref_src=twsrc%5Etfw\"\u003e@ZappForThat\u003c/a\u003e! 🤩 \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://t.co/NQH2wb5X3O\"\u003epic.twitter.com/NQH2wb5X3O\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ❄ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1136953667477757953?ref_src=twsrc%5Etfw\"\u003eJune 7, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eHey! This week I\u0026#39;ve been making Jellyfish, animated using vertex displacement in the shader. Inspired by the amazing work by \u003ca href=\"https://twitter.com/ZappForThat?ref_src=twsrc%5Etfw\"\u003e@ZappForThat\u003c/a\u003e! 🤩 \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://t.co/NQH2wb5X3O\"\u003epic.twitter.com/NQH2wb5X3O\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1136953667477757953?ref_src=twsrc%5Etfw\"\u003eJune 7, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
 	}else{
 		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1136953667477757953\">https://twitter.com/Cyanilux/status/1136953667477757953</a><p>"+
 		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
@@ -299,119 +299,117 @@
 <p>In order to allow for multiple ripples to be handled at the same time, we will need an <strong>array</strong> to store the positions of the origin of each ripple. We will then also need another value to control the lifetime of the ripple. To send these points into the shader we will need a <strong>C# Script</strong>, which will also control updating the lifetime and removing the point when it reaches a lifetime larger than 1. Since we have 4 values, we could use a <strong>Vector4/float4</strong> array for this – but as we might want to add more values to control further things (such as power/scale, perhaps even a different colour for each ripple) I will be using a <strong>float array</strong>.</p>
 <p>It is possible to have arrays in shaders. Although shadergraph doesn’t support them normally we can still use a <b class="node">Custom Function</b> node to declare the array and loop through it. We will need to be using the <strong>File</strong> mode in order to do this, as it needs to be specified outside of the function itself (which can&rsquo;t be done using the <strong>String</strong> mode).</p>
 <p>When defining the array we also need to specify a fixed length. We’ll be allowing our shader to store up to 6 ripple points, each having 4 components (3 of which are the XYZ position, and the final being the lifetime, as mentioned before), this means we need an array of length <strong>6*4</strong>. We’ll come back to the actual shader function later.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">uniform <span style="color:#66d9ef">float</span> _Points[<span style="color:#ae81ff">6</span>*<span style="color:#ae81ff">4</span>];
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>uniform <span style="color:#66d9ef">float</span> _Points[<span style="color:#ae81ff">6</span>*<span style="color:#ae81ff">4</span>];</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>If you want more information about arrays in shaders see this article by <a href="https://www.alanzucconi.com/2016/10/24/arrays-shaders-unity-5-4/">Alan Zucconi</a>.</p>
 <p>In order to initialise the array it has to be done externally, via a <strong>C# Script</strong> using <strong>Material.SetFloatArray(array)</strong>.</p>
 <p>The script I’m using looks like the following :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">using</span> UnityEngine;
-<span style="color:#a6e22e">
-</span><span style="color:#a6e22e">[ExecuteInEditMode]</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ArrayTest</span> : MonoBehaviour {
- 
-    <span style="color:#66d9ef">public</span> Material material;
- 
-    <span style="color:#75715e">// Initalize Array
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// This should have the same length as in the shader!
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">float</span>[] points = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">float</span>[] {
-        <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.1f</span>,
-        <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.2f</span>,
-        <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0.4f</span>,
-        -<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.5f</span>,
-        <span style="color:#ae81ff">0</span>, -<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.6f</span>,
-        <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, -<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0.8f</span>,
-    };
-	<span style="color:#75715e">// These values here are used for testing purposes to see if it&#39;s working.
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// Basically a ripple in each axis direction, each with a different radius.
-</span><span style="color:#75715e"></span> 
-    <span style="color:#66d9ef">void</span> Update(){
-        <span style="color:#66d9ef">if</span> (material == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span>;
- 
-        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; points.Length; i += <span style="color:#ae81ff">4</span>) {
-            <span style="color:#66d9ef">float</span> t = points[i + <span style="color:#ae81ff">3</span>];
-            t += Time.deltaTime;
-            <span style="color:#66d9ef">if</span> (t &gt; <span style="color:#ae81ff">1</span>) {
-                <span style="color:#75715e">// Lifetime Complete
-</span><span style="color:#75715e"></span>                <span style="color:#75715e">// Create a new random point
-</span><span style="color:#75715e"></span>                t = <span style="color:#ae81ff">0</span>;
-                Vector3 sphere = Random.onUnitSphere;
-                 
-                <span style="color:#75715e">// Keep it in the top hemisphere - leave this out for a sphere!
-</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> (sphere.y &lt; <span style="color:#ae81ff">0</span>) sphere.y = -sphere.y;
- 
-                <span style="color:#75715e">// Set position
-</span><span style="color:#75715e"></span>                points[i] = sphere.x;
-                points[i + <span style="color:#ae81ff">1</span>] = sphere.y;
-                points[i + <span style="color:#ae81ff">2</span>] = sphere.z;
-            }
- 
-            <span style="color:#75715e">// Set lifetime
-</span><span style="color:#75715e"></span>            points[i + <span style="color:#ae81ff">3</span>] = t;
-        }
- 
-        material.SetFloatArray(<span style="color:#e6db74">&#34;_Points&#34;</span>, points);
-    }
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">[ExecuteInEditMode]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ArrayTest</span> : MonoBehaviour {
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Material material;
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Initalize Array</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// This should have the same length as in the shader!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span>[] points = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">float</span>[] {
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.1f</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.2f</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0.4f</span>,
+</span></span><span style="display:flex;"><span>        -<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.5f</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">0</span>, -<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.6f</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, -<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0.8f</span>,
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// These values here are used for testing purposes to see if it&#39;s working.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Basically a ripple in each axis direction, each with a different radius.</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> Update(){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (material == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; points.Length; i += <span style="color:#ae81ff">4</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">float</span> t = points[i + <span style="color:#ae81ff">3</span>];
+</span></span><span style="display:flex;"><span>            t += Time.deltaTime;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (t &gt; <span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Lifetime Complete</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Create a new random point</span>
+</span></span><span style="display:flex;"><span>                t = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>                Vector3 sphere = Random.onUnitSphere;
+</span></span><span style="display:flex;"><span>                 
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Keep it in the top hemisphere - leave this out for a sphere!</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (sphere.y &lt; <span style="color:#ae81ff">0</span>) sphere.y = -sphere.y;
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Set position</span>
+</span></span><span style="display:flex;"><span>                points[i] = sphere.x;
+</span></span><span style="display:flex;"><span>                points[i + <span style="color:#ae81ff">1</span>] = sphere.y;
+</span></span><span style="display:flex;"><span>                points[i + <span style="color:#ae81ff">2</span>] = sphere.z;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Set lifetime</span>
+</span></span><span style="display:flex;"><span>            points[i + <span style="color:#ae81ff">3</span>] = t;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>        material.SetFloatArray(<span style="color:#e6db74">&#34;_Points&#34;</span>, points);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>This script is just replacing the points in the array with random points when they reach the lifetime of 1 – so we get constant rippling effects for testing purposes. I won’t be going through the script for actual gameplay mechanics, but you would want to be able to:</p>
@@ -420,75 +418,74 @@
 <li>“Remove” points when they reach their lifetime of 1. Note : It’s important that the array length stays fixed and data is present when sending it to the shader so it can replace it correctly – so for removing points you will need to specify the values still, giving { 0, 0, 0, 2 } or something, where in the loop if the lifetime is 2 we know it’s a space for a new point, and our shader function should be outputting 0 to prevent anything being rendered for that point.</li>
 </ul>
 <p>The following is the shader function used by the <b class="node">Custom Function</b> node :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">uniform <span style="color:#66d9ef">float</span> _Points[<span style="color:#ae81ff">6</span>*<span style="color:#ae81ff">4</span>];
- 
-<span style="color:#66d9ef">void</span> Test_float(float3 position, <span style="color:#66d9ef">out</span> float3 direction, <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">float</span> strength){
-    float3 directionOutput = <span style="color:#ae81ff">0</span>;
-    <span style="color:#66d9ef">float</span> strengthOutput = <span style="color:#ae81ff">0</span>;
-<span style="color:#a6e22e">     
-</span><span style="color:#a6e22e">    [unroll]</span>
-    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; <span style="color:#ae81ff">6</span>*<span style="color:#ae81ff">4</span>; i += <span style="color:#ae81ff">4</span>){
-        float3 p = float3(_Points[i], _Points[i+<span style="color:#ae81ff">1</span>], _Points[i+<span style="color:#ae81ff">2</span>]); <span style="color:#75715e">// Position
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">float</span> t = _Points[i+<span style="color:#ae81ff">3</span>]; <span style="color:#75715e">// Lifetime
-</span><span style="color:#75715e"></span>         
-        <span style="color:#75715e">// Ripple Shape :
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">float</span> rippleSize = <span style="color:#ae81ff">1</span>;
-        <span style="color:#66d9ef">float</span> gradient = smoothstep(t/<span style="color:#ae81ff">3</span>, t, distance(position, p) / rippleSize);
-         
-        <span style="color:#75715e">// frac means it will have a sharp edge, while sine makes it more &#34;soft&#34;
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">//float ripple = frac(gradient);
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">float</span> ripple = saturate(sin(<span style="color:#ae81ff">5</span> * (gradient)));
-         
-        <span style="color:#75715e">// Distortion Direction &amp; Strength :
-</span><span style="color:#75715e"></span>        float3 rippleDirection = normalize(position-p);
-         
-        <span style="color:#66d9ef">float</span> lifetimeFade = saturate(<span style="color:#ae81ff">1</span>-t); <span style="color:#75715e">// Goes from 1 at t=0, to 0 at t=1
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">float</span> rippleStrength = lifetimeFade * ripple;
-         
-        directionOutput += rippleDirection * rippleStrength * <span style="color:#ae81ff">0.2</span>;
-        strengthOutput += rippleStrength;
-    }
-     
-    direction = directionOutput;
-    strength = strengthOutput;
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>uniform <span style="color:#66d9ef">float</span> _Points[<span style="color:#ae81ff">6</span>*<span style="color:#ae81ff">4</span>];
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> Test_float(float3 position, <span style="color:#66d9ef">out</span> float3 direction, <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">float</span> strength){
+</span></span><span style="display:flex;"><span>    float3 directionOutput = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span> strengthOutput = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">     
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [unroll]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; <span style="color:#ae81ff">6</span>*<span style="color:#ae81ff">4</span>; i += <span style="color:#ae81ff">4</span>){
+</span></span><span style="display:flex;"><span>        float3 p = float3(_Points[i], _Points[i+<span style="color:#ae81ff">1</span>], _Points[i+<span style="color:#ae81ff">2</span>]); <span style="color:#75715e">// Position</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">float</span> t = _Points[i+<span style="color:#ae81ff">3</span>]; <span style="color:#75715e">// Lifetime</span>
+</span></span><span style="display:flex;"><span>         
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Ripple Shape :</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">float</span> rippleSize = <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">float</span> gradient = smoothstep(t/<span style="color:#ae81ff">3</span>, t, distance(position, p) / rippleSize);
+</span></span><span style="display:flex;"><span>         
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// frac means it will have a sharp edge, while sine makes it more &#34;soft&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//float ripple = frac(gradient);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">float</span> ripple = saturate(sin(<span style="color:#ae81ff">5</span> * (gradient)));
+</span></span><span style="display:flex;"><span>         
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Distortion Direction &amp; Strength :</span>
+</span></span><span style="display:flex;"><span>        float3 rippleDirection = normalize(position-p);
+</span></span><span style="display:flex;"><span>         
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">float</span> lifetimeFade = saturate(<span style="color:#ae81ff">1</span>-t); <span style="color:#75715e">// Goes from 1 at t=0, to 0 at t=1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">float</span> rippleStrength = lifetimeFade * ripple;
+</span></span><span style="display:flex;"><span>         
+</span></span><span style="display:flex;"><span>        directionOutput += rippleDirection * rippleStrength * <span style="color:#ae81ff">0.2</span>;
+</span></span><span style="display:flex;"><span>        strengthOutput += rippleStrength;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>     
+</span></span><span style="display:flex;"><span>    direction = directionOutput;
+</span></span><span style="display:flex;"><span>    strength = strengthOutput;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>We specify the function inside the “void Test_float”, where the name of the function has to match the one given in the <b class="node">Custom Function</b> node, in this case it was named <strong>“Test”</strong> – (But you can call it whatever you want)</p>
