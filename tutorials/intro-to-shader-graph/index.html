@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Intro to Shader Graph">
 <meta itemprop="description" content="A detailed introduction on how to use Unity Shader Graph (updated for v12&#43;)! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!"><meta itemprop="datePublished" content="2021-03-05T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-03-05T00:00:00+00:00" />
-<meta itemprop="wordCount" content="17177">
+<meta itemprop="wordCount" content="17198">
 <meta itemprop="keywords" content="Shader Graph,URP,HDRP," />
 	
 	
@@ -161,16 +161,51 @@
     <body>
         
 <div class="header">
-	<h1 class="title-no-margin">
-		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
-		</a>
-		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
-	</h1>
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
 	
-	<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
+			
+			<img src="https://www.cyanilux.com/logo-twitter.png"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			
+			<img src="https://www.cyanilux.com/logo-mastodon.png"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			
+			<img src="https://www.cyanilux.com/logo-discord.png"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			
+			<img src="https://www.cyanilux.com/logo-github.png"></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
 	
-	<nav id="nav">
+	<nav id="nav" class="nav">
 	<ul>
 		
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
@@ -206,16 +241,35 @@
 <h1>Intro to Shader Graph</h1>
 
 
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/posts/" style="text-decoration: none; color:#eeeeee;">
+	Posts
+	</a>
+</div>
+
+
+
+
 	<div class="tag" style="background-color:#101010;">
+	
+	<a href="https://www.cyanilux.com/tags/shader-graph" style="text-decoration: none; color:#eeeeee;">
 	Shader Graph
+	</a>
 	</div>
 
 	<div class="tag" style="background-color:#00aabb;">
+	
+	<a href="https://www.cyanilux.com/tags/urp" style="text-decoration: none; color:#eeeeee;">
 	URP
+	</a>
 	</div>
 
 	<div class="tag" style="background-color:#aa1100;">
+	
+	<a href="https://www.cyanilux.com/tags/hdrp" style="text-decoration: none; color:#eeeeee;">
 	HDRP
+	</a>
 	</div>
 
 
@@ -1575,6 +1629,7 @@
 <p>These can be used as input/output arguments in a <b class="node">Custom Function</b> node as alternatives to the <strong>Texture2D</strong>, <strong>Texture2DArray</strong>, <strong>Texture3D</strong>, <strong>TextureCube</strong> and <strong>SamplerState</strong> objects (which are now referred to as &ldquo;bare&rdquo; types). The purpose of these new non-bare structs is to handle connections for the texture data types in a more consistent way.</p>
 <p>It&rsquo;s possible now to access the <strong>SamplerState</strong> from a <strong>Texture</strong> through <code>unityTex.samplerstate</code>, as well as the <strong>TexelSize</strong> through <code>unityTex.texelSize</code> (That one is UnityTexture2D only though). The texture is accessed via <code>unityTex.tex</code>, though the <code>SAMPLE_TEXTURE2D</code> macro can be used with new struct types too.</p>
 <p>Custom Function nodes created prior to this change will set their inputs/outputs as the &ldquo;Bare&rdquo; types when updated. This allows the function to still work as it was originally intended, but switching them to &ldquo;non-Bare&rdquo; allows you to use the new samplerstate/texelsize access.</p>
+<p>For more information on how to use these types with the <b class="node">Custom Function</b> node, see <a href="https://www.cyanilux.com/faq/#sg-custom-function-textures">this answer on the FAQ page</a>.</p>
 <h4 id="shader-pass-defines">Shader Pass Defines</h4>
 <p>In URP, Prior to v10 it was possible to use a <strong>Predefined Boolean Keyword</strong> to switch between using code for different shader passes as a define would be added in each pass. These defines are still available in v10+ but how they were defined was changed which broke the ability to use a Keyword. It is still possible to handle it through a <b class="node">Custom Function</b> node however.</p>
 <p>These defines for URP are :</p>
@@ -1683,6 +1738,12 @@
 		<a href="https://www.cyanilux.com/cookies">
 		
 		Cookies & Privacy
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/index.xml">
+		
+		RSS Feed
 		</a>
 		
 	

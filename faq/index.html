@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="FAQ">
 <meta itemprop="description" content="List of frequent (or interesting) questions I&#39;ve answered">
 
-<meta itemprop="wordCount" content="5256">
+<meta itemprop="wordCount" content="6225">
 <meta itemprop="keywords" content="" />
 	
 	
@@ -159,16 +159,51 @@
     <body>
         
 <div class="header">
-	<h1 class="title-no-margin">
-		<a class="link-plain" href="https://www.cyanilux.com">
-			<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
-		</a>
-		<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
-	</h1>
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
 	
-	<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
+			
+			<img src="https://www.cyanilux.com/logo-twitter.png"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			
+			<img src="https://www.cyanilux.com/logo-mastodon.png"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			
+			<img src="https://www.cyanilux.com/logo-discord.png"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			
+			<img src="https://www.cyanilux.com/logo-github.png"></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
 	
-	<nav id="nav">
+	<nav id="nav" class="nav">
 	<ul>
 		
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
@@ -202,6 +237,10 @@
         
 
 <h1>FAQ</h1>
+
+
+
+
 
 
 
@@ -242,6 +281,7 @@
 </ul>
 <p>Any custom shaders (that you&rsquo;ve written or from downloaded assets) <em>cannot be converted automatically</em>. You would need to rewrite them or a find a replacement asset.</p>
 <p>If you aren&rsquo;t upgrading, materials can also turn magenta when there is an error in the shader syntax (Should be able to see these in the Console, or in the Inspector when the shader asset is selected).</p>
+<p>If a magenta material is using a Shader Graph, be sure the <a href="https://www.cyanilux.com/faq/#sg-magenta">target is assigned correctly</a>, and save the graph using the <strong>Save Asset</strong> button in the top left of the shader graph window.</p>
 <p>In a build, magenta materials could also mean the shader uses a <a href="https://docs.unity3d.com/Manual/SL-ShaderCompileTargets.html">compile target</a> which is higher than what is supported by the platform.</p>
 
 </div>
@@ -412,13 +452,15 @@ Right : Render with Prepass<br>
 </a>
 <p class="img-text"></p>
 </div>
-<p>The <strong>Main Preview</strong> showing as Magenta/Pink usually means that the graph <strong>Target</strong> is not supported in the current <strong>Render Pipeline</strong>. If you have installed URP or HDRP packages, there is more that is required to properly configure Unity to use those pipelines, such as assigning a pipeline asset under <strong>Project Settings</strong>.</p>
-<p>See the documentation for steps (can select version in top left of those pages) :</p>
+<p>The <strong>Main Preview</strong> showing as Magenta/Pink usually means that the graph <strong>Target</strong> is not supported in the current <strong>Render Pipeline</strong>. This can be found under the <strong>Graph Settings</strong> tab of the <strong>Graph Inspector</strong> window - which you can toggle with a button in the top right of the graph.</p>
+<p>If you have created a &ldquo;Blank Shader Graph&rdquo; you would also need to add a target to that list before you can use the graph on a material.</p>
+<p>In 2021.2+ it is possible to add the Built-in RP as a target. Older verisons do not have support for Built-in and must use URP or HDRP. Once the URP or HDRP package is installed, there is more that is required to properly configure Unity to use those pipelines, such as assigning a pipeline asset under <strong>Project Settings</strong>.</p>
+<p>See the documentation for steps (can select version in top left of these pages) :</p>
 <ul>
 <li>URP : <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@15.0/manual/InstallURPIntoAProject.html">Install URP into a Project</a></li>
 <li>HDRP : <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@15.0/manual/Upgrading-To-HDRP.html">Upgrading to HDRP</a></li>
 </ul>
-<p>If you have already done this, check the <strong>Target</strong> under the <strong>Graph Settings</strong> tab of the <strong>Graph Inspector</strong> window. If you have created a &ldquo;Blank Shader Graph&rdquo; you need to add a target to that list before you can use the graph. In 2021.2+ it is possible to add the Built-in RP as a target. Older verisons do not have support for Built-in and must use URP or HDRP.</p>
+<p>If you have already done this, check the <strong>Target</strong> (under the <strong>Graph Settings</strong> tab of the <strong>Graph Inspector</strong> window). Make sure this matches the the pipeline you have installed &amp; configured. Then save the graph using the <strong>Save Asset</strong> button in the top left.</p>
 <p>May be able to find more information in my <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/">Intro to Shader Graph</a> post.</p>
 <p>Note that you may also see other previews showing as Magenta/Pink when obtaining undefined values (NAN), such as when dividing by zero, or using negative values in the Power node (as the hlsl pow function only supports positive ranges).</p>
 
@@ -802,6 +844,131 @@ Right : Render with Prepass<br>
 </div>
 <p>For the Built-in version, they are already using the <code>UNITY_APPLY_FOG</code> macro (in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.shadergraph/Editor/Generation/Targets/BuiltIn/Editor/ShaderGraph/Includes/PBRForwardPass.hlsl">SG/Built-in/PBRForwardPass.hlsl</a>), so we undefine and then redefine it to output the colour (second parameter).</p>
 <p>This is <em>kinda</em> hacky (abusing what macros are supposed to be used for), but hey it works!~</p>
+
+</div>
+<button id="sg-custom-function-textures" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Sampling Textures in \u003cb class=\u0022node\u0022\u003eCustom Function\u003c\/b\u003e node</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Sampling Textures in \u003cb class=\u0022node\u0022\u003eCustom Function\u003c\/b\u003e node</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-custom-function-textures';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+    }
+"><b>⯈ Sampling Textures in <b class="node">Custom Function</b> node</b></button>
+<div class="foldout">
+<p>Shader Graph already provides some texture sampling nodes (e.g. <b class="node">Sample Texture 2D</b>) for use in the graph. But it can be useful to sample inside a <b class="node">Custom Function</b>, e.g. inside a loop, or to access sampling macros that don&rsquo;t have built-in nodes.</p>
+<h4 id="sg-custom-function-textures-macros">Macros</h4>
+<p>In shader code online you might typically see <code>sampler2D</code> and <code>tex2D()</code> functions being used. This is the older DX9 syntax, but with Shader Graph we mostly use the newer DX11+ syntax which has <a href="https://docs.unity3d.com/Manual/SL-SamplerStates.html">separate objects for the texture and sampler</a>. This isn&rsquo;t supported in all platforms though (GLES2), so Unity provides a bunch of <strong>macros</strong> which can generate different code. These macros are defined in files found under <a href="https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/API">render-pipelines.core/ShaderLibrary/API</a>.</p>
+<p>Some important macros for sampling textures are listed below :</p>
+<ul>
+<li>
+<p>Sample : Can be used in Fragment stage only</p>
+<ul>
+<li><code>SAMPLE_TEXTURE2D(textureName, samplerName, coord2)</code></li>
+<li><code>SAMPLE_TEXTURECUBE(textureName, samplerName, coord3)</code></li>
+<li><code>SAMPLE_TEXTURE3D(textureName, samplerName, coord3)</code></li>
+<li><code>SAMPLE_TEXTURE2D_ARRAY(textureName, samplerName, coord2, index)</code></li>
+<li><code>SAMPLE_TEXTURECUBE_ARRAY(textureName, samplerName, coord3, index)</code></li>
+<li>These macros would end up using <a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-to-sample">tex.Sample(&hellip;)</a> (on DX11+ type platforms)</li>
+</ul>
+</li>
+<li>
+<p>Sample Level (of Detail) : Provides lod input to specify the mip map level sampled. Can be used in both Vertex &amp; Fragment stages</p>
+<ul>
+<li><code>SAMPLE_TEXTURE2D_LOD(textureName, samplerName, coord2, lod)</code></li>
+<li><code>SAMPLE_TEXTURECUBE_LOD(textureName, samplerName, coord3, lod)</code></li>
+<li><code>SAMPLE_TEXTURE3D_LOD(textureName, samplerName, coord3, lod)</code></li>
+<li><code>SAMPLE_TEXTURE2D_ARRAY_LOD(textureName, samplerName, coord2, index, lod)</code></li>
+<li><code>SAMPLE_TEXTURECUBE_ARRAY_LOD(textureName, samplerName, coord3, index, lod)</code></li>
+<li>These macros would end up using <a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-to-samplelevel">tex.SampleLevel(&hellip;)</a> (on DX11+ type platforms)</li>
+</ul>
+</li>
+<li>
+<p>Sample Bias : Provides a bias to adjust the mip map level. Can be used in Fragment stage only.</p>
+<ul>
+<li><code>SAMPLE_TEXTURE2D_BIAS(textureName, samplerName, coord2, bias)</code></li>
+<li><code>SAMPLE_TEXTURECUBE_BIAS(textureName, samplerName, coord3, bias)</code></li>
+<li><code>SAMPLE_TEXTURE2D_ARRAY_BIAS(textureName, samplerName, coord2, index, bias)</code></li>
+<li><code>SAMPLE_TEXTURECUBE_ARRAY_BIAS(textureName, samplerName, coord3, index, bias)</code></li>
+<li>Doesn&rsquo;t seem to be BIAS macros for Texture3D. May be able to use <a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-to-samplebias">tex.SampleBias(&hellip;)</a> function still (or <a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-tex3dbias">tex3Dbias</a> for GLES2)</li>
+</ul>
+</li>
+<li>
+<p>Sample Gradient : Provides inputs for partial derivatives. Can be used in both Vertex &amp; Fragment stages. (Unless you use <code>ddx()</code>/<code>ddy()</code> functions to calculate those derivates as those are Fragment only). These are useful when the UV coords used for sampling aren&rsquo;t continous, see <a href="#sg-pixellated-seams">Pixellation along seams question above</a>.</p>
+<ul>
+<li><code>SAMPLE_TEXTURE2D_GRAD(textureName, samplerName, coord2, dpdx, dpdy)</code></li>
+<li><code>SAMPLE_TEXTURE2D_ARRAY_GRAD(textureName, samplerName, coord2, index, dpdx, dpdy)</code></li>
+<li>Doesn&rsquo;t seem there is GRAD macros for other texture types. May be able to use <a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-to-samplegrad">tex.SampleGrad(&hellip;)</a> function still (or <a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-texcubegrad">texCUBEgrad</a>/<a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-tex3dgrad">tex3Dgrad</a> for GLES2)</li>
+</ul>
+</li>
+</ul>
+<h4 id="sg-custom-function-textures-types">Shader Graph Texture Types</h4>
+<p>In Shader Graph v10.3+ (Unity 2020.2.3f1+), structs were added which wrap textures and their associated samplers together, allowing them to both be passed into a <b class="node">Custom Function</b> node in a single parameter. These types are defined in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl">render-pipelines.core/ShaderLibrary/Texture.hlsl</a></p>
+<ul>
+<li>UnityTexture2D (&ldquo;Texture 2D&rdquo; in SG dropdown)</li>
+<li>UnityTexture2DArray (&ldquo;Texture 2D Array&rdquo; in SG dropdown)</li>
+<li>UnityTexture3D (&ldquo;Texture 3D&rdquo; in SG dropdown)</li>
+<li>UnityTextureCube (&ldquo;Cubemap&rdquo; in SG dropdown)</li>
+<li>UnitySamplerState (&ldquo;Sampler State&rdquo; in SG dropdown)</li>
+</ul>
+<p>The sampler state associated with the texture can be accessed using <code>.samplerstate</code> on the UnityTextureX object. UnityTexture2D also has access to the Texel Size (via <code>.texelSize</code>).</p>
+<h4 id="sg-custom-function-textures-example">Custom Function Example (v10.3+)</h4>
+<p>If you aren&rsquo;t familiar with the <b class="node">Custom Function</b> node syntax see <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#custom-functions">Intro to Shader Graph - Custom Functions</a> and <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@13.1/manual/Custom-Function-Node.html">Custom Function docs page</a>.</p>
+<p>Here is an example sampling a 3D Texture, using LOD version so it could be used in the vertex stage. This code would be put in a <code>.hlsl</code> file for use with <b class="node">Custom Function</b> <strong>File</strong> mode. It would also work with <strong>String</strong> mode but then you would only want the <strong>body</strong> of the function (inside <code>{}</code>) and you need to match the names for inputs/outputs.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Example_float</span>(UnityTexture3D Tex, float3 UV, out float4 Out){
+</span></span><span style="display:flex;"><span>    Out <span style="color:#f92672">=</span> SAMPLE_TEXTURE3D_LOD(Tex, Tex.samplerstate, UV, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Inputs :</p>
+<ul>
+<li>&ldquo;Texture 3D&rdquo;, named &ldquo;Tex&rdquo;</li>
+<li>&ldquo;Vector2&rdquo;, named &ldquo;UV&rdquo;</li>
+</ul>
+<p>Outputs :</p>
+<ul>
+<li>&ldquo;Vector4&rdquo;, named &ldquo;Out&rdquo;</li>
+</ul>
+<h4 id="sg-custom-function-textures-example-2">Custom Function Example (Pre-v10.3)</h4>
+<p>Earlier versions don&rsquo;t have these <code>UnityTextureX/UnitySamplerState</code> types so instead need to use the HLSL texture objects, such as <code>Texture3D</code> and <code>SamplerState</code>. For example :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Example_float</span>(Texture3D Tex, SamplerState SS, float3 UV, out float4 Out){
+</span></span><span style="display:flex;"><span>    Out <span style="color:#f92672">=</span> SAMPLE_TEXTURE3D_LOD(Tex, SS, UV, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Inputs :</p>
+<ul>
+<li>&ldquo;Texture 3D&rdquo;, named &ldquo;Tex&rdquo;</li>
+<li>&ldquo;SamplerState&rdquo;, named &ldquo;SS&rdquo;</li>
+<li>&ldquo;Vector2&rdquo;, named &ldquo;UV&rdquo;</li>
+</ul>
+<p>Outputs :</p>
+<ul>
+<li>&ldquo;Vector4&rdquo;, named &ldquo;Out&rdquo;</li>
+</ul>
+<p>This could also be used in newer versions, by using the &ldquo;Bare Texture 3D&rdquo; and &ldquo;Bare Sampler State&rdquo; options on the input/output types. (Though this will likely error in GLES2 platforms, hence why the newer structs were introduced)</p>
 
 </div>
 <button id="sg-arrays" type="button" class="foldout_button" onclick="
@@ -1192,6 +1359,35 @@ Right : Render with Prepass<br>
 <p>If you are converting a shader, you may want to implement your own mod function using that code instead.</p>
 
 </div>
+<button id="cg-vs-hlsl" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ CG vs HLSL</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ CG vs HLSL</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#cg-vs-hlsl';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+    }
+"><b>⯈ CG vs HLSL</b></button>
+<div class="foldout">
+<p>While many shaders in the Built-in RP use <code>CGPROGRAM</code> and <code>ENDCG</code> in their shader code, they are still actually written (and compiled) using <strong>HLSL</strong>. Unity used to use Nvidia&rsquo;s <strong>CG</strong> language, but it was deprecated and is no longer used.</p>
+<p>When using the <code>CGPROGRAM</code> tag, Unity automatically includes some files from the Built-in RP shader includes (such as <code>HLSLSupport.cginc</code> and <code>UnityShaderVariables.cginc</code>). This can cause conflicts with other shader libraries - so shaders written for the Post Processing package, URP, and HDRP, should all use <code>HLSLPROGRAM</code> and <code>ENDHLSL</code> instead.</p>
+<p>Even if it is all HLSL, it&rsquo;s important to note that the code written for each pipeline can still vary quite a lot as they use separate include files, which can contain different functions and macros. Can view the ShaderLibrary code via :</p>
+<ul>
+<li>For Built-in RP, can view via <a href="https://github.com/TwoTailsGames/Unity-Built-in-Shaders">this unofficial Github repo</a>, or <a href="https://unity3d.com/get-unity/download/archive">download it from Unity&rsquo;s site</a> (Select &ldquo;Built-in Shaders&rdquo; option from a dropdown for the version you are using)</li>
+<li><a href="https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.core/ShaderLibrary">SRP (Scriptable Render Pipeline) core</a> - Accessible to URP, HDRP and custom SRPs.</li>
+<li><a href="https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary">URP</a> - Also see my <a href="https://www.cyanilux.com/tutorials/urp-shader-code/">Writing Shader Code for URP</a> post.</li>
+<li><a href="https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.high-definition/Runtime">HDRP</a></li>
+</ul>
+
+</div>
 
 
 <script>
@@ -1227,6 +1423,12 @@ Right : Render with Prepass<br>
 		<a href="https://www.cyanilux.com/cookies">
 		
 		Cookies & Privacy
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/index.xml">
+		
+		RSS Feed
 		</a>
 		
 	
