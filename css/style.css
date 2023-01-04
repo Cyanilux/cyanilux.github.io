@@ -453,14 +453,14 @@ video {
 /* Code Snippets */
 /* {{< highlight c "linenos=table,linenostart=1" >}} */
 .highlight div {
-	overflow : scroll;
+	overflow : auto;
 	padding-right : 20px;
 }
 
 /* {{< highlight c >}} */
 .highlight > pre {
+	overflow : auto;
 	padding : 20px;
-	overflow : scroll;
 }
 
 /* Table */
@@ -620,4 +620,12 @@ video {
 	background-color: #202020;
 	border: 2px solid #151515;
 	border-radius : 10px;
+}
+
+.twitter-tweet {
+	margin : auto;
+}
+
+hr {
+	border: 2px dashed #505050;
 }

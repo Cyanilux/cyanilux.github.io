@@ -6,7 +6,18 @@
     <description>Recent content in Breakdowns on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Thu, 19 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tutorials/breakdowns/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 04 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tutorials/breakdowns/index.xml" rel="self" type="application/rss+xml" />
+	
+    <item>
+      <title>Snowglobe</title>
+      <link>https://www.cyanilux.com/tutorials/snowglobe/</link>
+      <pubDate>Wed, 04 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/snowglobe/</guid>
+      <description>Glass globe shader with background refraction &amp; reflection. Particles are contained inside which inherit Rigidbody movements.</description>
+    </item>
+	
+    
 	
     <item>
       <title>Tentacle Shader Breakdown</title>

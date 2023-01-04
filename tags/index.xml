@@ -6,12 +6,12 @@
     <description>Recent content in Tags on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Thu, 19 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 04 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/index.xml" rel="self" type="application/rss+xml" />
 	
     <item>
       <title>Shader Graph</title>
       <link>https://www.cyanilux.com/tags/shader-graph/</link>
-      <pubDate>Thu, 19 May 2022 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 04 Jan 2023 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tags/shader-graph/</guid>
       <description></description>
@@ -22,9 +22,20 @@
     <item>
       <title>URP</title>
       <link>https://www.cyanilux.com/tags/urp/</link>
-      <pubDate>Thu, 19 May 2022 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 04 Jan 2023 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tags/urp/</guid>
+      <description></description>
+    </item>
+	
+    
+	
+    <item>
+      <title>VFX Graph</title>
+      <link>https://www.cyanilux.com/tags/vfx-graph/</link>
+      <pubDate>Wed, 04 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tags/vfx-graph/</guid>
       <description></description>
     </item>
 	
