@@ -15,19 +15,19 @@
     <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=1 ">
 	
 	<meta itemprop="name" content="Vertex Displacement">
-<meta itemprop="description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies"><meta itemprop="datePublished" content="2019-06-14T00:00:00+00:00" />
+<meta itemprop="description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies. Also includes info about recalculating normal vectors."><meta itemprop="datePublished" content="2019-06-14T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-06-14T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1457">
+<meta itemprop="wordCount" content="2263">
 <meta itemprop="keywords" content="Shader Graph," />
 	
 	
 	<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Vertex Displacement"/>
-<meta name="twitter:description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies"/>
+<meta name="twitter:description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies. Also includes info about recalculating normal vectors."/>
 
 	
 <meta property="og:title" content="Vertex Displacement" />
-<meta property="og:description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies" />
+<meta property="og:description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies. Also includes info about recalculating normal vectors." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.cyanilux.com/tutorials/vertex-displacement/" />
 
@@ -45,7 +45,7 @@
 	
 		
 		
-		<meta name="description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies. Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+		<meta name="description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies. Also includes info about recalculating normal vectors.. Shader Graph | Unity Shader Tutorials, @Cyanilux" />
 		
 	
 	
@@ -178,26 +178,22 @@
 		<ul>
 			
 			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
-			
-			<img src="https://www.cyanilux.com/logo-twitter.png"></img>
+			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
-			
-			<img src="https://www.cyanilux.com/logo-mastodon.png"></img>
+			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
-			
-			<img src="https://www.cyanilux.com/logo-discord.png"></img>
+			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://github.com/Cyanilux">
-			
-			<img src="https://www.cyanilux.com/logo-github.png"></img>
+			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
 			</a>
 			</li>
 			
@@ -209,25 +205,21 @@
 	<ul>
 		
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
-		
 		Contents
 		</a></b>
 		</li>
 		
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
-		
 		Recent Posts
 		</a></b>
 		</li>
 		
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
-		
 		Resources
 		</a></b>
 		</li>
 		
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
-		
 		FAQ
 		</a></b>
 		</li>
@@ -266,32 +258,124 @@
 
 
 
+<h3 id="sections-">Sections :</h3>
+<ul>
+<li><a href="#shader-stages">Shader Stages</a></li>
+<li><a href="#vertex-displacement">Vertex Displacement</a></li>
+<li><a href="#recalculating-normals">Recalculating Normals</a> (Added 31 Jan 2023)
+<ul>
+<li><a href="#per-fragment">Per-Fragment</a></li>
+<li><a href="#per-vertex">Per-Vertex</a></li>
+</ul>
+</li>
+<li><a href="#bounds">Bounds</a></li>
+<li><a href="#uses">Uses</a></li>
+<li><a href="#examples">Examples</a>
+<ul>
+<li><a href="#swaying-grass">Swaying Grass</a></li>
+<li><a href="#fish">Swimming Motion (Fish)</a></li>
+<li><a href="#butterfly">Wings Motion (Butterfly, or Bird)</a></li>
+<li><a href="#other">Other (links to tutorials)</a></li>
+</ul>
+</li>
+</ul>
 <h2 id="shader-stages">Shader Stages</h2>
-<p>While fragment shaders provide colours for each <strong>fragment/pixel</strong>, we can use vertex shaders to offset the <strong>vertices of the mesh</strong>. In Shader Graph, nodes that are connected to the <b class="node">Master</b> node&rsquo;s <strong>Vertex</strong> ports are written to this vertex shader stage.</p>
-<p>When attempting to connect a node between the vertex and fragment stages, they sometimes may not connect. It is usually a good idea to keep the two parts as separate as possible. Sometimes, disconnecting the <strong>Vertex</strong> ports in the <b class="node">Master</b> node/stack temporarily can help.</p>
-<p>Note that there are also certain nodes that won&rsquo;t work in the <strong>Vertex</strong> stage, and will cause the graph not to connect. This is most common whe using the <b class="node">Sample Texture 2D</b> node. If you need to sample a texture in the vertex stage you must use the <b class="node">Sample Texture 2D LOD</b> node instead! (This is due to the LOD/mip map level being calculated automatically in the first one, by using partial screen space derivatives, a.k.a the <b class="node">DDX</b>, <b class="node">DDY</b>, <b class="node">DDXY</b> nodes which will only work in the fragment shader)</p>
-<p>I believe the <b class="node">Is Front Face</b> node is another that will only work in the fragment stage - which makes sense, as a face is made up of multiple vertices so wouldn&rsquo;t be available in a per-vertex situation.</p>
+<p>Shaders contain multiple shader programs or stages. At the very least, a shader will contain a <strong>Vertex</strong> and <strong>Fragment</strong> stage. The fragment stage is responsible for colour/shading using interpolated data from the vertex stage. The vertex stage is responsible from passing data from the mesh, such as vertex positions - manipulating these is the focus of this post. My <a href="https://www.cyanilux.com/tutorials/intro-to-shaders/">Intro To Shaders</a> post goes through these stages in a bit more detail.</p>
+<p>Unity also has <strong>Surface Shaders</strong>, which generates these vertex/fragment stages behind the scenes. But this is only available in the Built-in RP currently. If you&rsquo;re using one of these, there is a vertex modification function that you can add using <code>vertex:FunctionName</code> to the surface pragma (there are some examples on this <a href="https://docs.unity3d.com/Manual/SL-SurfaceShaderExamples.html">Surface Shader Examples page</a> in the docs).</p>
+<p>In Shader Graph, nodes that are connected to the <b class="node">Master</b> node&rsquo;s <strong>Vertex</strong> ports are written to this vertex shader stage. In newer versions the <strong>Master Stack</strong> separates the Vertex and Fragment stages into separate areas to make it clear which ports fit into which stage. There is also now an option to create <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#custom-interpolators">Custom Interpolators</a> to force calculations to be handled in the vertex stage, which can then be passed through to the fragment.</p>
+<p>When attempting to connect a node between the vertex and fragment stages, they sometimes may not connect. It is usually a good idea to keep the two parts as separate as possible. Note that there are also certain nodes that won&rsquo;t work in the <strong>Vertex</strong> stage, so won&rsquo;t connect. This is most common when using the <b class="node">Sample Texture 2D</b> node. If you need to sample a texture in the vertex stage you must use the <b class="node">Sample Texture 2D LOD</b> node instead! Can see more examples of <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#fragment-only-nodes">Fragment-Only nodes here</a>.</p>
+<hr>
 <h2 id="vertex-displacement">Vertex Displacement</h2>
-<p>The process of offsetting vertices is usually referred to as <strong>Vertex Displacement</strong>. The <strong>Vertex Position</strong> port on the Master node/stack requires the position to be defined in <strong>Object</strong> space as it will handle conversions to other spaces automatically.</p>
-<p>To offset the vertices we create a <b class="node">Position</b> node set to <strong>Object</strong> space. This returns a <strong>Vector3</strong> of our vertex position that we can then manipulate. For <strong>offsetting</strong>, we can use <b class="node">Add</b> or <b class="node">Subtract</b> nodes, but we can also <strong>scale</strong> the position, which pulls or pushes it from the origin (0,0,0), by using <b class="node">Multiply</b> or <b class="node">Divide</b> nodes.</p>
+<p>The <strong>Vertex Position</strong> port on the Master node/stack requires the position to be defined in <strong>Object</strong> space as it will handle conversions to other spaces automatically. Sometimes using other spaces is necessary in calculations, but the final position would need to be transformed to <strong>Object</strong>, which could be done using a <b class="node">Transform</b> node.</p>
+<p>Create a <b class="node">Position</b> node set to <strong>Object</strong> space. This returns a <strong>Vector3</strong> of our vertex position that we can then manipulate. For <strong>offsetting/displacing</strong>, we can use <b class="node">Add</b> or <b class="node">Subtract</b> nodes. But we can also <strong>scale</strong> the position, which pulls or pushes it from the origin (0,0,0), by using <b class="node">Multiply</b> or <b class="node">Divide</b> nodes.</p>
 <p>Scaling should usually be done first, assuming you want to keep the offset in terms of object space units rather than the scaled space. We can scale/offset each vertex by connecting a <b class="node">Vector3</b> node and set each component separately, or use a <strong>Vector3 property</strong> to control it from the inspector, or a C# Script (via materialReference.SetVector(“_Ref”, vector), where _Ref is the reference string of the property in the shadergraph blackboard).</p>
-<p>You can also <b class="node">Split</b> and offset/scale each component separately then recombine in a <b class="node">Combine</b> or <b class="node">Vector3</b> node, however this very quickly causes the graph to get messy with overlapping wires. I suggest using the Vector3 node/property approach instead.</p>
+<p>You can also <b class="node">Split</b> and offset/scale each component separately then recombine in a <b class="node">Combine</b> or <b class="node">Vector3</b> node, however this very quickly causes the graph to get messy with overlapping wires so I suggest using the Vector3 node/property approach instead.</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="164" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
-<p>Here is another example if you wanted to scale both the <strong>X</strong> and <strong>Z</strong> with the same <strong>Vector1 property</strong>. Since we use a <b class="node">Multiply</b> to adjust scale, we set the <strong>Y</strong> value to <strong>1</strong> so there is no change. (With offsetting we would use a value of <strong>0</strong> for no change)</p>
+<p>The default values for these properties (so the position isn&rsquo;t changed) would be : Scale (1,1,1) and Offset (0,0,0).</p>
+<p>The graph above is basically the same as what the <b class="node">Tiling And Offset</b> node does, but that only works with 2D (Vector2) coordinates (typically UV, for sampling textures). In this case our coordinates are 3D (Vector3) so we need to use <b class="node">Multiply</b> &amp; <b class="node">Add</b>.</p>
+<p>Below is another example if you wanted to scale both the <strong>X</strong> and <strong>Z</strong> with the same <strong>Vector1 property</strong>. Since we use a <b class="node">Multiply</b> to adjust scale, we set the <strong>Y</strong> value to <strong>1</strong> so there is no change. (With offsetting we would use a value of <strong>0</strong> for no change)</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="209" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
-<p>We can also use a <b class="node">Time</b> node to animate the offset over <strong>Time</strong> (or <strong>Sine Time</strong>, etc). There will be more examples later in the post including a swaying effect for grass/plants and animating fish or butterflies.</p>
+<p>We can also use a <b class="node">Time</b> node to animate the offset over <strong>Time</strong> (or <strong>Sine Time</strong>, etc).</p>
+<p>There will be more examples later in the post including a swaying effect for grass/plants and animating fish or butterflies.</p>
+<hr>
+<h2 id="recalculating-normals">Recalculating Normals</h2>
+<p>Consider this example displacement using a <b class="node">Sine</b> wave :</p>
+<div class="img-center">
+<a href="VertexDisplacementGraph.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="164" alt="(Image)" src="VertexDisplacementGraph.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>On a highly subdivided plane mesh, this produces a result of :</p>
+<div class="img-center">
+<a href="VertexDisplacementNoNormal.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="465" height="306" alt="(Image)" src="VertexDisplacementNoNormal.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>This is using a <strong>Lit Graph</strong>, but the shading is the same as if this was a flat plane. This is because while we&rsquo;ve edited the vertex positions, the normals remain unchanged. Here&rsquo;s a few ways this could be fixed :</p>
+<h3 id="per-fragment">Per-Fragment</h3>
+<p>These methods are used in the <strong>Fragment</strong> stage, so connect to the <strong>Normal (Tangent space)</strong> or <strong>Normal (World space)</strong> ports. Which port is shown depends on the <strong>Fragment Normal Space</strong> defined in the <strong>Graph Settings</strong>. If you don&rsquo;t need to support normal maps, it will be more performant to use <strong>World</strong> space.</p>
+<h4 id="flat-normals">Flat Normals</h4>
+<p>When used in the fragment stage, the <b class="node">Position</b> node contains the displaced position. A simple way to obtain <strong>flat normals</strong> is by taking derivatives of this displaced vertices. This can be done with the <b class="node">DDY</b>, <b class="node">DDX</b> nodes and a <b class="node">Cross Product</b>, then <b class="node">Normalize</b>.</p>
+<div class="img-center">
+<a href="FragmentFlatNormalsGraph.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="213" alt="(Image)" src="FragmentFlatNormalsGraph.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>This results in :</p>
+<div class="img-center">
+<a href="VertexDisplacementNormalFlat.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="465" height="306" alt="(Image)" src="VertexDisplacementNormalFlat.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<h4 id="normal-from-height">Normal From Height</h4>
+<p>Another method to get normals is to use the <b class="node">Normal From Height</b> node, which works well for flat planes like in our example. You&rsquo;d want the output space to match the space used by the <strong>Fragment Normal Space</strong> defined in <strong>Graph Settings</strong>.</p>
+<p>We could <b class="node">Split</b> the <b class="node">Position</b> and use the G output as our height (<strong>In</strong> input). But this again will result in a flat shading.</p>
+<p>If you want a smooth shading, you&rsquo;d instead need to replicate the displacement code in the fragment stage to calculate the height value. If the displacement is based on the original vertex positions you may want to pass those through a <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#custom-interpolators">Custom Interpolator</a>. In the case of our example, the X/R axis is used to calculate the displacement value, but only the Y/G axis is actually displaced, so we can actually still use the <b class="node">Position</b> node.</p>
+<div class="img-center">
+<a href="FragmentNormalGraph.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="230" alt="(Image)" src="FragmentNormalGraph.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The <b class="node">Normal From Height</b> node also uses the screenspace derivative functions (<code>ddx() and ddy()</code>) to calculate differences between the positions at neighbouring pixels. It&rsquo;s possible to do this as fragment shaders run in 2x2 pixel blocks. These methods are cheap in terms of performance, but as the same vector is calculated in that 2x2 pixel block it can look somewhat pixellated. (In the case of this <b class="node">Sine</b> wave example I wouldn&rsquo;t say this is noticeable though)</p>
+<p>If you&rsquo;re interested exactly how the node is implemented you can look at the generated code on the <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@12.1/manual/Normal-From-Height-Node.html">Node Library - Normal From Height</a> page.</p>
+<h4 id="normal-from-texture">Normal From Texture</h4>
+<p>If you&rsquo;re using a heightmap texture, there&rsquo;s also the <b class="node">Normal From Texture</b> node which can construct a normal map, which would be connected to the <strong>Normal (Tangent space)</strong> port in the <strong>Master Stack</strong>. This node uses multiple samples to calculate the normal vector.</p>
+<p>If you&rsquo;re interested exactly how the node is implemented you can look at the generated code on the <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@12.1/manual/Normal-From-Texture-Node.html">Node Library - Normal From Texture</a> page.</p>
+<h3 id="per-vertex">Per-Vertex</h3>
+<p>An alternative method to calculate normal vectors on a <em>per-vertex</em> basis, involves simulating neighbouring positions &amp; displacements, taking their differences and using a cross product. But this only really works if the position is an input to the displacement calculation like it is in our example. This also means we need to do 3x the amount of displacement calculations, so could be more expensive.</p>
+<p>In this case it&rsquo;s easiest to use the <b class="node">Tangent Vector</b> and <b class="node">Bitangent Vector</b> to simulate these neighbours. The &ldquo;Displacement&rdquo; part of the graph here could be swapped out for other methods of displacement. This is based off <a href="https://www.ronja-tutorials.com/post/015-wobble-displacement/">this Wobble Displacement tutorial by Ronja</a>.</p>
+<div class="img-center">
+<a href="VertexDisplacementNormalGraph.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="238" alt="(Image)" src="VertexDisplacementNormalGraph.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Returning to our scene/mesh, this results in smooth normals :</p>
+<div class="img-center">
+<a href="VertexDisplacementNormal.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="465" height="306" alt="(Image)" src="VertexDisplacementNormal.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<hr>
 <h2 id="bounds">Bounds</h2>
-<p>Shaders run on the <strong>GPU</strong>, so it&rsquo;s important to understand that it will not actually update the CPU-side mesh vertices, mesh bounds or affect colliders. If the camera goes outside the original bounds, the mesh renderer will be culled, which can sometimes be a problem if our displaced vertices are outisde of these bounds. We either need to keep scaling/offsetting small, or override the bounds on the mesh. e.g.</p>
+<p>Shaders run on the <strong>GPU</strong>, so it&rsquo;s important to understand that it will not actually update the CPU-side mesh/vertices, mesh bounds or affect colliders.</p>
+<p>If the camera goes outside the original bounds, the mesh renderer will be culled due to Frustum Culling - this is an optimisation Unity uses to avoid rendering objects outside of the camera view. But this can be a problem if our displaced vertices are outisde of these bounds. We either need to keep scaling/offsetting small, or override the bounds on the mesh. e.g.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -302,9 +386,10 @@
 </span></span><span style="display:flex;"><span>mesh.bounds = <span style="color:#66d9ef">new</span> Bounds(origin, size);</span></span></code></pre></td></tr></table>
 </div>
 </div>
-<p>Note that this creates a new mesh instance, see <a href="https://docs.unity3d.com/ScriptReference/MeshFilter-mesh.html">MeshFilter.mesh</a>. You are responsible for cleanup, so be sure to Destroy(mesh) in the MonoBehaviour.OnDestroy function! You&rsquo;d usually use .sharedMesh instead if you don’t want to create a mesh instance. However then all objects that use that mesh will share those bounds, (and I&rsquo;m unsure if you can even edit the bounds of a mesh from an imported model?)</p>
-<p>As a tip for knowing what origin/size to use, add a <strong>Box Collider</strong> to the object, resize it, and use the center/size values, or just GetComponent&lt;BoxCollider&gt;().bounds.</p>
+<p>Note that this creates a new mesh instance, see <a href="https://docs.unity3d.com/ScriptReference/MeshFilter-mesh.html">MeshFilter.mesh</a>. You are responsible for cleanup, so be sure to <code>Destroy(mesh)</code> in the MonoBehaviour.OnDestroy function! You&rsquo;d usually use .sharedMesh instead if you don’t want to create a mesh instance. However then all objects that use that mesh will share those bounds, (and I&rsquo;m unsure if you can even edit the bounds of a mesh from an imported model?)</p>
+<p>As a tip for knowing what origin/size to use, add a <strong>Box Collider</strong> to the object, resize it, and use the center/size values, or <code>GetComponent&lt;BoxCollider&gt;().bounds</code>.</p>
 <p>If you&rsquo;re interested in updating colliders, maybe consider moving the vertex displacement to the CPU. See the <a href="https://docs.unity3d.com/ScriptReference/Mesh.html">Mesh</a> class, <a href="https://docs.unity3d.com/ScriptReference/Mesh-vertices.html">mesh.vertices</a> or mesh.<a href="https://docs.unity3d.com/ScriptReference/Mesh.GetVertices.html">GetVertices</a> / <a href="https://docs.unity3d.com/ScriptReference/Mesh.SetVertices.html">SetVertices</a>.</p>
+<hr>
 <h2 id="uses">Uses</h2>
 <p>Some uses of vertex displacement:</p>
 <ul>
@@ -316,6 +401,7 @@
 <li>It&rsquo;s also possible to bake actual skinned mesh animations to textures, and use the Vertex ID (SV_VertexID) to read the texture. While I haven&rsquo;t used it, I am aware of <a href="https://github.com/ryanslikesocool/Mecanim2Texture">this 
 Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking Vertex IDs into a UV channel (as shader graph can&rsquo;t use SV_VertexID yet), and some custom nodes for playback of the animations.</li>
 </ul>
+<hr>
 <h2 id="examples">Examples</h2>
 <h3 id="swaying-grass">Swaying Grass</h3>
 <div class="img-center">
@@ -324,9 +410,15 @@ Mecanim2Texture tool</a> by ryanslikesocool. I believe it also allows for baking
 </a>
 <p class="img-text"></p>
 </div>
-<p>Right Note : By using the Position set to World space, we ensure that the offsetting will always occur in the X world space axis, regardless of the transform’s rotation. The input on the master needs to be in Object space though, so we use a Transform node.</p>
-<p>Want the sway on a different axis? Change the Vector3 node inputs. Plug it into both X and Z for some diagonal movement. Or put the Vector3 into a Rotate About Axis node if you want a more specific rotation. (Use axis as 0,1,0, for rotating about the Y axis)</p>
-<p>Left Note : Use UVs.y for Quads. Use Position.y (object space) for Models. If origin is not at base of model, use Add to offset. If model doesn’t use y as up, use a different output on the Split.</p>
+<p>Right Note :</p>
+<ul>
+<li>By using the Position set to World space, we ensure that the offsetting will always occur in the X world space axis, regardless of the transform’s rotation. The input on the master needs to be in Object space though, so we use a Transform node.</li>
+<li>Want the sway on a different axis? Change the Vector3 node inputs. Plug it into both X and Z for some diagonal movement. Or put the Vector3 into a Rotate About Axis node if you want a more specific rotation. (Use axis as 0,1,0, for rotating about the Y axis)</li>
+</ul>
+<p>Left Note :</p>
+<ul>
+<li>Use UVs.y for Quads. Use Position.y (object space) for Models. If origin is not at base of model, use Add to offset. If model doesn’t use y as up, use a different output on the Split.</li>
+</ul>
 <h3 id="fish">Swimming Motion (Fish)</h3>
 <script>
 	if (cookiesAccepted){

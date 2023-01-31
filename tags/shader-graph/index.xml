@@ -225,7 +225,7 @@
       <pubDate>Fri, 14 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tutorials/vertex-displacement/</guid>
-      <description>A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies</description>
+      <description>A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies. Also includes info about recalculating normal vectors.</description>
     </item>
 	
     

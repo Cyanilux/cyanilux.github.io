@@ -551,7 +551,7 @@ video {
 }
 
 .cookie-refuse-btn {
-	background: #606060;
+	background: #a7a7a7;
 	border: 0;
 	color: #101010;
 	padding: 10px 25px;
@@ -563,7 +563,7 @@ video {
 }
 
 .cookie-refuse-btn:hover {
-	background: #707070;
+	background: #d8d8d8;
 }
 
 .cookie-accept-btn {
@@ -579,7 +579,7 @@ video {
 }
 
 .cookie-accept-btn:hover {
-	background: #11bbcc;
+	background: #06d3e6;
 }
 
 /* foldout */

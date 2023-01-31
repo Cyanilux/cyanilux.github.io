@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="FAQ">
 <meta itemprop="description" content="List of frequent (or interesting) questions I&#39;ve answered">
 
-<meta itemprop="wordCount" content="6225">
+<meta itemprop="wordCount" content="6260">
 <meta itemprop="keywords" content="" />
 	
 	
@@ -176,26 +176,22 @@
 		<ul>
 			
 			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
-			
-			<img src="https://www.cyanilux.com/logo-twitter.png"></img>
+			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
-			
-			<img src="https://www.cyanilux.com/logo-mastodon.png"></img>
+			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
-			
-			<img src="https://www.cyanilux.com/logo-discord.png"></img>
+			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://github.com/Cyanilux">
-			
-			<img src="https://www.cyanilux.com/logo-github.png"></img>
+			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
 			</a>
 			</li>
 			
@@ -207,25 +203,21 @@
 	<ul>
 		
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
-		
 		Contents
 		</a></b>
 		</li>
 		
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
-		
 		Recent Posts
 		</a></b>
 		</li>
 		
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
-		
 		Resources
 		</a></b>
 		</li>
 		
 		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
-		
 		FAQ
 		</a></b>
 		</li>
@@ -550,6 +542,28 @@ Right : Render with Prepass<br>
 <p>For more information / nodes affected, see <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#fragment-only-nodes">Intro to Shader Graph post - Fragment-Only Nodes</a></p>
 
 </div>
+<button id="sg-vertex-displacement-normals" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Vertex Displacement doesn\u0026rsquo;t affect shading \/ How to update normal vectors</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Vertex Displacement doesn\u0026rsquo;t affect shading \/ How to update normal vectors</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-vertex-displacement-normals';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+    }
+"><b>⯈ Vertex Displacement doesn&rsquo;t affect shading / How to update normal vectors</b></button>
+<div class="foldout">
+<p>Editing Vertex Positions does not automatically change the Normal Vectors, which are required to affect shading.</p>
+<p>I have a few methods on how to calculate new normals listed here : <a href="https://www.cyanilux.com/tutorials/vertex-displacement/#recalculating-normals">Vertex Displacement post - Recalculating Normals</a></p>
+
+</div>
 <button id="sg-sine-time" type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
@@ -683,7 +697,7 @@ Right : Render with Prepass<br>
 "><b>⯈ Pixellation along seams in UV when using <b class="node">Fraction</b> with <b class="node">Sample Texture 2D</b></b></button>
 <div class="foldout">
 <p>In some cases you might want to use the <b class="node">Fraction</b> node (aka <code>frac()</code> in HLSL) on the UVs (e.g. for repeating sections of a larger texture). But when using this with the <b class="node">Sample Texture 2D</b> you may notice some strange pixellation artifacts along the seam produced by the jump in the UV coordinates.</p>
-<p>(Also, this isn&rsquo;t limited to the <b class="node">Fraction</b> node, I just find that this is the most common place where it is noticeable. It occurs for anything that causes a jump in the UVs. Another fairly common example is the seam in the Y component when using the <b class="node">Polar Coordinates</b> node)</p>
+<p>This isn&rsquo;t limited to the <b class="node">Fraction</b> node, but I find that this is the most common place where it is noticeable. It occurs for anything that causes a jump in the UVs. Another fairly common example is the seam in the Y component when using the <b class="node">Polar Coordinates</b> node.</p>
 <div class="img-center">
 <a href="sg-pixellated-seams.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="501" height="219" alt="(Image)" src="sg-pixellated-seams.png" />
@@ -691,12 +705,12 @@ Right : Render with Prepass<br>
 <p class="img-text"></p>
 </div>
 <p>This pixellation occurs because the <b class="node">Sample Texture 2D</b> calculates the <strong>mipmap level</strong> for sampling by using the partial screenspace derivatives (<b class="node">DDX</b>, <b class="node">DDY</b>), which compare values between neighbouring pixels. The fragment shader can do this as it runs in 2x2 pixel blocks.</p>
-<p>Usually this mipmapping is a good thing, as it reduces artifacts when viewing the texture at shallow/glancing angles. But when comparing values for pixels along this seam, the difference is much larger than expected - which is interpreted as needing to sample a high LOD/mipmap level. At mipmap resolutions this small, it typically results in the colour being an average of the entire texture.</p>
-<p>This pixellated seam can be fixed in a few ways :</p>
+<p>Usually this mipmapping is a good thing, as it reduces artifacts when viewing the texture at a distance. But when comparing values for pixels along this seam, the jump is interpreted as needing to sample a higher LOD/mipmap level for those pixels. At mipmap resolutions this small, it basically results in the colour being an average of the entire texture.</p>
+<p>This pixellation can be fixed in a few ways :</p>
 <ul>
-<li>One easy fix is to disable mip maps for that texture (in it&rsquo;s import settings), or by using the <b class="node">Sample Texture 2D LOD</b> node to only use LOD/mipmap level 0 (the full resolution texture). But as I mentioned above, this then may cause artifacts when viewing the texture at shallow/glancing angles.</li>
-<li>A better way to fix this is by using a <b class="node">Custom Function</b> node with <code>Out = SAMPLE_TEXTURE2D_GRAD(Texture, Texture.samplerstate, frac(UV), ddx(UV), ddy(UV))</code> with inputs &ldquo;Texture&rdquo; (Texture2D), &ldquo;UV&rdquo; (Vector2) and outputs &ldquo;Out&rdquo; (Vector4). No need to use the <b class="node">Fraction</b> node here as it is handled in the code - but only on the coordinates used for sampling and not on the derivates!</li>
-<li>If you aren&rsquo;t using <b class="node">Fraction</b> but a different method that causes seams, you could use something similar to the above function, but remove the <code>frac()</code> and provide a separate UV input for the derivates (named &ldquo;derivativeUV&rdquo; maybe), set to the <b class="node">UV</b> node.</li>
+<li>A simple fix is to disable mip maps for that texture (in it&rsquo;s import settings), or by using the <b class="node">Sample Texture 2D LOD</b> node to only use LOD/mipmap level 0 (the full resolution texture). But this could cause the artifacts as I mentioned above.</li>
+<li>A better way to fix this is by using a <b class="node">Custom Function</b> node with <code>Out = SAMPLE_TEXTURE2D_GRAD(Texture, Texture.samplerstate, frac(UV), ddx(UV), ddy(UV));</code> with inputs &ldquo;Texture&rdquo; (Texture2D), &ldquo;UV&rdquo; (Vector2) and outputs &ldquo;Out&rdquo; (Vector4). You can then remove the <b class="node">Fraction</b> node from your graph as it is handled in the code instead (but only on the 2nd parameter, not the derivates!)</li>
+<li>If you aren&rsquo;t using <b class="node">Fraction</b> but a different method that causes seams, you could use a similar function, but provide a separate UV input for the derivates e.g. <code>Out = SAMPLE_TEXTURE2D_GRAD(Texture, Texture.samplerstate, UV, ddx(DerivativeUV), ddy(DerivativeUV));</code>. Can then set the DerivativeUV to the <b class="node">UV</b> node.</li>
 </ul>
 
 </div>
