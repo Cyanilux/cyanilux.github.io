@@ -12,16 +12,17 @@
 	<meta name="theme-color" content="#ffffff">
 	
 	
-    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=1 ">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=2 ">
 	
 	<meta itemprop="name" content="Vertex Displacement">
 <meta itemprop="description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies. Also includes info about recalculating normal vectors."><meta itemprop="datePublished" content="2019-06-14T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-06-14T00:00:00+00:00" />
-<meta itemprop="wordCount" content="2263">
+<meta itemprop="wordCount" content="2290"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="Shader Graph," />
 	
 	
-	<meta name="twitter:card" content="summary"/>
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/vertex-displacement/Preview.png"/>
 <meta name="twitter:title" content="Vertex Displacement"/>
 <meta name="twitter:description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies. Also includes info about recalculating normal vectors."/>
 
@@ -32,6 +33,11 @@
 <meta property="og:url" content="https://www.cyanilux.com/tutorials/vertex-displacement/" />
 
 	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/vertex-displacement/Preview.png"/>
+        
+    
 <meta property="article:published_time" content="2019-06-14T00:00:00+00:00" />
 <meta property="article:modified_time" content="2019-06-14T00:00:00+00:00" />
 	
@@ -365,6 +371,7 @@
 </a>
 <p class="img-text"></p>
 </div>
+<p>Since the Displacement part of the graph needs to happen 3 times, it may be easier to put it in a SubGraph (with Vector3 input &amp; output).</p>
 <p>Returning to our scene/mesh, this results in smooth normals :</p>
 <div class="img-center">
 <a href="VertexDisplacementNormal.png" target="_blank" rel="noopener noreferrer">

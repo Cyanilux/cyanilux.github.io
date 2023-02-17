@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=2 ">
+	
+	<meta itemprop="name" content="Swapping Colours">
+<meta itemprop="description" content="Examples of how to adjust/swap colours or colour palettes for a given texture/procedural input."><meta itemprop="datePublished" content="2023-02-17T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-02-17T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2847"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="keywords" content="Shader Graph," />
+	
+	
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/color-swap/Preview.png"/>
+<meta name="twitter:title" content="Swapping Colours"/>
+<meta name="twitter:description" content="Examples of how to adjust/swap colours or colour palettes for a given texture/procedural input."/>
+
+	
+<meta property="og:title" content="Swapping Colours" />
+<meta property="og:description" content="Examples of how to adjust/swap colours or colour palettes for a given texture/procedural input." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/color-swap/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/color-swap/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2023-02-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-02-17T00:00:00+00:00" />
+	
+	
+	
+    
+    
+    <title>Swapping Colours | Cyanilux</title>
+	
+	
+	
+		
+		
+		<meta name="description" content="Examples of how to adjust/swap colours or colour palettes for a given texture/procedural input.. Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/color-swap/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
+	
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
+	
+	<nav id="nav" class="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		FAQ
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Swapping Colours</h1>
+
+
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/posts/" style="text-decoration: none; color:#eeeeee;">
+	Posts
+	</a>
+</div>
+
+
+
+
+	<div class="tag" style="background-color:#101010;">
+	
+	<a href="https://www.cyanilux.com/tags/shader-graph" style="text-decoration: none; color:#eeeeee;">
+	Shader Graph
+	</a>
+	</div>
+
+
+
+
+
+<time datetime="2023-02-17">&#128337 Feb 17, 2023</time>
+
+
+
+<h2 id="intro">Intro</h2>
+<p>Recently I&rsquo;ve seen questions about adjusting/swapping colours of textures in the shader. Depending on the use-case there&rsquo;s a few methods we can use, and while there are some resources out there I thought it would be nice to write a post of my own (or at least provide examples &amp; links to other resources for additional reading).</p>
+<p>Shader Graph examples are used, but I&rsquo;ve also provided some links to the Shader Graph docs (Node Library) where you can view generated HLSL code.</p>
+<p>Some specific use-cases I can think of include :</p>
+<ul>
+<li>Player/team colours, for example in RTS or multi-player party games, or for player customisation.</li>
+<li>Colour variations on environment props, foliage/leaves, enemy variants, etc.</li>
+<li>Adjustable colours and gradient ramps used for VFX / Particle Effects.</li>
+<li>Swappable colour palletes for pixel art (sprites / tilemaps). Could just be for aesthetics or tied to gameplay.</li>
+<li>also Post Processing effects, but that&rsquo;s a bit outside the scope of this post</li>
+</ul>
+<p>Typically these methods would involve some texture(s) as an input (though some may work with noise or procedural shapes produced from signed distance functions too). It also doesn&rsquo;t matter if it&rsquo;s intended for a 3D model, 2D sprite, UI, etc.</p>
+<p>Some pros/cons :</p>
+<ul>
+<li>A main advantage is <strong>less texture memory is used</strong> compared to manually creating colour-variations and storing as separate textures (or larger atlas / texture array).</li>
+<li>Likely easier to tweak colour properties/fields on the material/scripts than editing texture files.</li>
+<li>The methods that alter the UV coords to the <b class="node">Sample Texture 2D</b> node in the fragment stage (Gradient &amp; Palette Texture sections) may be a bit more expensive (more noticeable on mobile platforms), as this produces what is referred to as a <em>&ldquo;dependent texture read&rdquo;</em>. My understanding is this results in the GPU not being able to do texture pre-fetches, so causes increased latency when reading/sampling texels. But it&rsquo;s good to try multiple methods and compare/profile!</li>
+</ul>
+<h4 id="sections">Sections</h4>
+<ul>
+<li><a href="#tint">Tint</a></li>
+<li><a href="#lerp">Lerp</a></li>
+<li><a href="#tint-color-channels">Tint Color Channels</a></li>
+<li><a href="#mask-texture">Mask Texture</a></li>
+<li><a href="#replace-color-node">Replace Color Node</a></li>
+<li><a href="#blend-node">Blend Node</a></li>
+<li><a href="#gradient-ramp">Gradient Ramp</a></li>
+<li><a href="#palette-texture">Palette Texture/Array</a></li>
+</ul>
+<hr>
+<h3 id="tint">Tint</h3>
+<p>One of the simplest forms of adjusting colour is a <em>tint</em>, which typically involves a <b class="node">Multiply</b> between our input and a given colour (<b class="node">Color</b> node or property). Our input here would typically be a greyscale texture (a float value between 0 and 1). Values should ideally be close to 1 (white) so we get the full range of colour we can tint towards.</p>
+<div class="img-center">
+<a href="Tint.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="614" height="330" alt="(Image)" src="Tint.png" />
+</a>
+<p class="img-text">(Grass texture from <a href="https://www.kenney.nl/assets/foliage-sprites">Kenney assets - Foliage Sprites</a>)</p>
+</div>
+<p>The colour here could use HDR mode, so we have control over the intensity too. (Though that would be more common for glowy particle effects, not grass!)</p>
+<p>You&rsquo;d typically also convert the <b class="node">Color</b> node here to be a <strong>color property</strong> - that way it can be exposed to the material or allow setting it from C#. But I&rsquo;ll be keeping them as nodes in the post so you can clearly see what colour has been assigned.</p>
+<p>(If you aren&rsquo;t familiar with properties, see my post : <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#properties">Intro to Shader Graph - Properties</a>)</p>
+<hr>
+<h3 id="lerp">Lerp</h3>
+<p>In the above example, since we are multiplying, a value of 0 (black) in the input texture always results in black - but it is possible to have control over this colour too.</p>
+<p>Assuming our greyscale/float input ranges between 0 and 1, we could invert it using a <b class="node">One Minus</b> and tint with another colour (via <b class="node">Multiply</b>), then <b class="node">Add</b> the two tints together.</p>
+<p>This is the same calculation as a linear interpolation, so it&rsquo;s easier to use the <b class="node">Lerp</b> node. Our greyscale input here goes into the T input, and A and B are the two colour nodes/properties.</p>
+<div class="img-center">
+<a href="Lerp.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="333" alt="(Image)" src="Lerp.png" />
+</a>
+<p class="img-text">(Also note the grass texture has been edited to contain a darker gradient)</p>
+</div>
+<p>The &ldquo;background&rdquo; of the preview here looks cyan as the RGB data originally contained black pixels, but we don&rsquo;t need to worry as the texture also contains an alpha channel (<strong>A</strong> output, connected to <strong>Alpha</strong> port on the <strong>Master Stack</strong>). This makes those pixels transparent in the final result - shown in Main Preview, as well as in scene/game. (Assuming the graph is set to <strong>Transparent</strong> surface mode, or using <strong>Opaque</strong> &amp; <strong>Alpha Clipping</strong>)</p>
+<p>As a quick side note, the <b class="node">Lerp</b> node is also useful for layering multiple textures / masking areas too. In this case we&rsquo;d use RGBA outputs from textures rather than <b class="node">Color</b> node/properties. For more info/examples see : <a href="https://www.cyanilux.com/faq/#sg-layering">FAQ - Layering textures/colours</a></p>
+<button id="lerp-color-space" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Additional notes about colour spaces</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Additional notes about colour spaces</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#lerp-color-space';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+    }
+"><b>⯈ Additional notes about colour spaces</b></button>
+<div class="foldout">
+<p>The above examples are interpolating through sRGB/linear color space (depending on the colour space set under project settings, see the docs page : <a href="https://docs.unity3d.com/Manual/LinearRendering-LinearOrGammaWorkflow.html">Linear or gamma workflow</a>). But there are other colour spaces we could interpolate through for different results. There&rsquo;s no &ldquo;correct&rdquo; space to use here really, it depends on the result you want. These conversions between different colour spaces would make the shader slightly more expensive though.</p>
+<p>For example, we could interpolate in HSV space. In shader graph, this could be handled with the <b class="node">Colorspace Conversion</b> node. For example compare the following results :</p>
+<div class="img-center">
+<a href="ColorspaceConversion.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="407" alt="(Image)" src="ColorspaceConversion.png" />
+</a>
+<p class="img-text">The project here is using Linear colour space. Lerping between blue/yellow results in a grey transition, while lerping through Hue (X input of Vector3, since we convert from HSV space) results in more of the colour spectrum. We could also interpolate other components but in this case the Saturation stays at 0.8 and Brightness at 1.</p>
+</div>
+<p>Can see the HLSL code each conversion uses in the <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@14.0/manual/Colorspace-Conversion-Node.html">Node Library - Colorspace Conversion</a> or use/see functions under <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl">render-pipelines.core/ShaderLibrary/Color.hlsl</a>.</p>
+<p>For a much more in-depth look at this, also see this article by Alan Zucconi : <a href="https://www.alanzucconi.com/2016/01/06/colour-interpolation/">The Secrets of Colour Interpolation</a></p>
+
+</div>
+<hr>
+<h3 id="tint-color-channels">Tint Color Channels</h3>
+<p>We could also extend the tint method to obtain up to 3 or 4 colours by packing multiple greyscale/float inputs in each colour channel of the texture (red, green, blue, alpha).</p>
+<p>In some cases the alpha channel may be required for transparency so can&rsquo;t be used (quite common for sprites). But for other channels we can apply a (using a <b class="node">Multiply</b> with a <b class="node">Color</b> node or property) and then combine those together using <b class="node">Add</b> nodes (or alternatively, <b class="node">Maximum</b>).</p>
+<div class="img-center">
+<a href="Tint3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="277" alt="(Image)" src="Tint3.png" />
+</a>
+<p class="img-text">Spaceship is an edited sprite from <a href="https://www.kenney.nl/assets/space-shooter-redux">Kenney Assets - Space Shooter Redux</a></p>
+</div>
+<p>If the alpha channel isn&rsquo;t required for transparency (may be more common for 3D models), then we could that for tinting too. I find it easier to have this channel inverted as we can then use the rubber/eraser tool to &ldquo;paint&rdquo; areas with 0 alpha, and still see coloured areas. Programs typically also don&rsquo;t store RGB data in areas with 0 alpha, and while there may be ways to override this behaviour, inverting the channel is easier.</p>
+<p>To account for this in the shader we&rsquo;d use a <b class="node">One Minus</b> node before the <b class="node">Multiply</b></p>
+<div class="img-center">
+<a href="Tint4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="308" alt="(Image)" src="Tint4.png" />
+</a>
+<p class="img-text">Another tint example where texture is applied to 3D character, contains some darker shades to fake some shading. Alpha channel is used to mask feet/shoes.</p>
+</div>
+<hr>
+<h3 id="mask-texture">Mask Texture</h3>
+<p>Okay, but what if you don&rsquo;t want to adjust the <em>whole</em> texture? In this case we could use another texture to <strong>mask</strong> the effect.</p>
+<p>A common (though somewhat naïve) way to handle this is using a value of 1 (aka 255) in a channel of the mask texture (for the area you want to colour), and 0 elsewhere. This works okay with <strong>Point</strong> filter mode on the texture, but when using <strong>Bilinear</strong> (or Trilinear) it can cause white artifacts/seams to leak through around the edge. For textures on 3D models this may not be a problem if UV islands stay inside the mask (<a href="https://www.patreon.com/posts/14433920">for example</a>).</p>
+<div class="img-center">
+<a href="TintMask.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="391" alt="(Image)" src="TintMask.png" />
+</a>
+<p class="img-text">(Male Adventurer Sprite from <a href="https://www.kenney.nl/assets/toon-characters-1">Kenney assets - Toon Characters 1</a>, though edited)<br>
+Note the white edges around the shirt in the final preview :(</p>
+</div>
+<p>For details on exactly why this occurs see this article by Ben Golus : <a href="https://bgolus.medium.com/the-team-color-problem-b70ec69d109f">The Team Color Problem</a>. The alternative mentioned there is using a &ldquo;pre-multiplied&rdquo; input &amp; mask - or in other words, separate the area you want coloured into a second texture, leaving black pixels in the regular one :</p>
+<div class="img-center">
+<a href="TintMask2Sprites.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="384" height="256" alt="(Image)" src="TintMask2Sprites.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>With these as inputs, we can then tint the mask texture and <b class="node">Add</b> it to the other.</p>
+<div class="img-center">
+<a href="TintMask2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="365" alt="(Image)" src="TintMask2.png" />
+</a>
+<p class="img-text">Better method of masking the tint - no white edges!</p>
+</div>
+<p>The mask is only using the red channel here - we could use the other channels to mask other areas. Or if only the red channel is required, the texture could be imported as a &ldquo;Single Channel&rdquo; type (set to &ldquo;Red&rdquo;) to save memory. Though then you may also need a <b class="node">Colorspace Conversion</b> (RGB to Linear) on the texture output, if in Linear colour space (rather than Gamma).</p>
+<button id="mask-texture-transparent" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Additional notes about sprites \/ transparent textures</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Additional notes about sprites \/ transparent textures</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#mask-texture-transparent';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+    }
+"><b>⯈ Additional notes about sprites / transparent textures</b></button>
+<div class="foldout">
+<p>When importing Sprites (or Default textures where &ldquo;Alpha Is Transparency&rdquo;) colours in fully transparent areas can stretch out in previews in Shader Graph. Don&rsquo;t be worried - this is intentional as it helps to avoid artifacts, <a href="https://www.cyanilux.com/faq/#sg-stretched-texture-preview">as explained here in faq</a>.</p>
+<p>If you&rsquo;re wondering why this hasn&rsquo;t occurred in these examples, I imported the main texture without an alpha channel as I wanted the example to be clearer. But even with an alpha channel and this colour stretching, the final result should look correct provided the <strong>A</strong> output from the <b class="node">Sample Texture 2D</b> is connected to the <strong>Alpha</strong> port on the <strong>Master Stack</strong>.</p>
+<p>However, the <em>mask texture</em> should still stay with a <strong>black background</strong> to avoid the colours stretching out. Though if it did have an alpha channel we could instead <b class="node">Multiply</b> the <strong>R</strong> and <strong>A</strong> outputs before applying the tint.</p>
+
+</div>
+<hr>
+<h3 id="replace-color-node">Replace Color Node</h3>
+<p>Let&rsquo;s also go over the <b class="node">Replace Color</b> node that Shader Graph includes&hellip; (also <b class="node">Color Mask</b>, which is essentially the same thing but without providing a colour to lerp to).</p>
+<button id="replace-color-hlsl" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ HLSL</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ HLSL</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#replace-color-hlsl';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+    }
+"><b>⯈ HLSL</b></button>
+<div class="foldout">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>float3 ReplaceColor(float3 In, float3 From, float3 To, <span style="color:#66d9ef">float</span> Range, <span style="color:#66d9ef">float</span> Fuzziness){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span> Distance = distance(From, In);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> lerp(To, In, saturate((Distance - Range) / max(Fuzziness, <span style="color:#ae81ff">1e-5</span>)));
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>float3 ColorMask(float3 In, float3 MaskColor, <span style="color:#66d9ef">float</span> Range, <span style="color:#66d9ef">float</span> Fuzziness){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span> Distance = distance(MaskColor, In);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> saturate((Distance - Range) / max(Fuzziness, <span style="color:#ae81ff">1e-5</span>));
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+
+</div>
+<p>As the name suggests, the node can be used to replace an existing colour with another. It can also select similar shades using the <strong>Range</strong> and <strong>Fuzziness</strong> inputs, but it can still pretty difficult to get it to do what you want. In practice, I&rsquo;ve found it only really works well with pixel art.</p>
+<div class="img-center">
+<a href="ReplaceColor.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="714" height="656" alt="(Image)" src="ReplaceColor.png" />
+</a>
+<p class="img-text">Node worked well on pixel art spaceship (that I made), but has left some edges/artifacts on the other sprite (from <a href="https://www.kenney.nl/assets/space-shooter-redux">Kenney Assets - Space Shooter Redux</a>). Perhaps with one of the alternative spaceship colours or edits to the sprite would make it work better - but the point is the Tint examples above produce better results and is cheaper!</p>
+</div>
+<p>One main advantage with using this method is you don&rsquo;t need to edit the colours of the input texture, which may be why beginners are drawn to using it.</p>
+<p>I&rsquo;ve definitely seen a few tutorials out there using this node, but it&rsquo;s actually not cheap as it calculates the <strong>distance</strong> between the <strong>In</strong> and <strong>From</strong> inputs (which uses a square root internally). For a few colours this may not be a big deal, especially if targetting high end platforms. But for mobile, the other methods in this post may work better.</p>
+<hr>
+<h3 id="blend-node">Blend Node</h3>
+<p>We could also use a <b class="node">Blend</b> node for different ways of mixing colours, similar to combining texture layers in image manipulation software like Photoshop, GIMP, etc. Behind the scenes these all use a <b class="node">Lerp</b> but involve additional math which calculates the B input before the lerp.</p>
+<p>The <strong>Overwrite</strong> mode in particular is directly equivalent to <code>Out = lerp(Base, Blend, Opacity);</code></p>
+<p>Some examples :</p>
+<div class="img-center">
+<a href="Blend.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="217" alt="(Image)" src="Blend.png" />
+</a>
+<p class="img-text">Blend nodes using Overlay, Linear Light and Screen mode.</p>
+</div>
+<p>In this example the texture is being put into the <strong>Base</strong> layer, and a colour is used as the <strong>Blend</strong> layer. The <strong>Opacity</strong> is set to <strong>1</strong> for full-strength of the blend (though it can also go <em>above</em> 1 as the interpolation is not clamped). An <strong>Opacity</strong> of <strong>0</strong> will always result in the same as the <strong>Base</strong> input.</p>
+<p>If you&rsquo;re interested in the HLSL code the different blend modes use, see <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@14.0/manual/Blend-Node.html">Node Library - Blend</a>.</p>
+<hr>
+<h3 id="gradient-ramp">Gradient Ramp</h3>
+<p>We can also use a <strong>gradient</strong> (also sometimes known as a <em>ramp</em> - especially when using solid colour bands rather than interpolated colour keys) to have better control over the resulting colours from a greyscale (0-1 float) input.</p>
+<p>This could be seen a series of remaps &amp; lerps that combine together, which is how the <strong>Gradient</strong> object and <b class="node">Sample Gradient</b> node works in Shader Graph behind the scenes. You can see some example HLSL code in the <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@14.0/manual/Sample-Gradient-Node.html">Node Library - Sample Gradient</a>.</p>
+<div class="img-center">
+<a href="Gradient.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="248" alt="(Image)" src="Gradient.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>However Shader Graph does not support exposing these gradient objects to the material or C# - which makes them much less useful. I have listed a few alternatives in my post : <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#gradient">Intro to Shader Graph - Gradient</a>, but the one I&rsquo;d recommend is storing the gradient as a <strong>Texture2D</strong> and use <b class="node">Sample Texture 2D</b> instead which can also been seen in the image above. Note that the texture should also be set to <strong>Clamp</strong> wrap mode.</p>
+<p>Some examples where this specifically might be used :</p>
+<ul>
+<li>VFX / Particle Effects, like the Lightning above. Also see this <a href="https://tobiasnoller.com/articles/ue4-gradient-mapping-vfx/">article</a> (written for UE4 but has some good examples)</li>
+<li>Toon shading (typically involves a greyscale ramp to control the banding, which is then additionally tinted/lerped to add colour)</li>
+<li><a href="https://youtu.be/ZYnS3kKTcGg?t=728">Stylistic Fog (from Firewatch)</a>, for Built-in RP also see <a href="https://halisavakis.com/my-take-on-shaders-firewatch-multi-colored-fog/">this recreation by Harry Alisavakis</a></li>
+</ul>
+<hr>
+<h3 id="palette-texture">Palette Texture/Array</h3>
+<p>The concept of this Gradient/Ramp could also work for pixel art, but rather than having colours interpolate, we could have neighbouring values point to completely different colours. In this case the input texture uses specific values which corresponds to the x coordinate of a texture (or index of an array) that contains our palette.</p>
+<p>Assuming the input texture is a RGBA32 format we&rsquo;ll be dealing with 8-bit channels, meaning it can store values 0-255 (though in the shader it&rsquo;s still 0-1). That means 256 unique indices we could support, so the palette (texture or array) could contain up to 256 colours. (Using red channel only. If you were to use the red and green channels to sample a 2D palette, it could support up to 65536 colours, though that seems quite uncessarily large imo)</p>
+<p>(This also assumes the input texture settings use <strong>Point</strong> filter mode and <strong>Compression : None</strong>)</p>
+<p>Here&rsquo;s an example with just 5 colours :</p>
+<div class="img-center">
+<a href="PaletteTex.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="431" alt="(Image)" src="PaletteTex.png" />
+</a>
+<p class="img-text">Note that sRGB has been disabled on the input texture. The palette texture also uses <strong>Clamp</strong> wrap mode.</p>
+</div>
+<p>The palette texture size here is <code>5x1</code> (containing black, lightGrey, lightBlue, yellow and white)</p>
+<p>Values stored in the input texture are multiples of <code>255/(5-1)</code> (so <code>0, 63.8, 127.5, 191.3, and 255</code>). The input texture here still contains an alpha channel though you could consider &ldquo;fully transparent&rdquo; to be another colour for the palette (so <code>6x1</code> and multiples of <code>255/(6-1)</code> instead), then the input could be imported as a single-channel texture to potentially save on memory space.</p>
+<p>One problem with this method is it&rsquo;s not really easy to manually create textures storing these indices (especially with large palettes as the shades would be very close to eachother). But you could use an editor C# script to bake/generate them. I haven&rsquo;t got a script to share here, but I imagine it would be something along the lines of :</p>
+<ul>
+<li>for each pixel in a coloured pixel-art texture,</li>
+<li>loop through the palette texture/array to locate which colour matches, with it&rsquo;s index,</li>
+<li>set pixel in generated texture to <code>new Color(index / (paletteSize-1), 0, 0, inputPixel.a)</code></li>
+</ul>
+<button id="palette-array" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Additional notes if storing the palette as an array</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Additional notes if storing the palette as an array</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#palette-array';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+    }
+"><b>⯈ Additional notes if storing the palette as an array</b></button>
+<div class="foldout">
+<p>If storing the palette as an array :</p>
+<ul>
+<li>Would need to convert the 0-1 greyscale value to an index.
+<ul>
+<li>e.g. <code>(int)(In * numberOfColours - 1)</code></li>
+</ul>
+</li>
+<li>I&rsquo;ve heard that accessing an array may be <em>slightly</em> quicker than a texture lookup (though as always, you should try both and profile on the target platform to really see if it makes a difference)</li>
+<li>Materials don&rsquo;t support serialisation for arrays, so they aren&rsquo;t exposed to the material - but can be set from C#. There is <a href="https://docs.unity3d.com/ScriptReference/Material.SetColorArray.html">Material.SetColorArray</a>, however in the scriptable render pipelines (e.g. URP/HDRP) we should only set arrays <em>globally</em> (via <a href="https://docs.unity3d.com/ScriptReference/Shader.SetGlobalVectorArray.html">Shader.SetGlobalVectorArray</a>) to avoid issues related to the SRP Batcher.
+<ul>
+<li>Of course this means <em>everything</em> would be using that same palette array, but if you want to swap the palette per-object it should still be possible by providing an <strong>offset</strong> (via a <strong>Float property</strong>), which could be used to shift the index (<b class="node">Add</b>). In this case our array would actually store <em>multiple</em> palettes.</li>
+<li>It&rsquo;s not documented but I believe arrays are also limited to a maximum length of 1023 though, so this would limit the number of palettes you can have. If that&rsquo;s a problem, using a texture instead may be better.</li>
+</ul>
+</li>
+<li>If the project is using Linear colourspace, May also experience issues with gamma/linear colourspace differences as the functions mentioned above don&rsquo;t deal with this. This can be fixed by using <a href="https://docs.unity3d.com/ScriptReference/Color-linear.html">.linear</a> on the Color object before putting it into the array. When setting globally you&rsquo;ll also need to manually cast your colours to fill a Vector4[] array as there&rsquo;s no &ldquo;SetGlobalColorArray&rdquo; function.</li>
+</ul>
+
+</div>
+<hr>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/index.xml">
+		
+		RSS Feed
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

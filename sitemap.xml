@@ -2,32 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://www.cyanilux.com/</loc>
+    <lastmod>2023-02-17T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tutorials/posts/</loc>
+    <lastmod>2023-02-17T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tags/shader-graph/</loc>
+    <lastmod>2023-02-17T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tutorials/color-swap/</loc>
+    <lastmod>2023-02-17T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tags/</loc>
+    <lastmod>2023-02-17T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tutorials/</loc>
+    <lastmod>2023-02-17T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
     <loc>https://www.cyanilux.com/tutorials/breakdowns/</loc>
     <lastmod>2023-01-04T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>https://www.cyanilux.com/</loc>
-    <lastmod>2023-01-04T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tags/shader-graph/</loc>
-    <lastmod>2023-01-04T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
     <loc>https://www.cyanilux.com/tutorials/snowglobe/</loc>
-    <lastmod>2023-01-04T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tags/</loc>
-    <lastmod>2023-01-04T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tutorials/</loc>
     <lastmod>2023-01-04T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -58,11 +68,6 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tags/hlsl/</loc>
-    <lastmod>2021-05-17T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tutorials/posts/</loc>
     <lastmod>2021-05-17T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

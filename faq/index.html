@@ -12,12 +12,12 @@
 	<meta name="theme-color" content="#ffffff">
 	
 	
-    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=1 ">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=2 ">
 	
 	<meta itemprop="name" content="FAQ">
 <meta itemprop="description" content="List of frequent (or interesting) questions I&#39;ve answered">
 
-<meta itemprop="wordCount" content="6260">
+<meta itemprop="wordCount" content="6403">
 <meta itemprop="keywords" content="" />
 	
 	
@@ -511,6 +511,41 @@ Right : Render with Prepass<br>
 <li>If you still don&rsquo;t see the Alpha port, try adding the block manually (see <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#master-stack">Intro to Shader Graph post - Master Stack</a>)</li>
 </ul>
 <p>If for some reason you do need the texture masked correctly to the alpha, can <b class="node">Multiply</b> the RGBA and A outputs. Or if you need to control the background color, put the A output into the T input on a <b class="node">Lerp</b> with A as the background and B as the RGBA output.</p>
+
+</div>
+<button id="sg-layering-textures" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Layering textures\/colours using alpha\/mask</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Layering textures\/colours using alpha\/mask</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-layering-textures';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+    }
+"><b>⯈ Layering textures/colours using alpha/mask</b></button>
+<div class="foldout">
+<p>If you want to layer a texture containing an alpha channel onto another texture/colour, you can do so using a <b class="node">Lerp</b>, where the A output from the <b class="node">Sample Texture 2D</b> is connected to the T input. The A input would be the colour of the Base/Background while B input would be the colour of what you want to Layer on top.</p>
+<div class="img-center">
+<a href="sg-layer.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="353" alt="(Image)" src="sg-layer.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>If you don&rsquo;t have a texture with an alpha channel, you could also use a procedural shape (or a channel from another texture) as the T input. This should be a float value, commonly referred to as a <em>mask</em>.</p>
+<div class="img-center">
+<a href="sg-layer2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="276" alt="(Image)" src="sg-layer2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>In this case the noise texture is used to interpolate between two colours (blue, green). Then the result is masked using an <b class="node">Ellipse</b> to layer it on the background (same &ldquo;Base Color&rdquo; group as used in previous example)</p>
 
 </div>
 <button id="sg-fragment-only" type="button" class="foldout_button" onclick="
