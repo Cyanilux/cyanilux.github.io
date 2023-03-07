@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=3 ">
+	
+	<meta itemprop="name" content="Snowglobe Breakdown">
+<meta itemprop="description" content="Glass globe shader with background refraction &amp; reflection. Particles are contained inside which inherit Rigidbody movements."><meta itemprop="datePublished" content="2023-01-04T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-01-04T00:00:00+00:00" />
+<meta itemprop="wordCount" content="3508"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="keywords" content="URP,Shader Graph,VFX Graph," />
+	
+	
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/snowglobe-breakdown/Preview.png"/>
+<meta name="twitter:title" content="Snowglobe Breakdown"/>
+<meta name="twitter:description" content="Glass globe shader with background refraction &amp; reflection. Particles are contained inside which inherit Rigidbody movements."/>
+
+	
+<meta property="og:title" content="Snowglobe Breakdown" />
+<meta property="og:description" content="Glass globe shader with background refraction &amp; reflection. Particles are contained inside which inherit Rigidbody movements." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/snowglobe-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/snowglobe-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2023-01-04T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-01-04T00:00:00+00:00" />
+	
+	
+	
+    
+    
+    <title>Snowglobe Breakdown | Cyanilux</title>
+	
+	
+	
+		
+		
+		<meta name="description" content="Glass globe shader with background refraction &amp; reflection. Particles are contained inside which inherit Rigidbody movements.. URP, Shader Graph, VFX Graph | Unity Shader Tutorials, @Cyanilux" />
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/snowglobe-breakdown/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
+	
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
+	
+	<nav id="nav" class="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		FAQ
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Snowglobe Breakdown</h1>
+
+
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/breakdowns/" style="text-decoration: none; color:#eeeeee;">
+	Breakdowns
+	</a>
+</div>
+
+
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	
+	<a href="https://www.cyanilux.com/tags/urp" style="text-decoration: none; color:#eeeeee;">
+	URP
+	</a>
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	
+	<a href="https://www.cyanilux.com/tags/shader-graph" style="text-decoration: none; color:#eeeeee;">
+	Shader Graph
+	</a>
+	</div>
+
+	<div class="tag" style="background-color:#5020bb;">
+	
+	<a href="https://www.cyanilux.com/tags/vfx-graph" style="text-decoration: none; color:#eeeeee;">
+	VFX Graph
+	</a>
+	</div>
+
+
+
+
+
+<time datetime="2023-01-04">&#128337 Jan 4, 2023</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eMerry Christmas!~ 🎄☃️\u003ca href=\"https://twitter.com/hashtag/TechnicallyAChallenge?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#TechnicallyAChallenge\u003c/a\u003e - Festive + Snow\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/F2OA0H19QR\"\u003epic.twitter.com/F2OA0H19QR\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1606669778164191232?ref_src=twsrc%5Etfw\"\u003eDecember 24, 2022\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1606669778164191232\">https://twitter.com/Cyanilux/status/1606669778164191232</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>Recently I made this Snowglobe scene (as part of a tech art challenge, with themes &ldquo;Festive&rdquo; and &ldquo;Snow&rdquo;) in which I used a couple slightly different tools/techniques that I&rsquo;m used to. I used <strong>Unity 2021.3 LTS</strong> but may also work in other versions.</p>
+<p>There&rsquo;s especially two parts I&rsquo;d like to breakdown :</p>
+<p><strong>Snow particles</strong></p>
+<ul>
+<li>Made using a surprisingly simple <strong>Visual Effect Graph</strong>, mainly thanks to the <b class="node">Collide with Sphere</b> block which allows the particles to remain contained in the glass globe.</li>
+<li>These use a <strong>Lit Shader Graph</strong>, <strong>Opaque</strong> surface type.
+<ul>
+<li>I&rsquo;m using lit here so the particles recieve shadows correctly, but this does also require the normals to be overriden - otherwise (when using mesh normals) the shading changes as the particles rotate, since they are billboarded quads.</li>
+<li>Could alternatively use an Unlit shader if you want, and handle your own <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">custom lighting</a> (perhaps sampling shadows only), or keep particles completely unlit - in which case the regular URP/Unlit shader would probably work.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Glass orb/globe</strong></p>
+<ul>
+<li>Has a more realistic refraction than what I&rsquo;d typically do. I felt this was important given the snow particles need a medium (i.e. water) to float through, and when filled, the background viewed through should appear flipped.</li>
+<li>It&rsquo;s still an approximation though. It uses a <strong>Reflection Probe</strong> that is placed near the globe (preferably at its center, parented to it, and updated regularly - though that would add to the performance cost).</li>
+<li>The refraction was loosely based on an article I found during research - <a href="https://samdriver.xyz/article/refraction-sphere">&ldquo;Refraction in a sphere&rdquo; (by Sam Driver)</a>. In that, they explain the idea behind calculations with some great interactive examples, so it&rsquo;s definitely a good read.
+<ul>
+<li>In my use case I decided to use a <strong>Sphere Mesh</strong> rather than defining it fully with math, which means we don&rsquo;t need to calculate where the ray enters - as that is the interpolated position given by the <b class="node">Position</b> node. This simplifies things quite a bit.</li>
+</ul>
+</li>
+<li>I wanted to complete the scene before Christmas so I&rsquo;ve also ignored the objects inside the globe - these aren&rsquo;t affected by the refraction, only the background scene is.</li>
+<li>This uses an <strong>Unlit Shader Graph</strong>, <strong>Transparent</strong> surface type and <strong>Alpha</strong> blending.</li>
+</ul>
+<p class="img-clearfix"></p>
+<p>(Also, just as a <em>disclaimer</em> - It is possible I have the maths wrong somewhere. If this is the case, feel free to let me know and I&rsquo;ll update the post. But either way the result looks convincing enough for me! 😉)</p>
+<hr>
+<h2 id="breakdown---particles">Breakdown - Particles</h2>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-conversation=\"none\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eAlso another look at the snow particles~ ✨\u003cbr\u003eI used VFX Graph for this, as there\u0026#39;s a Collide with Sphere block! \u003ca href=\"https://t.co/V0BuCw0u5u\"\u003epic.twitter.com/V0BuCw0u5u\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1610261894127828993?ref_src=twsrc%5Etfw\"\u003eJanuary 3, 2023\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1610261894127828993\">https://twitter.com/Cyanilux/status/1610261894127828993</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h3 id="particles-setup">Setup</h3>
+<p>As mentioned, the snow particles were made using the <strong>Visual Effect Graph</strong>. In URP this comes as a separate package so must be installed via the <strong>Package Manager</strong>.</p>
+<p>As we need to override the normals (as explained in notes section above) we&rsquo;ll need a custom shader. I find it easiest to use Shader Graph for this, but we first need to go to <strong>Edit → Preferences → Visual Effects</strong> and make sure <em>&ldquo;Improved Shader Graph Generation&rdquo;</em> and <em>&ldquo;Experimental Operators/Blocks&rdquo;</em> are ticked. (In URP 2021.3 LTS at least. Newer versions (or other pipelines) may automatically include Shader Graph support)</p>
+<div class="img-center">
+<a href="Preferences.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="522" height="252" alt="(Image)" src="Preferences.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The first setting here adds a <strong>Support VFX Graph</strong> option to the <strong>Graph Settings</strong> within Shader Graph (replacing the <em>&ldquo;VFX Graph&rdquo;</em> Target which is now deprecated).</p>
+<p>The second setting adds a &ldquo;Shader Graph&rdquo; field to the <b class="node">Output Particle Lit Quad</b> context within VFX Graph, which allows us to assign the graph (as when using VFX Graph we don&rsquo;t use a material!)</p>
+<hr>
+<h3 id="particles-sg">Shader Graph</h3>
+<p>In the Project window somewhere in Assets, right-click and <strong>Create → Shader Graph → URP → Lit Shader Graph</strong>.</p>
+<p>The graph for the particles is very simple. Since we need it to work with VFX Graph make sure you tick the <strong>Support VFX Graph</strong> option in the <strong>Graph Settings</strong> (tab under <strong>Graph Inspector</strong> window). If you don&rsquo;t see this you may need to configure preferences, see above. If you&rsquo;re on older versions you may need to use the <em>&ldquo;VFX Graph&rdquo;</em> Target instead of the <em>&ldquo;Universal&rdquo;</em> one.</p>
+<p>To make them round we should also enable <strong>Alpha Clipping</strong>. Add an <b class="node">Ellipse</b> node with <strong>Width</strong> &amp; <strong>Height</strong> set to <strong>1</strong>, then connect it to the <strong>Alpha</strong> port in the <strong>Fragment</strong> stage of the <strong>Master Stack</strong>. We also want to set the <strong>Alpha Clip Threshold</strong> to <strong>0.9</strong> and <strong>Base Color</strong> to white.</p>
+<p>As mentioned in the intro the particles are billboarded quads so their shading will change as they rotate. To prevent this I&rsquo;ve connected a <b class="node">Vector3</b> node to the <strong>Normal</strong> port in the <strong>Vertex</strong> stage of the <strong>Master Stack</strong>. We can set this to <strong>(0, 1, 0)</strong>.</p>
+<div class="img-center">
+<a href="ParticlesSG.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="470" height="404" alt="(Image)" src="ParticlesSG.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<hr>
+<h3 id="particles-vfx">Visual Effect Graph</h3>
+<p>In the Project window, right-click and <strong>Create → Visual Effects → Visual Effect Graph</strong>.</p>
+<p>In our Visual Effect Graph we should have 4 contexts : <b class="node">Spawn</b>, then under a System, <b class="node">Initalize Particle</b>, <b class="node">Update Particle</b> and <b class="node">Output Particle Lit Quad</b>. Remove all of the light-grey blocks in these contexts, except the <b class="node">Orient: Face Camera Plane</b> in the final one. Don&rsquo;t try deleting the dark grey blocks or you&rsquo;ll end up deleting the context. But if this does happen you can undo, or right-click anywhere in blank space, recreate the context and connect it up.</p>
+<div class="img-right">
+<a href="ParticlesVFX1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="300" height="550" alt="(Image)" src="ParticlesVFX1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<h4 id="spawn">Spawn</h4>
+<p>While hovering over the <b class="node">Spawn</b> context, right-click (or press space) and <strong>Create Block → Spawn →</strong> <b class="node">Single Burst</b>, as we want the snowglobe to start filled with a fixed amount of particles rather than spawning constantly. Set the <strong>Count</strong> to something like 1000.</p>
+<hr>
+<h4 id="initalize-particle">Initalize Particle</h4>
+<p>Under the next context, we should also set the <strong>Capacity</strong> to the same amount of 1000. I&rsquo;ve then set the <strong>Bounds Mode</strong> to <strong>Manual</strong> with Center as (0,0,0) and Size as (1,1,1). Make sure there&rsquo;s also a letter <strong>L</strong> next to Bounds, and not a <strong>W</strong> (can click to toggle it), as these coordinates should be in local space.</p>
+<p>To give the particles slightly different sizes, add a <b class="node">Set Size Random (Uniform)</b> block (easiest to type this in the filter to find it). I&rsquo;ve set <strong>A</strong> to 0.01 and <strong>B</strong> to 0.03.</p>
+<p>We also want to make sure the particles spawn inside the sphere rather than all at the same location, so add a <b class="node">Set Position (Shape: Arc Sphere)</b> block. It isn&rsquo;t too important what <strong>Position Mode</strong> is used as the particles will fall quickly when we add gravity, but I&rsquo;ve used <strong>Volume</strong>.</p>
+<hr>
+<p class="img-clearfix"></p>
+<h4 id="update-particle">Update Particle</h4>
+<p>Under this context add a <b class="node">Gravity</b> block. As the snow particles are meant to be suspended in water, I&rsquo;ve set the <strong>Force</strong> to (0, -0.5, 0) but you can adjust to whatever feels right. We also want to change this to World space (make sure there&rsquo;s a <strong>W</strong> next to the Force, not an <strong>L</strong>, click to toggle it).</p>
+<p>Add a <b class="node">Add Velocity</b> block, we&rsquo;ll leave this at (0,0,0) for now. It&rsquo;ll be important in a little bit for making the movement of a Rigidbody component on our snowglobe object affect the particles, but let&rsquo;s get some other blocks in first.</p>
+<p>We want a <b class="node">Turbulence</b> block, which will add some randomness to the movements. This could be Relative or Absolute. If you choose Relative, the <strong>Drag</strong> should likely be quite low (e.g. 0.1) and it&rsquo;s important the block comes after the others. I&rsquo;m also using <strong>Perlin</strong> noise with an <strong>Intensity</strong> of 0.1. <strong>Frequency</strong> of 3, 1 <strong>Octave</strong>, 0.5 <strong>Roughness</strong>, and 2 <strong>Lacunarity</strong>, but feel free to tweak these values!</p>
+<p>Finally add a <b class="node">Collide with Sphere</b> block (which is the main reason why I used <strong>VFX Graph</strong> to create this rather than the <strong>Shuriken Particle System</strong> component). As the name suggests, it allows our particles to collide with the sides of our glass sphere. Since our particles are inside rather than outside, we want to set the <strong>Mode</strong> to <strong>Inverted</strong>. I also found that a <strong>Rough Surface</strong> was important, with <strong>Roughness</strong> set to 1, otherwise the particles will just slide around on the glass. Under Sphere, set the <strong>Radius</strong> to 0.5. For other settings I have <strong>Bounce</strong> set to 0.2, <strong>Friction</strong> to 0.05, and <strong>Lifetime Loss</strong> at 0 (though since we have no Set Lifetime block the particles should have infinite lifetime, so this shouldn&rsquo;t really matter)</p>
+<div class="img-center">
+<a href="ParticlesVFX2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="316" alt="(Image)" src="ParticlesVFX2.png" />
+</a>
+<p class="img-text">(Click image to view fullscreen)</p>
+</div>
+<p>As seen in the image above I&rsquo;ve now added a chain of nodes to the <strong>Velocity</strong> port. This includes two <strong>Vector3 properties</strong> that have been setup in the <strong>Blackboard</strong>, <em>&ldquo;inheritVelocity&rdquo;</em> and <em>&ldquo;inheritAngVelocity&rdquo;</em>.</p>
+<p>To support the angular velocity, I&rsquo;ve added a <b class="node">Get Attribute: position</b> node (set to Current). Put this into a <b class="node">Negate</b> then into the B input on a <b class="node">Cross Product</b> with A set to the <strong>inheritAngVelocity</strong> property.</p>
+<p>To combine with the <strong>inheritVelocity</strong>, use an <b class="node">Add</b> node. Finally we need to <b class="node">Multiply</b> by <b class="node">Delta Time</b>.</p>
+<p>To set the value of these properties, we&rsquo;ll also need a <strong>C# Script</strong>. This will be assigned to the same <strong>GameObject</strong> as the <strong>Visual Effect</strong>. In this case it&rsquo;s a child of the Glass Globe object, which contains a <strong>Rigidbody</strong> component.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine.VFX;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InheritVelocity</span> : MonoBehaviour {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> VisualEffect visualEffect;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Rigidbody rb;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> Start(){
+</span></span><span style="display:flex;"><span>        visualEffect = GetComponent&lt;VisualEffect&gt;();
+</span></span><span style="display:flex;"><span>        rb = GetComponentInParent&lt;Rigidbody&gt;();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> Update() {
+</span></span><span style="display:flex;"><span>        visualEffect.SetVector3(<span style="color:#e6db74">&#34;inheritVelocity&#34;</span>, transform.InverseTransformVector(rb.velocity) * <span style="color:#ae81ff">0.2f</span>);
+</span></span><span style="display:flex;"><span>        visualEffect.SetVector3(<span style="color:#e6db74">&#34;inheritAngVelocity&#34;</span>, transform.InverseTransformVector(rb.angularVelocity) * <span style="color:#ae81ff">5f</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<hr>
+<p>In my case the <strong>Rigidbody</strong> actually has <strong>Kinematic</strong> enabled, and is using the following <strong>C# Script</strong> which makes it match the position &amp; rotation of another <strong>empty GameObject</strong> - which I&rsquo;ve animated via the <strong>Animation</strong> window.</p>
+<p>(Though you may also be able to animate the snowglobe directly. During debugging I was originally moving that empty object around manually in the scene view, hence I needed this script)</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MoveRigidbodyToTarget</span> : MonoBehaviour {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Transform target;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> speed;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Rigidbody rb;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> Start(){
+</span></span><span style="display:flex;"><span>        rb = GetComponent&lt;Rigidbody&gt;();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> FixedUpdate() {
+</span></span><span style="display:flex;"><span>        rb.MovePosition(Vector3.Lerp(transform.position, target.transform.position, speed * Time.deltaTime));
+</span></span><span style="display:flex;"><span>        rb.MoveRotation(Quaternion.Slerp(transform.rotation, target.rotation, <span style="color:#ae81ff">10</span> * Time.deltaTime));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<hr>
+<h4 id="output-particle-lit-quad">Output Particle Lit Quad</h4>
+<p>Back in the VFX Graph, assign the Shader Graph we created earlier for the particles under the <b class="node">Output Particle Lit Quad</b> context. If you don&rsquo;t see this Shader Graph field, you need to configure Preferences (see above at the start of the particles breakdown)</p>
+<p>You should also have a <b class="node">Orient: Face Camera Plane</b> block here. If you removed it earlier, add it back in.</p>
+<div class="img-center">
+<a href="ParticlesVFX3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="398" height="186" alt="(Image)" src="ParticlesVFX3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<hr>
+<h2 id="breakdown---globe">Breakdown - Globe</h2>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-conversation=\"none\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eBit quick, so maybe hard to see, but this does include some refraction~🔮 \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/LBXBDVxbHB\"\u003epic.twitter.com/LBXBDVxbHB\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1610260318264954880?ref_src=twsrc%5Etfw\"\u003eJanuary 3, 2023\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1610260318264954880\">https://twitter.com/Cyanilux/status/1610260318264954880</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h3 id="globe-refraction">Refraction</h3>
+<p>Moving onto the glass globe, right-click in the Project window and <strong>Create → Shader Graph → URP → Unlit Shader Graph</strong>. Under the <strong>Graph Settings</strong> you&rsquo;ll want to change the <strong>Surface Type</strong> to <strong>Transparent</strong>.</p>
+<p>In order to handle refractions, there&rsquo;s a function in HLSL called <code>refract</code>. It has 3 parameters, the ray direction, a normal and a ratio of refractive indices. There isn&rsquo;t a node for it in Shader Graph <em>(sigh&hellip;)</em> but we can create a <b class="node">Custom Function</b> containing it. Given the function body is very short I find it easiest to use the <strong>String</strong> mode :</p>
+<div class="foldout" style="display:block; line-height:120%">
+<div class="img-right">
+<a href="CustomFunction1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="315" height="308" alt="(Image)" src="CustomFunction1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p><strong>Inputs</strong> :</p>
+<ul>
+<li>In (Vector3)</li>
+<li>Normal (Vector3)</li>
+<li>RefractionRatio (Float)</li>
+</ul>
+<p><strong>Outputs</strong> :</p>
+<ul>
+<li>Out (Vector3)</li>
+</ul>
+<p><strong>Name</strong> :</p>
+<ul>
+<li>Refract</li>
+</ul>
+<p><strong>Body</strong> :
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>Out = refract(In, Normal, RefractionRatio);</span></span></code></pre></div></p>
+</div>
+<p>You will need to copy this node as we&rsquo;ll need to use the function twice - once on <strong>entry</strong> of the sphere, and again on <strong>exit</strong>.</p>
+<p>In real life, it would be the light rays that get refracted which then enter the eye, but doing the opposite (simulating a ray for each pixel on our screen going outwards into the scene) is far more efficient. It&rsquo;s the same concept you&rsquo;ll find in <strong>ray tracing / ray marching</strong>. As with a lot of things in shaders, it can be difficult to visualise given each ray will vary, so it&rsquo;s best to think about one pixel/ray in particular, such as the center of the screen / camera forward vector.</p>
+<p>Our rays will start at the camera&rsquo;s position, and enter the sphere at each fragment&rsquo;s position. There is a couple ways we could calculate this, but it&rsquo;s less nodes if we use a <b class="node">View Direction</b> node put into a <b class="node">Negate</b>. This&rsquo;ll go into the <strong>In</strong> port on our <b class="node">Refract (Custom Function)</b>. That&rsquo;s only the direction part of the ray, but we don&rsquo;t actually need it&rsquo;s &ldquo;origin&rdquo; right now as there&rsquo;s no need for a sphere-ray intersection yet. That&rsquo;s because we already have the point where the ray enters the sphere (<b class="node">Position</b> node. We&rsquo;ll need this a bit later).</p>
+<p>We&rsquo;ll keep all our calculations in <strong>Object</strong> space for now. This has some nice benefits, as (0,0,0) is the center of our sphere and so to calculate the normal vector at any point on the sphere it&rsquo;s simply the position of that point <strong>normalised</strong>! The <b class="node">Refract (Custom Function)</b> also needs the normal at the entry position, but in this case we can use the <b class="node">Normal Vector</b> node.</p>
+<p>For the <strong>RefractionRatio</strong> (ratio of refractive indices) we&rsquo;ll need to know the <strong>Refractive Index</strong> of the materials we&rsquo;re working with, which we can just search for online; such as <a href="https://en.wikipedia.org/wiki/List_of_refractive_indices">this list on Wikipedia</a>. Air is basically 1, Glass around 1.5, and Water around 1.33.</p>
+<p>While we could do 4 refraction calculations (air → glass → water → glass → air), as the glass is quite thin it doesn&rsquo;t actually affect the resulting ray all that much (I confirmed this by redoing the calculations in C# and drawing debug gizmos). So while less accurate, we can ignore it and treat our sphere as a ball of water (air → water → air).</p>
+<p>The ratio needs to be entry/exit, so 1/1.33, which is about <strong>0.75</strong>.</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="729" height="314" alt="(Image)" src="Graph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>When the refracted ray exits the sphere it will be refracted again so we&rsquo;ll need the second <b class="node">Refract (Custom Function)</b>. The <strong>RefractionRatio</strong> for this is 1.33/1, so just <strong>1.33</strong>.</p>
+<p>We also need to know the <strong>normal</strong> (which would be the exit position normalised, then negated as we need it pointing inside the sphere. The next section goes over this)</p>
+<hr>
+<h4 id="sphere-exit-point">Sphere Exit Point</h4>
+<p>To calculate the position of the <strong>Exit</strong> point, we&rsquo;ll need a function to handle a <strong>ray-sphere intersection</strong>. Well, as we already have the <strong>Entry</strong> point we can actually simplify things&hellip; We&rsquo;ll only need :</p>
+<ul>
+<li>Ray Entry, <b class="node">Position</b> node</li>
+<li>Ray Direction, which is the output from our first <b class="node">Refract (Custom Function)</b></li>
+<li>Sphere Center Position, which is just (0,0,0) as we&rsquo;re working in <strong>Object</strong> space.</li>
+</ul>
+<p>The idea is, we can create a vector from the <strong>Entry</strong> point to the <strong>Sphere Center</strong>, and project this onto the <strong>Ray Direction</strong>. As this direction is already a unit vector (normalised), it&rsquo;s just a <strong>Dot Product</strong>!</p>
+<p>That&rsquo;ll give us the distance to the <strong>Ray Center</strong>, which we can double to obtain the distance to the <strong>Exit</strong>. To get the actual position of the Exit point, it&rsquo;s then <code>Entry + Ray Dir * DistanceToExit</code>.</p>
+<div class="img-center">
+<a href="CalculateRayExit.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="600" height="300" alt="(Image)" src="CalculateRayExit.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>In terms of nodes, we need a <b class="node">Position</b> node (<strong>Object</strong> space). Since the sphere center is <strong>(0,0,0)</strong> we can put this into a <b class="node">Negate</b> node to give us the vector to center. Then put this into the <strong>A</strong> port on a <b class="node">Dot Product</b> with <strong>B</strong> set to the <strong>Ray Direction</strong> (result from the first <b class="node">Refract (Custom Function)</b>)</p>
+<p><b class="node">Multiply</b> by <strong>2</strong>, then <b class="node">Multiply</b> by the <strong>Ray Direction</strong> and <b class="node">Add</b> the <b class="node">Position</b> node.</p>
+<p>With our exit point calculated, we&rsquo;ll <b class="node">Normalize</b> it to calculate the normal on the sphere at that point. Since we are inside the sphere we need to <b class="node">Negate</b>, then put it into the <strong>Normal</strong> input on our second <b class="node">Refract (Custom Function)</b>.</p>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="248" alt="(Image)" src="Graph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<hr>
+<h4 id="sample-cubemap">Sample Cubemap</h4>
+<p>We now have the final refracted ray, and can use it to sample our reflection probe. We first need to use a <b class="node">Transform</b> node from <strong>Object</strong> to <strong>World</strong> space, using <strong>Direction</strong> mode. We&rsquo;ll then need to create another <b class="node">Custom Function</b> (<strong>String</strong> mode) :</p>
+<div class="foldout" style="display:block; line-height:120%">
+<div class="img-right">
+<a href="CustomFunction2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="303" height="236" alt="(Image)" src="CustomFunction2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p><strong>Inputs</strong> :</p>
+<ul>
+<li>In (Vector3)</li>
+<li>LOD (Float)</li>
+</ul>
+<p><strong>Outputs</strong> :</p>
+<ul>
+<li>Out (Vector3)</li>
+</ul>
+<p><strong>Name</strong> :</p>
+<ul>
+<li>SampleSpecCube</li>
+</ul>
+<p><strong>Body</strong> :
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>float4 sample = SAMPLE_TEXTURECUBE_LOD(unity_SpecCube0, samplerunity_SpecCube0, In, LOD);
+</span></span><span style="display:flex;"><span>Out = DecodeHDREnvironment(sample, unity_SpecCube0_HDR);</span></span></code></pre></div></p>
+</div>
+<p>Put our transformed ray into the <strong>In</strong> port. We&rsquo;ll leave the <strong>LOD</strong> at 0 so we&rsquo;re sampling the highest possible resolution but you could use a slightly higher value to fake some blurriness.</p>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="578" height="274" alt="(Image)" src="Graph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<hr>
+<h4 id="globe-interior">Interior</h4>
+<p>As I was trying to make a Snowglobe, I wanted objects to appear inside the sphere too. In order to handle this I felt rendering those objects to a separate buffer (Temporary Render Texture) was best, as we can then sample that in our shader and it keeps the objects always rendering inside the globe. It also gives us the option to distort that texture to fake some interior refraction too (though I didn&rsquo;t get around to trying this).</p>
+<p>You could alternatively use <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil operations</a> (via <strong>Overrides</strong> on a <strong>RenderObjects</strong> feature since Shader Graph doesn&rsquo;t allow access to them).</p>
+<p>We&rsquo;ll put any interior <strong>GameObjects</strong> on a specific <strong>Layer</strong>, named something like <em>&ldquo;SnowglobeInterior&rdquo;</em>. To render this layer to another buffer, we could use another Camera but I felt it was easier to use a <strong>URP Custom Renderer Feature</strong> (intended for Unity 2021.3 LTS. If you&rsquo;re in newer versions you may want to rewrite this with an RTHandle) :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Collections.Generic;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine.Rendering;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine.Rendering.Universal;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RenderToTargetFeature</span> : ScriptableRendererFeature {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomRenderPass</span> : ScriptableRenderPass {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> Settings settings;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> FilteringSettings filteringSettings;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> ProfilingSampler m_ProfilingSampler;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> List&lt;ShaderTagId&gt; m_ShaderTagIdList = <span style="color:#66d9ef">new</span> List&lt;ShaderTagId&gt;();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> RenderTargetHandle tempRT;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> CustomRenderPass(Settings settings, <span style="color:#66d9ef">string</span> name) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.settings = settings;
+</span></span><span style="display:flex;"><span>            filteringSettings = <span style="color:#66d9ef">new</span> FilteringSettings(RenderQueueRange.all, settings.layerMask);
+</span></span><span style="display:flex;"><span>            m_ShaderTagIdList.Add(<span style="color:#66d9ef">new</span> ShaderTagId(<span style="color:#e6db74">&#34;SRPDefaultUnlit&#34;</span>));
+</span></span><span style="display:flex;"><span>            m_ShaderTagIdList.Add(<span style="color:#66d9ef">new</span> ShaderTagId(<span style="color:#e6db74">&#34;UniversalForward&#34;</span>));
+</span></span><span style="display:flex;"><span>            m_ProfilingSampler = <span style="color:#66d9ef">new</span> ProfilingSampler(name);
+</span></span><span style="display:flex;"><span>            tempRT.Init(settings.tempTargetName);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> OnCameraSetup(CommandBuffer cmd, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>            RenderTextureDescriptor opaqueDesc = renderingData.cameraData.cameraTargetDescriptor;
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//opaqueDesc.colorFormat = RenderTextureFormat.Default;</span>
+</span></span><span style="display:flex;"><span>            opaqueDesc.colorFormat = RenderTextureFormat.DefaultHDR; <span style="color:#75715e">// if you need to support HDR?</span>
+</span></span><span style="display:flex;"><span>            cmd.GetTemporaryRT(tempRT.id, opaqueDesc, FilterMode.Bilinear);
+</span></span><span style="display:flex;"><span>            ConfigureTarget(tempRT.Identifier());
+</span></span><span style="display:flex;"><span>            ConfigureClear(ClearFlag.All, Color.clear);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Execute(ScriptableRenderContext context, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>            CommandBuffer cmd = CommandBufferPool.Get();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">using</span> (<span style="color:#66d9ef">new</span> ProfilingScope(cmd, m_ProfilingSampler)) {
+</span></span><span style="display:flex;"><span>                SortingCriteria sortingCriteria = renderingData.cameraData.defaultOpaqueSortFlags;
+</span></span><span style="display:flex;"><span>                DrawingSettings drawingSettings = CreateDrawingSettings(m_ShaderTagIdList, <span style="color:#66d9ef">ref</span> renderingData, sortingCriteria);
+</span></span><span style="display:flex;"><span>                context.DrawRenderers(renderingData.cullResults, <span style="color:#66d9ef">ref</span> drawingSettings, <span style="color:#66d9ef">ref</span> filteringSettings);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            context.ExecuteCommandBuffer(cmd);
+</span></span><span style="display:flex;"><span>			CommandBufferPool.Release(cmd);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> OnCameraCleanup(CommandBuffer cmd) {
+</span></span><span style="display:flex;"><span>            cmd.ReleaseTemporaryRT(tempRT.id);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    CustomRenderPass m_ScriptablePass;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [System.Serializable]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Settings</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> tempTargetName;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> RenderPassEvent renderPassEvent;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> LayerMask layerMask;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Settings settings;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Create() {
+</span></span><span style="display:flex;"><span>        m_ScriptablePass = <span style="color:#66d9ef">new</span> CustomRenderPass(settings, name);
+</span></span><span style="display:flex;"><span>        m_ScriptablePass.renderPassEvent = settings.renderPassEvent;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> AddRenderPasses(ScriptableRenderer renderer, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>        renderer.EnqueuePass(m_ScriptablePass);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Note that we use <code>Color.clear</code> when clearing the temporary render texture. This is so that the background will be transparent (alpha = 0), so we can blend correctly in the shader.</p>
+<p>This feature will be passing the texture into the global shader property. We&rsquo;ll need to assign it to the <strong>Forward/Universal Renderer Asset</strong>. Set the <strong>Temp Target Name</strong> to something like <em>&quot;_SnowglobeInteriorTex&quot;</em>. For the <strong>Render Pass Event</strong> I&rsquo;ve used <strong>Before Rendering Transparents</strong>. Set the LayerMask to the SnowglobeInterior Layer and also be sure to remove that layer from the <strong>Opaque Layer Mask</strong> and <strong>Transparent Layer Mask</strong> (as we don&rsquo;t want objects on this layer to render normally on cameras).</p>
+<div class="img-center">
+<a href="RendererFeature.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="399" height="546" alt="(Image)" src="RendererFeature.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Back in the Shader Graph, create a <strong>Texture2D property</strong> in the Blackboard named <em>&ldquo;SnowglobeInteriorTex&rdquo;</em>. In the node settings while the property is selected, the <strong>Reference</strong> should be the same as the tempTargetName in the feature settings (<em>&quot;_SnowglobeInteriorTex&quot;</em>, if not already that). As it should be a global shader property, we also need to <strong>untick the Exposed</strong> option.</p>
+<p>Use a <b class="node">Sample Texture 2D</b> node with this texture property, and a <b class="node">Screen Position</b> node in the UV port. The <strong>RGBA</strong> result from this sample should go into the <strong>B</strong> port on a <b class="node">Lerp</b> node,  with the <strong>A</strong> input set to the result from our refraction (<b class="node">SampleSpecCube (Custom Function)</b>). The <strong>A</strong> output from the sample should go into the <strong>T</strong> input. This is basically replicating an alpha blend.</p>
+<div class="img-center">
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="715" height="363" alt="(Image)" src="Graph4.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<hr>
+<h4 id="globe-reflection">Reflection</h4>
+<p>To really look like glass we should also add reflections. It&rsquo;s much easier to let Shader Graph do most of the work here - by using a <b class="node">Reflection Probe</b> node. This takes in the <b class="node">View Direction</b> and <b class="node">Normal Vector</b>, which should both be in <strong>World</strong> space this time. We&rsquo;ll leave the <strong>LOD</strong> at 0.</p>
+<p>We can use this in the <strong>B</strong> input of a <b class="node">Lerp</b> node with <strong>A</strong> set to our previous result (combining refraction &amp; interior) and <strong>T</strong> set to a <b class="node">Fresnel Effect</b> node. You can adjust the <strong>Power</strong> or add a <strong>Float property</strong> here if you want, but I&rsquo;ve set it to <strong>2</strong>.</p>
+<div class="img-center">
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="330" alt="(Image)" src="Graph5.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>As I want to be able to see the glass better, I&rsquo;m also tinting the result using that fresnel slightly but this isn&rsquo;t really accurate to real life. I&rsquo;m also ignoring any reflections from rays bouncing around the inside of the sphere but if you&rsquo;re interested in that <a href="https://samdriver.xyz/article/refraction-sphere#:~:text=of%20the%20scene.-,INTERNAL%20REFLECTION,-When%20a%20ray">Sam Driver&rsquo;s article</a> includes a section going over that which is pretty neat.</p>
+<p>Overall I&rsquo;m pretty happy with result. It&rsquo;s a bit late now, but Merry Christmas!~ 🎄☃️😉
+<br><hr>
+
+<div style="display:block;text-align: center">
+<h2>Thanks for reading!</h2>
+<p> If this post helped, consider sharing a link with others!</p>
+</div>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! (new!) ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div></p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a class="small-text" href="https://twitter.com/Cyanilux">© Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/index.xml">
+		
+		RSS Feed
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

@@ -6,14 +6,25 @@
     <description>Recent content in URP on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Wed, 04 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/urp/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 07 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/urp/index.xml" rel="self" type="application/rss+xml" />
 	
     <item>
-      <title>Snowglobe</title>
-      <link>https://www.cyanilux.com/tutorials/snowglobe/</link>
+      <title>Fractured Cube Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/fractured-cube-breakdown/</link>
+      <pubDate>Tue, 07 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/fractured-cube-breakdown/</guid>
+      <description>Uses a shader which displaces (scales/rotates) vertices of a prefractured mesh with pivots baked into UV maps</description>
+    </item>
+	
+    
+	
+    <item>
+      <title>Snowglobe Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/snowglobe-breakdown/</link>
       <pubDate>Wed, 04 Jan 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://www.cyanilux.com/tutorials/snowglobe/</guid>
+      <guid>https://www.cyanilux.com/tutorials/snowglobe-breakdown/</guid>
       <description>Glass globe shader with background refraction &amp; reflection. Particles are contained inside which inherit Rigidbody movements.</description>
     </item>
 	

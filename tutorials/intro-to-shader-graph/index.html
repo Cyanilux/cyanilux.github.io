@@ -12,12 +12,12 @@
 	<meta name="theme-color" content="#ffffff">
 	
 	
-    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=2 ">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=3 ">
 	
 	<meta itemprop="name" content="Intro to Shader Graph">
 <meta itemprop="description" content="A detailed introduction on how to use Unity Shader Graph (updated for v12&#43;)! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!"><meta itemprop="datePublished" content="2021-03-05T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-03-05T00:00:00+00:00" />
-<meta itemprop="wordCount" content="17221"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="wordCount" content="17205"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="Shader Graph,URP,HDRP," />
 	
 	
@@ -1728,14 +1728,28 @@
 <p>Sometimes Shader Graph can be a bit limited, so it can be useful to edit the generated code to extend what it is possible in graph form. For example, adding <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil</a> operations. (It&rsquo;s also possible to override this on the <strong>RenderObjects</strong> feature for the URP Forward Renderer. That is outside of the scope of this tutorial though, it&rsquo;s long enough already!)</p>
 <p>Be aware that the code might include multiple SubShaders depending on the targets under the Graph Settings. I&rsquo;ve also seen URP ones convert to two SubShaders, one intended for gles platforms (&amp; using shader model 2) and another for other platforms (using shader model 4.5). If you&rsquo;re editing the code make sure you edit the one being used by your target (or both). The gles one seems to not include the <code>DOTS_INSTANCING_ON</code> multi_compile/keyword, so I would assume the reason for separating it into two versions is related to that.</p>
 <br><hr>
-<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
-<p style="text-align:center;">~ Cyan</p>
+
+<div style="display:block;text-align: center">
+<h2>Thanks for reading!</h2>
+<p> If this post helped, consider sharing a link with others!</p>
+</div>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! (new!) ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div>
 
 
         </div>
         </br>
 <p class="footer">
-<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+<a class="small-text" href="https://twitter.com/Cyanilux">© Cyanilux</a>
 	<p class="small-text" style="text-align:center;">
 	
 	

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blender on Cyanilux</title>
+    <link>https://www.cyanilux.com/tags/blender/</link>
+    <description>Recent content in Blender on Cyanilux</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Tue, 07 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/blender/index.xml" rel="self" type="application/rss+xml" />
+	
+    <item>
+      <title>Fractured Cube Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/fractured-cube-breakdown/</link>
+      <pubDate>Tue, 07 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/fractured-cube-breakdown/</guid>
+      <description>Uses a shader which displaces (scales/rotates) vertices of a prefractured mesh with pivots baked into UV maps</description>
+    </item>
+	
+    
+  </channel>
+</rss>

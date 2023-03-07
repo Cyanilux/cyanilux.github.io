@@ -12,12 +12,12 @@
 	<meta name="theme-color" content="#ffffff">
 	
 	
-    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=2 ">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=3 ">
 	
 	<meta itemprop="name" content="Holofoil Card Shader Breakdown">
 <meta itemprop="description" content="A shader that replicates the Holographic Foil effects on Trading Cards. Also explains the stencil shader effect on the card window."><meta itemprop="datePublished" content="2021-04-21T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-04-21T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1995"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="wordCount" content="1979"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="URP,Shader Graph," />
 	
 	
@@ -410,14 +410,28 @@
 <p>Something to bear in mind is that multiple cards use the same stencil value so objects can be seen through both. While it is possible to use different stencil values it is a bit awkward with the RenderObjects feature as you&rsquo;d need a separate Layer for each (and there is a limit of 31 layers, some of which you&rsquo;d want to use for other uses too). Objects behind the card can also still be seen through the window and can block viewing the object, unless you render everything else with Stencil, similar to the RenderObjects above but with the Compare Function as <strong>Not Equal</strong>.</p>
 <p>An alternative to using stencils would be using additional cameras and Render Textures instead, which might be a bit more expensive but provides easier control over the sorting of multiple cards.
 <br><hr>
-<p>Thanks for reading! If you have any comments, questions or suggestions you can drop me a <a href="https://twitter.com/Cyanilux">tweet</a> or join my <a href="http://discord.gg/2V93q9w">discord</a>. If this post helped, consider sharing a link with others!</p>
-<p style="text-align:center;">~ Cyan</p></p>
+
+<div style="display:block;text-align: center">
+<h2>Thanks for reading!</h2>
+<p> If this post helped, consider sharing a link with others!</p>
+</div>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! (new!) ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div></p>
 
 
         </div>
         </br>
 <p class="footer">
-<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+<a class="small-text" href="https://twitter.com/Cyanilux">© Cyanilux</a>
 	<p class="small-text" style="text-align:center;">
 	
 	

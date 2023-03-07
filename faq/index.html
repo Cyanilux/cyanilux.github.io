@@ -12,12 +12,12 @@
 	<meta name="theme-color" content="#ffffff">
 	
 	
-    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=2 ">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=3 ">
 	
 	<meta itemprop="name" content="FAQ">
 <meta itemprop="description" content="List of frequent (or interesting) questions I&#39;ve answered">
 
-<meta itemprop="wordCount" content="6403">
+<meta itemprop="wordCount" content="6718">
 <meta itemprop="keywords" content="" />
 	
 	
@@ -1068,6 +1068,62 @@ Right : Render with Prepass<br>
 <p>I also have a <a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/">forcefield shader breakdown</a> which uses an array, if you want a real example.</p>
 
 </div>
+<button id="sg-lod-crossfade" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ LOD Crossfade using dithering</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ LOD Crossfade using dithering</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-lod-crossfade';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+    }
+"><b>⯈ LOD Crossfade using dithering</b></button>
+<div class="foldout">
+<p>The following graph can be used to support <strong>Fade Mode</strong> : &ldquo;Cross Fade&rdquo; on the <strong>LOD Group</strong> component.</p>
+<p>This requires using a built-in variable, <code>unity_LODFade</code>. Shader Graph doesn&rsquo;t provide access to it but we can use a <b class="node">Custom Function</b> node (<strong>String</strong> mode). Add a single <strong>Float</strong> output named &ldquo;Out&rdquo; and set <strong>Body</strong> to <code>Out = unity_LODFade.x;</code>. The function&rsquo;s name isn&rsquo;t that important but needs to be set to something.</p>
+<p>For use with the <b class="node">Dither</b> node, we first need to <b class="node">Absolute</b> to bring any negative values into the positive range. However to make sure it fades in the correct direction, we also need to take the <b class="node">Sign</b> of <code>unity_LODFade.x</code>, and <b class="node">Multiply</b> by the dither result.</p>
+<div class="img-center">
+<a href="sg-lodfade.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="157" alt="(Image)" src="sg-lodfade.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>As shown, can then optionally use a <strong>Boolean Keyword</strong> (set this up in the <strong>Blackboard</strong> window. While highlighted change it&rsquo;s settings under the <strong>Node Settings</strong> tab of <strong>Graph Inspector</strong> window).</p>
+<ul>
+<li><strong>Name</strong> : Is Fading</li>
+<li><strong>Reference</strong> : <code>LOD_FADE_CROSSFADE</code></li>
+<li><strong>Definition</strong> : Multi-Compile</li>
+<li><strong>Scope</strong> : Global</li>
+<li><strong>Exposed</strong> : No / Unticked</li>
+</ul>
+<p>Drag the keyword into the graph, then put the result of our <b class="node">Multiply</b> into the <strong>On</strong> port, and set the <strong>Off</strong> port to <strong>1</strong>.</p>
+<p>Using this keyword may be optional, but it means we can avoid having to do the dither calculations when not in the crossfading range. However this would affect batching, so you may want to try it with and without and profile both.</p>
+<p>The above graph results in this when moving the camera :</p>
+<div class="img-center">
+<a href="lod-crossfade.gif" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="367" height="298" alt="(Image)" src="lod-crossfade.gif" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>With LOD Group setup looking something like this :</p>
+<div class="img-center">
+<a href="lod-group.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="473" height="400" alt="(Image)" src="lod-group.png" />
+</a>
+<p class="img-text">(Usually would have less tris in your higher/further away LODs, but the meshes here is just for example)</p>
+</div>
+<p>For fading based on time, enable <strong>Animate Cross-fading</strong>. Can control the duration (globally) by setting <code>LODGroup.crossFadeAnimationDuration</code> from a C# script.</p>
+<p>For fading based on distance, disable <strong>Animate Cross-fading</strong> and edit the &ldquo;Fade Transition Width&rdquo; values.</p>
+<p>See <a href="https://docs.unity3d.com/Manual/class-LODGroup.html">Unity Docs : LOD Group</a> for more info.</p>
+
+</div>
 <button id="sg-gpu-instancing" type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
@@ -1458,7 +1514,7 @@ Right : Render with Prepass<br>
         </div>
         </br>
 <p class="footer">
-<a href="https://twitter.com/Cyanilux">@Cyanilux</a>
+<a class="small-text" href="https://twitter.com/Cyanilux">© Cyanilux</a>
 	<p class="small-text" style="text-align:center;">
 	
 	

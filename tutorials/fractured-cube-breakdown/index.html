@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=3 ">
+	
+	<meta itemprop="name" content="Fractured Cube Breakdown">
+<meta itemprop="description" content="Uses a shader which displaces (scales/rotates) vertices of a prefractured mesh with pivots baked into UV maps"><meta itemprop="datePublished" content="2023-03-07T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-03-07T00:00:00+00:00" />
+<meta itemprop="wordCount" content="3542"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="keywords" content="URP,Shader Graph,Blender," />
+	
+	
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/fractured-cube-breakdown/Preview.png"/>
+<meta name="twitter:title" content="Fractured Cube Breakdown"/>
+<meta name="twitter:description" content="Uses a shader which displaces (scales/rotates) vertices of a prefractured mesh with pivots baked into UV maps"/>
+
+	
+<meta property="og:title" content="Fractured Cube Breakdown" />
+<meta property="og:description" content="Uses a shader which displaces (scales/rotates) vertices of a prefractured mesh with pivots baked into UV maps" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/fractured-cube-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/fractured-cube-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2023-03-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-03-07T00:00:00+00:00" />
+	
+	
+	
+    
+    
+    <title>Fractured Cube Breakdown | Cyanilux</title>
+	
+	
+	
+		
+		
+		<meta name="description" content="Uses a shader which displaces (scales/rotates) vertices of a prefractured mesh with pivots baked into UV maps. URP, Shader Graph, Blender | Unity Shader Tutorials, @Cyanilux" />
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/fractured-cube-breakdown/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
+	
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
+	
+	<nav id="nav" class="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		FAQ
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Fractured Cube Breakdown</h1>
+
+
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/breakdowns/" style="text-decoration: none; color:#eeeeee;">
+	Breakdowns
+	</a>
+</div>
+
+
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	
+	<a href="https://www.cyanilux.com/tags/urp" style="text-decoration: none; color:#eeeeee;">
+	URP
+	</a>
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	
+	<a href="https://www.cyanilux.com/tags/shader-graph" style="text-decoration: none; color:#eeeeee;">
+	Shader Graph
+	</a>
+	</div>
+
+	<div class="tag" style="background-color:#e67d0d;">
+	
+	<a href="https://www.cyanilux.com/tags/blender" style="text-decoration: none; color:#eeeeee;">
+	Blender
+	</a>
+	</div>
+
+
+
+
+
+<time datetime="2023-03-07">&#128337 Mar 7, 2023</time>
+
+
+
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eFractured Cube \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/unity3d?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3d\u003c/a\u003e🧊 \u003ca href=\"https://t.co/2nZGzMSyQd\"\u003epic.twitter.com/2nZGzMSyQd\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1625177389163593738?ref_src=twsrc%5Etfw\"\u003eFebruary 13, 2023\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1625177389163593738\">https://twitter.com/Cyanilux/status/1625177389163593738</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>I recently made this fractured cube using a technique known as <strong>Pivot Baking</strong>, which I&rsquo;ve wanted to try out for a while now. The cube is actually a pre-fractured model (made in Blender, using the Cell Fracture addon). But importantly, the positions of the origin/pivot of each fractured piece has been baked into mesh data (UV channels). In the shader we obtain these pivots, compare them to another position sent into the shader and use that to displace vertices (as well as scale &amp; rotate).</p>
+<p>If interested, I&rsquo;ve also listed some links to effects other people have made using the same technique at the end of the post.</p>
+<hr>
+<h2 id="breakdown">Breakdown</h2>
+<h3 id="fractured-mesh">Fractured Mesh</h3>
+<p>The first step is creating the fractured mesh. I used Blender, with the <strong>Cell Fracture</strong> addon which is perfect for this. But it first needs to be enabled under <strong>Edit → Preferences → Add-ons</strong>.</p>
+<div class="img-center">
+<a href="BlenderPreferences.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="662" height="267" alt="(Image)" src="BlenderPreferences.png" />
+</a>
+<p class="img-text">(In the search box, enter &ldquo;cell&rdquo; and the list should have &ldquo;Object: Cell Fracture&rdquo;. Tick the box just before the text to enable it)</p>
+</div>
+<p>I didn&rsquo;t really intend this to be a Blender tutorial but I&rsquo;ll still go through the steps I did! We&rsquo;ll be moving to Unity &amp; ShaderGraph later on~</p>
+<p>In Object mode, select the cube and use the Cell Fracture (either use the F3 search function, or you can find it under <strong>Object → Quick Effects</strong>). A box will appear with the settings for the effect. Under the <strong>Point Source</strong> heading, you&rsquo;ll likely want to set the <strong>Noise</strong> to 1 so the fracturing isn&rsquo;t uniform, you may also want to play around with the <strong>Recursive Shatter</strong> settings. Under the <strong>Mesh Data</strong> I&rsquo;d recommend unticking the <strong>Apply Split Edge</strong> to avoid duplicating vertices along those faces.</p>
+<div class="img-center">
+<a href="BlenderCellFracture.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="600" height="453" alt="(Image)" src="BlenderCellFracture.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Click OK to fracture the mesh. You can then hide (or delete) the original cube as it&rsquo;s not needed. The mesh should be fractured into different objects but we&rsquo;ll want to recombine them. Select a piece (to mark it as the active selection), then select all pieces (A, either one or twice depending on if you have Select All Toggles enabled in preferences) and use <strong>Object → Join</strong> (Ctrl+J).</p>
+<p>You&rsquo;ll then want to move the origin back to the cube center, which can be done by using one of the settings under <strong>Object → Set Origin</strong>. I&rsquo;ve used <strong>Origin To 3D Cursor</strong> since my cube and the 3D cursor are both at the origin.</p>
+<div class="img-center">
+<a href="BlenderFracturedCube.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="500" height="222" alt="(Image)" src="BlenderFracturedCube.png" />
+</a>
+<p class="img-text">Resulting fractured cube, shown in Object and Edit modes</p>
+</div>
+<p>If the cracks made by this are very noticeable, you can try undoing &amp; repeating the process with a <strong>larger mesh</strong> then scale down after. Or alternatively scale together the vertices manually (and snap them to edges) - though that could take a while depending on how many pieces there are.</p>
+<hr>
+<h3 id="pivot-baking">Pivot Baking</h3>
+<p>For baking the pivots, go into the <strong>Object Data Properties</strong> (green triangle icon in Properties window, usually on the right side of the screen). Under <strong>UV Maps</strong> add an extra 2 UV maps by pressing the <code>+</code> button. May also want to rename them.</p>
+<div class="img-center">
+<a href="BlenderUVMaps.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="335" height="125" alt="(Image)" src="BlenderUVMaps.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>You can leave the first UV map if you want to be able to apply textures to the model (though the interior faces created from fracturing might need re-unwrapping).</p>
+<p>Select the UV map for pivot baking (UVMap_BakedPivotFront) and follow these steps :</p>
+<ul>
+<li>Go into <strong>Edit Mode</strong>, Select all vertices/faces (A)</li>
+<li>Go into <strong>Front Orthographic</strong> view (numpad 1, can also press the green circle (-Y) on the gizmo in the top right)</li>
+<li>Unwrap using <strong>UV → Project From View (Bounds)</strong></li>
+<li>Under the UV Editing workspace, change the Pivot (at top, just left from the magnet) to Individual Orgins</li>
+<li>Select all vertices on the UV map (A)</li>
+<li>Then scale to zero (S, 0). Should now have a bunch of points (one for each fractured piece)</li>
+</ul>
+<p>Repeat this for the other UV map (UVMap_BakedPivotSide), but with <strong>Right Orthographic</strong> view (numpad 3) instead.</p>
+<p>The resulting pivot UV maps will look something like this :</p>
+<div class="img-center">
+<a href="BlenderUVMaps2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="700" height="345" alt="(Image)" src="BlenderUVMaps2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Export the model as an FBX file and import into Unity. You&rsquo;ll likely want to make sure you export with the correct axis/scale conversions. (I typically use <code>-Z Forward</code>, <code>Y Up</code>, with <code>Apply Transform</code> enabled)</p>
+<hr>
+<h3 id="pass-position-into-material">Pass Position into Material</h3>
+<p>Moving into Unity!~ Drag the fractured cube into the scene. You&rsquo;ll want to create a <strong>Lit Shader Graph</strong>, and a <strong>Material</strong> using it that we can assign to the cube object.</p>
+<p>Before we start with the shader itself, it&rsquo;ll be useful to first set up a new <strong>GameObject</strong>, which I&rsquo;ll refer to as the &ldquo;Handle&rdquo; object. This will be what controls the fracturing effect when we move it around in scene/game. On this object, we&rsquo;ll add a <strong>C# script</strong> that will send the <code>transform.position</code> and <code>transform.localScale.x</code> into the shader/material. For example :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">[ExecuteInEditMode]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PassPositionToMaterial</span> : MonoBehaviour {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Material material;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">string</span> positionProperty = <span style="color:#e6db74">&#34;_Pos&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">string</span> radiusProperty = <span style="color:#e6db74">&#34;_Radius&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// could add [SerializeField] attribute or make public to set from inspector</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> Start(){
+</span></span><span style="display:flex;"><span>        material = transform.parent.GetComponent&lt;Renderer&gt;().sharedMaterial;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        If the script object is a child of the FracturedCube can use this.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        Otherwise could add [SerializeField] to expose the material field,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        or provide a serialized field for the Transform/MeshRenderer of cube
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        Use `.material` instead to support multiple of these.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        Would then also need to Destroy(material) in OnDestroy,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        and might need to remove [ExecuteInEditMode] as creating 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        materials while not in play mode might leak them :(
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> Update(){
+</span></span><span style="display:flex;"><span>        material.SetVector(positionProperty, transform.position);
+</span></span><span style="display:flex;"><span>        material.SetFloat(radiusProperty, transform.localScale.x);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        Could also combine these into a single Vector4 property, e.g.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        Vector4 vector = transform.position;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        vector.w = transform.localScale.x;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        material.SetVector(combinedProperty, vector);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>With this, you&rsquo;ll be able to properly test the shader in the scene view later on (i.e. each time after editing the vertex stage, so you can visualise how the changes actually affect the result - as the node previews themselves won&rsquo;t be useful for that)</p>
+<p>Since we use <code>transform.parent</code>, this Handle GameObject should be set as a child to the Fractured Cube GameObject. But alternatively, you could add another serialised field for the Material asset itself, or for the Transform or MeshRenderer of the cube to be able to obtain the material that way, as explained in code comments above too.</p>
+<p>We&rsquo;ll also need to set up the properties being used by the script above in the <strong>Blackboard</strong> inside the graph :</p>
+<ul>
+<li><strong>Vector3</strong>, named &ldquo;Pos&rdquo;</li>
+<li><strong>Float</strong>, named &ldquo;Radius&rdquo;, and set it&rsquo;s <strong>Default</strong> value to 1 (under <strong>Node Settings</strong> tab of <strong>Graph Inspector</strong>)</li>
+</ul>
+<hr>
+<h3 id="obtain-baked-pivots-in-shader-graph">Obtain Baked Pivots in Shader Graph</h3>
+<p>In order to get our baked pivots, we&rsquo;ll need to access the UV data by using two <b class="node">UV</b> nodes. In the twitter gif the pivots were actually baked into <strong>UV0</strong> and <strong>UV1</strong> as I only used a total of 2 UV channels in Blender (because I didn&rsquo;t need to apply any textures).</p>
+<p>But if you have that original UV map, like in the Fractured Mesh section of this post, you can use the <strong>UV1</strong> and <strong>UV2</strong> channels instead. Either way, I&rsquo;ll be referring to these as the &ldquo;first/second Pivot UV set&rdquo;.</p>
+<button id="shader-graph-uv" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Additional notes about UV channels</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Additional notes about UV channels</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#shader-graph-uv';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+    }
+"><b>⯈ Additional notes about UV channels</b></button>
+<div class="foldout">
+<p>Unity also uses the UV1 channel when objects are baked into lightmaps, so if you want to support Baked Global Illumination, you&rsquo;ll need to provide an additional UV channel for this. Or get Unity to generate them (see <a href="https://docs.unity3d.com/Manual/LightingGiUvs-GeneratingLightmappingUVs.html">Unity docs : Generating lightmap UVs</a>), but you&rsquo;ll still need to export with it in the list (or it&rsquo;ll override the pivot data).</p>
+<div class="img-center">
+<a href="BlenderUVMaps3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="335" height="165" alt="(Image)" src="BlenderUVMaps3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>In this case the pivot UV maps would be passed into the <strong>UV2</strong> and <strong>UV3</strong>.</p>
+<p>You also wouldn&rsquo;t be able to have any more UV maps here, as Shader Graph currently only exposes 4 channels (UV0-UV3), despite the Mesh class supporting up to 8.</p>
+<p>Though it&rsquo;s also worth noting, technically these channels can be up to Vector4 in Unity - but Blender/FBX files only deals with 2 axis in it&rsquo;s UV channels. So we&rsquo;ll only be using the X and Y axis (also labelled R and G). But if you wanted, you might be able to write a C# script (perhaps an AssetPostprocessor?) to combine them into a single UV channel. Not sure.</p>
+
+</div>
+<p>Put each of these <b class="node">UV</b> into a <b class="node">Split</b> node and create a <b class="node">Vector3</b> node. Put the <strong>R</strong> output from the first Pivot UV set into <strong>X</strong>, and <strong>R</strong> output from the second UV set into <strong>Z</strong>. The <strong>Y</strong> input can be set to the <strong>G</strong> output on either Pivot UV as they should both be equivalent (since the vertical axis is the same for the front and side axis).</p>
+<p>As we used <strong>Project From View (Bounds)</strong>, we&rsquo;ll need to <b class="node">Remap</b> the values a bit. The bounds of the UV is <strong>0-1</strong>, so that&rsquo;ll be the <strong>In Min Max</strong>. The default blender cube is 2 units wide, so I&rsquo;ve set the <strong>Out Min Max</strong> to <strong>-1 and 1</strong>. I then needed to <b class="node">Multiply</b> by (-1, 1, -1) likely due to some axis differences. (Perhaps if we projected from different views we wouldn&rsquo;t have to do this).</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="229" alt="(Image)" src="Graph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>This gives us our baked pivots (in <strong>Object</strong> space), It&rsquo;ll be a good idea to <strong>group these nodes</strong> (named something like &ldquo;Baked Pivot&rdquo;) as we&rsquo;ll need the output of this multiple times!</p>
+<hr>
+<h3 id="shader-graph---vertex-stage">Shader Graph - Vertex Stage</h3>
+<p>What we&rsquo;re trying to achieve is : As we move our <strong>Handle GameObject</strong> position (&ldquo;Pos&rdquo;) closer to these baked pivots, the <em>strength</em> of the displacement will be larger (and <em>intensity</em> of the emission colour should increase too).</p>
+<p>The position being passed into the shader is in world space though, so before we can compare them we&rsquo;ll need to use a <b class="node">Transform</b> node from <strong>Object</strong> to <strong>World</strong> space on our pivots (or <strong>World</strong> to <strong>Object</strong> on the <strong>&ldquo;Pos&rdquo; property</strong>, if you prefer).</p>
+<p>Alternatively we could adjust the C# script to pass the position in object space (may be more performant), but that would require the Handle GameObject to be a child of the cube (to use <code>transform.localPosition</code>), or we would need a reference to the cube object/transform to use <code>float3 localPos = cubeTransform.InverseTransformPoint(transform.position);</code>. I didn&rsquo;t do this in my original shader, so will leave it up to you.</p>
+<p>We can then use a <b class="node">Distance</b> node with our <strong>&ldquo;Pos&rdquo; property</strong>. Put this into the <strong>A</strong> port on a <b class="node">Divide</b> node with the <strong>B</strong> set to the <strong>&ldquo;Radius&rdquo; property</strong> to take that into account. Now if our Handle GameObject is close to each pivot, this returns a value close to 0, while as we move the object away the value will increase.</p>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="532" height="295" alt="(Image)" src="Graph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>A value of 1 would mean the object is &ldquo;Radius&rdquo; units away, which should be roughly where the effect returns to a regular cube (no displacement or emission colour). To obtain that we <em>could</em> use a <b class="node">One Minus</b> then <b class="node">Saturate</b> - that would be a value of 0 at the radius, and 1 where the Handle GameObject and pivot positions match&hellip; but to have better control, we can instead put it into a <b class="node">Smoothstep</b> node.</p>
+<p>Or could alternatively use <b class="node">Inverse Lerp</b> for a more linear falloff. Either of these give us control over both the min and max edges. You&rsquo;ll want to put this into a group named &ldquo;Strength&rdquo;.</p>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="704" height="314" alt="(Image)" src="Graph3.png" />
+</a>
+<p class="img-text">Two options for how to set up strength values. Later you could try both and see how it affects the graph.</p>
+</div>
+<p>From the previews you can see this too, but this means that when the distance is smaller (or equal) to <strong>Edge1/A</strong>, the result will be 0 (black), while larger (or equal) to <strong>Edge2/B</strong>, it&rsquo;ll output 1. And in between these values, a gradient from 0 to 1 is produced.</p>
+<p>In the case of the <b class="node">Inverse Lerp</b> it isn&rsquo;t clamped by default so produces values that are negative and larger than 1, hence why we also need a <b class="node">Saturate</b> to clamp them between 0 and 1.</p>
+<p>I&rsquo;ve set the inputs to <strong>0.2</strong> and <strong>1.2</strong> as shown in the image above, but you could adjust them slightly for different results. To have control from the Material Inspector you may also want to set up a <strong>Vector2 property</strong> (with default value of <code>(0, 1)</code>, and named &ldquo;StrengthMinMax&rdquo; for example), drag it into the graph, <b class="node">Split</b> and connect the <strong>R</strong> and <strong>G</strong> outputs to these edge inputs instead.</p>
+<p>Moving onto the vertex displacement, we&rsquo;ll need to use a <b class="node">Position</b> node set to <strong>Object</strong> space to obtain the mesh vertex positions. There&rsquo;s a number of ways we could adjust these positions but the tweet includes :</p>
+<ul>
+<li>Scaled down from baked pivot</li>
+<li>Rotated around baked pviot</li>
+<li>Scaled down from cube/object pivot, which will be <code>(0,0,0)</code> in object space</li>
+</ul>
+<p>All three of these are based on a <em>strength</em> value (like what we just calculated above). Specifically, I used the same strength for the first two, but for the last one I used a <em>second</em> <b class="node">Smoothstep</b> with different Edge input values so there is more variation. We&rsquo;ll go over that later when we need it.</p>
+<p>In the twitter gif using these two strength values allowed the fractured pieces to start shrinking/rotating before they moved outwards from the cube center. But with different values it could also do the opposite, hence why it may make sense to use exposed properties to set these.</p>
+<div class="img-center">
+<a href="AlternativeFracture.gif" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="367" height="298" alt="(Image)" src="AlternativeFracture.gif" />
+</a>
+<p class="img-text">Gif showing alternative fracture. Graph is the same, but different Min/Max on strengths. &ldquo;Strength&rdquo; min is quite high (0.8, 1), so pieces disappear (shrink to a scale of 0). Pieces also move outwards slightly before shrinking/rotating as Strength 2 (setup in a later section) is (1.5, 0).</p>
+</div>
+<hr>
+<h3 id="scale-around-baked-pivot">Scale around Baked Pivot</h3>
+<p>Anyway, to handle scaling around the baked pivot we first need to offset our vertex positions (<b class="node">Position</b>) using a <b class="node">Subtract</b> node, with the <strong>B</strong> input set to our Baked Pivots (output of group from earlier).</p>
+<p>One way to help visualise this, is imagining a single pivot at some point in 3D space (or even 2D/1D), by subtracting it, it shifts the space so that the pivot is now at the origin <code>(0,0,0)</code>. And our vertex positions for that fractured piece will be all around that (since the pivot is at the center of the piece).</p>
+<p>We can now apply scaling using a <b class="node">Multiply</b> node and the output from our &ldquo;Strength&rdquo; group.</p>
+<button id="shader-graph-uv" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Additional notes about scaling</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Additional notes about scaling</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#shader-graph-uv';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+    }
+"><b>⯈ Additional notes about scaling</b></button>
+<div class="foldout">
+<p>While many with background in maths might already know this, I thought I&rsquo;d still clarify exactly what happens when scaling/multiplying with different strength values :</p>
+<ul>
+<li>When strength is equal to 1 : the positions remain unaffected (anything multiplied by 1 is itself).</li>
+<li>When strength is <strong>larger</strong> than 1 : the positions would move <strong>outwards</strong> (from the origin of the space, <code>(0,0,0)</code>). This won&rsquo;t happen here as the <b class="node">Smoothstep</b> only outputs values between 0 and 1, but we&rsquo;ll be doing a different scaling later which involves this.</li>
+<li>When strength is <strong>smaller</strong> than 1, the positions move <strong>inwards</strong> towards the pivot, so the fractured piece shrinks in size.</li>
+<li>When strength is equal to 0 : all the positions would be equal to the origin (since anything multiplied by zero, is zero).</li>
+</ul>
+
+</div>
+<div class="img-center">
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="607" height="296" alt="(Image)" src="Graph4.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>If you were to output this currently, all our fractured pieces would be on top of eachother, centered at the cube&rsquo;s origin. We&rsquo;ll need to shift the vertex positions back around the pivots, but before we do that, we should handle the rotation (otherwise we&rsquo;d be rotating around the cube origin instead).</p>
+<hr>
+<h3 id="rotate-around-baked-pivot">Rotate around Baked Pivot</h3>
+<p>To handle the rotation we can use the <b class="node">Rotate About Axis</b> node. We could make each fractured piece rotate around a different axis (e.g. by using the Baked Pivot as a seed to generate a random value), but I found this made the pieces intersect with eachother too often which looked messy. Instead, I just set the axis to (1,1,1) - which&rsquo;ll be normalised automatically by the node.</p>
+<p>For the rotation we can use the strength value from earlier, but it also needs to be <em>inverted</em>. Before when scaling we needed a value of 1 when the distance to the pivot is larger than the radius to make the scale remain unaffected. Here however, we need a rotation of 0 so the input stays the same. For this we can use a <b class="node">One Minus</b> node.</p>
+<div class="img-center">
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="509" height="233" alt="(Image)" src="Graph5.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The rotation mode here is in <strong>Radians</strong>, but you could also work in <strong>Degrees</strong> mode if you prefer. Since the range of our strength is currently just 0-1, that would mean 1 degrees of rotation which is not very much so you would need to additionally <b class="node">Multiply</b> by some value (e.g. 90) to set the maximum amount of rotation.</p>
+<p>While the above works, I didn&rsquo;t want all the pieces to rotate in the same direction so for some I flip/negate the strength. To handle this we need to generate a random value for each fractured piece. It&rsquo;s easiest to do this using the <b class="node">Random Range</b> node but that takes a <strong>Vector2</strong> seed rather than a <strong>Vector3</strong>. I chose to <b class="node">Swizzle</b> the Baked Pivot, taking only the X and Z axis (&ldquo;xz&rdquo; in text field). This means pivots aligned on the Y axis will rotate the same direction, but that&rsquo;s not that common to be noticeable.</p>
+<p>(For older versions of Shader Graph, the <b class="node">Swizzle</b> node may look different - could use <b class="node">Split</b> and put <strong>R</strong> and <strong>B</strong> outputs into a <b class="node">Vector2</b> node as an alternative)</p>
+<p>For the <strong>Min</strong> and <strong>Max</strong> on the <b class="node">Random Range</b>, I&rsquo;ve set it to <strong>-1</strong> and <strong>1</strong>. It generates values inbetween these but as I only want to know if it&rsquo;s negative or not, I used a <b class="node">Sign</b> node (not to be confused with Sine!). We can then <b class="node">Multiply</b> this with our inverted strength (from the <b class="node">One Minus</b>). Put this into the <strong>Rotation</strong> port on the <b class="node">Rotate About Axis</b> using <strong>Radians</strong> mode.</p>
+<div class="img-center">
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="292" alt="(Image)" src="Graph6.png" />
+</a>
+<p class="img-text">(Use value in Multiply to set the maximum amount of rotation. e.g. 3.14 would mean it rotates Pi radians / 90 degrees)</p>
+</div>
+<p>Now that we&rsquo;ve handled the scaling and rotation around the baked pivots, we need to <b class="node">Add</b> the Baked Pivot position back on (same thing as we subtracted before). This shifts the origin <code>(0,0,0)</code> back to the pivot (along with the vertex positions around it - but easiest to think about the space origin specifically), so our fractured pieces are moved back to where they belong!</p>
+<div class="img-center">
+<a href="Graph7.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="384" height="204" alt="(Image)" src="Graph7.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<hr>
+<h3 id="scale-around-cubeobject-pivot">Scale around Cube/Object Pivot</h3>
+<p>I wanted the fragmented pieces to also move outwards from the center of the cube. As we&rsquo;ve shifted our vertex positions back to the pivots, the space origin <code>(0,0,0)</code> is now the cube center again, so we just need to apply another scaling via a <b class="node">Multiply</b> node. As mentioned earlier I use a separate strength value for this :</p>
+<p>Take the output of the <b class="node">Divide</b> node again (output of &ldquo;Distance Field&rdquo; group) and put it into a second <b class="node">Smoothstep</b> node, with an <strong>Edge1</strong> of <strong>1</strong> and <strong>Edge2</strong> of <strong>0</strong>. (The first edge here is higher so that we don&rsquo;t need to invert the result)</p>
+<p>We <b class="node">Multiply</b> by a value (such as 0.5) to set how far we&rsquo;ll be scaling, then need to <b class="node">Add</b> <strong>1</strong> since we want to scale the pieces <em>outwards</em> rather than into the cube (which means the range of values needs to be above 1). Put the result of this into the <b class="node">Multiply</b> with our vertex positions.</p>
+<div class="img-center">
+<a href="Graph8.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="301" alt="(Image)" src="Graph8.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<hr>
+<h3 id="shader-graph---fragment-stage">Shader Graph - Fragment Stage</h3>
+<p>The fragment stage isn&rsquo;t really that interesting here as it&rsquo;s just a <b class="node">Color</b> node (or property) connected to the <strong>Base Color</strong> and another for <strong>Emission</strong> ports on the <strong>Master Stack</strong>. But as that emission is based on a strength value from earlier I thought I&rsquo;d mention how to connect this up.</p>
+<p>While you may think to just take the output of the &ldquo;Strength&rdquo; group, <b class="node">One Minus</b>, and try to connect it&hellip; Shader Graph won&rsquo;t always let you connect nodes between the two stages.</p>
+<p>Technically, assuming there aren&rsquo;t <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#fragment-only-nodes">Fragment-Only nodes</a> in the chain, it is <em>possible</em> to connect an output from the vertex stage to the fragment if you temporarily unconnect the chain from the Vertex stage, or use an additional node like <b class="node">Preview</b>. But this isn&rsquo;t really recommended and would also be equivalent to just copying the nodes / recalculating the value.</p>
+<p>You could do that, but in this case it would be better to use a Float <strong>Custom Interpolator</strong> to pass the value from the vertex stage through to the fragment stage. This way, we&rsquo;re only doing the calculation once, but it does require Unity 2021.2+ to use them. I&rsquo;m not going to go over them here, so if unsure how to set one up see : <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#custom-interpolators">Intro to Shader Graph - Custom Interpolator</a>.</p>
+<p>In the fragment stage, we can then use the associated <b class="node">Custom Interpolator</b> node to obtain the value, tint (<b class="node">Multiply</b> with a <b class="node">Color</b> node/property) and connect to the <strong>Emission</strong> port.</p>
+<div class="img-center">
+<a href="Graph9.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="633" height="447" alt="(Image)" src="Graph9.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<hr>
+<h3 id="additional-examples">Additional Examples</h3>
+<p>Thanks for reading! Can also find some more examples using this technique here (mostly fracturing floors or portal effects) :</p>
+<ul>
+<li><a href="https://twitter.com/zazamorga/status/1175644793726210048">Twitter - Thomaz Nardelli (@zazamorga)</a></li>
+<li><a href="https://twitter.com/klemen_lozar/status/1175558998495395840">Twitter - Klemen (@klemen_lozar)</a></li>
+<li><a href="https://lexdev.net/tutorials/case_studies/gears_hammerofdawn.html">Gears Hammer of Dawn Case Study (Lexdev)</a></li>
+<li><a href="https://twitter.com/DesolusDev/status/1620924986503598080">Twitter - Mark Mayers (@DesolusDev)</a></li>
+<li><a href="https://twitter.com/HarryAlisavakis/status/1513457359347191812">Twitter - Harry 💬 (@HarryAlisavakis)</a></li>
+<li><a href="https://twitter.com/matt_ostertag/status/1475844912306429957">Twitter - Matt Ostertag (@matt_ostertag)</a></li>
+<li><a href="https://www.youtube.com/watch?v=Cf57d4dn1wE&amp;list=PLULRr0Tc9S06X_DO_ITJrPAUuwCteHGNA">Youtube - UV Pivot Baking in Houdini/UE4 (Okari)</a></li>
+<li><a href="https://twitter.com/zwitscherluki/status/1626016428175286276">Twitter - Lukas Schneider 🌳 (@zwitscherluki)</a></li>
+</ul>
+<br><hr>
+
+<div style="display:block;text-align: center">
+<h2>Thanks for reading!</h2>
+<p> If this post helped, consider sharing a link with others!</p>
+</div>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! (new!) ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a class="small-text" href="https://twitter.com/Cyanilux">© Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/index.xml">
+		
+		RSS Feed
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>
