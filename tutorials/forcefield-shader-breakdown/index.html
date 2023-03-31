@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Forcefield Shader Breakdown">
 <meta itemprop="description" content="A forcefield shader using fresnel effect for glowing edges, scene depth for object intersections and scene colour to produce ripples/distortion"><meta itemprop="datePublished" content="2019-09-04T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-09-04T00:00:00+00:00" />
-<meta itemprop="wordCount" content="3068"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="wordCount" content="3059"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="URP,Shader Graph," />
 	
 	
@@ -273,9 +273,9 @@
 
 <script>
 	if (cookiesAccepted){
-		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eHey! This week I\u0026#39;ve been making Jellyfish, animated using vertex displacement in the shader. Inspired by the amazing work by \u003ca href=\"https://twitter.com/ZappForThat?ref_src=twsrc%5Etfw\"\u003e@ZappForThat\u003c/a\u003e! 🤩 \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://t.co/NQH2wb5X3O\"\u003epic.twitter.com/NQH2wb5X3O\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1136953667477757953?ref_src=twsrc%5Etfw\"\u003eJune 7, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eMore forcefield stuff! 🌐 I added some distortion ripples so it can react to collisions/damage. Currently just passing through random points on the sphere. See thread for more details. \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/VFX?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#VFX\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/VFXFriday?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#VFXFriday\u003c/a\u003e \u003ca href=\"https://t.co/JyouVAKPWQ\"\u003epic.twitter.com/JyouVAKPWQ\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1162321274007367680?ref_src=twsrc%5Etfw\"\u003eAugust 16, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
 	}else{
-		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1136953667477757953\">https://twitter.com/Cyanilux/status/1136953667477757953</a><p>"+
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1162321274007367680\">https://twitter.com/Cyanilux/status/1162321274007367680</a><p>"+
 		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
 		"<a style=\"color:#00aabb\" onclick=\""+
 		"const cookieContainer = document.querySelector('.cookie-container');" +
@@ -303,7 +303,20 @@
 </div>
 <p>Next we’ll handle the intersection effect with scene objects. To do this, we’ll create a <b class="node">Screen Position</b> node with the mode set to <strong>Raw</strong> and put it into a <b class="node">Split</b>. This gives us the <strong>depth</strong> of the pixel/fragment on the surface of the object in the <strong>W/A</strong> component. We will also need to create a <b class="node">Scene Depth</b> node set to the <strong>Eye</strong> sampling mode.</p>
 <p>Because we want this shader to support distortion later, this will be different from the intersection effect made in the simple version of this shader – as we cannot use the <strong>Two Sided</strong> mode but still want the intersection to show for both front and back faces. The method I’m using for this is similar to what was done in the <a href="https://www.cyanilux.com/tutorials/water-shader-breakdown">Water Shader Breakdown</a> for the caustics effect. By knowing the position, object depth and the scene depth we can reconstruct the world position in the scene for that fragment, which we can then use to test if the fragment is on the edge of a hemisphere.</p>
-<p>Important : Newer versions of Shader Graph (v11 / Unity 2021.1+) has changed the <b class="node">View Direction</b> node to be normalised in all pipelines. Now must use the <b class="node">View Vector</b> node to achieve the correct result. I&rsquo;ve updated the text below to account for this change, but images will still use the direction node instead. If you are using prior versions of URP, continue using the <b class="node">View Direction</b>. For HDRP, the graph at the end of the <a href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown">Fog Plane Shader Breakdown</a> may also provide an example.</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>In Shader Graph v11 (Unity 2021.1+) the <b class="node">View Direction</b> node is now normalised in all pipelines. We must use the newer <b class="node">View Vector</b> node to achieve the correct result.</p>
+<p>(Text in this post has been changed to account for this, but images have not!)</p>
+<p>If you are using prior versions of URP, continue using the <b class="node">View Direction</b>.</p>
+<p>For HDRP, the graph at the end of the <a href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown#hdrp">Fog Plane Shader Breakdown</a> may provide a better example.</p>
+
+</div>
+</div>
 <p>To reconstruct this world position based on depth, create a <b class="node">View Vector</b> node set to <strong>World</strong> space, and <b class="node">Divide</b> it by the object’s depth from the <strong>W/A</strong> component of the <b class="node">Split</b> node from earlier. Then <b class="node">Multiply</b> it by the output from the <b class="node">Scene Depth</b> node. Create a <b class="node">Camera</b> node, and take the <strong>Position</strong> output and <b class="node">Subtract</b> the output from our <b class="node">Multiply</b>. If you aren’t sure about how this works, see the water or fog-plane breakdowns linked above.</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
@@ -567,7 +580,7 @@
 <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! (new!) ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
 <a href="http://discord.gg/2V93q9w">
 <div class="btn-discord">
-<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" style="width:22px">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
 Join my discord! 💬
 </img>
 </div>

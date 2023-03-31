@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Water Shader Breakdown">
 <meta itemprop="description" content="A water shader that uses the scene color to produce distortion/refractions and reconstructs a position from the scene depth to project caustics on underwater objects"><meta itemprop="datePublished" content="2019-06-10T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-06-10T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1679"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="wordCount" content="1606"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="URP,Shader Graph," />
 	
 	
@@ -301,6 +301,7 @@
 <p class="img-text"></p>
 </div>
 <p>If we set up a scene with a plane using this shader, we should see a transparent-looking plane which is slightly tinted blue/cyan. (I say transparent-looking, because we aren’t actually using &ldquo;alpha&rdquo; transparency – we’re just using the <b class="node">Scene Color</b> node to render what is behind to the plane itself).</p>
+<h3 id="distortion">Distortion</h3>
 <p>So far this isn’t very impressive, so next we’ll add the distortion/refraction. Currently the <b class="node">Scene Color</b> node uses a default input, which is equal to the output of a <b class="node">Screen Position</b> node. So we can offset the position, we’ll create that node and put it into the <strong>A</strong> input of a <b class="node">Subtract</b> (or <b class="node">Add</b>, doesn’t really matter which as we’ll be offsetting using noise in a -1 to 1 range). We’ll leave the second input as <strong>0</strong> for now, and put it into the <b class="node">Scene Color</b> node.</p>
 <p>We will be using plane’s UVs for the distortion/refraction noise. By doing this, when we look through the water straight down it will be a uniform distortion, but when we look diagonally the noise will be squashed vertically and more distant parts will appear to be distorted more.</p>
 <p>Create a <b class="node">UV</b> node, <b class="node">Split</b> the output and put the <strong>R</strong> and <strong>G</strong> components into a <b class="node">Vector2</b>. (Note that because we are using UVs, the object scale will affect the distortion. If you don’t want this you can <b class="node">Multiply</b> this by the <strong>XZ</strong> components of the object’s scale from the <b class="node">Object</b> node).</p>
@@ -311,9 +312,10 @@
 </a>
 <p class="img-text"></p>
 </div>
+<h3 id="removing-distortion-on-objects-above-water-plane">Removing distortion on objects above water plane</h3>
 <p>Now we have some distortion, but you may notice an issue… Opaque objects that are above/in-front of the water plane will also be distorted. In order to fix this we will determine whether our distorted scene pixel is above or below the water’s surface. If it is above, we can just use the undistorted pixel instead. This won’t be a perfect fix, but we have no way of knowing what the pixel colour should be behind those objects.</p>
 <p>To do this, we need to use the <b class="node">Scene Depth</b> node set to the sampling mode of <strong>Eye</strong>, using the same <strong>UV</strong> input as the <b class="node">Scene Color</b> (our distorted screen position). This obtains the linear depth value of scene objects at the distorted pixel in terms of world/view space units.</p>
-<p>Next create a <b class="node">Screen Position</b> node set to <strong>Raw</strong> mode. If we <b class="node">Split</b> it, the <strong>W/A</strong> component of this is the depth to the fragment / water&rsquo;s surface. Why? – It’s due to how 3D object positions are converted to screen coordinates by the model-view-projection matrix. Using the Raw mode is important because in the Default mode, each component will be divided by this <strong>W/A</strong> component, meaning it becomes <strong>1</strong>. This is usually referred to as the “perspective divide” – it converts the clip space coordinates (obtained after applying the model-view-projection matrix) into normalised screen coordinates, displaying the 3D perspective to the 2D screen. The Raw mode won’t do this division, so allows us access to that <strong>W/A depth</strong> value.</p>
+<p>Next create a <b class="node">Screen Position</b> node set to <strong>Raw</strong> mode. If we <b class="node">Split</b> it. The <strong>W/A</strong> component of this is the depth to the fragment / water&rsquo;s surface. (For info on why can see the <a href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown">Fog Plane Shader Breakdown</a> or <a href="https://www.cyanilux.com/tutorials/depth">Depth</a> post)</p>
 <p>We can take the <b class="node">Scene Depth</b> output and <b class="node">Subtract</b> the <strong>water surface depth</strong> (that <strong>W/A</strong> component), then put this into a <b class="node">Comparison</b> node with a second input of <strong>0</strong> and mode of <strong>Less</strong>. (You could also just compare the two depth values directly instead). This returns a <strong>Boolean</strong> which will be <strong>true</strong> if the <strong>scene depth is smaller than the surface depth</strong>, (meaning the scene depth is closer to the camera, aka above the surface).</p>
 <p>We’ll plug the boolean into the <strong>Predicate</strong> input of a <b class="node">Branch</b> node. Then set the <strong>True</strong> input to a <b class="node">Screen Position</b> node (set to Default mode, not the Raw one) and set the <b class="node">False</b> input to our <strong>distorted screen position</strong> (from the <b class="node">Subtract</b>). Then replace the <strong>UV</strong> input of the <b class="node">Scene Color</b> node with the output of this Branch.</p>
 <div class="img-center">
@@ -322,10 +324,24 @@
 </a>
 <p class="img-text"></p>
 </div>
+<h3 id="caustics">Caustics</h3>
 <p>Next we’ll add the caustics effect. To do this we will use a <b class="node">Voronoi</b> node, with the <strong>Cell Density</strong> set to <strong>1</strong>. This node produces Voronoi noise, (also referred to as Cellular noise and Worley noise). If you want to know how this noise is generated, this Book Of Shaders page has a good explanation, also see my <a href="https://cyangamedev.wordpress.com/2019/07/16/voronoi/">Voronoi</a> post (on my old site).</p>
 <p>To animate it, create a <b class="node">Time</b> node and put the <strong>Time</strong> output into a <b class="node">Multiply</b> with a value of <strong>4</strong>, then put this into the <strong>Angle Offset</strong> input of the <b class="node">Voronoi</b>. We can then take the output and put it into a <b class="node">Power</b> node with a second input of <strong>5</strong>. We’ll then <b class="node">Multiply</b> this by <strong>0.5</strong>, <b class="node">Add</b> it to the output of our <b class="node">Scene Color</b> node, then replace the <strong>B</strong> input into the <b class="node">Lerp</b> with the output.</p>
 <p>This is the basis of the caustics effect, but rather than having it on the surface of the water, we want it projected onto everything underwater. In order to do this, we’ll reconstruct the world position from the <b class="node">Scene Depth</b> value we sampled earlier and use the <strong>X</strong> and <strong>Z</strong> components of the world position as the <strong>UVs</strong> input for the <b class="node">Voronoi</b>.</p>
-<p>Important : Newer versions of Shader Graph (v11 / Unity 2021.1+) has changed the <b class="node">View Direction</b> node to be normalised in all pipelines. Now must use the <b class="node">View Vector</b> node to achieve the correct result. I&rsquo;ve updated the text below to account for this change, but images will still use the direction node instead. If you are using prior versions of URP, continue using the <b class="node">View Direction</b>. For HDRP, the graph at the end of the <a href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown">Fog Plane Shader Breakdown</a> may also provide an example.</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>In Shader Graph v11 (Unity 2021.1+) the <b class="node">View Direction</b> node is now normalised in all pipelines. We must use the newer <b class="node">View Vector</b> node to achieve the correct result.</p>
+<p>(Text in this post has been changed to account for this, but images have not!)</p>
+<p>If you are using prior versions of URP, continue using the <b class="node">View Direction</b>.</p>
+<p>For HDRP, the graph at the end of the <a href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown#hdrp">Fog Plane Shader Breakdown</a> may provide a better example.</p>
+
+</div>
+</div>
 <p>In order to <strong>reconstruct the world position from the depth</strong> we first need to create a <b class="node">View Vector</b> node set to <strong>World</strong> space. This obtains a vector from the fragment (aka pixel on the water’s surface) to the camera position. The magnitude of this vector is the distance, but this is not the same as depth. The depth is a distance from the fragment position to a <strong>plane that is perpendicular to the camera</strong>, not the camera position itself. This creates a triangle as shown in the image.</p>
 <div class="img-center">
 <a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer">
@@ -341,7 +357,8 @@
 </a>
 <p class="img-text"></p>
 </div>
-<p>And that’s it! I also originally had a slight gradient applied to the depth at the surface, but I’m leaving the shader here as although it helped show the distortion more, it didn’t entirely make sense to have it and I feel it wasn’t implemented very well. To improve this water shader further you could try applying a fog by basing the water visibility on the depth or make deeper parts darker, and also add some specular parts to the water surface (e.g. by using the Lit Graph and normal maps. Or Unlit Graph with <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Custom Lighting</a>).</p>
+<p>And that’s it! I also originally had a slight gradient applied to the depth at the surface, but I’m leaving the shader here as although it helped show the distortion more, it didn’t entirely make sense to have it and I feel it wasn’t implemented very well.</p>
+<p>To improve this water shader further you could try applying a fog by basing the water visibility on the depth, or reconstructed Y pos to make deeper parts darker, as well as add some specular parts to the water surface (e.g. by using the Lit Graph and normal maps. Or Unlit Graph with <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Custom Lighting</a>)
 <br><hr>
 
 <div style="display:block;text-align: center">
@@ -353,12 +370,12 @@
 <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! (new!) ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
 <a href="http://discord.gg/2V93q9w">
 <div class="btn-discord">
-<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" style="width:22px">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
 Join my discord! 💬
 </img>
 </div>
 </a>
-</div>
+</div></p>
 
 
         </div>

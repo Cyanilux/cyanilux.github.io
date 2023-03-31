@@ -443,7 +443,7 @@
 <h3 id="obtain-baked-pivots-in-shader-graph">Obtain Baked Pivots in Shader Graph</h3>
 <p>In order to get our baked pivots, we&rsquo;ll need to access the UV data by using two <b class="node">UV</b> nodes. In the twitter gif the pivots were actually baked into <strong>UV0</strong> and <strong>UV1</strong> as I only used a total of 2 UV channels in Blender (because I didn&rsquo;t need to apply any textures).</p>
 <p>But if you have that original UV map, like in the Fractured Mesh section of this post, you can use the <strong>UV1</strong> and <strong>UV2</strong> channels instead. Either way, I&rsquo;ll be referring to these as the &ldquo;first/second Pivot UV set&rdquo;.</p>
-<button id="shader-graph-uv" type="button" class="foldout_button" onclick="
+<button id="info-uv" type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
     if (content.style.display === 'block') {
@@ -455,9 +455,10 @@
 
       if (history.pushState) {
         var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#shader-graph-uv';
+        newurl = newurl + '#info-uv';
         window.history.pushState({path:newurl}, '', newurl);
       }
+
     }
 "><b>⯈ Additional notes about UV channels</b></button>
 <div class="foldout">
@@ -524,7 +525,7 @@
 <p>Anyway, to handle scaling around the baked pivot we first need to offset our vertex positions (<b class="node">Position</b>) using a <b class="node">Subtract</b> node, with the <strong>B</strong> input set to our Baked Pivots (output of group from earlier).</p>
 <p>One way to help visualise this, is imagining a single pivot at some point in 3D space (or even 2D/1D), by subtracting it, it shifts the space so that the pivot is now at the origin <code>(0,0,0)</code>. And our vertex positions for that fractured piece will be all around that (since the pivot is at the center of the piece).</p>
 <p>We can now apply scaling using a <b class="node">Multiply</b> node and the output from our &ldquo;Strength&rdquo; group.</p>
-<button id="shader-graph-uv" type="button" class="foldout_button" onclick="
+<button id="info-scaling" type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
     if (content.style.display === 'block') {
@@ -536,9 +537,10 @@
 
       if (history.pushState) {
         var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#shader-graph-uv';
+        newurl = newurl + '#info-scaling';
         window.history.pushState({path:newurl}, '', newurl);
       }
+
     }
 "><b>⯈ Additional notes about scaling</b></button>
 <div class="foldout">
@@ -633,7 +635,7 @@
 <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! (new!) ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
 <a href="http://discord.gg/2V93q9w">
 <div class="btn-discord">
-<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" style="width:22px">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
 Join my discord! 💬
 </img>
 </div>

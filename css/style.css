@@ -570,6 +570,7 @@ video {
 	background-color: #282828;
 	color: #00aabb;
 	/*cursor: pointer;*/
+	margin-bottom: 5px;
 	padding: 5px 35px 5px 15px;
 	border: none;
 	text-align: left;
@@ -652,4 +653,28 @@ hr {
 
 .btn-discord:hover{
 	background-color:#6479c7;
+}
+
+.notice {
+	margin: 5px 0px;
+	display:flex;
+	background-color: #282828;
+	border-radius : 10px;
+	border: 3px solid #303030;
+}
+
+.notice-exclamation {
+	margin: 15px 10px;
+	background-color: #00aabb;
+	color:#303030;
+	min-width : 28px;
+	height : 28px;
+	border-radius : 100%;
+	font-weight: 700;
+    font-size: 20px;
+	text-align: center;
+}
+
+.notice > div > p {
+	margin : 5px 0px;
 }

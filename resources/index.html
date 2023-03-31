@@ -251,11 +251,6 @@
       content.style.display = 'block';
       this.innerHTML = '<b>⯆ More Info</b>';
 
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
     }
 "><b>⯈ More Info</b></button>
 <div class="foldout">
@@ -332,6 +327,7 @@ function loadEntries(contents) {
 			
 			var p = document.createElement("h3");
 			var text = document.createTextNode(line.substring(4));
+			p.id = text.textContent.toLowerCase();
 			p.appendChild(text);
 			results.appendChild(p);
 			continue;
@@ -432,9 +428,19 @@ function loadEntries(contents) {
 		
 		results.appendChild(div);
 	}
+
 	
+	var anchor = window.location.hash.substr(1);
+	console.log(anchor);
+
 	
 	onTextInput2(searchBox.value);
+
+	
+	var heading = document.getElementById(anchor.toLowerCase());
+	setTimeout(function(){
+		heading.scrollIntoView();
+	}, 100);
 }
 
 
