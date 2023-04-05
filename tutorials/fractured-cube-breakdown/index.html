@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Fractured Cube Breakdown">
 <meta itemprop="description" content="Uses a shader which displaces (scales/rotates) vertices of a prefractured mesh with pivots baked into UV maps"><meta itemprop="datePublished" content="2023-03-07T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-03-07T00:00:00+00:00" />
-<meta itemprop="wordCount" content="3542"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="wordCount" content="4793"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="URP,Shader Graph,Blender," />
 	
 	
@@ -292,7 +292,7 @@
 </script>
 <h2 id="intro">Intro</h2>
 <p>I recently made this fractured cube using a technique known as <strong>Pivot Baking</strong>, which I&rsquo;ve wanted to try out for a while now. The cube is actually a pre-fractured model (made in Blender, using the Cell Fracture addon). But importantly, the positions of the origin/pivot of each fractured piece has been baked into mesh data (UV channels). In the shader we obtain these pivots, compare them to another position sent into the shader and use that to displace vertices (as well as scale &amp; rotate).</p>
-<p>If interested, I&rsquo;ve also listed some links to effects other people have made using the same technique at the end of the post.</p>
+<p>At the end of the post I&rsquo;ve also shown some other tweets I did using the same fracturing effect/technique, as well as listed links to effects other people have made.</p>
 <hr>
 <h2 id="breakdown">Breakdown</h2>
 <h3 id="fractured-mesh">Fractured Mesh</h3>
@@ -612,8 +612,271 @@
 <p class="img-text"></p>
 </div>
 <hr>
-<h3 id="additional-examples">Additional Examples</h3>
-<p>Thanks for reading! Can also find some more examples using this technique here (mostly fracturing floors or portal effects) :</p>
+<h2 id="additional-examples">Additional Examples</h2>
+<p>Thanks for reading! Below I&rsquo;ve listed some additional examples (my own and some external links to pivot-baked effects others have made)</p>
+<h3 id="fractured-forcefield">Fractured Forcefield</h3>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eAnother experiment/application for the pivot baked fracture~\u003cbr\u003eForcefield/shield 🪩\u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://t.co/kJwK34dLzd\"\u003epic.twitter.com/kJwK34dLzd\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1641756868602126336?ref_src=twsrc%5Etfw\"\u003eMarch 31, 2023\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1641756868602126336\">https://twitter.com/Cyanilux/status/1641756868602126336</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<p>The fracturing part of the shader here is the same as this post, but the effect uses a dome mesh rather than a cube. For more info, click foldout below.</p>
+<button id="info-fractured-forcefield" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ More Info</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ More Info</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#info-fractured-forcefield';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ More Info</b></button>
+<div class="foldout">
+<p>The dome mesh includes a base circular face, as the <strong>Cell Fracture</strong> plugin in Blender doesn&rsquo;t work great if the mesh has holes. The fractured faces for this part can be removed after. Also if you tick &ldquo;Interior VGroup&rdquo; in the Cell Fracture settings (under Mesh Data heading), you can easily delete all the interior vertices later in Edit Mode, by selecting them via the <strong>Vertex Groups</strong> list (under the <strong>Object Data Properties</strong> / green triangle).</p>
+<p>The forcefield is similar to the one from my <a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/">Forcefield Shader Breakdown</a>, but I didn&rsquo;t include a <b class="node">Fresnel Effect</b> or the ripples. Partly as the dome mesh I used didn&rsquo;t have the correct normals at the time, but I also preferred the simpler look. If the mesh doesn&rsquo;t have perfect normals, may need to use a <strong>Data Transfer</strong> modifier to transfer smooth normals from an unfractured dome to fractured dome but that&rsquo;s not something I tried. We could also calculate normals in the shader by normalising the vertex positions (<b class="node">Position</b> node) since the vertices lie on a sphere.</p>
+<p>This also ignores recalculating the normals duing the vertex displacement. If that&rsquo;s something you want, should be able to use another <b class="node">Rotate About Axis</b> with the same inputs but on the normal.</p>
+<p>If you render the effect with <strong>Transparent</strong> surface mode and partial alpha, the fractured faces might be visible as faces overlap. (Especially if <strong>Render Face</strong> is set to <strong>Both</strong> or if the dome mesh itself contains some thickness). To prevent this you can do a <strong>Transparent Depth Prepass</strong> (see that heading under <a href="https://www.cyanilux.com/faq/#transparent-sorting">FAQ : Issues with sorting Transparent faces/objects</a>).</p>
+<p>If using the <b class="node">Scene Color</b> node and keeping <strong>Alpha</strong> set to <strong>1</strong> (like in the forcefield breakdown linked above) that will also prevent you seeing the fractured faces, though they will still be rendered. If many faces are overlapping you could still use a the prepass to reduce the overdraw cost.</p>
+
+</div>
+<hr>
+<h3 id="fractured-plane">Fractured Plane</h3>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003e\u003ca href=\"https://twitter.com/hashtag/TechnicallyAChallenge?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#TechnicallyAChallenge\u003c/a\u003e - Destruction 💥☄️\u003cbr\u003eAdapted the recent fractured shader effect to work with a render texture as input rather than a sphere sdf. Am painting on that texture (via Graphics.Blit, passing in raycast pos). Also did some beam vfx\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/5pV837ct0u\"\u003epic.twitter.com/5pV837ct0u\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1638623920235356172?ref_src=twsrc%5Etfw\"\u003eMarch 22, 2023\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1638623920235356172\">https://twitter.com/Cyanilux/status/1638623920235356172</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<p>The effect here is similar, but uses a plane mesh, a <strong>Render Texture</strong> as an input for strength values (rather than the <b class="node">Distance</b> to the <code>_Pos</code>) and applies some vertical displacement rather than scaling from origin. For more info, click foldout below.</p>
+<button id="info-fractured-plane" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ More Info</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ More Info</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#info-fractured-plane';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ More Info</b></button>
+<div class="foldout">
+<p>When creating the fractured plane mesh in Blender, we can use a <strong>Scale</strong> of <strong>(1, 1, 0)</strong> in the Cell Fracture Settings (under Point Source heading). This makes the fractured edges perfectly vertical along the up axis (which is Z in blender). When creating the Pivot Baked UV map, we only need one additional map using <strong>Project From View (Bounds)</strong> on the <strong>Top Orthographic</strong> view (numpad 7).</p>
+<p>In the fractured shader (described in this post), we need an <strong>Texture2D property</strong> named &ldquo;GlobalFractureTex&rdquo; (with reference as <code>_GlobalFractureTex</code>). Untick <strong>Exposed</strong> in the property settings.</p>
+<div class="img-center">
+<a href="PlaneGraph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="572" height="304" alt="(Image)" src="PlaneGraph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>As shown below, we sample the texture with a <b class="node">Sample Texture 2D LOD</b> node as it needs to be connected to the vertex stage. The <strong>G</strong> output of that is used in the &ldquo;Strength&rdquo; group (<b class="node">Smoothstep</b> node). The &ldquo;Baked Pivots Data&rdquo; group is also slightly different since we only have one Pivot UV map (passed into UV1 in this case, as UV0 is used for regular texturing). My plane mesh has a scale of 30 units, so (-15, 15) is used in the <b class="node">Remap</b>.</p>
+<div class="img-center">
+<a href="PlaneGraph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="377" alt="(Image)" src="PlaneGraph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>&ldquo;Strength 2&rdquo; and the &ldquo;Scale from Object Origin&rdquo; groups have been removed, as scaling the fractured pieces from the center of the plane looks a bit odd.</p>
+<p>A new group which applies some &ldquo;Vertical Displacement&rdquo; has been added, in-between the &ldquo;Rotate&rdquo; and &ldquo;Add pivot back on&rdquo; groups, which is connected straight to the <strong>Position</strong> port on the <strong>Master Stack</strong>.</p>
+<div class="img-center">
+<a href="PlaneGraph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="228" alt="(Image)" src="PlaneGraph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>For creating &amp; painting into the <strong>Render Texture</strong>, the following C# Script is used. It handles raycasting to the plane from mouse position. The resulting point is remapped and passed into a &ldquo;brush&rdquo; shader (shown below the script) that is used with a <code>Graphics.Blit</code> call to draw/paint into the texture. It&rsquo;s only a proof of concept, so has a few hard-coded values (like plane position and size) and could probably be optimised (e.g. using <code>Shader.PropertyToID</code>). I&rsquo;ve also removed some of the beam VFX related parts as that isn&rsquo;t the focus of this post.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Collections;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FracturedPlanePainter</span> : MonoBehaviour {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Material blitMaterial;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    1. Each fixed-update we raycast to plane, and remap based on plane scale to calculate a UV coordinate.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    2. Blit with a shader that : 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        - RED channel : draws &#34;brush&#34; (circle or texture) at the &#34;_BrushPos&#34; passed in
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        - GREEN channel : for red pixels &gt; some threshold, add some small value, to keep destruction animated
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    3. Swap **render texture**s (blit source and destination shouldn&#39;t be the same)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    4. Pass into shaders as global property &#34;_GlobalFractureTex&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> RenderTexture rt;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> RenderTexture rt2;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Plane plane = <span style="color:#66d9ef">new</span> Plane(Vector3.up, Vector3.zero); <span style="color:#75715e">// Plane Normal, Plane Pos</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">bool</span> beaming = <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> Start(){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> res = <span style="color:#ae81ff">256</span>;
+</span></span><span style="display:flex;"><span>        rt = <span style="color:#66d9ef">new</span> RenderTexture(res, res, <span style="color:#ae81ff">0</span>, RenderTextureFormat.RG16);
+</span></span><span style="display:flex;"><span>        rt2 = <span style="color:#66d9ef">new</span> RenderTexture(res, res, <span style="color:#ae81ff">0</span>, RenderTextureFormat.RG16);
+</span></span><span style="display:flex;"><span>        rt.filterMode = FilterMode.Point;
+</span></span><span style="display:flex;"><span>        rt2.filterMode = FilterMode.Point;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> FixedUpdate(){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Mouse Input</span>
+</span></span><span style="display:flex;"><span>        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (Input.GetMouseButton(<span style="color:#ae81ff">0</span>) &amp;&amp; plane.Raycast(ray, <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">float</span> enter)){
+</span></span><span style="display:flex;"><span>            Vector3 worldPoint = ray.GetPoint(enter);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Move VFX/Beam</span>
+</span></span><span style="display:flex;"><span>            transform.position = worldPoint;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Calculate Brush UV</span>
+</span></span><span style="display:flex;"><span>            Vector2 uvPoint = <span style="color:#66d9ef">new</span> Vector3(worldPoint.x, worldPoint.z);
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//uvPoint -= Vector3.zero; // Plane Pos</span>
+</span></span><span style="display:flex;"><span>            uvPoint /= <span style="color:#ae81ff">30f</span>; <span style="color:#75715e">// Plane Size (30x30 units)</span>
+</span></span><span style="display:flex;"><span>            uvPoint += Vector2.one * <span style="color:#ae81ff">0.5f</span>;
+</span></span><span style="display:flex;"><span>            blitMaterial.SetVector(<span style="color:#e6db74">&#34;_BrushPos&#34;</span>, uvPoint);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// VFX Anim</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (!beaming) {
+</span></span><span style="display:flex;"><span>                beaming = <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//Shader.SetGlobalFloat(&#34;_BeamScale&#34;, 1);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//StartCoroutine(BeamStart());</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }<span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Move BrushPos out of bounds so it doesn&#39;t render anything</span>
+</span></span><span style="display:flex;"><span>            blitMaterial.SetVector(<span style="color:#e6db74">&#34;_BrushPos&#34;</span>, <span style="color:#66d9ef">new</span> Vector2(-<span style="color:#ae81ff">10</span>,-<span style="color:#ae81ff">10</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// VFX Anim</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (beaming){
+</span></span><span style="display:flex;"><span>                beaming = <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//StartCoroutine(BeamEnd());</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Handle Painting</span>
+</span></span><span style="display:flex;"><span>        Graphics.Blit(rt, rt2, blitMaterial, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>        Shader.SetGlobalTexture(<span style="color:#e6db74">&#34;_GlobalFractureTex&#34;</span>, rt2);
+</span></span><span style="display:flex;"><span>        (rt, rt2) = (rt2, rt); <span style="color:#75715e">// swap buffers</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>For the <code>blitMaterial</code> used in the script above a Material is using the following Unlit Shader Graph.</p>
+<div class="img-center">
+<a href="BrushGraph.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="270" alt="(Image)" src="BrushGraph.png" />
+</a>
+<p class="img-text">(Click image to view fullscreen)</p>
+</div>
+<p>Can optionally use the &ldquo;Circle Brush&rdquo; or apply a &ldquo;Texture Brush&rdquo;. Ideally you&rsquo;d want that to Clamp, but to avoid artifacts around the edge I chose to mask it using a <b class="node">Rectangle</b> node.</p>
+<p>&ldquo;ScaledTime&rdquo; here is a Subgraph which uses the <strong>Time</strong> output from the <b class="node">Time</b> node and multiplies by the Speed input. The Sine adds a bit of variation to the brush size, but this is optional.</p>
+<p>As commented in the script, the purpose of the shader is :</p>
+<ul>
+<li><code>RED channel : draws &quot;brush&quot; (circle or texture) at the &quot;_BrushPos&quot; passed in</code> - This is used in a separate shader (not shown here) which has a downward displacement and draws channel as black to look like the ground is scorched after the top layer has broken away.</li>
+<li><code>GREEN channel : for red pixels &gt; some threshold, add some small value</code> - Used in the fractured shader to keep destruction animated</li>
+</ul>
+
+</div>
+<hr>
+<h3 id="external-links">External Links</h3>
+<p>Some more examples using this technique (mostly fracturing floors or portal effects) :</p>
 <ul>
 <li><a href="https://twitter.com/zazamorga/status/1175644793726210048">Twitter - Thomaz Nardelli (@zazamorga)</a></li>
 <li><a href="https://twitter.com/klemen_lozar/status/1175558998495395840">Twitter - Klemen (@klemen_lozar)</a></li>
@@ -632,7 +895,7 @@
 </div>
 
 <div class="footer-btns">
-<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! (new!) ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
 <a href="http://discord.gg/2V93q9w">
 <div class="btn-discord">
 <img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
