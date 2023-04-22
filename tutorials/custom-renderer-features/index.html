@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Custom Renderer Features">
 <meta itemprop="description" content="Goes through examples of Renderer Features and explains how to write Custom Renderer Features and Scriptable Render Passes for Universal RP"><meta itemprop="datePublished" content="2023-04-22T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-04-22T00:00:00+00:00" />
-<meta itemprop="wordCount" content="7307"><meta itemprop="image" content="https://www.cyanilux.com/Result.png">
+<meta itemprop="wordCount" content="7350"><meta itemprop="image" content="https://www.cyanilux.com/Result.png">
 <meta itemprop="keywords" content="URP," />
 	
 	
@@ -465,7 +465,7 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 <hr>
 <h2 id="create">Create</h2>
 <p>This method is used to initialise the ScriptableRenderPass and any required resources. Unity calls this method in OnEnable/OnValidate - so every time the project loads, enter/exit play mode, scripts recompile, or serialisation changes.</p>
-<p>Since the method may be called multiple times, If you create/clone any <strong>Materials</strong> you should make sure to <strong>check if it is null first</strong>. Then clean up in <a href="#dispose">Dispose</a>. Also be careful with creating materials in the constructor of the pass for the same reason.</p>
+<p>Since the method may be called multiple times, If you create/clone any <strong>Materials</strong> you should make sure to <strong>check if it is null first</strong>. Then clean up in <a href="#dispose">Dispose</a> - see that section for an example. Also be careful with creating materials in the constructor of the pass for the same reason.</p>
 <p>It&rsquo;s common for the feature to have serialised fields that get exposed in the inspector. We can drag assets from the Project window into here - but like other assets, it can&rsquo;t contain references from scene objects. (If this is something you need, you may still be able to pass those in at runtime though. A section near the end of the post provides an example of this)</p>
 <p>Some fields will need to be sent to the pass. Can do this through parameters in the constructor, create other methods or make the same fields in the pass public. To make things simpler, we can wrap the fields in an additional serialised class (e.g. named &ldquo;Settings&rdquo;). Of course, what goes in here will vary depending on what the pass does, but here&rsquo;s an example setup :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// in feature</span>
@@ -539,19 +539,26 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 <p>Just don&rsquo;t make that offset too high, BeforeRenderingPostProcessing has a value of 550 in the enum. So doing <code>BeforeRenderingPostProcessing + 50</code> would then be equivalent to <code>AfterRenderingPostProcessing</code>.</p>
 <hr>
 <h2 id="dispose">Dispose</h2>
-<p>While not a part of the template, we can add a Dispose method to the feature. The method can be useful for releasing any resources that have been allocated. For example, Materials or RTHandles (The RTHandle section later will provide an example of that).</p>
+<p>While not a part of the template, we can add a Dispose method to the feature. The method can be useful for releasing any resources that have been allocated. For example, material instances (see below) or RTHandles (see <a href="#rthandle">RTHandle</a> section)</p>
 <p>In editor, the method is called when removing features, recompling scripts, entering/exiting play mode. (Not too sure when it gets called in builds, probably when changing scenes?)</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Shader shader; <span style="color:#75715e">// expose a Shader field</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Material material;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Create() {
-</span></span><span style="display:flex;"><span>    material = CoreUtils.CreateEngineMaterial(shader);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// or alternative method that uses the shader name (string):</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//material = CoreUtils.CreateEngineMaterial(&#34;Hidden/Internal-DepthNormalsTexture&#34;);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// these assume the required shader is in the build (and variant, if keywords are set)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// e.g. could add the shader to the &#34;Always Included Shaders&#34; in Project Settings -&gt; Graphics</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Create may be called multiple times... so :</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (material == <span style="color:#66d9ef">null</span> || material.shader != shader){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// only create material if null or different shader has been assigned</span>
 </span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (material != <span style="color:#66d9ef">null</span>) CoreUtils.Destroy(material);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// destroy material using previous shader</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        material = CoreUtils.CreateEngineMaterial(shader);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// or alternative method that uses the shader name (string):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//material = CoreUtils.CreateEngineMaterial(&#34;Hidden/Internal-DepthNormalsTexture&#34;);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// assumes the required shader is in the build (and variant, if keywords are set)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// e.g. could add the shader to the &#34;Always Included Shaders&#34; in Project Settings -&gt; Graphics</span>
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    m_ScriptablePass = <span style="color:#66d9ef">new</span> CustomRenderPass(material, name);
 </span></span><span style="display:flex;"><span>    ...
 </span></span><span style="display:flex;"><span>}
