@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=5 ">
+	
+	<meta itemprop="name" content="Custom Renderer Features">
+<meta itemprop="description" content="Goes through examples of Renderer Features and explains how to write Custom Renderer Features and Scriptable Render Passes for Universal RP"><meta itemprop="datePublished" content="2023-04-22T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-04-22T00:00:00+00:00" />
+<meta itemprop="wordCount" content="7307"><meta itemprop="image" content="https://www.cyanilux.com/Result.png">
+<meta itemprop="keywords" content="URP," />
+	
+	
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/custom-renderer-features/Result.png"/>
+<meta name="twitter:title" content="Custom Renderer Features"/>
+<meta name="twitter:description" content="Goes through examples of Renderer Features and explains how to write Custom Renderer Features and Scriptable Render Passes for Universal RP"/>
+
+	
+<meta property="og:title" content="Custom Renderer Features" />
+<meta property="og:description" content="Goes through examples of Renderer Features and explains how to write Custom Renderer Features and Scriptable Render Passes for Universal RP" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/custom-renderer-features/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/custom-renderer-features/Result.png"/>
+        
+    
+<meta property="article:published_time" content="2023-04-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-04-22T00:00:00+00:00" />
+	
+	
+	
+    
+    
+    <title>Custom Renderer Features | Cyanilux</title>
+	
+	
+	
+		
+		
+		<meta name="description" content="Goes through examples of Renderer Features and explains how to write Custom Renderer Features and Scriptable Render Passes for Universal RP. URP | Unity Shader Tutorials, @Cyanilux" />
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/custom-renderer-features/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
+	
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
+	
+	<nav id="nav" class="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		FAQ
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Custom Renderer Features</h1>
+<div class="post-metadata">
+
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/posts/" style="text-decoration: none; color:#eeeeee;">
+	Posts
+	</a>
+</div>
+
+
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	
+	<a href="https://www.cyanilux.com/tags/urp" style="text-decoration: none; color:#eeeeee;">
+	URP
+	</a>
+	</div>
+
+
+
+<div style="width:10px"></div>
+
+
+<time datetime="2023-04-22">&#128337 Apr 22, 2023</time>
+
+</div>
+<p>One way to customise the <strong>Universal Render Pipeline</strong> (URP) is by writing custom <strong>Scriptable Render Passes</strong>. A typical example of this could involve rendering some objects to a separate off-screen texture, which we could then sample later - either in shaders used by any objects in the scene, or as a fullscreen pass to composite it with the camera/screen.</p>
+<p>These passes can be enqueued by a <strong>Custom Renderer Feature</strong>, which are assigned to the list at the bottom of the &ldquo;Renderer&rdquo; assets used by URP (i.e. the <strong>Universal Renderer</strong> asset, known as <em>Forward Renderer</em> prior to 2021, or the <strong>2D Renderer</strong> which supports renderer features from 2022.1 onwards).</p>
+<p>In this post, I&rsquo;d like to first provide some examples so you can get an idea of why you might use Renderer Features. Then show the layout/template of a custom feature/pass, and go through each function separately as I think it&rsquo;ll be more useful that way.</p>
+<p>The post is mostly aimed at Unity 2022+ versions of URP which introduced RTHandles, but be aware that I might also mention/link to older examples (there&rsquo;s not really that many for 2022 yet!)</p>
+<hr>
+<h3 id="sections-">Sections :</h3>
+<ul>
+<li><a href="#examples">Example Uses</a>
+<ul>
+<li><a href="#fullscreen">Fullscreen / Post Process Effect</a></li>
+<li><a href="#renderobjects">RenderObjects</a></li>
+<li><a href="#edge-detection">Edge Detection</a></li>
+<li><a href="#screen-blur">Screen Blur</a></li>
+<li><a href="#screenspace-distortion">Screenspace Distortion</a></li>
+<li><a href="#lens-flares">Lens Flares</a></li>
+<li><a href="#internal-urp-passes">Internal URP Passes</a></li>
+</ul>
+</li>
+<li><a href="#layout">Layout of a Custom Feature/Pass</a></li>
+<li><a href="#create">Create</a>
+<ul>
+<li><a href="#renderpassevent">RenderPassEvent</a></li>
+</ul>
+</li>
+<li><a href="#dispose">Dispose</a></li>
+<li><a href="#addrenderpasses">AddRenderPasses</a>
+<ul>
+<li><a href="#configureinput">ConfigureInput</a></li>
+</ul>
+</li>
+<li><a href="#setuprenderpasses">SetupRenderPasses</a></li>
+<li><a href="#oncamerasetup">OnCameraSetup</a>
+<ul>
+<li><a href="#rthandle">RTHandle</a></li>
+<li><a href="#configuretarget">ConfigureTarget</a></li>
+<li><a href="#configureclear">ConfigureClear</a></li>
+</ul>
+</li>
+<li><a href="#oncameracleanup">OnCameraCleanup</a></li>
+<li><a href="#execute">Execute</a>
+<ul>
+<li><a href="#drawrenderers">DrawRenderers</a></li>
+<li><a href="#blit">Blit</a></li>
+</ul>
+</li>
+<li><a href="#full-example">Full Renderer Feature Example</a></li>
+<li><a href="#setting-values">Setting values on features at Runtime</a></li>
+<li><a href="#volume">Connecting a feature to a URP Volume</a></li>
+<li><a href="#renderpipelinemanager">RenderPipelineManager</a></li>
+</ul>
+<hr>
+<h2 id="examples">Example Uses</h2>
+<p>If you prefer, <a href="#layout">click to skip the examples</a>. Or just see the <a href="#full-example">full example code</a> based on snippets in this post.</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+Might add some images here but didn&rsquo;t have time when writing&hellip; Will hopefully come back to it!
+</div>
+</div>
+<h3 id="fullscreen">Fullscreen / Post Process Effect</h3>
+<p>A very common use for renderer features is <strong>applying shaders/materials as a fullscreen effect</strong>, since URP&rsquo;s Post Processing Volumes do not support custom effects (as of 2022 at least).</p>
+<p>Applying fullscreen effects is usually referred to as a &ldquo;blit&rdquo;. For example, I have a <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Renderer Feature</a> shared on github. That repo has various branches as there are different ways to apply fullscreen effects, such as <code>CommandBuffer.Blit</code>, overriding view/projection matrices and using <code>CommandBuffer.DrawMesh</code>, or using the newer Blitter API (Unity 2022+), e.g. <code>Blitter.BlitCameraTexture</code>.</p>
+<p>Unity 2022.2 also introduced a new <strong>Fullscreen Graph</strong> type and <strong>Fullscreen Pass Renderer Feature</strong> built-in to URP, so if you just need to apply a shader to the camera you can use those instead of a custom feature! To blit to a different destination, we&rsquo;d still need a custom feature.</p>
+<p>The later <a href="#blit">Blit</a> section will go into more detail.</p>
+<h3 id="renderobjects">RenderObjects</h3>
+<p>URP provides the <strong>RenderObjects</strong> feature which, as the name might suggest, can render objects (e.g. MeshRenderers, SpriteRenderers, etc), filtered by Opaque/Transparent, Layer Mask and Shader Pass (LightMode) tags, while also providing overrides for the Material, Depth Test/Write, Stencil operations and Camera properties. It&rsquo;s a good example of what the <strong>ScriptableRenderContext.DrawRenderers</strong> function can do.</p>
+<p>Some of those overrides are particularly useful as Shader Graph doesn&rsquo;t support Stencil operations and didn&rsquo;t expose Depth Test/Write params until v12 (2021.2).</p>
+<p>The <strong>Override Material</strong> is also useful for applying a material to many objects in the scene at once, such as Outline shaders using the &ldquo;Inverted Hull&rdquo; method <a href="https://github.com/Unity-Technologies/UniversalRenderingExamples/blob/master/Assets/_CompletedDemos/ToonOutlinePostprocessCompleted/Shaders/ToonBasicOutline.shader">such as this example from UniversalRenderingExamples</a>, or X-Ray / Highlighting through walls effects also using ZTest &ldquo;Greater&rdquo; like <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@16.0/manual/containers/how-to-custom-effect-render-objects.html">this example in the Unity docs</a>.</p>
+<p>Note that when you use the feature, it is actually <em>re-rendering</em> those objects. If you only want to render once, you need to also remove the Layer(s) used in the Layer Mask from the default Opaque/Transparent Layer Mask at the top of the Universal Renderer. (The 2D Renderer seems to lack this, so not sure how to do it there&hellip;)</p>
+<h3 id="edge-detection">Edge Detection</h3>
+<p>As is, the RenderObjects feature only renders to the camera buffers, but with a similar custom feature it is possible to render objects to another buffer (known as a Render Target). This is usually some form of <strong>Render Texture</strong>, but in features we tend to use RTHandle for 2022+, (or RenderTargetHandle/RenderTargetIdentifier in previous versions). Once you have this buffer it can be passed into other shaders using a Global Texture Property.</p>
+<p>A common example is for <strong>Edge Detection</strong> style outlines, such as <a href="https://alexanderameye.github.io/notes/edge-detection-outlines/">this tutorial by Alexander Ameye</a>. That uses a feature to first render the <strong>depth</strong> and <strong>normals</strong> of objects in the scene into a texture. Another feature then applies a fullscreen material, where this texture is sampled multiple times to detect where the edges of objects are.</p>
+<p>In v10+/2020.2+ we can also get URP to generate those depth and normals textures for us, by using <code>renderPass.ConfigureInput(ScriptableRenderPassInput.Normal);</code> before enqueuing the pass (in <code>AddRenderPasses</code> function). More info on that later.</p>
+<h3 id="screen-blur">Screen Blur</h3>
+<p>We can use a custom feature to apply blur operations to the screen. This can involve either blitting back to the screen, or to a custom buffer - which could then be sampled in UI shaders for example to make them appear to blur what is behind them.</p>
+<p>There are multiple ways to blur in a shader, such as Box Blur, Gaussian, Kawase. If you use those as search terms you should be able to find example implementations in Unity shaders. These can be applied to the screen by using a <a href="#blit">Blit</a> (may require shader to be modified depending on the blit method used).</p>
+<p>Some examples (May be for older URP versions. Also check licenses before use) :</p>
+<ul>
+<li><a href="https://gist.github.com/Refsa/e006f1a8d3a974ae88cb7ecd93bf306b">https://gist.github.com/Refsa/e006f1a8d3a974ae88cb7ecd93bf306b</a></li>
+<li><a href="https://github.com/sebastianhein/urp_kawase_blur">https://github.com/sebastianhein/urp_kawase_blur</a></li>
+<li><a href="https://alexanderameye.github.io/notes/scriptable-render-passes/">https://alexanderameye.github.io/notes/scriptable-render-passes/</a></li>
+</ul>
+<h3 id="screenspace-distortion">Screenspace Distortion</h3>
+<p>Another similar example is for screenspace distortion effects.</p>
+<p>Distortion in shaders in the scene typically uses the <b class="node">Scene Color</b> node, but this means transparent objects behind it cannot be seen. A potential solution is copying the screen after rendering transparents, a <a href="#blit-example-copy">later example</a> goes over that.</p>
+<p>In that case, the regular transparent queue can be distorted at least - but multiple layers of distortion still won&rsquo;t stack.</p>
+<p>For that we could instead have a feature render the distortion directions/strengths additively into a custom buffer (via a DrawRenderers call). We can then do a fullscreen blit on the camera targets, while sampling the buffer as a global texture to distort UV coords.</p>
+<h3 id="lens-flares">Lens Flares</h3>
+<p>While URP now supports the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@13.1/manual/shared/lens-flare/lens-flare-component.html">Lens Flares (SRP) component</a>, older versions of the URP docs also provided a custom <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@12.1/manual/containers/create-custom-renderer-feature-1.html">Lens Flare Renderer Feature example</a> which could be a good reference if you need to do someting similar with lights.</p>
+<p>Specifically, their example makes use of <code>renderingData.lightData.visibleLights</code> to loop through those lights, then drawing a quad mesh with a flare texture through <code>cmd.DrawMesh</code>.</p>
+<h3 id="internal-urp-passes">Internal URP Passes</h3>
+<p>Internally, URP also uses a bunch of Scriptable Render Passes, listed under the <a href="https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.universal/Runtime/Passes">URP package&rsquo;s Runtime/Passes folder</a>. These can use internal functions which we can&rsquo;t use, but might still be useful to look at to get an idea of how they work.</p>
+<p>For example, here&rsquo;s a few :</p>
+<ul>
+<li><a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/Passes/DepthOnlyPass.cs">DepthOnlyPass</a>, <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/Passes/DepthNormalOnlyPass.cs">DepthNormalOnlyPass</a>, or <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/Passes/CopyDepthPass.cs">CopyDepthPass</a>
+<ul>
+<li>sets up the Camera Depth (and Normals) Textures (e.g. used by the <b class="node">Scene Depth</b> node and SSAO feature)</li>
+</ul>
+</li>
+<li><a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/Passes/CopyColorPass.cs">CopyColorPass</a>
+<ul>
+<li>sets up the Camera Opaque Texture (used by the <b class="node">Scene Color</b> node)</li>
+</ul>
+</li>
+<li><a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/Passes/MainLightShadowCasterPass.cs">MainLightShadowCasterPass</a>, <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/Passes/AdditionalLightsShadowCasterPass.cs">AdditionalLightsShadowCasterPass</a>
+<ul>
+<li>renders objects into shadowmaps</li>
+</ul>
+</li>
+</ul>
+<p>URP also provides Renderer Features and Passes for :</p>
+<ul>
+<li><a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/Passes/RenderObjectsPass.cs">RenderObjectsPass</a> - used by the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@15.0/manual/renderer-features/renderer-feature-render-objects.html">Render Objects feature</a>
+<ul>
+<li>(see section above for example usages)</li>
+</ul>
+</li>
+<li><a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/Passes/ScreenSpaceAmbientOcclusionPass.cs">ScreenSpaceAmbientOcclusionPass</a> - used by the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@15.0/manual/post-processing-ssao.html">SSAO feature</a></li>
+<li><a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/RendererFeatures/ScreenSpaceShadows.cs">ScreenSpaceShadowsPass</a> - used by <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@15.0/manual/renderer-feature-screen-space-shadows.html">Screen Space Shadows feature</a>.
+<ul>
+<li>This feature actually enqueues <em>two</em> passes - ScreenSpaceShadowsPostPass as well, used to turn off the screen space shadows keyword for the transparent pass.</li>
+</ul>
+</li>
+<li>(2022.2+) <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/RendererFeatures/FullScreenPassRendererFeature.cs">FullscreenRenderPass</a> - used by <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@15.0/manual/renderer-features/renderer-feature-full-screen-pass.html">Fullscreen Pass feature</a>.
+<ul>
+<li>Allows you to draw/blit material/shader effects (using the new <strong>Fullscreen Shader Graph</strong>) to the screen, as mentioned earlier.</li>
+</ul>
+</li>
+<li><a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/RendererFeatures/DecalRendererFeature.cs">DecalRendererFeature</a> - Also see <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@15.0/manual/renderer-feature-decal.html">Decals feature docs page</a>.
+<ul>
+<li>Uses various passes depending on the technique selected. Can find them under <a href="https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.universal/Runtime/Decal">Runtime/Decal folder</a>.</li>
+</ul>
+</li>
+</ul>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+The github links here are for the &ldquo;master&rdquo; branch so may not be accurate to the version you&rsquo;re using. For example, you may want to switch to &ldquo;2022.2/staging&rdquo; to view the code for that release. Be aware that for older versions, you need to remove the <code>Packages/</code> from the URL or you&rsquo;ll see a 404.
+</div>
+</div>
+<hr>
+<h2 id="layout">Layout of a Custom Feature/Pass</h2>
+<p>To create a <strong>Custom Renderer Feature</strong> (&amp; Pass) we can right-click in the Project window (somewhere in Assets) and use <strong>Create → Rendering → URP Renderer Feature</strong>. This creates a C# script for us with a renderer feature template (inherits <strong>ScriptableRendererFeature</strong> and includes a nested class inheriting <strong>ScriptableRenderPass</strong>, with the important methods overriden). Since the pass is nested inside the feature, it&rsquo;s fairly common to consider the render pass as part of the feature itself, though this isn&rsquo;t required. The pass could also be put into a separate C# file and referenced from multiple features.</p>
+<p>The feature is basically a <strong>ScriptableObject</strong> (a class that holds data, but saved as an asset rather than in a scene like a MonoBehaviour). It serialises fields that need to be displayed in the inspector and creates &amp; enqueues the pass.</p>
+<p>Ignoring the pass for now, It&rsquo;ll look something like this : (comments may be edited slightly)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine.Rendering;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine.Rendering.Universal;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomRenderPassFeature</span> : ScriptableRendererFeature {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    CustomRenderPass m_ScriptablePass;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Create() {
+</span></span><span style="display:flex;"><span>        m_ScriptablePass = <span style="color:#66d9ef">new</span> CustomRenderPass();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Configures where the render pass should be injected</span>
+</span></span><span style="display:flex;"><span>        m_ScriptablePass.renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Here you can inject one or multiple render passes in the renderer.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// This method is called when setting up the renderer once per-camera (every frame!)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> AddRenderPasses(ScriptableRenderer renderer, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>        renderer.EnqueuePass(m_ScriptablePass);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>The render pass is what will actually handle the custom rendering, mostly through the ScriptableRenderContext and CommandBuffer APIs.</p>
+<p>In the template, it looks like this :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomRenderPass</span> : ScriptableRenderPass {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Called before executing the render pass.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Used to configure render targets and their clear state. Also to create temporary render target textures.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// When empty this render pass will render to the active camera render target.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// You should never call CommandBuffer.SetRenderTarget. Instead call &lt;c&gt;ConfigureTarget&lt;/c&gt; and &lt;c&gt;ConfigureClear&lt;/c&gt;.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> OnCameraSetup(CommandBuffer cmd, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Here you can implement the rendering logic.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Use &lt;c&gt;ScriptableRenderContext&lt;/c&gt; to issue drawing commands or execute command buffers</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Execute(ScriptableRenderContext context, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Cleanup any allocated resources that were created during the execution of this render pass.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> OnCameraCleanup(CommandBuffer cmd) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Depending on your URP version the template may vary slightly. Older versions (prior to v10 / 2020.2) had <code>Configure</code>, which is similar to <code>OnCameraSetup</code> but only provides a RenderTextureDescriptor parameter rather than passing the RenderingData struct. There was also <code>FrameCleanup</code>, which was renamed to <code>OnCameraCleanup</code>.</p>
+<p>Typically the first thing you&rsquo;ll want to do is <strong>rename the feature/pass</strong>. These can be anything you want, but you would typically keep the <code>Feature</code> and <code>RenderPass</code> suffixes. Be aware that the C# script name should match the name of the feature class for serialisation purposes (same thing applies to ScriptableObject / MonoBehaviours, so you should already be somewhat familiar with that).</p>
+<hr>
+<h2 id="create">Create</h2>
+<p>This method is used to initialise the ScriptableRenderPass and any required resources. Unity calls this method in OnEnable/OnValidate - so every time the project loads, enter/exit play mode, scripts recompile, or serialisation changes.</p>
+<p>Since the method may be called multiple times, If you create/clone any <strong>Materials</strong> you should make sure to <strong>check if it is null first</strong>. Then clean up in <a href="#dispose">Dispose</a>. Also be careful with creating materials in the constructor of the pass for the same reason.</p>
+<p>It&rsquo;s common for the feature to have serialised fields that get exposed in the inspector. We can drag assets from the Project window into here - but like other assets, it can&rsquo;t contain references from scene objects. (If this is something you need, you may still be able to pass those in at runtime though. A section near the end of the post provides an example of this)</p>
+<p>Some fields will need to be sent to the pass. Can do this through parameters in the constructor, create other methods or make the same fields in the pass public. To make things simpler, we can wrap the fields in an additional serialised class (e.g. named &ldquo;Settings&rdquo;). Of course, what goes in here will vary depending on what the pass does, but here&rsquo;s an example setup :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// in feature</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">[System.Serializable]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Settings</span> {
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [Header(&#34;Draw Renderers Settings&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> LayerMask layerMask = <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Material overrideMaterial;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> overrideMaterialPass;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> colorTargetDestinationID = <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [Header(&#34;Blit Settings&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Material blitMaterial;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// exposed values</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Settings settings;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> RenderPassEvent _event = RenderPassEvent.AfterRenderingOpaques;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> CustomRenderPass m_ScriptablePass;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Create() {
+</span></span><span style="display:flex;"><span>    m_ScriptablePass = <span style="color:#66d9ef">new</span> CustomRenderPass(settings, name);
+</span></span><span style="display:flex;"><span>    m_ScriptablePass.renderPassEvent = _event;
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// in pass </span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Settings settings;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> ProfilingSampler _profilingSampler;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// (constructor, method name should match class name)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> CustomRenderPass(Settings settings, <span style="color:#66d9ef">string</span> name){
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// pass our settings class to the pass, so we can access them inside OnCameraSetup/Execute/etc</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.settings = settings;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// set up ProfilingSampler used in Execute method</span>
+</span></span><span style="display:flex;"><span>    _profilingSampler = <span style="color:#66d9ef">new</span> ProfilingSampler(name);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Here I&rsquo;ve also created a <code>ProfilingSampler</code> which will be used later by the Execute method. The <code>name</code> passed through is a field of the <code>ScriptableRendererFeature</code> class, which gets exposed to the inspector allowing the user to rename it. If the pass isn&rsquo;t going to be attached to a feature, it could also use a hardcoded string or use <code>nameof()</code> the class.</p>
+<h3 id="renderpassevent">RenderPassEvent</h3>
+<p>Also in this Create method (or the constructor of the render pass) we typically set the <code>renderPassEvent</code> field of the pass. This configures when the render pass will run.</p>
+<p>It uses the <code>RenderPassEvent</code> enum, which contains these entries/values :
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>BeforeRendering = <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>BeforeRenderingShadows = <span style="color:#ae81ff">50</span>
+</span></span><span style="display:flex;"><span>AfterRenderingShadows = <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>BeforeRenderingPrePasses = <span style="color:#ae81ff">150</span>
+</span></span><span style="display:flex;"><span>AfterRenderingPrePasses = <span style="color:#ae81ff">200</span>
+</span></span><span style="display:flex;"><span>BeforeRenderingGbuffer = <span style="color:#ae81ff">210</span>
+</span></span><span style="display:flex;"><span>AfterRenderingGbuffer = <span style="color:#ae81ff">220</span>
+</span></span><span style="display:flex;"><span>BeforeRenderingDeferredLights = <span style="color:#ae81ff">230</span>
+</span></span><span style="display:flex;"><span>AfterRenderingDeferredLights = <span style="color:#ae81ff">240</span>
+</span></span><span style="display:flex;"><span>BeforeRenderingOpaques = <span style="color:#ae81ff">250</span>
+</span></span><span style="display:flex;"><span>AfterRenderingOpaques = <span style="color:#ae81ff">300</span>
+</span></span><span style="display:flex;"><span>BeforeRenderingSkybox = <span style="color:#ae81ff">350</span>
+</span></span><span style="display:flex;"><span>AfterRenderingSkybox = <span style="color:#ae81ff">400</span>
+</span></span><span style="display:flex;"><span>BeforeRenderingTransparents = <span style="color:#ae81ff">450</span>
+</span></span><span style="display:flex;"><span>AfterRenderingTransparents = <span style="color:#ae81ff">500</span>
+</span></span><span style="display:flex;"><span>BeforeRenderingPostProcessing = <span style="color:#ae81ff">550</span>
+</span></span><span style="display:flex;"><span>AfterRenderingPostProcessing = <span style="color:#ae81ff">600</span>
+</span></span><span style="display:flex;"><span>AfterRendering = <span style="color:#ae81ff">1000</span></span></span></code></pre></div></p>
+<p>Be aware that <strong>camera matrices and stereo rendering</strong> is not set up until the <code>BeforeRenderingPrePasses</code> event (value of 150).</p>
+<p>More enum entries may be added in newer versions. Can find it&rsquo;s declaration in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/Passes/ScriptableRenderPass.cs">ScriptableRenderPass.cs</a>.</p>
+<p>Typically you&rsquo;ll set the field using the enum itself :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>m_ScriptablePass.renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// (aka value of 300)</span></span></span></code></pre></div>
+<p>For passes with the same renderPassEvent value, the order should be the same as it appears on the Renderer Features list (or order of EnqueuePass if enqueuing multiple passes in a single feature).</p>
+<p>If you need to specify a pass to run at a particular point inbetween other passes, you can also provide an offset to the values. For example the following would run after any passes with just <code>RenderPassEvent.BeforeRenderingPostProcessing</code> (value of 550) :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>m_ScriptablePass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing + <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// (aka value of 551)</span></span></span></code></pre></div>
+<p>Just don&rsquo;t make that offset too high, BeforeRenderingPostProcessing has a value of 550 in the enum. So doing <code>BeforeRenderingPostProcessing + 50</code> would then be equivalent to <code>AfterRenderingPostProcessing</code>.</p>
+<hr>
+<h2 id="dispose">Dispose</h2>
+<p>While not a part of the template, we can add a Dispose method to the feature. The method can be useful for releasing any resources that have been allocated. For example, Materials or RTHandles (The RTHandle section later will provide an example of that).</p>
+<p>In editor, the method is called when removing features, recompling scripts, entering/exiting play mode. (Not too sure when it gets called in builds, probably when changing scenes?)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Shader shader; <span style="color:#75715e">// expose a Shader field</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Material material;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Create() {
+</span></span><span style="display:flex;"><span>    material = CoreUtils.CreateEngineMaterial(shader);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// or alternative method that uses the shader name (string):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//material = CoreUtils.CreateEngineMaterial(&#34;Hidden/Internal-DepthNormalsTexture&#34;);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// these assume the required shader is in the build (and variant, if keywords are set)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// e.g. could add the shader to the &#34;Always Included Shaders&#34; in Project Settings -&gt; Graphics</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    m_ScriptablePass = <span style="color:#66d9ef">new</span> CustomRenderPass(material, name);
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Dispose(<span style="color:#66d9ef">bool</span> disposing) {
+</span></span><span style="display:flex;"><span>    CoreUtils.Destroy(material);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// (will use DestroyImmediate() or Destroy() depending if we&#39;re in editor or not)</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>It&rsquo;s very possible that Unity will automatically clean up some unused resources (e.g. during a Scene change), but it&rsquo;s still a good practice to handle it ourselves.</p>
+<hr>
+<h2 id="addrenderpasses">AddRenderPasses</h2>
+<p>This method is responsible for injecting/enqueuing ScriptableRenderPasses with URP&rsquo;s Renderer. By default it&rsquo;ll already have <code>renderer.EnqueuePass(m_ScriptablePass)</code> and that may be all we need here. But it is possible to enqueue multiple passes if required.</p>
+<p>The comment in the template mentions this method is called once for each camera, but be aware this is also <strong>every frame/update</strong>, so avoid creating/instantiating anything in here (can use the Create method for that).</p>
+<p>Also note that by default it would enqueue the pass for <em>all</em> cameras - including ones used by the Unity Editor. In order to avoid this, we can test the camera type and return before enququeing (or can check later during Execute to prevent that function running, if you prefer).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> showInSceneView;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> AddRenderPasses(ScriptableRenderer renderer, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (renderingData.cameraData.isPreviewCamera) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Ignore feature for editor/inspector previews &amp; asset thumbnails</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (renderingData.cameraData.isSceneViewCamera) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Ignore feature for scene view</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// If the feature uses camera targets, you may want to expose a bool/tickbox instead, e.g.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (!showInSceneView &amp;&amp; renderingData.cameraData.isSceneViewCamera) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// (could alternatively use &#34;cameraData.cameraType == CameraType enum&#34; for these)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (renderingData.cameraData.camera != Camera.main) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Ignore all cameras except the camera tagged as MainCamera</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Though may be better to use Multiple Renderer Assets (see below)</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    renderer.EnqueuePass(m_ScriptablePass);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>As shown, we can also test against <code>Camera.main</code> if you only want the feature to run on the Main Camera. If you only want it to run on a different specific camera you could potentially set a Camera field at runtime (can&rsquo;t during editor as assets can&rsquo;t serialise scene references). Though a better way to handle these would be to create multiple &ldquo;Renderer&rdquo; assets (e.g. Universal Renderers), assign them to the list on the <strong>URP Asset(s)</strong> (may have multiple per quality setting), then use the <strong>Renderer</strong> dropdown on each <strong>Camera</strong> component to select which index it should use. That way, you can choose which renderer features are used on a per-camera basis (without it being hardcoded).</p>
+<p>In 2021.2+ you should avoid accessing camera targets here (e.g. <code>cameraColorTargetHandle</code> / <code>cameraDepthTargetHandle</code>, or older <code>cameraColorTarget</code> / <code>cameraDepthTarget</code> on the <code>ScriptableRenderer</code> param) as these may not have been allocated yet! We can either obtain those targets directly in the passes Execute method, or add the SetupRenderPasses method (see below)</p>
+<h3 id="configureinput">ConfigureInput</h3>
+<p>We can also call <code>ConfigureInput</code> in this method, which allows us to request URP to generate certain textures (via the <code>ScriptableRenderPassInput</code> enum) :</p>
+<ul>
+<li><code>ScriptableRenderPassInput.Depth</code>
+<ul>
+<li>Make URP generate <code>_CameraDepthTexture</code>, even if it&rsquo;s not enabled on the URP Asset.</li>
+</ul>
+</li>
+<li><code>ScriptableRenderPassInput.Normal</code>
+<ul>
+<li>Make URP generate <code>_CameraNormalsTexture</code></li>
+</ul>
+</li>
+<li><code>ScriptableRenderPassInput.Color</code>
+<ul>
+<li>Make URP generate <code>_CameraOpaqueTexture</code>, even if it&rsquo;s not enabled on the URP Asset.</li>
+</ul>
+</li>
+<li><code>ScriptableRenderPassInput.Motion</code> (2022.1+)
+<ul>
+<li>Make URP generate <code>_MotionVectorTexture</code> and <code>_MotionVectorDepthTexture</code></li>
+</ul>
+</li>
+</ul>
+<p>This appears to only work for the Universal Renderer. The 2D Renderer seems to ignore it.</p>
+<p>These textures are generated at usual events, so won&rsquo;t necessarily be ready for the event the pass is enqueued at. <code>_CameraOpaqueTexture</code> would only be used in the BeforeRenderingTransparents event or later for example. However the depth texture will be generated using a DepthPrepass if using the BeforeRenderingOpaques event and CopyDepth when using AfterRenderingOpaques (assuming it isn&rsquo;t already using a prepass for other reasons). Can always check the <a href="https://docs.unity3d.com/2022.2/Documentation/Manual/frame-debugger-window.html">Frame Debugger window</a> to see the order of everything!</p>
+<p>If you need multiple of these inputs, don&rsquo;t call <code>ConfigureInput</code> multiple times (that will just override the value). As the enum has the <code>[Flags]</code> attribute, you can use the <code>|</code> operator to combine them instead. Example below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> AddRenderPasses(ScriptableRenderer renderer, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Tell URP to generate the Camera Depth Texture</span>
+</span></span><span style="display:flex;"><span>    m_ScriptablePass.ConfigureInput(ScriptableRenderPassInput.Depth);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Tell URP to generate the Camera Normals and Depth Textures</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// m_ScriptablePass.ConfigureInput(ScriptableRenderPassInput.Normal | ScriptableRenderPassInput.Depth);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    renderer.EnqueuePass(m_ScriptablePass);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<hr>
+<h2 id="setuprenderpasses">SetupRenderPasses</h2>
+<p>This method was added in Unity 2021.2 (URP v12). It doesn&rsquo;t exist in the template, but it can be added inside the feature class. If your feature requires accessing the camera targets, you should do it inside this method rather than AddRenderPasses.</p>
+<p>For example :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// in feature</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> SetupRenderPasses(ScriptableRenderer renderer, <span style="color:#66d9ef">in</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>    RTHandle color = renderer.cameraColorTargetHandle;
+</span></span><span style="display:flex;"><span>    RTHandle depth = renderer.cameraDepthTargetHandle;
+</span></span><span style="display:flex;"><span>    m_ScriptablePass.Setup(color, depth);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// For versions prior to 2022, use RenderTargetIdentifier type instead,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// with renderer.cameraColorTarget / renderer.cameraDepthTarget</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// in pass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> RTHandle rtDestinationColor;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> RTHandle rtDestinationDepth;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Setup(RTHandle destColor, RTHandle destDepth){
+</span></span><span style="display:flex;"><span>    rtDestinationColor = destColor;
+</span></span><span style="display:flex;"><span>    rtDestinationDepth = destDepth
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Personally I usually access targets directly in Execute which also works (though I guess that is more hardcoded). Accessing them here and passing them into the pass may make the pass more flexible.</p>
+<p>To be clear, <code>Setup</code> here could be named anything, it would just be a method inside the pass that is used to pass the RTHandle through. The destination RTHandles would then be used by the pass. (For example, could be used to configure the target in OnCameraSetup or used in a blit call in Execute. Later sections will explain these). This way, the same ScriptableRenderPass could potentially be used in multiple features with different destinations.</p>
+<hr>
+<h2 id="oncamerasetup">OnCameraSetup</h2>
+<p>This method is responsible for <strong>configuring the render targets</strong> that will be used. By default if you do nothing, URP will <strong>already configure the pass to use the camera colour and depth targets</strong> for you.</p>
+<p>But in the cases that we want to specify our <strong>own targets</strong>, we can use one of the <code>ConfigureTarget</code> function overloads from the ScriptableRenderPass class.</p>
+<h3 id="rthandle">RTHandle</h3>
+<p>RTHandles are the way to handle render targets in Unity 2022+. Typically we allocate one inside OnCameraSetup using <code>RenderingUtils.ReAllocateIfNeeded</code> :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// To create a Color Target :</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> colorDesc = renderingData.cameraData.cameraTargetDescriptor;
+</span></span><span style="display:flex;"><span>colorDesc.depthBufferBits = <span style="color:#ae81ff">0</span>; <span style="color:#75715e">// must set to 0 to specify a colour target</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// to use a different format, set .colorFormat or .graphicsFormat</span>
+</span></span><span style="display:flex;"><span>RenderingUtils.ReAllocateIfNeeded(<span style="color:#66d9ef">ref</span> colorTarget, colorDesc, 
+</span></span><span style="display:flex;"><span>    name: settings.colorDestinationID);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// To create a Depth Target :</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> depthDesc = renderingData.cameraData.cameraTargetDescriptor;
+</span></span><span style="display:flex;"><span>colorDesc.depthBufferBits = <span style="color:#ae81ff">32</span>; <span style="color:#75715e">// should be default anyway</span>
+</span></span><span style="display:flex;"><span>RenderingUtils.ReAllocateIfNeeded(<span style="color:#66d9ef">ref</span> depthTarget, depthDesc,
+</span></span><span style="display:flex;"><span>    name: settings.depthDestinationID);</span></span></code></pre></div>
+<p>There is also <code>RTHandles.Alloc</code> (various overloads, see <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.core@14.0/api/UnityEngine.Rendering.RTHandles.html#methods">docs</a>). This should only run once, so can do a null check :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (colorTarget == <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>    colorTarget = RTHandles.Alloc(Vector2.one, colorDesc,
+</span></span><span style="display:flex;"><span>        name: settings.colorDestinationID);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>There&rsquo;s a lot of parameters for some of these methods, but they have default values so we don&rsquo;t need to specify all of them. If you want to override/set a specific parameter, can use <code>&lt;param name&gt;:&lt;value&gt;</code>, such as <code>filterMode:FilterMode.Bilinear</code>, <code>wrapMode:TextureWrapMode.Clamp</code>, etc.</p>
+<p>There are also Alloc overrides to create an RTHandle from a RenderTargetIdentifier, RenderTexture, or Texture object, so you can <em>technically</em> still use those types with the new system.</p>
+<p>RTHandles also need to be released when they are no longer needed (by calling <code>.Release();</code> on it). You may want to do this in a function called by the Dispose function of the feature. e.g.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomRendererFeature</span> : ScriptableRendererFeature {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomRenderPass</span> : ScriptableRenderPass {
+</span></span><span style="display:flex;"><span>        ...
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> ReleaseTargets() {
+</span></span><span style="display:flex;"><span>            colorTarget?.Release();
+</span></span><span style="display:flex;"><span>            depthTarget?.Release();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Dispose(<span style="color:#66d9ef">bool</span> disposing) {
+</span></span><span style="display:flex;"><span>        m_ScriptablePass.ReleaseTargets();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>If you aren&rsquo;t familiar, the <code>?</code> here is the null-propagation operator - which means if the object is null, the function won&rsquo;t be called. This helps avoid potential NullPointerExceptions if the feature is disposed without the targets being set (e.g. feature is added to list but disabled).</p>
+<p>In case it&rsquo;s useful, the docs for <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.core@15.0/manual/rthandle-system-fundamentals.html">RTHandle System Fundamentals</a> and <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.core@15.0/manual/rthandle-system-using.html">Using the RTHandle system</a> may provide additional info.</p>
+
+<h3 id="configuretarget">ConfigureTarget</h3>
+<p>These take either one or two parameters, the first being the colour target (like the colours you see on the screen in Scene/Game view) and the second being an optional depth target (like the depth buffer, used for ZWrite &amp; ZTest. Can also contain bits for Stencil values). These parameters need to be of the type <code>RTHandle</code> (or <code>RenderTargetIdentifier</code> but those functions are deprecated as of Unity 2022).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> RTHandle colorTarget, depthTarget;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> OnCameraSetup(CommandBuffer cmd, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> colorDesc = renderingData.cameraData.cameraTargetDescriptor;
+</span></span><span style="display:flex;"><span>    colorDesc.depthBufferBits = <span style="color:#ae81ff">0</span>; <span style="color:#75715e">// must set to 0 to specify a colour target</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// to use a different format, set .colorFormat or .graphicsFormat</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (settings.colorDestinationID != <span style="color:#e6db74">&#34;&#34;</span>){
+</span></span><span style="display:flex;"><span>        RenderingUtils.ReAllocateIfNeeded(<span style="color:#66d9ef">ref</span> colorTarget, colorDesc, name: settings.colorDestinationID);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// if you need to specify texture filter and wrap modes :</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// RenderingUtils.ReAllocateIfNeeded(ref colorTarget, colorDesc, FilterMode.Point, TextureWrapMode.Clamp, name: settings.colorDestinationID);</span>
+</span></span><span style="display:flex;"><span>    }<span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>        colorTarget = renderingData.cameraData.renderer.cameraColorTargetHandle;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> depthDesc = renderingData.cameraData.cameraTargetDescriptor;
+</span></span><span style="display:flex;"><span>    colorDesc.depthBufferBits = <span style="color:#ae81ff">32</span>; <span style="color:#75715e">// should be default anyway</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (settings.depthDestinationID != <span style="color:#e6db74">&#34;&#34;</span>){
+</span></span><span style="display:flex;"><span>        RenderingUtils.ReAllocateIfNeeded(<span style="color:#66d9ef">ref</span> depthTarget, depthDesc, name: settings.depthDestinationID);
+</span></span><span style="display:flex;"><span>    }<span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>        depthTarget = renderingData.cameraData.renderer.cameraDepthTargetHandle;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//ConfigureTarget(colorTarget);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Later rendering commands will render into colorTarget</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// No depth target, so ZWrite, ZTest and Stencil operations will not do anything</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// OR </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ConfigureTarget(colorTarget, depthTarget);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Later rendering commands will render into colorTarget</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// and ZWrite/ZTest/Stencil based on depthTarget</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ConfigureClear(ClearFlag.Color, Color.black);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Set all pixels in the target to black</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>The first param of <code>ConfigureTarget</code> can also be an <em>array</em> of colour targets, which sets up what is known as Multi-Target Rendering (MRT) assuming the target platform supports it. That allows you to render objects into multiple buffers at the same time by having the fragment shader use <code>SV_Target0</code>, <code>SV_Target1</code>, <code>SV_Target2</code>, etc in the fragment shader output (rather than just <code>SV_Target</code>). An example of this is Deferred Rendering, which sets up multiple &ldquo;gbuffer&rdquo; targets and configures them using this.</p>
+<h3 id="configureclear">ConfigureClear</h3>
+<p>In the above example you might also notice <code>ConfigureClear</code> being used, which allows us to clear the render target.</p>
+<p>By default, RTHandle targets are uninitalised and may contain data from the previous frame/camera. This behaviour isn&rsquo;t typically wanted, so we can use this function to set the entire texture to a particular colour (e.g. black) before rendering that camera. It can also clear depth and stencil values - this is specified by the first parameter of type <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.core@14.0/api/UnityEngine.Rendering.ClearFlag.html">ClearFlag</a> (enum with <code>[Flags]</code>). <code>Stencil</code> was added in 2021.2. In older versions that than, <code>Depth</code> cleared both.</p>
+<p>The function can be used even without ConfigureTarget, which would apply the clear to the camera targets. Typically you wouldn&rsquo;t clear the camera&rsquo;s colour (URP kinda does this for us anyway with the Background Color / Skybox) but for some effects clearing the depth or stencil values at a specific event could probably be useful.</p>
+<hr>
+<h2 id="oncameracleanup">OnCameraCleanup</h2>
+<p>This method is called once for each camera (every frame) after rendering. You&rsquo;d use this method to clean up some resources created during the other passes (that aren&rsquo;t needed across multiple frames)! Some examples below.</p>
+<p>If you used <code>CommandBuffer.GetTemporaryRT</code> somewhere, you&rsquo;d typically use <code>CommandBuffer.ReleaseTemporaryRT</code> in this method.</p>
+<p>With the change to RTHandles, you might think to release those in here too but I&rsquo;ve found this causes glitchy rendering - especially in scene view. It&rsquo;s better to instead release those in a method called by the feature&rsquo;s Dispose method (see RTHandle section for an example). I have seen some examples set private RTHandle fields to <code>null</code> in this method, but I don&rsquo;t think that is required. (It may be to avoid accidently rendering to targets if the feature is called without using it&rsquo;s Setup function?)</p>
+<p>If your feature relies on shader keywords, you might also enable those during Execute and disable them in OnCameraCleanup. This can either involve using <code>CommandBuffer.EnableShaderKeyword</code> and <code>CommandBuffer.DisableShaderKeyword</code> or the <code>CoreUtils.SetKeyword</code> function which provides a boolean which calls either of those for you. For example, the decal passes such as <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/Decal/ScreenSpace/DecalScreenSpaceRenderPass.cs">DecalScreenSpaceRenderPass</a> do this.</p>
+<p><a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/DeferredLights.cs">DeferredLights</a> (used by URP&rsquo;s Deferred Rendering path) appears to dispose some NativeArrays in here.</p>
+<hr>
+<h2 id="execute">Execute</h2>
+<p>The usual way to set up the Execute function is like :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// (in Pass)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> ProfilingSampler m_ProfilingSampler;
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// (constructor, method name should match class name)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> CustomRenderPass(<span style="color:#66d9ef">string</span> name) {
+</span></span><span style="display:flex;"><span>    m_ProfilingSampler = <span style="color:#66d9ef">new</span> ProfilingSampler(name);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Execute(ScriptableRenderContext context, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>    CommandBuffer cmd = CommandBufferPool.Get();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">using</span> (<span style="color:#66d9ef">new</span> ProfilingScope(cmd, m_ProfilingSampler)) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Do stuff!</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Would recommend keeping all your rendering code in this using statement.</span>
+</span></span><span style="display:flex;"><span>        ...
+</span></span><span style="display:flex;"><span>        context.ExecuteCommandBuffer(cmd);
+</span></span><span style="display:flex;"><span>        cmd.Clear();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        Note : should always ExecuteCommandBuffer at least once before using
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        ScriptableRenderContext functions (e.g. DrawRenderers) even if you 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        don&#39;t queue any commands! This makes sure the frame debugger displays 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        everything under the correct title.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    CommandBufferPool.Release(cmd);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>As I&rsquo;ve mentioned earlier most of the rendering code here will be handled through the <a href="https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.html">ScriptableRenderContext</a> and <a href="https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.html">CommandBuffer</a> APIs (or other functions that end up calling those APIs, like ScriptableRenderPass.Blit and the Blitter class which passes a CommandBuffer as a parameter).</p>
+<p>What rendering commands you do in here depends on what the feature is meant to do, but I&rsquo;ll be providing some common examples below, such as DrawRenderers and Blit calls.</p>
+<p>Before moving on, it&rsquo;s very important to understand a few things :</p>
+<ul>
+<li>These rendering commands <strong>do not happen straight away</strong> - we are instead queueing up calls that URP will execute later.
+<ul>
+<li>This means for example, you cannot edit properties in a material and then call rendering commands and change the properties again - It&rsquo;ll just use the last values you set. You can however, set global values through <code>CommandBuffer.SetGlobalX</code> functions (not through <code>Shader</code> class!)</li>
+</ul>
+</li>
+<li>After using command buffer functions. We must then <strong>use <code>context.ExecuteCommandBuffer(cmd)</code> to let the feature actually know about them</strong>. If something isn&rsquo;t working, the first thing is to check that you&rsquo;re actually executing it!</li>
+<li><strong>Order is important</strong>. If you want command buffer functions to run <em>before</em> a ScriptableRenderContext function (e.g. DrawRenderers), you must <code>ExecuteCommandBuffer</code> first. (And ideally <code>Clear()</code> it, so you don&rsquo;t end up calling those commands twice if you execute again later!)
+<ul>
+<li>Even if you don&rsquo;t call a function on the CommandBuffer object specifically (e.g. <code>cmd.Blit</code>), keep an eye on any functions that you need to pass the CommandBuffer into as a parameter, such as <code>Blit(cmd, ...)</code>. This means it&rsquo;s going to be adding commands to it still!</li>
+<li>Also related &amp; commented in the above code too, <strong>call <code>ExecuteCommandBuffer</code> at least once before using ScriptableRenderContext functions</strong> (e.g. DrawRenderers). This is so that the <a href="https://docs.unity3d.com/2022.2/Documentation/Manual/frame-debugger-window.html">Frame Debugger window</a> displays those calls under the correct title - as the ProfilingScope is set up using the CommandBuffer!</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="drawrenderers">DrawRenderers</h2>
+<p>As the method name suggests, this allows us to draw renderers to the current render target (specified in OnCameraSetup by ConfigureTarget as previously discussed). Can see the function&rsquo;s params/overloads in the Unity docs for <a href="https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.DrawRenderers.html">ScriptableRenderContext.DrawRenderers</a></p>
+<p>The <strong>DrawingSettings</strong> struct parameter allows us to configure how the renderers will be drawn. It&rsquo;s typically created using the <code>CreateDrawingSettings</code> method of the ScriptableRenderPass class (which calls the same method in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/RenderingUtils.cs">RenderingUtils</a>). After this, can set properties on it.</p>
+<p>Can see which properties are available in the Unity docs for <a href="https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings.html">DrawingSettings</a>. For example :</p>
+<ul>
+<li>A commonly used one is specifying an <code>overrideMaterial</code>. This will override the material completely, including previous property values.</li>
+<li>In 2022.2+ we can now specify an <code>overrideShader</code>, which is similar to the concept of <a href="https://docs.unity3d.com/Manual/SL-ShaderReplacement.html">Replacement Shaders</a> in the Built-in RP. Existing property values won&rsquo;t be overridden. However, note that it does not support SRPBatcher and BatchRendererGroups so will be more expensive.</li>
+</ul>
+<p>Unity will automatically get renderers from the cullResults, but we can specify filters in the <strong>FilteringSettings</strong> struct parameter. For creating this, see the <a href="https://docs.unity3d.com/ScriptReference/Rendering.FilteringSettings-ctor.html">FilteringSettings constructor</a>. If you don&rsquo;t want to filter anything, can use <code>FilteringSettings.defaultValue</code>.</p>
+<p>Below is an example of using DrawRenderers to render any <strong>opaque</strong> objects, filtered by a LayerMask and specifying an Override Material (&amp; pass index). Settings is a serialised class in the feature, as set up in the <a href="#create">Create section</a>.</p>
+<p>If drawing <strong>transparent</strong> objects instead, you&rsquo;d want to use <code>RenderQueueRange.transparent</code> and <code>SortingCriteria.CommonTransparent</code>. (And the RenderPassEvent would likely be set to at least AfterRenderingSkybox)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// in pass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Settings settings;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> FilteringSettings filteringSettings;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> List&lt;ShaderTagId&gt; shaderTagsList = <span style="color:#66d9ef">new</span> List&lt;ShaderTagId&gt;();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> ProfilingSampler _profilingSampler;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// (constructor)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> CustomRenderPass(Settings settings, <span style="color:#66d9ef">string</span> name) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.settings = settings;
+</span></span><span style="display:flex;"><span>    _profilingSampler = <span style="color:#66d9ef">new</span> ProfilingSampler(name);
+</span></span><span style="display:flex;"><span>    filteringSettings = <span style="color:#66d9ef">new</span> FilteringSettings(RenderQueueRange.opaque, settings.layerMask);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Use URP&#39;s default shader tags</span>
+</span></span><span style="display:flex;"><span>    shaderTagsList.Add(<span style="color:#66d9ef">new</span> ShaderTagId(<span style="color:#e6db74">&#34;SRPDefaultUnlit&#34;</span>));
+</span></span><span style="display:flex;"><span>    shaderTagsList.Add(<span style="color:#66d9ef">new</span> ShaderTagId(<span style="color:#e6db74">&#34;UniversalForward&#34;</span>));
+</span></span><span style="display:flex;"><span>    shaderTagsList.Add(<span style="color:#66d9ef">new</span> ShaderTagId(<span style="color:#e6db74">&#34;UniversalForwardOnly&#34;</span>));
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Execute(ScriptableRenderContext context, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>    CommandBuffer cmd = CommandBufferPool.Get();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">using</span> (<span style="color:#66d9ef">new</span> ProfilingScope(cmd, m_ProfilingSampler)) {
+</span></span><span style="display:flex;"><span>        context.ExecuteCommandBuffer(cmd);
+</span></span><span style="display:flex;"><span>        cmd.Clear();
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Draw Renderers to current Render Target (set in OnCameraSetup)</span>
+</span></span><span style="display:flex;"><span>        SortingCriteria sortingCriteria = renderingData.cameraData.defaultOpaqueSortFlags;
+</span></span><span style="display:flex;"><span>        DrawingSettings drawingSettings = CreateDrawingSettings(shaderTagsList, <span style="color:#66d9ef">ref</span> renderingData, sortingCriteria);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (settings.overrideMaterial != <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            drawingSettings.overrideMaterialPassIndex = settings.overrideMaterialPass;
+</span></span><span style="display:flex;"><span>            drawingSettings.overrideMaterial = settings.overrideMaterial;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        context.DrawRenderers(renderingData.cullResults, <span style="color:#66d9ef">ref</span> drawingSettings, <span style="color:#66d9ef">ref</span> filteringSettings);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    CommandBufferPool.Release(cmd);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<hr>
+<h2 id="blit">Blit</h2>
+<p>A blit is used to copy pixels from a &ldquo;source&rdquo; texture to a &ldquo;destination&rdquo; target. To do this, it draws a fullscreen quad (or triangle). It optionally allows you to specify a material if you want to use a custom shader, otherwise it&rsquo;ll use a built-in one (specifically <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Shaders/Utils/CoreBlit.shader">Hidden/Universal/CoreBlit</a>).</p>
+<p>There are a number of ways to handle blits. For Unity 2022+ versions we should now use the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.core@14.0/api/UnityEngine.Rendering.Blitter.html">Blitter API</a>. Most commonly :</p>
+<ul>
+<li><code>Blitter.BlitCameraTexture</code>
+<ul>
+<li>Draws a fullscreen triangle. A specific vertex shader is required. See <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl">Blit.hlsl</a> and example link below.</li>
+<li>Passes &ldquo;source&rdquo; into <code>_BlitTexture</code> reference.</li>
+<li>Example : <a href="https://github.com/Cyanilux/URP_BlitRenderFeature/blob/2022.1/Blit.cs">Blit Renderer Feature / 2022.1+ branch</a></li>
+<li>2022.2 also introduced a new <strong>Fullscreen Shader Graph</strong> which works with this. There is also a <strong>Fullscreen Pass Renderer Feature</strong>, so if you just need to apply a shader to the camera you can use that instead of a custom feature.</li>
+</ul>
+</li>
+</ul>
+<button id="" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Alternatives for older versions</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Alternatives for older versions</b>';
+
+    }
+"><b>⯈ Alternatives for older versions</b></button>
+<div class="foldout">
+<p>For older versions, these methods are available :</p>
+<ul>
+<li><a href="https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.Blit.html"><code>CommandBuffer.Blit</code></a>
+<ul>
+<li>Draws a fullscreen quad</li>
+<li>Is probably more documented / used in tutorials. But this does not work with XR (Single Pass Instanced at least), so should be avoided.</li>
+<li>Passes &ldquo;source&rdquo; into <code>_MainTex</code> reference.</li>
+<li>Example : <a href="https://github.com/Cyanilux/URP_BlitRenderFeature/blob/master/Blit.cs">Blit Renderer Feature / master branch</a>
+<ul>
+<li>Note, this example uses the <code>ScriptableRenderPass.Blit</code> function, but that then calls <code>CommandBuffer.Blit</code> when using <code>RenderTargetIdentifier</code> params.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.DrawMesh.html"><code>CommandBuffer.DrawMesh</code></a> with <code>RenderingUtils.fullscreenMesh</code> (quad)
+<ul>
+<li>Can work with XR. Likely the recommended method for versions prior to 2022.</li>
+<li>Would need to pass source into shader yourself. e.g. using <code>cmd.SetGlobalTexture(</code>_SomeReference<code>, source);</code></li>
+<li>Would require a specific vertex shader (output vertex positions as-is, rather than using <code>TransformObjectToHClip</code>), unless you also override the View/Projection matrices to identity, then switch back after.</li>
+<li>Example : <a href="https://github.com/Cyanilux/URP_BlitRenderFeature/blob/cmd-drawMesh/Blit.cs">Blit Renderer Feature / cmd-DrawMesh branch</a></li>
+</ul>
+</li>
+<li><code>CoreUtils.DrawFullScreen</code>
+<ul>
+<li>Draws a fullscreen triangle</li>
+<li>(Has various overloads, see the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/Runtime/Utilities/CoreUtils.cs">CoreUtils class</a>)</li>
+<li>Similar to above but uses <a href="https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.DrawProcedural.html"><code>CommandBuffer.DrawProcedural</code></a>. Would require a specific vertex shader (e.g. see <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl">Blit.hlsl</a>) to make sure it actually is fullscreen rather than rendering it in the world.</li>
+</ul>
+</li>
+</ul>
+
+</div>
+<h3 id="blit-example">Example</h3>
+<p>When rendering we need to make sure we do not <em>read</em> and <em>write</em> to the same texture/target as this can cause &ldquo;unintended behaviour&rdquo; (to quote the <code>CommandBuffer.Blit</code> documentation). Because of this, if the source/destination needs to be the same, we actually need to instead use <strong>two blits</strong> with an additional target in-between.</p>
+<p>In older versions this would typically be a &ldquo;Temporary Render Texture&rdquo; but with the change to RTHandles that&rsquo;s not really used anymore. But I&rsquo;ve still named it temp, and by using <code>RenderingUtils.ReAllocateIfNeeded</code>, the texture won&rsquo;t be set up multiple times if the feature is used multiple times (or if other features use the same <code>_TemporaryColorTexture</code> reference) - so in a way, it still acts as a temporary texture, kinda.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// In pass :</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> RTHandle rtTemp;
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// OnCameraSetup</span>
+</span></span><span style="display:flex;"><span>RenderingUtils.ReAllocateIfNeeded(<span style="color:#66d9ef">ref</span> rtTemp, desc, name: <span style="color:#e6db74">&#34;_TemporaryColorTexture&#34;</span>);
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Execute</span>
+</span></span><span style="display:flex;"><span>RTHandle rtCamera = renderer.cameraColorTargetHandle;
+</span></span><span style="display:flex;"><span>Blitter.BlitCameraTexture(cmd, rtCamera, rtTemp, settings.blitMaterial, settings.blitMaterialPassIndex);
+</span></span><span style="display:flex;"><span>Blitter.BlitCameraTexture(cmd, rtTemp, rtCamera, Vector2.one);
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Should also clean-up our allocated RTHandle, so :</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> ReleaseTargets() {
+</span></span><span style="display:flex;"><span>    temp?.Release();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// In feature :</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Dispose(<span style="color:#66d9ef">bool</span> disposing) {
+</span></span><span style="display:flex;"><span>    blitPass.ReleaseTargets();
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Of course some effects may require multiple passes/blits anyway, such as two-pass blurs. This would be the same as the above, but we&rsquo;d specify the material in both with different pass indices :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>Blitter.BlitCameraTexture(cmd, rtCamera, rtTemp, settings.blurMaterial, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>Blitter.BlitCameraTexture(cmd, rtTemp, rtCamera, settings.blurMaterial, <span style="color:#ae81ff">1</span>);</span></span></code></pre></div>
+<h3 id="blit-example-copy">Example (Copy Color)</h3>
+<p>A blit could also be used to copy the camera colour target to a custom one (initialised similar to <code>rtTemp</code> above but renamed).</p>
+<p>This would be similar to what the Opaque Texture does (used by <b class="node">Scene Color</b> node), but that always occurs AfterRenderingSkybox so won&rsquo;t contain transparent objects. With a custom blit feature, we could copy the screen during different events, such as AfterRenderingTransparents. That way, the texture contains anything rendered in the normal transparent queue.</p>
+<p>In this case you likely wouldn&rsquo;t specify a material, and since the targets are different only a single call is needed :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>Blitter.BlitCameraTexture(cmd, rtCamera, rtCustom, Vector2.one);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Pass as global shader texture</span>
+</span></span><span style="display:flex;"><span>CommandBuffer.SetGlobalTexture(<span style="color:#e6db74">&#34;_SomeReference&#34;</span>, rtCustom);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// In Shader Graphs could obtain this using Texture2D property,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// set same Reference, untick Exposed.</span></span></span></code></pre></div>
+<p>As shown we then pass our custom target (containing the camera copy) as a global texture. We can then sample that in shaders used by objects in the scene.</p>
+<p>However to prevent graphical artifacts, it is important that any objects/shaders that sample the texture are rendered in a <strong>later event</strong>! Can force this by putting the object on a layer removed from the <strong>Default Opaque/Transparent Layer Mask</strong> at the top of the UniversalRenderer, and render that layer with a <a href="#drawrenderers">DrawRenderers</a> call, or use the RenderObjects feature.</p>
+<hr>
+<h2 id="full-example">Full Renderer Feature Example</h2>
+<p>Here&rsquo;s a full code example based on snippets mentioned in this post.</p>
+<button id="" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Feature Example Code</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Feature Example Code</b>';
+
+    }
+"><b>⯈ Feature Example Code</b></button>
+<div class="foldout">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Collections.Generic;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine.Rendering;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine.Rendering.Universal;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomRendererFeature</span> : ScriptableRendererFeature {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomRenderPass</span> : ScriptableRenderPass {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> Settings settings;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> FilteringSettings filteringSettings;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> ProfilingSampler _profilingSampler;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> List&lt;ShaderTagId&gt; shaderTagsList = <span style="color:#66d9ef">new</span> List&lt;ShaderTagId&gt;();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> RTHandle rtCustomColor, rtTempColor;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> CustomRenderPass(Settings settings, <span style="color:#66d9ef">string</span> name) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.settings = settings;
+</span></span><span style="display:flex;"><span>            filteringSettings = <span style="color:#66d9ef">new</span> FilteringSettings(RenderQueueRange.opaque, settings.layerMask);
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Use default tags</span>
+</span></span><span style="display:flex;"><span>            shaderTagsList.Add(<span style="color:#66d9ef">new</span> ShaderTagId(<span style="color:#e6db74">&#34;SRPDefaultUnlit&#34;</span>));
+</span></span><span style="display:flex;"><span>            shaderTagsList.Add(<span style="color:#66d9ef">new</span> ShaderTagId(<span style="color:#e6db74">&#34;UniversalForward&#34;</span>));
+</span></span><span style="display:flex;"><span>            shaderTagsList.Add(<span style="color:#66d9ef">new</span> ShaderTagId(<span style="color:#e6db74">&#34;UniversalForwardOnly&#34;</span>));
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            _profilingSampler = <span style="color:#66d9ef">new</span> ProfilingSampler(name);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> OnCameraSetup(CommandBuffer cmd, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> colorDesc = renderingData.cameraData.cameraTargetDescriptor;
+</span></span><span style="display:flex;"><span>            colorDesc.depthBufferBits = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Set up temporary color buffer (for blit)</span>
+</span></span><span style="display:flex;"><span>            RenderingUtils.ReAllocateIfNeeded(<span style="color:#66d9ef">ref</span> rtTempColor, colorDesc, name: <span style="color:#e6db74">&#34;_TemporaryColorTexture&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Set up custom color target buffer (to render objects into)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (settings.colorTargetDestinationID != <span style="color:#e6db74">&#34;&#34;</span>){
+</span></span><span style="display:flex;"><span>                RenderingUtils.ReAllocateIfNeeded(<span style="color:#66d9ef">ref</span> rtCustomColor, colorDesc, name: settings.colorTargetDestinationID);
+</span></span><span style="display:flex;"><span>            }<span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// colorDestinationID is blank, use camera target instead</span>
+</span></span><span style="display:flex;"><span>                rtCustomColor = renderingData.cameraData.renderer.cameraColorTargetHandle;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Using camera&#39;s depth target (that way we can ZTest with scene objects still)</span>
+</span></span><span style="display:flex;"><span>            RTHandle rtCameraDepth = renderingData.cameraData.renderer.cameraDepthTargetHandle;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            ConfigureTarget(rtCustomColor, rtCameraDepth);
+</span></span><span style="display:flex;"><span>            ConfigureClear(ClearFlag.Color, <span style="color:#66d9ef">new</span> Color(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>));
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Execute(ScriptableRenderContext context, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>            CommandBuffer cmd = CommandBufferPool.Get();
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Set up profiling scope for Profiler &amp; Frame Debugger</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">using</span> (<span style="color:#66d9ef">new</span> ProfilingScope(cmd, _profilingSampler)) {
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Command buffer shouldn&#39;t contain anything, but apparently need to</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// execute so DrawRenderers call is put under profiling scope title correctly</span>
+</span></span><span style="display:flex;"><span>                context.ExecuteCommandBuffer(cmd);
+</span></span><span style="display:flex;"><span>                cmd.Clear();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Draw Renderers to Render Target (set up in OnCameraSetup)</span>
+</span></span><span style="display:flex;"><span>                SortingCriteria sortingCriteria = renderingData.cameraData.defaultOpaqueSortFlags;
+</span></span><span style="display:flex;"><span>                DrawingSettings drawingSettings = CreateDrawingSettings(shaderTagsList, <span style="color:#66d9ef">ref</span> renderingData, sortingCriteria);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (settings.overrideMaterial != <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>                    drawingSettings.overrideMaterialPassIndex = settings.overrideMaterialPass;
+</span></span><span style="display:flex;"><span>                    drawingSettings.overrideMaterial = settings.overrideMaterial;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                context.DrawRenderers(renderingData.cullResults, <span style="color:#66d9ef">ref</span> drawingSettings, <span style="color:#66d9ef">ref</span> filteringSettings);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Pass our custom target to shaders as a Global Texture reference</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// In a Shader Graph, you&#39;d obtain this as a Texture2D property with &#34;Exposed&#34; unticked</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (settings.colorTargetDestinationID != <span style="color:#e6db74">&#34;&#34;</span>) 
+</span></span><span style="display:flex;"><span>                    cmd.SetGlobalTexture(settings.colorTargetDestinationID, rtCustomColor);
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Apply material (e.g. Fullscreen Graph) to camera</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (settings.blitMaterial != <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>                    RTHandle camTarget = renderingData.cameraData.renderer.cameraColorTargetHandle;
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> (camTarget != <span style="color:#66d9ef">null</span> &amp;&amp; rtTempColor != <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>                        Blitter.BlitCameraTexture(cmd, camTarget, rtTempColor, settings.blitMaterial, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>                        Blitter.BlitCameraTexture(cmd, rtTempColor, camTarget);
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                context.ExecuteCommandBuffer(cmd);
+</span></span><span style="display:flex;"><span>                cmd.Clear();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            CommandBufferPool.Release(cmd);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> OnCameraCleanup(CommandBuffer cmd) {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Cleanup Called by feature below</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Dispose() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (settings.colorTargetDestinationID != <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>                rtCustomColor?.Release();
+</span></span><span style="display:flex;"><span>            rtTempColor?.Release();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Exposed Settings</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [System.Serializable]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Settings</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> showInSceneView = <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> RenderPassEvent _event = RenderPassEvent.AfterRenderingOpaques;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">        [Header(&#34;Draw Renderers Settings&#34;)]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> LayerMask layerMask = <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> Material overrideMaterial;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> overrideMaterialPass;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> colorTargetDestinationID = <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">        [Header(&#34;Blit Settings&#34;)]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> Material blitMaterial;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Settings settings = <span style="color:#66d9ef">new</span> Settings();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Feature Methods</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> CustomRenderPass m_ScriptablePass;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Create() {
+</span></span><span style="display:flex;"><span>        m_ScriptablePass = <span style="color:#66d9ef">new</span> CustomRenderPass(settings, name);
+</span></span><span style="display:flex;"><span>        m_ScriptablePass.renderPassEvent = settings._event;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> AddRenderPasses(ScriptableRenderer renderer, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
+</span></span><span style="display:flex;"><span>        CameraType cameraType = renderingData.cameraData.cameraType;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (cameraType == CameraType.Preview) <span style="color:#66d9ef">return</span>; <span style="color:#75715e">// Ignore feature for editor/inspector previews &amp; asset thumbnails</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (!settings.showInSceneView &amp;&amp; cameraType == CameraType.SceneView) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>        renderer.EnqueuePass(m_ScriptablePass);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Dispose(<span style="color:#66d9ef">bool</span> disposing) {
+</span></span><span style="display:flex;"><span>        m_ScriptablePass.Dispose();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+
+</div>
+<button id="" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Usage</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Usage</b>';
+
+    }
+"><b>⯈ Usage</b></button>
+<div class="foldout">
+<p>The feature can be used to render objects with a given material, into a custom buffer (specified by Color Target Destination ID setting). This texture reference can be sampled as a global/unexposed Texture2D in the blit/fullscreen material.</p>
+<p>For example, feature could be used with materials using the following graphs (click images to view full screen) :</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="300" alt="(Image)" src="Graph1.png" />
+</a>
+<p class="img-text">Override Material (Unlit Graph)</p>
+</div>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="264" alt="(Image)" src="Graph2.png" />
+</a>
+<p class="img-text">Blit Material (Fullscreen Graph)</p>
+</div>
+<p>Resulting in :</p>
+<div class="img-center">
+<a href="Result.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="416" alt="(Image)" src="Result.png" />
+</a>
+<p class="img-text">Cyan objects are on separate Layer, not used by feature&rsquo;s LayerMask setting. Note the cube doesn&rsquo;t look great since we used a Fresnel Effect. Alternative outline methods may work better.</p>
+</div>
+<p>Another similar example is <a href="https://twitter.com/Cyanilux/status/1575877789403815940">this Horizon Zero Dawn inspired highlight/glitch effect</a> I made a while ago.</p>
+
+</div>
+<hr>
+<h2 id="setting-values">Setting values on features at Runtime</h2>
+<p>For some effects, you may want to set public or serialised fields/properties on a feature, from a C# Script at runtime.</p>
+<p>If this is only for a <strong>specific</strong> instance of a feature on a single Renderer asset, you should be able to do this quite easily by exposing a public field in your MonoBehaviour. e.g.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine.Rendering;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine.Rendering.Universal;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeScript</span> : MonoBehaviour {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> CustomRendererFeature feature;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// This feature uses the same &#34;Settings class&#34; example as shown in other sections</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// If you set public fields on the feature directly, that won&#39;t update the pass (unless you call Dispose and Create)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Call this method to set Override Material used by feature</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> SetMaterial(Material material, <span style="color:#66d9ef">int</span> passIndex){
+</span></span><span style="display:flex;"><span>        feature.settings.overrideMaterial = material;
+</span></span><span style="display:flex;"><span>        feature.settings.overrideMaterialPass = passIndex;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>If you need to do this for <strong>multiple</strong> instances of a feature, you can use an array of those features instead (so <code>HighlightRendererFeature[]</code> in this example). Another method could be to use a ScriptableObject to hold the Settings data, which the feature/pass and our SomeScript would have a reference to.</p>
+<p>You could also try to get the Renderer Asset and loop through the features. But those aren&rsquo;t public, so might require Reflection, not ideal.</p>
+<hr>
+<h2 id="volume">Connecting a feature to a URP Volume</h2>
+<p>While URP doesn&rsquo;t have an official way to make custom post processing effects for it&rsquo;s Volume system, it is still possible to create a custom VolumeComponent for it. We could use this to expose fields/properties, which communicates with a custom pass/feature.</p>
+<p>I won&rsquo;t be including an example here as <a href="https://www.febucci.com/2022/05/custom-post-processing-in-urp/">Febucci already has good tutorial of this</a> (though note the code for the pass uses RenderTargetIdentifier and should be converted to RTHandles in 2022+)</p>
+<p>The next section may also provide a small improvement to this, as we can get the ScriptableRenderPass to run without even needing a Renderer Feature. The example below is for a MonoBehaviour but maybe the same thing could work for VolumeComponent.OnEnable/OnDisable.</p>
+<hr>
+<h2 id="renderpipelinemanager">RenderPipelineManager</h2>
+<p>While not necessarily the scope of this post, we can also inject code before or after rendering each frame/camera using the events in the <a href="https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineManager.html">RenderPipelineManager</a> class.</p>
+<p>I wanted to mention this as it is possible to enqueue Scriptable Render Passes to the renderer here if you don&rsquo;t want to have to create/assign the Renderer Feature. This is also useful for older versions of URP where the 2D Renderer did not support features.</p>
+<p>Here&rsquo;s an example of this. Note that it still uses the Settings and CustomRenderPass classes nested inside a CustomRendererFeature, but they could also be separate - the feature isn&rsquo;t used! The feature used here is the same as the <a href="#full-example">Full Code Example</a> from earlier.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine.Rendering;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine.Rendering.Universal;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeScript</span> : MonoBehaviour {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> CustomRendererFeature.Settings settings;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> CustomRendererFeature.CustomRenderPass m_ScriptablePass;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// or just CustomRenderPass if not nested</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// if nested, make sure CustomRenderPass is marked as public</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> OnEnable(){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Setup same way as in CustomRendererFeature.Create</span>
+</span></span><span style="display:flex;"><span>        m_ScriptablePass = <span style="color:#66d9ef">new</span> CustomRendererFeature.CustomRenderPass(settings, <span style="color:#e6db74">&#34;Example&#34;</span>);
+</span></span><span style="display:flex;"><span>        m_ScriptablePass.renderPassEvent = settings.renderPassEvent;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Register method</span>
+</span></span><span style="display:flex;"><span>        RenderPipelineManager.beginCameraRendering += BeginCameraRendering;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> OnDisable(){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// same as CustomRendererFeature.Dispose</span>
+</span></span><span style="display:flex;"><span>        m_ScriptablePass.ReleaseTargets();
+</span></span><span style="display:flex;"><span>        m_ScriptablePass = <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Unregister method</span>
+</span></span><span style="display:flex;"><span>        RenderPipelineManager.beginCameraRendering -= BeginCameraRendering;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// if fields are changed in editor, update pass by disposing &amp; recreate</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> OnValidate(){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (m_ScriptablePass != <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            OnDisable();
+</span></span><span style="display:flex;"><span>            OnEnable();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> BeginCameraRendering(ScriptableRenderContext context, Camera camera) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Similar to CustomRendererFeature.AddRenderPasses</span>
+</span></span><span style="display:flex;"><span>        CameraType cameraType = camera.cameraType;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (cameraType == CameraType.Preview) <span style="color:#66d9ef">return</span>; <span style="color:#75715e">// Ignore feature for editor/inspector previews &amp; asset thumbnails</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (!settings.showInSceneView &amp;&amp; cameraType == CameraType.SceneView) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        ScriptableRenderer renderer = camera.GetUniversalAdditionalCameraData().scriptableRenderer;
+</span></span><span style="display:flex;"><span>        renderer.EnqueuePass(m_ScriptablePass);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Note that while the pass is enqueued at the beginning of the camera render, the blit will still occur later as set by the RenderPassEvent.</p>
+<p>Of course the script here would still need to be put onto an GameObject in the scene - but that could be considered easier than adding a Renderer Feature? 🤷
+<br><hr>
+
+<div style="display:block;text-align: center">
+<h2>Thanks for reading!</h2>
+<p> If this post helped, consider sharing a link with others!</p>
+</div>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div></p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a class="small-text" href="https://twitter.com/Cyanilux">© Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/index.xml">
+		
+		RSS Feed
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

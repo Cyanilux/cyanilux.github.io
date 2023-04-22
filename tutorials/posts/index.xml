@@ -6,7 +6,18 @@
     <description>Recent content in Posts on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Fri, 17 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tutorials/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 22 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tutorials/posts/index.xml" rel="self" type="application/rss+xml" />
+	
+    <item>
+      <title>Custom Renderer Features</title>
+      <link>https://www.cyanilux.com/tutorials/custom-renderer-features/</link>
+      <pubDate>Sat, 22 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/custom-renderer-features/</guid>
+      <description>Goes through examples of Renderer Features and explains how to write Custom Renderer Features and Scriptable Render Passes for Universal RP</description>
+    </item>
+	
+    
 	
     <item>
       <title>Swapping Colours</title>

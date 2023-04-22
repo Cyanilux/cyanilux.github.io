@@ -437,12 +437,17 @@ video {
 .highlight div {
 	overflow : auto;
 	padding-right : 20px;
+	background-color: #181818 !important;
+}
+.highlight pre {
+	background-color: #181818 !important;
 }
 
 /* {{< highlight c >}} */
 .highlight > pre {
 	overflow : auto;
 	padding : 20px;
+
 }
 
 /* Table */
@@ -615,6 +620,8 @@ video {
 
 hr {
 	border: 2px dashed #505050;
+	margin-top : 20px;
+	margin-bottom : 20px;
 }
 
 .footer-btns {
@@ -677,4 +684,21 @@ hr {
 
 .notice > div > p {
 	margin : 5px 0px;
+}
+
+h1:not(.title-no-margin) {
+	text-align: center;
+	padding : 0px 0px 20px 0px;
+}
+
+h2:not(.title-no-margin), h3, h4 {
+	padding : 15px 0px 0px 0px;
+}
+
+.post-metadata {
+	margin : 10px 0px 10px 0px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
 }

@@ -12,12 +12,12 @@
 	<meta name="theme-color" content="#ffffff">
 	
 	
-    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=4 ">
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=5 ">
 	
 	<meta itemprop="name" content="Depth">
 <meta itemprop="description" content="A big post explaining everything about Depth : Depth Buffer, Depth Texture / Scene Depth node, SV_Depth, Reconstructing World Position from Depth, etc."><meta itemprop="datePublished" content="2020-11-25T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2020-11-25T00:00:00+00:00" />
-<meta itemprop="wordCount" content="5691"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="wordCount" content="5637"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="Shader Graph,HLSL," />
 	
 	
@@ -237,7 +237,7 @@
         
 
 <h1>Depth</h1>
-
+<div class="post-metadata">
 
 
 <div class="tag" style="background-color:#505050;">
@@ -265,12 +265,12 @@
 
 
 
+<div style="width:10px"></div>
 
 
 <time datetime="2020-11-25">&#128337 Nov 25, 2020</time>
 
-
-
+</div>
 <p><strong>Depth</strong> is a term used in computer graphics to refer to how far a fragment (a potential pixel) is from the camera. But it can be a bit complicated - as depth can come in different spaces/ranges, vary between platform, and vary between perspective and orthographic camera projections.</p>
 <div class="img-center">
 <a href="Preview.png" target="_blank" rel="noopener noreferrer">
@@ -349,29 +349,7 @@
 <p class="img-text"></p>
 </div>
 <p>For Shader Code, the first method would be the equivalent of :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// Vertex : (Should work in URP and HDRP?)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// Vertex : (Should work in URP and HDRP?)</span>
 </span></span><span style="display:flex;"><span>float3 positionWS = TransformObjectToWorld(IN.positionOS.xyz);
 </span></span><span style="display:flex;"><span>float3 positionVS = TransformWorldToView(positionWS);
 </span></span><span style="display:flex;"><span>OUT.positionVS = positionVS;
@@ -388,38 +366,14 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// All would require the positionVS being included in the struct passed into the fragment</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// using one of the TEXCOORDX semantics, assuming you don&#39;t just want the vertex&#39;s eye depth.</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Guess you also could just pass that z/depth through rather than the whole view position.</span></span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Guess you also could just pass that z/depth through rather than the whole view position.</span></span></span></code></pre></div>
 <p>For obtaining the eye depth of <strong>objects in the scene</strong> (behind the fragment), we would instead sample a special texture that Unity generates for us known as the <strong>Depth Texture</strong> (aka the <b class="node">Scene Depth</b> node) - but more on that in the later <a href="#sample-depth-texture">Sampling the Depth Texture</a> and <a href="#scene-depth-node">Scene Depth</a> sections.</p>
 <p>You will also commonly see <strong>Linear01</strong> depth be used, which is just a remapped version of Eye (by dividing by the far plane value). It is still 0 at the camera position, but 1 at the far plane.</p>
 <hr>
 <h3 id="z-buffer-depth">Clip space, Normalised Device Coordinates (NDC) &amp; Z Buffer Depth</h3>
 <p>View space positions also get converted to <strong>Clip space</strong> via the <strong>Projection Matrix</strong>. Usually transformations like this can&rsquo;t warp the space in a non-uniform way - which we need for a perspective projection, but the matrix is set up in a way that outputs the <strong>Eye Depth</strong> in the <strong>W component</strong> of the result. The vertex shader then outputs this Clip space position. For orthographic projections, the W component just ends up as 1.</p>
 <p>Between the vertex and fragment stages the clip space XYZ is <strong>remapped</strong> a bit and then <strong>divided</strong> by it&rsquo;s <strong>W component</strong> (known as the <strong>perspective divide</strong>). The remapping that occurs is the same as the <strong>ComputeScreenPos</strong> function, or positionNDC calculated in the VertexPositionInputs struct. In URP these are both found in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.hlsl">ShaderVariablesFunctions.hlsl</a> :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// Clip Space Position (calculated for vertex shader SV_POSITION output)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// Clip Space Position (calculated for vertex shader SV_POSITION output)</span>
 </span></span><span style="display:flex;"><span>float4 positionCS 	= TransformWorldToHClip(input.positionOS.xyz);
 </span></span><span style="display:flex;"><span>OUT.positionCS 		= positionCS;
 </span></span><span style="display:flex;"><span>
@@ -436,9 +390,7 @@
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// Perspective Divide (handled in Fragment shader)</span>
 </span></span><span style="display:flex;"><span>float3 pd 			= IN.positionNDC.xyz / IN.positionNDC.w;
 </span></span><span style="display:flex;"><span>float2 screenUV 	= pd.xy;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> depth 		= pd.z; <span style="color:#75715e">// for OpenGL, also need * 0.5 + 0.5;</span></span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> depth 		= pd.z; <span style="color:#75715e">// for OpenGL, also need * 0.5 + 0.5;</span></span></span></code></pre></div>
 <p>This gives us <strong>Normalised Device Coordinates</strong> (NDC), aka a screen position where the <strong>XY</strong> axis ranges from <strong>(0,0)</strong> in the <strong>bottom left corner</strong> and <strong>(1,1)</strong> in the <strong>top right</strong> - at least in Unity / URP. This is the same as the <b class="node">Screen Position</b> node in Shader Graph, using it&rsquo;s <strong>Default</strong> mode&hellip; but awkwardly the Z axis doesn&rsquo;t seem to be passed in when that mode? The Z axis can instead be obtained by using the <strong>Raw</strong> mode - but that is the Clip space Z/Depth. We then need to handle the <b class="node">Divide</b> <strong>Z</strong> by <strong>W</strong> to get the NDC Z/Depth.</p>
 <p>Note this depth is <strong>not linear in view space</strong> anymore due to changes made by the projection matrix, at least in a perspective projection. This is the value that ends up in the <strong>Depth Buffer</strong> and it is also the same value that would end up in the <strong>Depth Texture</strong>, or <strong>Raw</strong> <b class="node">Scene Depth</b> node.</p>
 <p>The ranges of this <strong>NDC.z / Z Buffer Depth</strong> is the same for both projections, but varies depending on the platform :</p>
@@ -499,38 +451,12 @@
 <p>Fragments usually control their depth from the mesh, based on the interpolated values during rasterisation (between the vertex and fragment shader, turning the geometry into fragments/pixels).</p>
 <p>However it is also possible for the fragment shader to override the depth values that will be written into the depth buffer. This can&rsquo;t be done in Shader Graph, only in HLSL Shader Code. You can likely generate code from the graph and edit it though.</p>
 <p>The fragment shader usually outputs colour, using the <code>SV_Target</code> semantic. This can be set up either two ways, either as the usual :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>half4 frag (v2f i) : SV_Target {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>half4 frag (v2f i) : SV_Target {
 </span></span><span style="display:flex;"><span>	... <span style="color:#75715e">// calculate color</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> color;
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 <p>Or by instead using a struct. This is slightly more flexible as it allows us to also use other output semantics, such as the <code>SV_Depth</code> semantic :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">FragOut</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">FragOut</span> {
 </span></span><span style="display:flex;"><span>    half4 color : SV_Target;
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">float</span> depth : SV_Depth;
 </span></span><span style="display:flex;"><span>};
@@ -541,27 +467,11 @@
 </span></span><span style="display:flex;"><span>	o.color = color;
 </span></span><span style="display:flex;"><span>	o.depth = depth;
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> o;
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 <p>Here we can now specify a depth value as well as color. As mentioned previously this will override what is written into the depth buffer.</p>
 <p>For an Orthographic projection we need to output a linear depth value where 0 is the near plane and 1 is the far plane. But we also need to take into account the reversed depth buffer for Direct3D-like platforms, which is 1 at near and 0 at far instead. We can check if it is reversed by using the <code>UNITY_REVERSED_Z</code> macro. It will be 0 when not reversed, and 1 when reversed.</p>
 <p>We can handle this reversed-z by doing the following :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">float</span> depth <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">float</span> depth <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// **0** at the near plane, **1** at the far plane
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Using a value of 1, aka the far plane as an example
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
@@ -570,46 +480,9 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	depth <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> depth;
 </span></span><span style="display:flex;"><span><span style="color:#75715e">#end
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>...
-</span></span><span style="display:flex;"><span>o.depth <span style="color:#f92672">=</span> depth;</span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span><span style="display:flex;"><span>o.depth <span style="color:#f92672">=</span> depth;</span></span></code></pre></div>
 <p>For a Perspective projection, we need to convert to a non-linear value - mentioned in the <a href="#z-buffer-depth">Clip &amp; NDC space, Z Buffer (Raw) Depth</a> section. If we want to set the depth to a specific <strong>Eye Depth</strong> or <strong>Linear01 Depth</strong>, we can use the following :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">float</span> <span style="color:#a6e22e">LinearDepthToNonLinear</span>(<span style="color:#66d9ef">float</span> linear01Depth, float4 zBufferParam){
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">float</span> <span style="color:#a6e22e">LinearDepthToNonLinear</span>(<span style="color:#66d9ef">float</span> linear01Depth, float4 zBufferParam){
 </span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Inverse of Linear01Depth
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> (linear01Depth <span style="color:#f92672">*</span> zBufferParam.y)) <span style="color:#f92672">/</span> (linear01Depth <span style="color:#f92672">*</span> zBufferParam.x);
 </span></span><span style="display:flex;"><span>}
@@ -639,22 +512,13 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">// y = 1
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">// z = x/far
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">// w = 1/far
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span></span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span></span></span></code></pre></div>
 <p>As commented, these functions are the inverse of the Linear01Depth and LinearEyeDepth. They also handle the Direct3D vs OpenGL platform differences for us too, so a <code>UNITY_REVERSED_Z</code> check is not needed when using these.</p>
 <p>Note that you shouldn&rsquo;t use <code>SV_Depth</code> without a good reason, as it turns off early-z/depth testing optimisations on the GPU. This allows the depth to be tested against the depth buffer early, and discard the fragment if it fails, before the fragment shader even runs - since it knows the fragment won&rsquo;t be visible so there&rsquo;s no need to calculate it&rsquo;s colour/shading.</p>
 <p>Of course, if the shader is writing to <code>SV_Depth</code> then the fragment has to run, as the depth test needs to occur on this new depth value rather than the old one - Hence why those optimisations would be disabled. This allows the regular depth test to then take place after the fragment shader.</p>
 <p>Using <strong>Alpha Clipping</strong> (<strong>clip</strong> function) or <strong>discard</strong> in the shader also turns these optimisations off so the performance would be comparable to that. This is because during the early depth test a value has to also be written to the depth buffer if the test passes, assuming ZWrite is On. The test could pass, write to depth buffer, then the fragment shader could clip/discard - therefore the value written to the depth buffer would have been incorrect.</p>
 <p>Opaque shaders that use <code>SV_Depth</code> should also apparently be rendered after other opaque objects (according to <a href="https://docs.unity3d.com/Manual/SL-ShaderSemantics.html">this docs page</a>), e.g. during the AlphaTest queue.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>Tags { <span style="color:#e6db74">&#34;Queue&#34;</span> = <span style="color:#e6db74">&#34;AlphaTest&#34;</span> }</span></span></code></pre></td></tr></table>
-</div>
-</div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>Tags { <span style="color:#e6db74">&#34;Queue&#34;</span> = <span style="color:#e6db74">&#34;AlphaTest&#34;</span> }</span></span></code></pre></div>
 <h3 id="conservative-depth-output">Conservative Depth Output (SV_DepthGreaterEqual, SV_DepthLessEqual)</h3>
 <p>Similar to <code>SV_Depth</code>, there is also other depth outputs which still allow the early-z optimisations to run. This is known as <strong>Conservative Depth Output</strong> and involves using either the <code>SV_DepthGreaterEqual</code> semantic or <code>SV_DepthLessEqual</code>. They can be used in the same way as <code>SV_Depth</code> explained above, but has the additional inequality to be aware of.</p>
 <p><code>SV_DepthGreaterEqual</code> allows us to output depth as long as the value it is set to is <strong>greater than or equal</strong> to the value determined during rasterisation. If the value set is less, it will be <strong>clamped</strong> to the same value the rasteriser uses. In other words, you can only use it to <strong>increase</strong> the depth value.</p>
@@ -666,22 +530,7 @@
 <p>For <strong>URP</strong> Shader Code (HLSL), include <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl">DeclareDepthTexture.hlsl</a>, and use it&rsquo;s <strong>SampleSceneDepth</strong> function with the Screen coords to obtain the <strong>Raw Depth</strong> value. (pass positionNDC (from GetVertexPositionInputs, or use ComputeScreenPos with clip space pos, both in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.hlsl">ShaderVariablesFunctions.hlsl</a>) from vertex to fragment, then uv = screenPos.xy / screenPos.w).</p>
 <p>Be aware that the Depth Texture needs to be enabled in URP, this will be discussed more in the section below.</p>
 <p>e.g.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// (URP Example)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// (URP Example)
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl&#34;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>...
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// Vertex
@@ -691,9 +540,7 @@
 </span></span><span style="display:flex;"><span>...
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// Fragment
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> rawDepth <span style="color:#f92672">=</span> SampleSceneDepth(IN.screenPos.xy <span style="color:#f92672">/</span> IN.screenPos.w);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> sceneEyeDepth <span style="color:#f92672">=</span> LinearEyeDepth(rawDepth, _ZBufferParams);</span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> sceneEyeDepth <span style="color:#f92672">=</span> LinearEyeDepth(rawDepth, _ZBufferParams);</span></span></code></pre></div>
 <p>For <strong>HDRP</strong> Shader Code (HLSL), use the <strong>SampleCameraDepth</strong> function in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl">ShaderVariables.hlsl</a>.</p>
 <p>Also, for the <strong>Built-in pipeline</strong> there is the <a href="https://docs.unity3d.com/Manual/SL-DepthTextures.html">docs page</a>, also <a href="https://docs.unity3d.com/Manual/SL-CameraDepthTexture.html">see CameraDepthTexture docs</a>. These explain some macros (specific to the built-in, won&rsquo;t work in URP/HDRP) and how to enable it for that pipeline.</p>
 <p>For converting to other spaces we can use :</p>
@@ -704,20 +551,7 @@
 <p>(The built-in pipeline versions of these don&rsquo;t include the second parameter)</p>
 <p>Replacing &ldquo;rawDepth&rdquo; with the value sampled from the depth texture (SampleSceneDepth or SampleCameraDepth functions). Bare in mind that these functions are only used with <strong>Perspective</strong> projections. The Linear01Depth and LinearEyeDepth functions are found in the pipelines.core <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl">Common.hlsl</a>.</p>
 <p>For <strong>Orthographic</strong> projections, the rawDepth value is already linear but needs inverting for the reversed z buffer (when <code>_ProjectionParams.x</code> is -1), and lerping it with the near (<code>_ProjectionParams.y</code>) and far (<code>_ProjectionParams.z</code>) clip planes can convert it to view/eye space. Following code is untested but should work :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>orthoLinearDepth = _ProjectionParams.x &gt; <span style="color:#ae81ff">0</span> ? rawDepth : <span style="color:#ae81ff">1</span>-rawDepth;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>orthoLinearDepth = _ProjectionParams.x &gt; <span style="color:#ae81ff">0</span> ? rawDepth : <span style="color:#ae81ff">1</span>-rawDepth;
 </span></span><span style="display:flex;"><span>orthoEyeDepth = lerp(_ProjectionParams.y, _ProjectionParams.z, orthoLinearDepth);
 </span></span><span style="display:flex;"><span><span style="color:#75715e">/*
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">In case you are wondering what these _ProjectionParams values are :
@@ -725,9 +559,7 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">y = near plane
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">z = far plane
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">w = 1/far plane
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span></span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span></span></span></code></pre></div>
 <hr>
 <h2 id="scene-depth-node">Scene Depth Node</h2>
 <p>The <b class="node">Scene Depth</b> node allows us to sample the camera&rsquo;s <strong>Depth Texture</strong>. As explained above, this texture contains depth values - how far objects are from the camera plane. It should only be used by shaders in the <strong>Transparent</strong> parts of the <strong>Render Queue</strong>, specifically 2501 or higher. Switching the Shader Graph to use a Transparent surface mode will switch it to 3000, but you can also change it manually in the material inspector.</p>
@@ -760,6 +592,21 @@
 <p class="img-text"></p>
 </div>
 <h4 id="orthographic-scene-depth">Orthographic Projection</h4>
+<p>In newer versions (tested in 2022.2+) the Raw/Linear01/Eye modes now seem to work properly in orthographic projections (same as perspective), so see above! For exact code used, may want to check generated code or <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.shadergraph/Editor/Data/Nodes/Input/Scene/SceneDepthNode.cs">SceneDepthNode.cs</a>.</p>
+<p>For older versions :</p>
+<button id="" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Click to expand</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Click to expand</b>';
+
+    }
+"><b>⯈ Click to expand</b></button>
+<div class="foldout">
 <ul>
 <li><strong>Raw</strong> : In orthographic, this is a linear value between 0 and 1, directly from the Depth Texture
 <ul>
@@ -783,6 +630,8 @@
 <img loading="lazy" width="750" height="311" alt="(Image)" src="OrthoSceneDepth.png" />
 </a>
 <p class="img-text"></p>
+</div>
+
 </div>
 <h3 id="notes-urp">Notes for Universal RP :</h3>
 <ul>
@@ -817,40 +666,7 @@
 <p>Since we are using the <b class="node">Scene Depth</b>, the graph must also be set to use <strong>Transparent</strong> surface mode for the node to function correctly. Note that this graph also only works in a <strong>Perspective</strong> projection.</p>
 <p>For <strong>Orthographic</strong>, swap the <b class="node">Scene Depth</b> out for the graph explained in the <a href="#orthographic-scene-depth">Scene Depth Node - Orthographic</a> section and swap the <strong>Object/Fragment Depth</strong> group out for the <b class="node">Position</b> node, <strong>View</strong> Space, <b class="node">Split</b> and <b class="node">Negate</b> <strong>Z/B</strong> axis (as explained in the <a href="#eye-depth">Eye Depth</a> section).</p>
 <p>For Shader Code, the above graph would be something like :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// (URP Example, untested but should be the same as the graph above)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// (URP Example, untested but should be the same as the graph above)
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl&#34;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>...
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// Vertex
@@ -878,9 +694,7 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">w = 1/far plane
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> depthDifferenceExample <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> saturate((sceneEyeDepth <span style="color:#f92672">-</span> fragmentEyeDepth) <span style="color:#f92672">*</span> <span style="color:#ae81ff">1</span>);</span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> depthDifferenceExample <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> saturate((sceneEyeDepth <span style="color:#f92672">-</span> fragmentEyeDepth) <span style="color:#f92672">*</span> <span style="color:#ae81ff">1</span>);</span></span></code></pre></div>
 <p>This technique is quite useful for effects such as :</p>
 <ul>
 <li>Intersection, e.g. <a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown-simple">Simple Forcefield Breakdown</a></li>
@@ -924,31 +738,7 @@
 <p class="img-text">(update : use View Vector instead of View Direction)</p>
 </div>
 <p>For Shader Code / HLSL :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// (URP Example, untested but should be the same as the graph above)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// (URP Example, untested but should be the same as the graph above)
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl&#34;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>...
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// Vertex
@@ -967,9 +757,7 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>float3 worldPos <span style="color:#f92672">=</span> _WorldSpaceCameraPos <span style="color:#f92672">-</span> ((IN.viewDirVector <span style="color:#f92672">/</span> fragmentEyeDepth) <span style="color:#f92672">*</span> sceneEyeDepth);
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// try visualising by returning : 
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">return</span> <span style="color:#a6e22e">float4</span>(frac(worldPos), <span style="color:#ae81ff">1.0</span>);</span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">return</span> <span style="color:#a6e22e">float4</span>(frac(worldPos), <span style="color:#ae81ff">1.0</span>);</span></span></code></pre></div>
 <hr>
 <h3 id="mesh-orthographic">Mesh (Orthographic projection)</h3>
 <div class="img-right">
@@ -1011,6 +799,16 @@ Right note : C#, Shader.SetGlobalMatrix(&quot;_InverseView&quot;, cam.cameraToWo
 
 </div>
 </div>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+Note that Unity 2022+ adds a <strong>Fullscreen Shader Graph</strong> type in URP (that can be used with the <strong>Fullscreen Pass Renderer Feature</strong>). When using the <b class="node">Position</b> node it is already doing a similar depth-reconstruction for us! (Only seems to work in perspective projections though&hellip;)
+</div>
+</div>
 <hr>
 <h3 id="blit-orthographic">Blit (Orthographic projection)</h3>
 <p>This version is very similar to the above but works in an orthographic camera projection. It requires the <code>_InverseView</code> matrix (set to <a href="https://docs.unity3d.com/ScriptReference/Camera-cameraToWorldMatrix.html">cam.cameraToWorldMatrix</a>). The <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Renderer Feature</a> that I shared on Github has an option for this.</p>
@@ -1030,6 +828,16 @@ Right note : C#, Shader.SetGlobalMatrix(&quot;_InverseView&quot;, cam.cameraToWo
 <p>In Shader Graph v12+ (Unity 2021.2+) it is now also possible to add <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#custom-interpolators">Custom Interpolators</a>.</p>
 <p>This could be used to make the graph more performant by moving half of the calculations to the vertex shader - specifically up to the output of the the first matrix multiplication (with the <b class="node">Custom Function</b>)</p>
 
+</div>
+</div>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+Note if using <strong>Fullscreen Shader Graph</strong> type in URP 2022+ may want to use the <b class="node">UV</b> node instead of <b class="node">Position</b>.
 </div>
 </div>
 <hr>
