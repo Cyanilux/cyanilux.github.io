@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Custom Renderer Features">
 <meta itemprop="description" content="Goes through examples of Renderer Features and explains how to write Custom Renderer Features and Scriptable Render Passes for Universal RP"><meta itemprop="datePublished" content="2023-04-22T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-04-22T00:00:00+00:00" />
-<meta itemprop="wordCount" content="7350"><meta itemprop="image" content="https://www.cyanilux.com/Result.png">
+<meta itemprop="wordCount" content="7420"><meta itemprop="image" content="https://www.cyanilux.com/Result.png">
 <meta itemprop="keywords" content="URP," />
 	
 	
@@ -747,7 +747,9 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 <p><a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/DeferredLights.cs">DeferredLights</a> (used by URP&rsquo;s Deferred Rendering path) appears to dispose some NativeArrays in here.</p>
 <hr>
 <h2 id="execute">Execute</h2>
-<p>The usual way to set up the Execute function is like :</p>
+<p>The Execute function is where most of our custom rendering code goes. This is mostly handled through the <a href="https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.html">ScriptableRenderContext</a> and <a href="https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.html">CommandBuffer</a> APIs (or other functions that end up calling those APIs, like ScriptableRenderPass.Blit and the Blitter class which passes a CommandBuffer as a parameter).</p>
+<p>We do not need to call <code>ScriptableRenderContext.Submit</code> as URP handles this for us.</p>
+<p>To properly title things in the <a href="https://docs.unity3d.com/Manual/ProfilerWindow.html">Profiler</a> &amp; <a href="https://docs.unity3d.com/2022.2/Documentation/Manual/frame-debugger-window.html">Frame Debugger</a> windows, the usual way to set up the Execute function is like this :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// (in Pass)</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> ProfilingSampler m_ProfilingSampler;
 </span></span><span style="display:flex;"><span>...
@@ -759,9 +761,6 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> Execute(ScriptableRenderContext context, <span style="color:#66d9ef">ref</span> RenderingData renderingData) {
 </span></span><span style="display:flex;"><span>    CommandBuffer cmd = CommandBufferPool.Get();
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">using</span> (<span style="color:#66d9ef">new</span> ProfilingScope(cmd, m_ProfilingSampler)) {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Do stuff!</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Would recommend keeping all your rendering code in this using statement.</span>
-</span></span><span style="display:flex;"><span>        ...
 </span></span><span style="display:flex;"><span>        context.ExecuteCommandBuffer(cmd);
 </span></span><span style="display:flex;"><span>        cmd.Clear();
 </span></span><span style="display:flex;"><span>        <span style="color:#75715e">/*
@@ -770,10 +769,17 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">        don&#39;t queue any commands! This makes sure the frame debugger displays 
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">        everything under the correct title.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Do stuff!</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Would recommend keeping all your rendering code in this using statement.</span>
+</span></span><span style="display:flex;"><span>        ...
 </span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Execute Command Buffer one last time and release it</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// (otherwise we get weird recursive list in Frame Debugger)</span>
+</span></span><span style="display:flex;"><span>    context.ExecuteCommandBuffer(cmd);
+</span></span><span style="display:flex;"><span>    cmd.Clear();
 </span></span><span style="display:flex;"><span>    CommandBufferPool.Release(cmd);
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
-<p>As I&rsquo;ve mentioned earlier most of the rendering code here will be handled through the <a href="https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.html">ScriptableRenderContext</a> and <a href="https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.html">CommandBuffer</a> APIs (or other functions that end up calling those APIs, like ScriptableRenderPass.Blit and the Blitter class which passes a CommandBuffer as a parameter).</p>
 <p>What rendering commands you do in here depends on what the feature is meant to do, but I&rsquo;ll be providing some common examples below, such as DrawRenderers and Blit calls.</p>
 <p>Before moving on, it&rsquo;s very important to understand a few things :</p>
 <ul>
@@ -786,7 +792,7 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 <li><strong>Order is important</strong>. If you want command buffer functions to run <em>before</em> a ScriptableRenderContext function (e.g. DrawRenderers), you must <code>ExecuteCommandBuffer</code> first. (And ideally <code>Clear()</code> it, so you don&rsquo;t end up calling those commands twice if you execute again later!)
 <ul>
 <li>Even if you don&rsquo;t call a function on the CommandBuffer object specifically (e.g. <code>cmd.Blit</code>), keep an eye on any functions that you need to pass the CommandBuffer into as a parameter, such as <code>Blit(cmd, ...)</code>. This means it&rsquo;s going to be adding commands to it still!</li>
-<li>Also related &amp; commented in the above code too, <strong>call <code>ExecuteCommandBuffer</code> at least once before using ScriptableRenderContext functions</strong> (e.g. DrawRenderers). This is so that the <a href="https://docs.unity3d.com/2022.2/Documentation/Manual/frame-debugger-window.html">Frame Debugger window</a> displays those calls under the correct title - as the ProfilingScope is set up using the CommandBuffer!</li>
+<li>Also related &amp; commented in the above code too, always try to <strong>call <code>ExecuteCommandBuffer</code> at least once before using ScriptableRenderContext functions</strong> (e.g. DrawRenderers) and again <strong>outside the using ProfilingScope</strong>.</li>
 </ul>
 </li>
 </ul>
@@ -834,6 +840,8 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>        context.DrawRenderers(renderingData.cullResults, <span style="color:#66d9ef">ref</span> drawingSettings, <span style="color:#66d9ef">ref</span> filteringSettings);
 </span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    context.ExecuteCommandBuffer(cmd);
+</span></span><span style="display:flex;"><span>    cmd.Clear();
 </span></span><span style="display:flex;"><span>    CommandBufferPool.Release(cmd);
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 <hr>
@@ -904,7 +912,7 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// OnCameraSetup</span>
 </span></span><span style="display:flex;"><span>RenderingUtils.ReAllocateIfNeeded(<span style="color:#66d9ef">ref</span> rtTemp, desc, name: <span style="color:#e6db74">&#34;_TemporaryColorTexture&#34;</span>);
 </span></span><span style="display:flex;"><span>...
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Execute</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Execute (inside using statement)</span>
 </span></span><span style="display:flex;"><span>RTHandle rtCamera = renderer.cameraColorTargetHandle;
 </span></span><span style="display:flex;"><span>Blitter.BlitCameraTexture(cmd, rtCamera, rtTemp, settings.blitMaterial, settings.blitMaterialPassIndex);
 </span></span><span style="display:flex;"><span>Blitter.BlitCameraTexture(cmd, rtTemp, rtCamera, Vector2.one);
@@ -935,7 +943,7 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 <p>However to prevent graphical artifacts, it is important that any objects/shaders that sample the texture are rendered in a <strong>later event</strong>! Can force this by putting the object on a layer removed from the <strong>Default Opaque/Transparent Layer Mask</strong> at the top of the UniversalRenderer, and render that layer with a <a href="#drawrenderers">DrawRenderers</a> call, or use the RenderObjects feature.</p>
 <hr>
 <h2 id="full-example">Full Renderer Feature Example</h2>
-<p>Here&rsquo;s a full code example based on snippets mentioned in this post.</p>
+<p>Here&rsquo;s a full code example based on snippets mentioned in this post. (And the usage foldout explains what it could be used for)</p>
 <button id="" type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
@@ -1029,10 +1037,11 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 </span></span><span style="display:flex;"><span>                        Blitter.BlitCameraTexture(cmd, rtTempColor, camTarget);
 </span></span><span style="display:flex;"><span>                    }
 </span></span><span style="display:flex;"><span>                }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>                context.ExecuteCommandBuffer(cmd);
-</span></span><span style="display:flex;"><span>                cmd.Clear();
 </span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Execute Command Buffer one last time and release it</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// (otherwise we get weird recursive list in Frame Debugger)</span>
+</span></span><span style="display:flex;"><span>            context.ExecuteCommandBuffer(cmd);
+</span></span><span style="display:flex;"><span>            cmd.Clear();
 </span></span><span style="display:flex;"><span>            CommandBufferPool.Release(cmd);
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>
@@ -1100,7 +1109,7 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
     }
 "><b>⯈ Usage</b></button>
 <div class="foldout">
-<p>The feature can be used to render objects with a given material, into a custom buffer (specified by Color Target Destination ID setting). This texture reference can be sampled as a global/unexposed Texture2D in the blit/fullscreen material.</p>
+<p>The feature can be used to render objects with a given material, into a custom buffer (specified by Color Target Destination ID setting). This texture reference can be sampled as a global/unexposed Texture2D in a blit/fullscreen material.</p>
 <p>For example, feature could be used with materials using the following graphs (click images to view full screen) :</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
