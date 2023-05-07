@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Resources">
 <meta itemprop="description" content="Useful Links to Resources/Tutorials/Docs related to Unity or Gamedev">
 
-<meta itemprop="wordCount" content="293">
+<meta itemprop="wordCount" content="252">
 <meta itemprop="keywords" content="" />
 	
 	
@@ -238,25 +238,32 @@
 
 
 </div>
-<p>The list below links external resources, mostly related to <strong>Shaders</strong> and <strong>Unity</strong> (various pipelines).</p>
-<p>It contains mostly articles &amp; written tutorials. (If you&rsquo;re looking for video tutorials you can search on Youtube instead). If you have suggestions of links to add, you can put them in the <code>#resources</code> section of my <a href="http://discord.gg/2V93q9w">discord</a>. If the owners of any of these want to be removed from the list, can ask me on discord or <a href="https://twitter.com/Cyanilux">twitter</a>.</p>
+<p>The list below links external resources, mostly related to <strong>Shaders</strong> and <strong>Unity</strong> (various pipelines). It contains mostly articles &amp; written tutorials. If you have suggestions of links to add, you can put them in the <code>#resources</code> section of my <a href="http://discord.gg/2V93q9w">discord</a>.</p>
+<ul>
+<li>The list is loaded from a <a href="https://gist.github.com/Cyanilux/69e4f228206b1a70c3f8a0ab4f22ef75">Github gist</a> (so I don&rsquo;t have to update the entire site to add entries). If it fails to load for some reason can optionally view that instead.</li>
+<li>Entries are grouped under various headings. You can also use the filter below to locate things easier, but bear in mind that some entries may be for other engines (e.g. Unreal) but could still translate to Unity. Same for HLSL vs Shader Graph vs Amplify Shader Editor (etc.)</li>
+</ul>
 <button id="" type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
     if (content.style.display === 'block') {
       content.style.display = 'none';
-      this.innerHTML = '<b>⯈ More Info</b>';
+      this.innerHTML = '<b>⯈ Filter Usage</b>';
     } else {
       content.style.display = 'block';
-      this.innerHTML = '<b>⯆ More Info</b>';
+      this.innerHTML = '<b>⯆ Filter Usage</b>';
 
     }
-"><b>⯈ More Info</b></button>
+"><b>⯈ Filter Usage</b></button>
 <div class="foldout">
 <ul>
-<li>The list is loaded from a <a href="https://gist.github.com/Cyanilux/69e4f228206b1a70c3f8a0ab4f22ef75">Github gist</a> (so I don&rsquo;t have to update the entire site to add entries). If it fails to load for some reason (won&rsquo;t be supported for Internet Explorer) can optionally view that instead.</li>
-<li>Entries are grouped under various headings. You can also use the filter below to locate things easier, but bear in mind that some entries may be for other engines (e.g. Unreal) but could still translate to Unity. Same for HLSL vs Shader Graph vs Amplify Shader Editor (etc.)</li>
-<li>It searches for the <strong>exact string/keyword</strong> (not case sensitive) anywhere in text (including tags at side), but you can use multiple keywords, separate each with <code>&quot;&amp;&quot;</code> or <code>&quot;,&quot;</code> (for AND), <code>&quot;|&quot;</code> (for OR), and use <code>&quot;(&quot;</code> and <code>&quot;)&quot;</code> for grouping. Example : <code>&quot;(BiRP | URP) &amp; HLSL&quot;</code>. Note if you don&rsquo;t group, AND takes precedence, so <code>&quot;a | b &amp; c | d&quot;</code> is the same as <code>&quot;a | (b &amp; c) | d&quot;</code></li>
+<li>The filter below searches for the <strong>exact string/keyword</strong> (not case sensitive) anywhere in text (including tags at side).</li>
+<li>If you want to use multiple keywords, separate each with <code>&quot;,&quot;</code> or <code>&quot;&amp;&quot;</code> (for AND), <code>&quot;|&quot;</code> (for OR), and use <code>&quot;(&quot;</code> and <code>&quot;)&quot;</code> for grouping.
+<ul>
+<li>Example : <code>&quot;(BiRP | URP) &amp; HLSL&quot;</code>.</li>
+<li>AND takes precedence, so <code>&quot;a | b &amp; c | d&quot;</code> is the same as <code>&quot;a | (b &amp; c) | d&quot;</code></li>
+</ul>
+</li>
 <li>Starting a keyword with &ldquo;!&rdquo; (e.g. <code>&quot;!HDRP&quot;</code>) will instead hide entries, but this can only be done per-keyword, not on groups (sorry). If you want something like <code>&quot;!(a &amp; b)&quot;</code>, use the opposite form instead : <code>&quot;!a | !b&quot;</code> (swap AND/OR and invert each keyword)</li>
 </ul>
 

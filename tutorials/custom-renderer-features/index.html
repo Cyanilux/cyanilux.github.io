@@ -668,7 +668,7 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// To create a Depth Target :</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> depthDesc = renderingData.cameraData.cameraTargetDescriptor;
-</span></span><span style="display:flex;"><span>colorDesc.depthBufferBits = <span style="color:#ae81ff">32</span>; <span style="color:#75715e">// should be default anyway</span>
+</span></span><span style="display:flex;"><span>depthDesc.depthBufferBits = <span style="color:#ae81ff">32</span>; <span style="color:#75715e">// should be default anyway</span>
 </span></span><span style="display:flex;"><span>RenderingUtils.ReAllocateIfNeeded(<span style="color:#66d9ef">ref</span> depthTarget, depthDesc,
 </span></span><span style="display:flex;"><span>    name: settings.depthDestinationID);</span></span></code></pre></div>
 <p>There is also <code>RTHandles.Alloc</code> (various overloads, see <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.core@14.0/api/UnityEngine.Rendering.RTHandles.html#methods">docs</a>). This should only run once, so can do a null check :</p>
@@ -713,7 +713,7 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> depthDesc = renderingData.cameraData.cameraTargetDescriptor;
-</span></span><span style="display:flex;"><span>    colorDesc.depthBufferBits = <span style="color:#ae81ff">32</span>; <span style="color:#75715e">// should be default anyway</span>
+</span></span><span style="display:flex;"><span>    depthDesc.depthBufferBits = <span style="color:#ae81ff">32</span>; <span style="color:#75715e">// should be default anyway</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (settings.depthDestinationID != <span style="color:#e6db74">&#34;&#34;</span>){
 </span></span><span style="display:flex;"><span>        RenderingUtils.ReAllocateIfNeeded(<span style="color:#66d9ef">ref</span> depthTarget, depthDesc, name: settings.depthDestinationID);
 </span></span><span style="display:flex;"><span>    }<span style="color:#66d9ef">else</span>{

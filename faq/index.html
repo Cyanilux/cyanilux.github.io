@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="FAQ">
 <meta itemprop="description" content="List of frequent (or interesting) questions I&#39;ve answered">
 
-<meta itemprop="wordCount" content="6718">
+<meta itemprop="wordCount" content="8039">
 <meta itemprop="keywords" content="" />
 	
 	
@@ -242,8 +242,20 @@
 <ul>
 <li><em>(Also so I can link here when the questions get asked again, rather than having to repeat myself)</em></li>
 <li>Will update when I see other frequent (or just interesting) questions come along!</li>
+<li>Use the browser Find function (Ctrl+F) to search for keywords (in titles).
+<ul>
+<li>If you want to search in answers too, <a href="?expand-all-foldouts">Click Here</a> to expand all foldouts first.</li>
 </ul>
-<p>Click buttons below to foldout answers! This also changes the URL so you can link to them! :)</p>
+</li>
+<li>Click buttons below to foldout answers! This also changes the URL so you can link to them! :)</li>
+</ul>
+<p>Sections :</p>
+<ul>
+<li><a href="#general">General</a></li>
+<li><a href="#shader-graph">Shader Graph (Issues / Workarounds)</a></li>
+<li><a href="#sg-snippets">Shader Graph (Examples / Snippets)</a></li>
+<li><a href="#shaders">Shaders</a> (HLSL/ShaderLab and info common to both code/graphs)</li>
+</ul>
 <h3 id="general">General</h3>
 <button id="scene-magenta" type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
@@ -420,7 +432,7 @@ Right : Render with Prepass<br>
 <p>There are also methods to achieve <a href="https://en.wikipedia.org/wiki/Order-independent_transparency">Order Independent Transparency</a> - But I&rsquo;m not at all familiar with these. I think they&rsquo;re quite expensive (either in terms of performance or memory), and Unity does not include any support for them so you&rsquo;d need to implement this stuff yourself (or find an asset/package that handles it for you. This would require custom shaders too though, so not easy to implement)</p>
 
 </div>
-<h3 id="shader-graph">Shader Graph</h3>
+<h3 id="shader-graph-issues--workarounds">Shader Graph (Issues / Workarounds)</h3>
 <button id="sg-magenta" type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
@@ -517,42 +529,6 @@ Right : Render with Prepass<br>
 <p>If for some reason you do need the texture masked correctly to the alpha, can <b class="node">Multiply</b> the RGBA and A outputs. Or if you need to control the background color, put the A output into the T input on a <b class="node">Lerp</b> with A as the background and B as the RGBA output.</p>
 
 </div>
-<button id="sg-layering-textures" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Layering textures\/colours using alpha\/mask</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Layering textures\/colours using alpha\/mask</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#sg-layering-textures';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Layering textures/colours using alpha/mask</b></button>
-<div class="foldout">
-<p>If you want to layer a texture containing an alpha channel onto another texture/colour, you can do so using a <b class="node">Lerp</b>, where the A output from the <b class="node">Sample Texture 2D</b> is connected to the T input. The A input would be the colour of the Base/Background while B input would be the colour of what you want to Layer on top.</p>
-<div class="img-center">
-<a href="sg-layer.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="353" alt="(Image)" src="sg-layer.png" />
-</a>
-<p class="img-text"></p>
-</div>
-<p>If you don&rsquo;t have a texture with an alpha channel, you could also use a procedural shape (or a channel from another texture) as the T input. This should be a float value, commonly referred to as a <em>mask</em>.</p>
-<div class="img-center">
-<a href="sg-layer2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="276" alt="(Image)" src="sg-layer2.png" />
-</a>
-<p class="img-text"></p>
-</div>
-<p>In this case the noise texture is used to interpolate between two colours (blue, green). Then the result is masked using an <b class="node">Ellipse</b> to layer it on the background (same &ldquo;Base Color&rdquo; group as used in previous example)</p>
-
-</div>
 <button id="sg-fragment-only" type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
@@ -604,6 +580,512 @@ Right : Render with Prepass<br>
 <div class="foldout">
 <p>Editing Vertex Positions does not automatically change the Normal Vectors, which are required to affect shading.</p>
 <p>I have a few methods on how to calculate new normals listed here : <a href="https://www.cyanilux.com/tutorials/vertex-displacement/#recalculating-normals">Vertex Displacement post - Recalculating Normals</a></p>
+
+</div>
+<button id="sg-two-sided-shading" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Back faces are darker when using Lit Graph \u0026amp; Two-Sided \/ Render Face : Both</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Back faces are darker when using Lit Graph \u0026amp; Two-Sided \/ Render Face : Both</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-two-sided-shading';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Back faces are darker when using Lit Graph &amp; Two-Sided / Render Face : Both</b></button>
+<div class="foldout">
+<p>This occurs because the <strong>Normal</strong> vectors stored in the mesh are intended for the front faces only. We can flip them for back faces by making use of the <b class="node">Is Front Face</b> and <b class="node">Branch</b> nodes.</p>
+<p>If using a Normal Map, we would use the result of our <b class="node">Sample Texture 2D</b> in the <strong>True</strong> input, and <b class="node">Multiply</b> it by (1, 1, -1) for the <strong>False</strong> input. This would then go into the <strong>Normal (Tangent Space)</strong> port on the Fragment stage of the <strong>Master Stack</strong>.</p>
+<div class="img-center">
+<a href="sg-two-sided-normal-tangent.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="191" alt="(Image)" src="sg-two-sided-normal-tangent.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>If not using a Normal Map, we could use the <b class="node">Normal Vector</b> node in <strong>Tangent</strong> space - or just a <b class="node">Vector3</b> set to (0, 0, 1) as those will be equal&hellip;</p>
+<p>But it should actually be cheaper to change the <strong>Fragment Normal Space</strong> to &ldquo;World&rdquo; in the <strong>Graph Settings</strong> (tab of <strong>Graph Inspector</strong>, toggled with button in the top right of graph), as this avoids the need for the Tangent → World transformation. We can then use the <b class="node">Normal Vector</b> node in <strong>World</strong> space for the <strong>True</strong> input and put through a <b class="node">Negate</b> node for the <strong>False</strong> input.</p>
+<div class="img-center">
+<a href="sg-two-sided-normal-world.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="205" alt="(Image)" src="sg-two-sided-normal-world.png" />
+</a>
+<p class="img-text"></p>
+</div>
+
+</div>
+<button id="sg-pixellated-seams" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Pixellation along seams in UV when using \u003cb class=\u0022node\u0022\u003eFraction\u003c\/b\u003e with \u003cb class=\u0022node\u0022\u003eSample Texture 2D\u003c\/b\u003e</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Pixellation along seams in UV when using \u003cb class=\u0022node\u0022\u003eFraction\u003c\/b\u003e with \u003cb class=\u0022node\u0022\u003eSample Texture 2D\u003c\/b\u003e</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-pixellated-seams';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Pixellation along seams in UV when using <b class="node">Fraction</b> with <b class="node">Sample Texture 2D</b></b></button>
+<div class="foldout">
+<p>In some cases you might want to use the <b class="node">Fraction</b> node (aka <code>frac()</code> in HLSL) on the UVs (e.g. for repeating sections of a larger texture). But when using this with the <b class="node">Sample Texture 2D</b> you may notice some strange pixellation artifacts along the seam produced by the jump in the UV coordinates.</p>
+<p>This isn&rsquo;t limited to the <b class="node">Fraction</b> node, but I find that this is the most common place where it is noticeable. It occurs for anything that causes a jump in the UVs. Another fairly common example is the seam in the Y component when using the <b class="node">Polar Coordinates</b> node.</p>
+<div class="img-center">
+<a href="sg-pixellated-seams.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="501" height="219" alt="(Image)" src="sg-pixellated-seams.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>This pixellation occurs because the <b class="node">Sample Texture 2D</b> calculates the <strong>mipmap level</strong> for sampling by using the partial screenspace derivatives (<b class="node">DDX</b>, <b class="node">DDY</b>), which compare values between neighbouring pixels. The fragment shader can do this as it runs in 2x2 pixel blocks.</p>
+<p>Usually this mipmapping is a good thing, as it reduces artifacts when viewing the texture at a distance. But when comparing values for pixels along this seam, the jump is interpreted as needing to sample a higher LOD/mipmap level for those pixels. At mipmap resolutions this small, it basically results in the colour being an average of the entire texture.</p>
+<p>This pixellation can be fixed in a few ways :</p>
+<ul>
+<li>A simple fix is to disable mip maps for that texture (in it&rsquo;s import settings), or by using the <b class="node">Sample Texture 2D LOD</b> node to only use LOD/mipmap level 0 (the full resolution texture). But this could cause the artifacts as I mentioned above.</li>
+<li>A better way to fix this is by using a <b class="node">Custom Function</b> node with <code>Out = SAMPLE_TEXTURE2D_GRAD(Texture, Texture.samplerstate, frac(UV), ddx(UV), ddy(UV));</code> with inputs &ldquo;Texture&rdquo; (Texture2D), &ldquo;UV&rdquo; (Vector2) and outputs &ldquo;Out&rdquo; (Vector4). You can then remove the <b class="node">Fraction</b> node from your graph as it is handled in the code instead (but only on the 2nd parameter, not the derivates!)</li>
+<li>If you aren&rsquo;t using <b class="node">Fraction</b> but a different method that causes seams, you could use a similar function, but provide a separate UV input for the derivates e.g. <code>Out = SAMPLE_TEXTURE2D_GRAD(Texture, Texture.samplerstate, UV, ddx(DerivativeUV), ddy(DerivativeUV));</code>. Can then set the DerivativeUV to the <b class="node">UV</b> node.</li>
+</ul>
+
+</div>
+<button id="sg-unlit-shadows" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Sampling Shadows in a Unlit Graph (URP)</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Sampling Shadows in a Unlit Graph (URP)</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-unlit-shadows';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Sampling Shadows in a Unlit Graph (URP)</b></button>
+<div class="foldout">
+<p>In order to get shadows working in an Unlit Graph you need to add some important keywords which allow the ShaderLibrary to calculate shadow info.</p>
+<p>I&rsquo;ve shared a <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting/">Custom Lighting for Shader Graph</a> package on github, which can handle this for you. For supporting shadows, use the <strong>Main Light Shadows</strong> and <strong>Additional Lights</strong> subgraphs. Both of these will work in Unlit Graphs.</p>
+<h4 id="main-light-shadows">Main Light Shadows</h4>
+<p>If you&rsquo;d instead prefer to handle it yourself, Create these <strong>Boolean Keywords</strong> in the Shader Graph <strong>Blackboard</strong> :</p>
+<ul>
+<li><code>_MAIN_LIGHT_SHADOWS</code> - Required to calculate shadows</li>
+<li><code>_MAIN_LIGHT_SHADOWS_CASCADE</code> - Required to obtain correct shadows when using cascades &gt; 1</li>
+<li><code>_SHADOWS_SOFT</code> - Adds support for the Soft Shadows option</li>
+</ul>
+<p>Make sure you set the Reference field, and not just the name. Also set them to Multi Compile and Global, and untick Exposed.</p>
+<p>Can then sample shadows by calculating the <code>shadowCoord</code> :</p>
+<ul>
+<li><code>float4 shadowCoord = TransformWorldToShadowCoord(positionWS);</code></li>
+</ul>
+<p>Then use one of the following :</p>
+<ul>
+<li><code>Light light = GetMainLight(shadowCoord);</code> and <code>light.shadowAttenuation</code> to obtain the shadows.
+<ul>
+<li>also equivalent to : <code>float shadowAtten = MainLightRealtimeShadow(shadowCoord);</code></li>
+</ul>
+</li>
+<li>(v11+ / 2021.1+) <code>Light light = GetMainLight(shadowCoord, positionWS, shadowMask)</code>, which additionally allows supporting the &ldquo;ShadowMask&rdquo; baked GI mode. You would typically pass <code>SAMPLE_SHADOWMASK(lightmapUV)</code> into the <code>shadowMask</code> parameter.
+<ul>
+<li>also equivalent to : <code>float shadowAtten = MainLightShadow(shadowCoord, positionWS, shadowMask, _MainLightOcclusionProbes);</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="additional-light-shadows">Additional Light Shadows</h4>
+<p>For additional lights, you need the following keywords:</p>
+<ul>
+<li><code>_ADDITIONAL_LIGHT_SHADOWS</code> - Required to calculate shadows</li>
+<li><code>_ADDITIONAL_LIGHTS</code> - Required to prevent the other keyword being stripped from builds</li>
+</ul>
+<p>In your light loop, you&rsquo;d then use :</p>
+<ul>
+<li>(v8 to v10) <code>Light light = GetAdditionalLight(i, positionWS);</code>, again with <code>light.shadowAttenuation</code> to obtain shadows.</li>
+<li>(v11+ / 2021.1+) <code>Light light = GetAdditionalLight(i, positionWS, shadowMask);</code>. The shadowMask parameter here can either be set to the same <code>SAMPLE_SHADOWMASK(lightmapUV)</code> variable, or can use <code>half4(1,1,1,1)</code> if you don&rsquo;t require supporting it. You still need to specify the parameter for the function to calculate shadows.</li>
+</ul>
+<p>For better examples see <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting/blob/main/CustomLighting.hlsl">CustomLighting.hlsl</a> in my Custom Lighting package. Also see the Lighting.hlsl, RealtimeLights.hlsl (v12+) and Shadows.hlsl files in the URP ShaderLibrary. Can find these under the Packages in the Project window, or via <a href="https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary">Unity/Graphics github</a>.</p>
+
+</div>
+<button id="sg-lit-fog" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Disable Fog in a Lit Graph</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Disable Fog in a Lit Graph</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-lit-fog';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Disable Fog in a Lit Graph</b></button>
+<div class="foldout">
+<p>You can disable fog entirely via Unity&rsquo;s Lighting window (under Environement tab). If you still want fog enabled, but a certain object to not include fog, you can disable fog in a Lit Graph by using a <b class="node">Custom Function</b> node.</p>
+<p>I&rsquo;d recommend using String mode, with a Vector4 Input named &ldquo;In&rdquo; and a Vector4 Output named &ldquo;Out&rdquo;. The function name can be anything (e.g. DisableFog), while the body should use :</p>
+<p>For URP Target :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Out <span style="color:#f92672">=</span> In;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define MixFog(x,y) x</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>The function itself doesn&rsquo;t do anything, except pass the input straight through. But by using the <code>#define</code> we override the later <code>MixFog</code> function call (in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/PBRForwardPass.hlsl">URP/PBRForwardPass.hlsl</a>), so rather than applying fog it just outputs the unmodified colour.</p>
+<p>For Built-in Target :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Out <span style="color:#f92672">=</span> In;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Untested, but I think this should work
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#undef UNITY_APPLY_FOG
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define UNITY_APPLY_FOG(x,y) y</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>For the Built-in version, they are already using the <code>UNITY_APPLY_FOG</code> macro (in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.shadergraph/Editor/Generation/Targets/BuiltIn/Editor/ShaderGraph/Includes/PBRForwardPass.hlsl">SG/Built-in/PBRForwardPass.hlsl</a>), so we undefine and then redefine it to output the colour (second parameter).</p>
+<p>This is <em>kinda</em> hacky (abusing what macros are supposed to be used for), but hey it works!~</p>
+
+</div>
+<button id="sg-ui" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Using Shader Graphs for UI</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Using Shader Graphs for UI</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-ui';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Using Shader Graphs for UI</b></button>
+<div class="foldout">
+<p>Shader Graph does not have proper support for UI, however it is possible to still use it with some workarounds &amp; drawbacks. This is written with URP in mind, but it may work the similar in other pipelines.</p>
+<ul>
+<li>Use the Unlit Graph, or Sprite Unlit Graph. UI should not use Lit or other graph types.</li>
+<li>For Image component, use a Texture2D property with <code>_MainTex</code> name/reference to obtain the texture.</li>
+<li>Avoid using <code>Screenspace-Overlay</code> mode on the Canvas</li>
+<li>Graphs won&rsquo;t work with UI Masking (e.g. Scroll Rect/View component) and causes warnings about not having correct Stencil properties.</li>
+</ul>
+<p>More detailed info/setup below</p>
+<h4 id="canvas">Canvas</h4>
+<p>The Canvas can&rsquo;t use <code>Screenspace-Overlay</code> mode with Shader Graphs, as that renders all shader passes generated by the graph (such as Shadowcaster / DepthOnly / DepthNormals / etc). Unless you edit the generated code (explained more in the section below), we must instead use <code>Screenspace-Camera</code> mode (and set camera field). Worldspace UI also works.</p>
+<div class="img-center">
+<a href="sg-overlayui.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="249" alt="(Image)" src="sg-overlayui.png" />
+</a>
+<p class="img-text">UI Image rendering incorrectly on a <code>Screenspace-Overlay</code> Canvas. As you can see from the Frame Debugger, it&rsquo;s rendering 5 times with each pass (such as the selected DepthNormalsOnly pass)</p>
+</div>
+<div class="img-center">
+<a href="sg-cameraui.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="249" alt="(Image)" src="sg-cameraui.png" />
+</a>
+<p class="img-text">UI Image rendering correctly on a <code>Screenspace-Camera</code> Canvas</p>
+</div>
+<p>If you don&rsquo;t want Post Processing to affect the UI, can create an <strong>Overlay Camera</strong> with the Culling Mask set to UI and Post Processing off :</p>
+<div class="img-center">
+<a href="sg-overlaycamera.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="443" height="257" alt="(Image)" src="sg-overlaycamera.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Then set the <code>Screenspace-Camera</code> <strong>Canvas</strong> to use that new camera and add it to the <strong>Stack</strong> on the <strong>Main Camera</strong>.</p>
+<h4 id="masking">Masking</h4>
+<p>Graphs will cause the UI to not work with masking, such as the Scroll Rect/View and Mask components. This requires Stencil operations, which shader graph does not support/expose.</p>
+<p>The RenderObjects feature can override Stencil operations, however we cannot use it here for a few reasons :</p>
+<ul>
+<li>It seems the Layer that UI GameObjects are on is ignored, only the layer of the Canvas is important. So it doesn&rsquo;t actually filter correctly, without nesting a Canvas in the Scrollview Viewport.</li>
+<li>Even if we do that, using a feature also moves rendering the object out of the regular Transparent queue. The mask already renders and is cleared before the feature executes.</li>
+</ul>
+<p>If you don&rsquo;t need masking, but want to surpress warnings like &ldquo;Material UI doesn&rsquo;t have _Stencil property&rdquo; you can create Float properties in the Blackboard with those names (<code>_Stencil, _StencilComp, _StencilOp, _StencilWriteMask, _StencilReadMask, _ColorMask</code>), however it is not possible to make them actually do anything from the graph.</p>
+<p>If you require masking to work, you will need to <strong>copy the shader code generated by the graph</strong> and edit it. This would involve clicking the &ldquo;View Generated Shader&rdquo; button in the inspector when viewing the Shader Graph asset. Save the shader that appears in your assets, and use that on Materials instead of the graph.</p>
+<div class="img-center">
+<a href="sg-generate-code.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="443" height="162" alt="(Image)" src="sg-generate-code.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>To actually support the masking, add the following Properties and edit the SubShader :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Shader <span style="color:#e6db74">&#34;Shader Graphs/UITest&#34;</span> {
+</span></span><span style="display:flex;"><span>    Properties {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// ... (properties generated by graph)
+</span></span></span><span style="display:flex; background-color:#3c3d38"><span><span style="color:#75715e"></span>        _StencilComp (<span style="color:#e6db74">&#34;Stencil Comparison&#34;</span>, Float) <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex; background-color:#3c3d38"><span>        _Stencil (<span style="color:#e6db74">&#34;Stencil ID&#34;</span>, Float) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex; background-color:#3c3d38"><span>        _StencilOp (<span style="color:#e6db74">&#34;Stencil Operation&#34;</span>, Float) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex; background-color:#3c3d38"><span>        _StencilWriteMask (<span style="color:#e6db74">&#34;Stencil Write Mask&#34;</span>, Float) <span style="color:#f92672">=</span> <span style="color:#ae81ff">255</span>
+</span></span><span style="display:flex; background-color:#3c3d38"><span>        _StencilReadMask (<span style="color:#e6db74">&#34;Stencil Read Mask&#34;</span>, Float) <span style="color:#f92672">=</span> <span style="color:#ae81ff">255</span>
+</span></span><span style="display:flex; background-color:#3c3d38"><span>        _ColorMask (<span style="color:#e6db74">&#34;Color Mask&#34;</span>, Float) <span style="color:#f92672">=</span> <span style="color:#ae81ff">15</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    SubShader {
+</span></span><span style="display:flex; background-color:#3c3d38"><span>        Stencil {
+</span></span><span style="display:flex; background-color:#3c3d38"><span>            Ref [_Stencil]
+</span></span><span style="display:flex; background-color:#3c3d38"><span>            Comp [_StencilComp]
+</span></span><span style="display:flex; background-color:#3c3d38"><span>            Pass [_StencilOp]
+</span></span><span style="display:flex; background-color:#3c3d38"><span>            ReadMask [_StencilReadMask]
+</span></span><span style="display:flex; background-color:#3c3d38"><span>            WriteMask [_StencilWriteMask]
+</span></span><span style="display:flex; background-color:#3c3d38"><span>        }
+</span></span><span style="display:flex; background-color:#3c3d38"><span>        ColorMask [_ColorMask]
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// ... rest of shader (Tags, Pass, etc)
+</span></span></span></code></pre></div>
+<p>Note the generated shader code may have <em>multiple SubShaders</em>, you would want to add this Stencil block (and ColorMask) to both.</p>
+<p>With the material using this shader, the Image is now masked correctly :</p>
+<div class="img-center">
+<a href="sg-maskedui.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="425" height="174" alt="(Image)" src="sg-maskedui.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>You could also delete all passes except the UniversalForward, and use <code>ZTest [unity_GUIZTestMode]</code> (replacing the ZTest line in the Pass) to support rendering into a ScreenSpace-Overlay UI. All these changes are based on the <a href="https://github.com/TwoTailsGames/Unity-Built-in-Shaders/blob/master/DefaultResourcesExtra/UI/UI-Default.shader">Built-in RP / UI-Default.shader</a>.</p>
+<p>Note that the shader is now completely separate from the graph. If you want to make changes to the graph, you&rsquo;ll need to regenerate the code and make these changes again. Provided you don&rsquo;t need to make changes often, it isn&rsquo;t that bad.</p>
+
+</div>
+<button id="sg-terrain" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Using Shader Graphs for Terrain</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Using Shader Graphs for Terrain</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-terrain';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Using Shader Graphs for Terrain</b></button>
+<div class="foldout">
+<p>Shader Graph does not have proper support for Terrain, but it is still possible with some drawbacks. (Note this is for regular Draw mode, not Instanced Draw)</p>
+<p>A Material can be assigned in the last tab on the Terrain component (cog symbol). When using a material with a graph shader, it will always display a warning that it &ldquo;might be unsuitable&rdquo;, but this can be ignored. It&rsquo;s not possible to remove this warning afaik (without generating shader code from the graph), as we can&rsquo;t add the TerrainCompatible tag from within the graph editor.</p>
+<div class="img-center">
+<a href="sg-terrain-1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="341" height="300" alt="(Image)" src="sg-terrain-1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>If you want to support painting of Terrain Layers, it is only possible to support 4 layers from a graph. You just need to use specific names/references. At it&rsquo;s simplest, you&rsquo;d want :</p>
+<ul>
+<li><code>_Control</code> (Texture2D) : Terrain splatmap. By default is red everywhere, but as you paint other layers it swaps to green/blue/alpha. Each channel represents the layer painted.</li>
+<li><code>_Splat0</code>, <code>_Splat1</code>, <code>_Splat2</code>, <code>_Splat3</code> (Texture2D) : Albedo/Diffuse textures for each layer. For 2021.2+ make sure &ldquo;Use Tiling And Offset&rdquo; is enabled on these texture properties! For versions older, create Vector4 <code>_ST</code> properties and use a subgraph as shown in <a href="https://twitter.com/Cyanilux/status/1259584907329908737">this tweet</a>.
+<ul>
+<li>With the URP/TerrainLit shader, the alpha channel of these textures is also used as a Smoothness source. It&rsquo;s up to you if you&rsquo;d include that in your calculations.</li>
+</ul>
+</li>
+</ul>
+<div class="img-center">
+<a href="sg-terrain-2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="415" alt="(Image)" src="sg-terrain-2.png" />
+</a>
+<p class="img-text">(Click image to view fullscreen)</p>
+</div>
+<p>Layers also provide additional data which the shader could support, such as :</p>
+<ul>
+<li><code>_Smoothness0</code>, <code>_Smoothness1</code>, <code>_Smoothness2</code>, <code>_Smoothness3</code> (Float) : Smoothness floats for each layer. Is typically multiplied with the alpha from the Albedo/Diffuse.</li>
+<li><code>_Metallic0</code>, <code>_Metallic1</code>, <code>_Metallic2</code>, <code>_Metallic3</code> (Float) : Metallic floats for each layer</li>
+<li><code>_Normal0</code>, <code>_Normal1</code>, <code>_Normal2</code>, <code>_Normal3</code> (Texture2D) : Normal/Bump textures for each layer</li>
+<li><code>_Mask0</code>, <code>_Mask1</code>, <code>_Mask2</code>, <code>_Mask3</code> (Texture2D) : &ldquo;Mask&rdquo; textures for each layer
+<ul>
+<li>It&rsquo;s up to the shader how this is used, but with URP/TerrainLit :
+<ul>
+<li>R = Metallic</li>
+<li>G = Occlusion</li>
+<li>B = Height (for height-based blending)</li>
+<li>A = Smoothness (overrides the albedo alpha &amp; <code>_SmoothnessN</code> values)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>For a full list of properties, see <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLitInput.hlsl">TerrainLitInput.hlsl</a>. Also see <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLitPasses.hlsl">TerrainLitPasses.hlsl</a> to see how they are used.</li>
+</ul>
+<p>You&rsquo;d handle these using the same sort of setup and connect to the appropiate ports on the Master Stack (if using a Lit Graph this would involve Smoothness, Metallic, <strong>Normal Vector (Tangent)</strong> &amp; Ambient Occlusion).</p>
+<p>If using Unlit Graph instead (with a Custom Lighting model, e.g. Toon Shaded), you&rsquo;d <b class="node">Transform</b> the calculated normal from Tangent to World space so it can be used in lighting calculations.</p>
+
+</div>
+<button id="sg-gpu-instancing" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Using GPU Instancing (DrawMeshInstanced) with Shader Graph</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Using GPU Instancing (DrawMeshInstanced) with Shader Graph</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-gpu-instancing';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Using GPU Instancing (DrawMeshInstanced) with Shader Graph</b></button>
+<div class="foldout">
+<p>GPU Instancing is typically not required when using MeshRenderer and SkinnedMeshRenderers in URP, as these already use the SRP Batcher to optimise setup between draw calls. When using the SRP Batcher you should avoid using Material Property Blocks though and stick to multiple Materials (or instaniate materials, e.g. using <code>renderer.material</code>)</p>
+<p>But if you wish to render lots (<em>many thousands</em>) of the same mesh, you could consider using GPU Instancing via <code>Graphics.DrawMeshInstanced</code>, to remove some of the overhead of GameObjects. Or even better, <code>DrawMeshInstancedIndirect</code> (see answer below instead).</p>
+<p>To support <code>DrawMeshInstanced</code>, Materials should already have a &ldquo;Enable GPU Instancing&rdquo; tickbox which can be ticked.</p>
+<p>However using any properties in the Shader Graph Blackboard will still break instancing. Instead, I&rsquo;ve found that you can use a <b class="node">Custom Function</b> to define the instancing buffer &amp; properties. This is using macros similar to how you would set up instancing in a code-written shader.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifndef CUSTOM_INSTANCING
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define CUSTOM_INSTANCING
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">// This allows multiple Custom Function nodes to use the same file
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// without trying to include the code multiple times (causing redefinition errors)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Instancing Buffer
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>UNITY_INSTANCING_BUFFER_START(Props)
+</span></span><span style="display:flex;"><span>  UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
+</span></span><span style="display:flex;"><span>UNITY_INSTANCING_BUFFER_END(Props)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Custom Function &#34;GetInstancedColor&#34;, Outputs : Vector4
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> GetInstancedColor_float(out float4 Out){
+</span></span><span style="display:flex;"><span>    Out <span style="color:#f92672">=</span> UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+
+</div>
+<button id="sg-drawmeshinstancedindirect" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Using DrawMeshInstancedIndirect with Shader Graph</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Using DrawMeshInstancedIndirect with Shader Graph</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-drawmeshinstancedindirect';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Using DrawMeshInstancedIndirect with Shader Graph</b></button>
+<div class="foldout">
+<p>For supporting <code>DrawMeshInstancedIndirect</code>, (possibly also <code>DrawProcedural</code>), add a <strong>Boolean Keyword</strong> to the <strong>Blackboard</strong>, with reference set to <code>PROCEDURAL_INSTANCING_ON</code>. Should also be Global and using Multi-Compile.</p>
+<div class="img-center">
+<a href="sg-drawmeshinstancedindirect-1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="493" height="189" alt="(Image)" src="sg-drawmeshinstancedindirect-1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Use two <b class="node">Custom Function</b> nodes. Both with a Vector3 input named &ldquo;In&rdquo; and a Vector3 output named &ldquo;Out&rdquo;.</p>
+<ul>
+<li>The first uses <strong>File</strong> mode with the Function Name &ldquo;Instancing&rdquo;, to attach the include file (see Shader Graph gist below as an example).</li>
+<li>The second must use <strong>String</strong> mode with the following :</li>
+</ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Out <span style="color:#f92672">=</span> In;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#pragma instancing_options procedural:vertInstancingSetup</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>(<code>vertInstancingSetup</code> being a function in the include file)</p>
+<p>Both functions here don&rsquo;t alter the input passed in, but it is required to be able to connect the node to the <strong>Master Stack</strong>. We should connect it somewhere in the Vertex stage - likely easiest using the <strong>Position</strong> port with the <b class="node">Position</b> node set to Object space (or swap this out for a displaced vertex position if you require that)</p>
+<div class="img-center">
+<a href="sg-drawmeshinstancedindirect-2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="135" alt="(Image)" src="sg-drawmeshinstancedindirect-2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>See instanced grass example here :</p>
+<ul>
+<li>Twitter Thread : <a href="https://twitter.com/Cyanilux/status/1396848736022802435">https://twitter.com/Cyanilux/status/1396848736022802435</a></li>
+<li>Shader Graph Include : <a href="https://gist.github.com/Cyanilux/4046e7bf3725b8f64761bf6cf54a16eb">https://gist.github.com/Cyanilux/4046e7bf3725b8f64761bf6cf54a16eb</a></li>
+<li>C# Script : <a href="https://gist.github.com/Cyanilux/e7afdc5c65094bfd0827467f8e4c3c54">https://gist.github.com/Cyanilux/e7afdc5c65094bfd0827467f8e4c3c54</a></li>
+</ul>
+
+</div>
+<h3 id="sg-snippets">Shader Graph (Examples / Snippets)</h3>
+<button id="sg-layering-textures" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Layering Textures\/Colors using Alpha\/Mask</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Layering Textures\/Colors using Alpha\/Mask</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-layering-textures';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Layering Textures/Colors using Alpha/Mask</b></button>
+<div class="foldout">
+<p>If you want to layer a texture containing an alpha channel onto another texture/colour, you can do so using a <b class="node">Lerp</b>, where the A output from the <b class="node">Sample Texture 2D</b> is connected to the T input. The A input would be the colour of the Base/Background while B input would be the colour of what you want to Layer on top.</p>
+<div class="img-center">
+<a href="sg-layer.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="353" alt="(Image)" src="sg-layer.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>If you don&rsquo;t have a texture with an alpha channel, you could also use a procedural shape (or a channel from another texture) as the T input. This should be a float value, commonly referred to as a <em>mask</em>.</p>
+<div class="img-center">
+<a href="sg-layer2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="276" alt="(Image)" src="sg-layer2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>In this case the noise texture is used to interpolate between two colours (blue, green). Then the result is masked using an <b class="node">Ellipse</b> to layer it on the background (same &ldquo;Base Color&rdquo; group as used in previous example)</p>
 
 </div>
 <button id="sg-sine-time" type="button" class="foldout_button" onclick="
@@ -721,192 +1203,6 @@ Right : Render with Prepass<br>
 </div>
 <p>We could also project from other axis by using the RG/XY or GB/YZ ports (and swizzle these further for 90 deg rotations).</p>
 <p>Sampling from all three axis, then blending based on the <b class="node">Normal Vector</b> is known as <strong>Triplanar Mapping</strong>. There is a <b class="node">Triplanar</b> node which handles this for you - with only one texture input for all three axis though. For supporting different textures per axis, you&rsquo;d need to handle it yourself by recreating it in nodes or using a <b class="node">Custom Function</b>. I have a page on my <a href="https://cyangamedev.wordpress.com/2020/01/28/worldspace-uvs-triplanar-mapping/">old site</a> explaining this further.</p>
-
-</div>
-<button id="sg-pixellated-seams" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Pixellation along seams in UV when using \u003cb class=\u0022node\u0022\u003eFraction\u003c\/b\u003e with \u003cb class=\u0022node\u0022\u003eSample Texture 2D\u003c\/b\u003e</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Pixellation along seams in UV when using \u003cb class=\u0022node\u0022\u003eFraction\u003c\/b\u003e with \u003cb class=\u0022node\u0022\u003eSample Texture 2D\u003c\/b\u003e</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#sg-pixellated-seams';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Pixellation along seams in UV when using <b class="node">Fraction</b> with <b class="node">Sample Texture 2D</b></b></button>
-<div class="foldout">
-<p>In some cases you might want to use the <b class="node">Fraction</b> node (aka <code>frac()</code> in HLSL) on the UVs (e.g. for repeating sections of a larger texture). But when using this with the <b class="node">Sample Texture 2D</b> you may notice some strange pixellation artifacts along the seam produced by the jump in the UV coordinates.</p>
-<p>This isn&rsquo;t limited to the <b class="node">Fraction</b> node, but I find that this is the most common place where it is noticeable. It occurs for anything that causes a jump in the UVs. Another fairly common example is the seam in the Y component when using the <b class="node">Polar Coordinates</b> node.</p>
-<div class="img-center">
-<a href="sg-pixellated-seams.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="501" height="219" alt="(Image)" src="sg-pixellated-seams.png" />
-</a>
-<p class="img-text"></p>
-</div>
-<p>This pixellation occurs because the <b class="node">Sample Texture 2D</b> calculates the <strong>mipmap level</strong> for sampling by using the partial screenspace derivatives (<b class="node">DDX</b>, <b class="node">DDY</b>), which compare values between neighbouring pixels. The fragment shader can do this as it runs in 2x2 pixel blocks.</p>
-<p>Usually this mipmapping is a good thing, as it reduces artifacts when viewing the texture at a distance. But when comparing values for pixels along this seam, the jump is interpreted as needing to sample a higher LOD/mipmap level for those pixels. At mipmap resolutions this small, it basically results in the colour being an average of the entire texture.</p>
-<p>This pixellation can be fixed in a few ways :</p>
-<ul>
-<li>A simple fix is to disable mip maps for that texture (in it&rsquo;s import settings), or by using the <b class="node">Sample Texture 2D LOD</b> node to only use LOD/mipmap level 0 (the full resolution texture). But this could cause the artifacts as I mentioned above.</li>
-<li>A better way to fix this is by using a <b class="node">Custom Function</b> node with <code>Out = SAMPLE_TEXTURE2D_GRAD(Texture, Texture.samplerstate, frac(UV), ddx(UV), ddy(UV));</code> with inputs &ldquo;Texture&rdquo; (Texture2D), &ldquo;UV&rdquo; (Vector2) and outputs &ldquo;Out&rdquo; (Vector4). You can then remove the <b class="node">Fraction</b> node from your graph as it is handled in the code instead (but only on the 2nd parameter, not the derivates!)</li>
-<li>If you aren&rsquo;t using <b class="node">Fraction</b> but a different method that causes seams, you could use a similar function, but provide a separate UV input for the derivates e.g. <code>Out = SAMPLE_TEXTURE2D_GRAD(Texture, Texture.samplerstate, UV, ddx(DerivativeUV), ddy(DerivativeUV));</code>. Can then set the DerivativeUV to the <b class="node">UV</b> node.</li>
-</ul>
-
-</div>
-<button id="sg-two-sided-shading" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Back faces are darker when using Lit Graph \u0026amp; Two-Sided \/ Render Face : Both</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Back faces are darker when using Lit Graph \u0026amp; Two-Sided \/ Render Face : Both</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#sg-two-sided-shading';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Back faces are darker when using Lit Graph &amp; Two-Sided / Render Face : Both</b></button>
-<div class="foldout">
-<p>This occurs because the <strong>Normal</strong> vectors stored in the mesh are intended for the front faces only. We can flip them for back faces by making use of the <b class="node">Is Front Face</b> and <b class="node">Branch</b> nodes.</p>
-<p>If using a Normal Map, we would use the result of our <b class="node">Sample Texture 2D</b> in the <strong>True</strong> input, and <b class="node">Multiply</b> it by (1, 1, -1) for the <strong>False</strong> input. This would then go into the <strong>Normal (Tangent Space)</strong> port on the Fragment stage of the <strong>Master Stack</strong>.</p>
-<div class="img-center">
-<a href="sg-two-sided-normal-tangent.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="191" alt="(Image)" src="sg-two-sided-normal-tangent.png" />
-</a>
-<p class="img-text"></p>
-</div>
-<p>If not using a Normal Map, we could use the <b class="node">Normal Vector</b> node in <strong>Tangent</strong> space - or just a <b class="node">Vector3</b> set to (0, 0, 1) as those will be equal&hellip;</p>
-<p>But it should actually be cheaper to change the <strong>Fragment Normal Space</strong> to &ldquo;World&rdquo; in the <strong>Graph Settings</strong> (tab of <strong>Graph Inspector</strong>, toggled with button in the top right of graph), as this avoids the need for the Tangent → World transformation. We can then use the <b class="node">Normal Vector</b> node in <strong>World</strong> space for the <strong>True</strong> input and put through a <b class="node">Negate</b> node for the <strong>False</strong> input.</p>
-<div class="img-center">
-<a href="sg-two-sided-normal-world.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="205" alt="(Image)" src="sg-two-sided-normal-world.png" />
-</a>
-<p class="img-text"></p>
-</div>
-
-</div>
-<button id="sg-unlit-shadows" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Sampling Shadows in a Unlit Graph (URP)</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Sampling Shadows in a Unlit Graph (URP)</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#sg-unlit-shadows';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Sampling Shadows in a Unlit Graph (URP)</b></button>
-<div class="foldout">
-<p>In order to get shadows working in an Unlit Graph you need to add some important keywords which allow the ShaderLibrary to calculate shadow info.</p>
-<p>I&rsquo;ve shared a <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting/">Custom Lighting for Shader Graph</a> package on github, which can handle this for you. For supporting shadows, use the <strong>Main Light Shadows</strong> and <strong>Additional Lights</strong> subgraphs. Both of these will work in Unlit Graphs.</p>
-<h4 id="main-light-shadows">Main Light Shadows</h4>
-<p>If you&rsquo;d instead prefer to handle it yourself, Create these <strong>Boolean Keywords</strong> in the Shader Graph <strong>Blackboard</strong> :</p>
-<ul>
-<li><code>_MAIN_LIGHT_SHADOWS</code> - Required to calculate shadows</li>
-<li><code>_MAIN_LIGHT_SHADOWS_CASCADE</code> - Required to obtain correct shadows when using cascades &gt; 1</li>
-<li><code>_SHADOWS_SOFT</code> - Adds support for the Soft Shadows option</li>
-</ul>
-<p>Make sure you set the Reference field, and not just the name. Also set them to Multi Compile and Global, and untick Exposed.</p>
-<p>Can then sample shadows by calculating the <code>shadowCoord</code> :</p>
-<ul>
-<li><code>float4 shadowCoord = TransformWorldToShadowCoord(positionWS);</code></li>
-</ul>
-<p>Then use one of the following :</p>
-<ul>
-<li><code>Light light = GetMainLight(shadowCoord);</code> and <code>light.shadowAttenuation</code> to obtain the shadows.
-<ul>
-<li>also equivalent to : <code>float shadowAtten = MainLightRealtimeShadow(shadowCoord);</code></li>
-</ul>
-</li>
-<li>(v11+ / 2021.1+) <code>Light light = GetMainLight(shadowCoord, positionWS, shadowMask)</code>, which additionally allows supporting the &ldquo;ShadowMask&rdquo; baked GI mode. You would typically pass <code>SAMPLE_SHADOWMASK(lightmapUV)</code> into the <code>shadowMask</code> parameter.
-<ul>
-<li>also equivalent to : <code>float shadowAtten = MainLightShadow(shadowCoord, positionWS, shadowMask, _MainLightOcclusionProbes);</code></li>
-</ul>
-</li>
-</ul>
-<h4 id="additional-light-shadows">Additional Light Shadows</h4>
-<p>For additional lights, you need the following keywords:</p>
-<ul>
-<li><code>_ADDITIONAL_LIGHT_SHADOWS</code> - Required to calculate shadows</li>
-<li><code>_ADDITIONAL_LIGHTS</code> - Required to prevent the other keyword being stripped from builds</li>
-</ul>
-<p>In your light loop, you&rsquo;d then use :</p>
-<ul>
-<li>(v8 to v10) <code>Light light = GetAdditionalLight(i, positionWS);</code>, again with <code>light.shadowAttenuation</code> to obtain shadows.</li>
-<li>(v11+ / 2021.1+) <code>Light light = GetAdditionalLight(i, positionWS, shadowMask);</code>. The shadowMask parameter here can either be set to the same <code>SAMPLE_SHADOWMASK(lightmapUV)</code> variable, or can use <code>half4(1,1,1,1)</code> if you don&rsquo;t require supporting it. You still need to specify the parameter for the function to calculate shadows.</li>
-</ul>
-<p>For better examples see <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting/blob/main/CustomLighting.hlsl">CustomLighting.hlsl</a> in my Custom Lighting package. Also see the Lighting.hlsl, RealtimeLights.hlsl (v12+) and Shadows.hlsl files in the URP ShaderLibrary. Can find these under the Packages in the Project window, or via <a href="https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary">Unity/Graphics github</a>.</p>
-
-</div>
-<button id="sg-lit-fog" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Disable Fog in a Lit Graph</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Disable Fog in a Lit Graph</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#sg-lit-fog';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Disable Fog in a Lit Graph</b></button>
-<div class="foldout">
-<p>You can disable fog entirely via Unity&rsquo;s Lighting window (under Environement tab). If you still want fog enabled, but a certain object to not include fog, you can disable fog in a Lit Graph by using a <b class="node">Custom Function</b> node.</p>
-<p>I&rsquo;d recommend using String mode, with a Vector4 Input named &ldquo;In&rdquo; and a Vector4 Output named &ldquo;Out&rdquo;. The function name can be anything (e.g. DisableFog), while the body should use :</p>
-<p>For URP Target :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Out <span style="color:#f92672">=</span> In;
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#define MixFog(x,y) x</span></span></span></code></pre></td></tr></table>
-</div>
-</div>
-<p>The function itself doesn&rsquo;t do anything, except pass the input straight through. But by using the <code>#define</code> we override the later <code>MixFog</code> function call (in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/PBRForwardPass.hlsl">URP/PBRForwardPass.hlsl</a>), so rather than applying fog it just outputs the unmodified colour.</p>
-<p>For Built-in Target :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Out <span style="color:#f92672">=</span> In;
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Untested, but I think this should work
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#undef UNITY_APPLY_FOG
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define UNITY_APPLY_FOG(x,y) y</span></span></span></code></pre></td></tr></table>
-</div>
-</div>
-<p>For the Built-in version, they are already using the <code>UNITY_APPLY_FOG</code> macro (in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.shadergraph/Editor/Generation/Targets/BuiltIn/Editor/ShaderGraph/Includes/PBRForwardPass.hlsl">SG/Built-in/PBRForwardPass.hlsl</a>), so we undefine and then redefine it to output the colour (second parameter).</p>
-<p>This is <em>kinda</em> hacky (abusing what macros are supposed to be used for), but hey it works!~</p>
 
 </div>
 <button id="sg-custom-function-textures" type="button" class="foldout_button" onclick="
@@ -1141,124 +1437,41 @@ Right : Render with Prepass<br>
 <p>See <a href="https://docs.unity3d.com/Manual/class-LODGroup.html">Unity Docs : LOD Group</a> for more info.</p>
 
 </div>
-<button id="sg-gpu-instancing" type="button" class="foldout_button" onclick="
+<button id="sg-stabilised-screenpos" type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
     if (content.style.display === 'block') {
       content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Using GPU Instancing (DrawMeshInstanced) with Shader Graph</b>';
+      this.innerHTML = '<b>⯈ Per-Object Stabilised Screen Position</b>';
     } else {
       content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Using GPU Instancing (DrawMeshInstanced) with Shader Graph</b>';
+      this.innerHTML = '<b>⯆ Per-Object Stabilised Screen Position</b>';
 
       if (history.pushState) {
         var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#sg-gpu-instancing';
+        newurl = newurl + '#sg-stabilised-screenpos';
         window.history.pushState({path:newurl}, '', newurl);
       }
 
     }
-"><b>⯈ Using GPU Instancing (DrawMeshInstanced) with Shader Graph</b></button>
+"><b>⯈ Per-Object Stabilised Screen Position</b></button>
 <div class="foldout">
-<p>GPU Instancing is typically not required when using MeshRenderer and SkinnedMeshRenderers in URP, as these already use the SRP Batcher to optimise setup between draw calls. When using the SRP Batcher you should avoid using Material Property Blocks though and stick to multiple Materials (or instaniate materials, e.g. using <code>renderer.material</code>)</p>
-<p>But if you wish to render lots (<em>many thousands</em>) of the same mesh, you could consider using GPU Instancing via <code>Graphics.DrawMeshInstanced</code>, to remove some of the overhead of GameObjects. Or even better, <code>DrawMeshInstancedIndirect</code> (see answer below instead).</p>
-<p>To support <code>DrawMeshInstanced</code>, Materials should already have a &ldquo;Enable GPU Instancing&rdquo; tickbox which can be ticked.</p>
-<p>However using any properties in the Shader Graph Blackboard will still break instancing. Instead, I&rsquo;ve found that you can use a <b class="node">Custom Function</b> to define the instancing buffer &amp; properties. This is using macros similar to how you would set up instancing in a code-written shader.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifndef CUSTOM_INSTANCING
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define CUSTOM_INSTANCING
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">// This allows multiple Custom Function nodes to use the same file
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// without trying to include the code multiple times (causing redefinition errors)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Instancing Buffer
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>UNITY_INSTANCING_BUFFER_START(Props)
-</span></span><span style="display:flex;"><span>  UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
-</span></span><span style="display:flex;"><span>UNITY_INSTANCING_BUFFER_END(Props)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Custom Function &#34;GetInstancedColor&#34;, Outputs : Vector4
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> GetInstancedColor_float(out float4 Out){
-</span></span><span style="display:flex;"><span>    Out <span style="color:#f92672">=</span> UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif</span></span></span></code></pre></td></tr></table>
-</div>
-</div>
-
-</div>
-<button id="sg-drawmeshinstancedindirect" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Using DrawMeshInstancedIndirect with Shader Graph</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Using DrawMeshInstancedIndirect with Shader Graph</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#sg-drawmeshinstancedindirect';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Using DrawMeshInstancedIndirect with Shader Graph</b></button>
-<div class="foldout">
-<p>For supporting <code>DrawMeshInstancedIndirect</code>, (possibly also <code>DrawProcedural</code>), add a <strong>Boolean Keyword</strong> to the <strong>Blackboard</strong>, with reference set to <code>PROCEDURAL_INSTANCING_ON</code>. Should also be Global and using Multi-Compile.</p>
+<p>For some effects it can be useful to project a texture/noise/etc from screen space (using the <b class="node">Screen Position</b> node into UV ports). When the object or camera moves the texture stays in place relative to the screen, so changes on the model. That isn&rsquo;t always the desired effect - it could be useful if the texture stayed relative to the object itself.</p>
+<p>One easy way to achieve something like this is to use View Space instead, and offset it by the object&rsquo;s origin in the same space. I do this in my <a href="https://www.cyanilux.com/tutorials/dissolve-shader-breakdown/#view-position-uvs">Dissolve Shader Breakdown</a> :</p>
 <div class="img-center">
-<a href="sg-drawmeshinstancedindirect-1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="493" height="189" alt="(Image)" src="sg-drawmeshinstancedindirect-1.png" />
+<a href="https://www.cyanilux.com/tutorials/dissolve-shader-breakdown/Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy"   alt="(Image)" src="https://www.cyanilux.com/tutorials/dissolve-shader-breakdown/Graph5.png" />
 </a>
 <p class="img-text"></p>
 </div>
-<p>Use two <b class="node">Custom Function</b> nodes. Both with a Vector3 input named &ldquo;In&rdquo; and a Vector3 output named &ldquo;Out&rdquo;.</p>
-<ul>
-<li>The first uses <strong>File</strong> mode with the Function Name &ldquo;Instancing&rdquo;, to attach the include file (see Shader Graph gist below as an example).</li>
-<li>The second must use <strong>String</strong> mode with the following :</li>
-</ul>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Out <span style="color:#f92672">=</span> In;
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#pragma instancing_options procedural:vertInstancingSetup</span></span></span></code></pre></td></tr></table>
-</div>
-</div>
-<p>(<code>vertInstancingSetup</code> being a function in the include file)</p>
-<p>Both functions here don&rsquo;t alter the input passed in, but it is required to be able to connect the node to the <strong>Master Stack</strong>. We should connect it somewhere in the Vertex stage - likely easiest using the <strong>Position</strong> port with the <b class="node">Position</b> node set to Object space (or swap this out for a displaced vertex position if you require that)</p>
+<p>This can create some warping when objects are close to the sides of the camera view, but still tends to work pretty well.</p>
+<p>The same thing can be done in screen space (which doesn&rsquo;t have this warping issue), but the graph is more complicated. It also includes optional groups to deal with screen aspect ratio (so texture/noise isn&rsquo;t stretched) and make UVs scale down when viewing at a distance :</p>
 <div class="img-center">
-<a href="sg-drawmeshinstancedindirect-2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="135" alt="(Image)" src="sg-drawmeshinstancedindirect-2.png" />
+<a href="sg-object-screenspace-uv.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="158" alt="(Image)" src="sg-object-screenspace-uv.png" />
 </a>
-<p class="img-text"></p>
+<p class="img-text">(Click image to view fullscreen)</p>
 </div>
-<p>See instanced grass example here :</p>
-<ul>
-<li>Twitter Thread : <a href="https://twitter.com/Cyanilux/status/1396848736022802435">https://twitter.com/Cyanilux/status/1396848736022802435</a></li>
-<li>Shader Graph Include : <a href="https://gist.github.com/Cyanilux/4046e7bf3725b8f64761bf6cf54a16eb">https://gist.github.com/Cyanilux/4046e7bf3725b8f64761bf6cf54a16eb</a></li>
-<li>C# Script : <a href="https://gist.github.com/Cyanilux/e7afdc5c65094bfd0827467f8e4c3c54">https://gist.github.com/Cyanilux/e7afdc5c65094bfd0827467f8e4c3c54</a></li>
-</ul>
 
 </div>
 <h3 id="shaders">Shaders</h3>
@@ -1267,10 +1480,10 @@ Right : Render with Prepass<br>
     var content = this.nextElementSibling;
     if (content.style.display === 'block') {
       content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Using properties with ShaderLab operations (ZWrite\/ZTest\/Cull\/ColorMask\/Blend\/Stencil)</b>';
+      this.innerHTML = '<b>⯈ Using properties with ShaderLab operations (ZWrite \/ ZTest \/ Cull \/ ColorMask \/ Blend \/ Stencil)</b>';
     } else {
       content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Using properties with ShaderLab operations (ZWrite\/ZTest\/Cull\/ColorMask\/Blend\/Stencil)</b>';
+      this.innerHTML = '<b>⯆ Using properties with ShaderLab operations (ZWrite \/ ZTest \/ Cull \/ ColorMask \/ Blend \/ Stencil)</b>';
 
       if (history.pushState) {
         var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
@@ -1279,7 +1492,7 @@ Right : Render with Prepass<br>
       }
 
     }
-"><b>⯈ Using properties with ShaderLab operations (ZWrite/ZTest/Cull/ColorMask/Blend/Stencil)</b></button>
+"><b>⯈ Using properties with ShaderLab operations (ZWrite / ZTest / Cull / ColorMask / Blend / Stencil)</b></button>
 <div class="foldout">
 <p>Rather than hardcoding ShaderLab operations, it is possible to specify a <strong>Property</strong> so they can be changed on the material or at runtime (e.g. through <code>material.SetFloat</code>)</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// (in Properties)
@@ -1523,6 +1736,17 @@ Right : Render with Prepass<br>
 
 
 <script>
+    if (window.location.search == "?expand-all-foldouts"){
+        const foldouts = document.getElementsByClassName("foldout_button");
+        for (let i = 0; i < foldouts.length; i++) {
+            const obj = foldouts.item(i);
+            console.log(obj);
+            obj.classList.add('active');
+            obj.nextElementSibling.style.display = 'block';
+            obj.innerHTML = obj.innerHTML.replace("⯈", "⯆");
+        }
+    }
+    
     // When we jump to page using #anchor, it needs to trigger the foldout to be active
     if (window.location.hash){
         console.log(window.location.hash.substring(1));
