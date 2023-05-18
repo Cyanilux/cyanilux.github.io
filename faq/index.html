@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="FAQ">
 <meta itemprop="description" content="List of frequent (or interesting) questions I&#39;ve answered">
 
-<meta itemprop="wordCount" content="8039">
+<meta itemprop="wordCount" content="8258">
 <meta itemprop="keywords" content="" />
 	
 	
@@ -430,6 +430,39 @@ Right : Render with Prepass<br>
 </ul>
 <h4 id="oit">OIT</h4>
 <p>There are also methods to achieve <a href="https://en.wikipedia.org/wiki/Order-independent_transparency">Order Independent Transparency</a> - But I&rsquo;m not at all familiar with these. I think they&rsquo;re quite expensive (either in terms of performance or memory), and Unity does not include any support for them so you&rsquo;d need to implement this stuff yourself (or find an asset/package that handles it for you. This would require custom shaders too though, so not easy to implement)</p>
+
+</div>
+<button id="urp-depth-priming" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Material with custom shader is invisible in URP</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Material with custom shader is invisible in URP</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#urp-depth-priming';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Material with custom shader is invisible in URP</b></button>
+<div class="foldout">
+<p>2021.2+ versions of the URP have a <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@14.0/manual/urp-universal-renderer.html#rendering:~:text=.-,Depth%C2%A0Priming,-Mode">Depth Priming</a> option on the <strong>Universal Renderer Asset</strong> while using the Forward path. In the URP template this is set to Auto (enabled if URP is already doing a Depth Prepass rather than a CopyDepth pass. Can check Frame Debugger to see what is used)</p>
+<div class="img-center">
+<a href="urp-depth-priming.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="514" height="336" alt="(Image)" src="urp-depth-priming.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Depth Priming allows rendering opaque objects with a Depth Prepass, to populate the depth buffer without the fragment shading cost - potentially reducing the cost of overdraw in the opaque stage.</p>
+<p>It requires shaders to have a pass with the <strong>DepthOnly</strong> LightMode tag in the shader (and <strong>DepthNormals</strong> if using a renderer feature that requires the Camera Normals Texture - such as SSAO or Decals). If a shader doesn&rsquo;t have these passes, the forward pass is still rendered (but with ZWrite Off) and the skybox later draws over it, hence it appears invisible.</p>
+<p>For example of how to set these passes up, see the templates here : <a href="https://github.com/Cyanilux/URP_ShaderCodeTemplates/">https://github.com/Cyanilux/URP_ShaderCodeTemplates/</a></p>
+<p>You could instead set Depth Priming to Disabled, which will make the object visible. However without the DepthOnly/DepthNormals passes, objects still may not appear in the Camera Depth Texture (<b class="node">Scene Depth</b> node) or Camera Normals Texture.</p>
+<p>An alternative is using Shader Graph, which will generate the passes required by URP.</p>
 
 </div>
 <h3 id="shader-graph-issues--workarounds">Shader Graph (Issues / Workarounds)</h3>
