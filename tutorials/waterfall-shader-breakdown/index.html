@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=5 ">
+	
+	<meta itemprop="name" content="Waterfall Shader Breakdown">
+<meta itemprop="description" content="A waterfall shader that interacts with a sphere to part the flowing water. Uses a signed distance field and alpha clipping."><meta itemprop="datePublished" content="2023-05-29T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-05-29T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2803"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="keywords" content="URP,Shader Graph," />
+	
+	
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/waterfall-shader-breakdown/Preview.png"/>
+<meta name="twitter:title" content="Waterfall Shader Breakdown"/>
+<meta name="twitter:description" content="A waterfall shader that interacts with a sphere to part the flowing water. Uses a signed distance field and alpha clipping."/>
+
+	
+<meta property="og:title" content="Waterfall Shader Breakdown" />
+<meta property="og:description" content="A waterfall shader that interacts with a sphere to part the flowing water. Uses a signed distance field and alpha clipping." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/waterfall-shader-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/waterfall-shader-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2023-05-29T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-05-29T00:00:00+00:00" />
+	
+	
+	
+    
+    
+    <title>Waterfall Shader Breakdown | Cyanilux</title>
+	
+	
+	
+		
+		
+		<meta name="description" content="A waterfall shader that interacts with a sphere to part the flowing water. Uses a signed distance field and alpha clipping.. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/waterfall-shader-breakdown/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
+	
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
+	
+	<nav id="nav" class="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		FAQ
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Waterfall Shader Breakdown</h1>
+<div class="post-metadata">
+
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/breakdowns/" style="text-decoration: none; color:#eeeeee;">
+	Breakdowns
+	</a>
+</div>
+
+
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	
+	<a href="https://www.cyanilux.com/tags/urp" style="text-decoration: none; color:#eeeeee;">
+	URP
+	</a>
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	
+	<a href="https://www.cyanilux.com/tags/shader-graph" style="text-decoration: none; color:#eeeeee;">
+	Shader Graph
+	</a>
+	</div>
+
+
+
+<div style="width:10px"></div>
+
+
+<time datetime="2023-05-29">&#128337 May 29, 2023</time>
+
+</div>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eSeen some waterfalls recently, and I\u0026#39;ve been working on one too! 💧✨ \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e\u003cbr\u003eI wanted to have a bit of interaction, so I\u0026#39;m passing a sphere\u0026#39;s position \u0026amp; radius into the shader. (The foam shader at the bottom currently isn\u0026#39;t affected though). \u003ca href=\"https://t.co/iYh051E4s8\"\u003epic.twitter.com/iYh051E4s8\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1190253359703482369?ref_src=twsrc%5Etfw\"\u003eNovember 1, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1190253359703482369\">https://twitter.com/Cyanilux/status/1190253359703482369</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>Back in 2019 I shared this waterfall shader that interacts with a sphere - pretty sure it&rsquo;s my most popular tweet. For a while there&rsquo;s been comments in the thread explaining some parts of it, but I&rsquo;ve also wanted to write a proper breakdown of the shader. It&rsquo;s quite stylised (which probably comes as no surprise given the usual stuff I do), but the technique could apply to other art styles too.</p>
+<p>The basis of the interaction effect uses a SDF (Signed Distance Field) of a sphere, but the Y position is clamped so that a hole is created below it. To make it appear more fluid-like, this hole and the waterfall sides are distorted with a sine wave and alpha clipped. Scrolling noise is used to add foam to make it look more like flowing water.</p>
+<p>Apparently I don&rsquo;t have the shadergraph file anymore so had to recreate it, but I&rsquo;m pretty sure the old graph was much messier and over-complicating a few things so that&rsquo;s probably a good thing!~ 😅</p>
+<hr>
+<h2 id="breakdown">Breakdown</h2>
+<h3 id="mesh">Mesh</h3>
+<p>This isn&rsquo;t a Blender tutorial but a quick note about the mesh the shader is applied to : It&rsquo;s mostly just a rotated quad/plane with the top edge extruded backwards and a bevel added. It doesn&rsquo;t need to be that tessellated/subdivided as there&rsquo;s no vertex displacement in the shader.</p>
+<p>The horizontal part of the waterfall is 2 units wide, which isn&rsquo;t that important but the value of 2 will be used in the shader a couple times. If you have a different scale, you can use that value instead.</p>
+<p>The mesh does also need to be UV mapped. For that, I selected the face at the base of the waterfall (to set it as the active face), then toggled all faces selected (with A key) and used UV heading (or U key) -&gt; &ldquo;Follow Active Quads&rdquo;. It doesn&rsquo;t matter that the UVs go outside the 0-1 range.</p>
+<div class="img-center">
+<a href="Mesh.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="500" height="327" alt="(Image)" src="Mesh.png" />
+</a>
+<p class="img-text">Image showing mesh in Blender. On the left, the UV mapping.</p>
+</div>
+<hr>
+<h3 id="pass-position-into-material">Pass Position into Material</h3>
+<p>In Unity, You&rsquo;ll want to create a graph (I&rsquo;ve used an <strong>Unlit Shader Graph</strong>), and a <strong>Material</strong> using it that we can assign to our waterfall.</p>
+<p>You&rsquo;ll also want to create a <strong>Sphere</strong> as a child of the waterfall GameObject - this&rsquo;ll be used for interactions. The following script is attached to it which passes the position and radius to our material :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">[ExecuteInEditMode]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PassPositionToMaterial</span> : MonoBehaviour {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Material material;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">string</span> positionProperty = <span style="color:#e6db74">&#34;_SpherePosition&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">string</span> radiusProperty = <span style="color:#e6db74">&#34;_SphereRadius&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// could add [SerializeField] attribute or make public to set from inspector</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> Start(){
+</span></span><span style="display:flex;"><span>        material = transform.parent.GetComponent&lt;Renderer&gt;().sharedMaterial;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        If the script object is a child of the Waterfall can use this.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        Otherwise could add [SerializeField] to expose the material field,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        or provide a serialized field for the Transform/MeshRenderer of waterfall
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        Use `.material` instead to support multiple waterfalls (each having it&#39;s own sphere)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        But would then also need to Destroy(material) in OnDestroy,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        and might need to remove [ExecuteInEditMode] as creating 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        materials while not in play mode might leak them :(
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> Update(){
+</span></span><span style="display:flex;"><span>        material.SetVector(positionProperty, transform.position);
+</span></span><span style="display:flex;"><span>        material.SetFloat(radiusProperty, transform.localScale.x);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        Could also combine these into a single Vector4 property, e.g.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        Vector4 vector = transform.position;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        vector.w = transform.localScale.x;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        material.SetVector(combinedProperty, vector);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>We&rsquo;ll also need to set up the properties being used by the script above in the <strong>Blackboard</strong> inside the graph :</p>
+<ul>
+<li><strong>Vector3</strong>, named &ldquo;SpherePosition&rdquo;</li>
+<li><strong>Float</strong>, named &ldquo;SphereRadius&rdquo;, may want to set it&rsquo;s <strong>Default</strong> value to something larger than 0</li>
+<li>(or a single Vector4 property if combined like a comment in the code mentions)</li>
+</ul>
+<p>Under the <strong>Node Settings</strong> tab of <strong>Graph Inspector</strong> while the properties are selected, make sure their Reference fields match the strings set in the script. In versions 2021.2+ it&rsquo;ll automatically use the name with &ldquo;_&rdquo; appended but note that previous versions default to a autogenerated string and will need to be changed.</p>
+<hr>
+<h3 id="shader-graph---interaction">Shader Graph - Interaction</h3>
+<p>To handle the interaction, we need to calculate the <strong>distance to the sphere for each fragment</strong>. This could be done with a <b class="node">Distance</b> node&hellip; but we&rsquo;ll instead <b class="node">Subtract</b> the <strong>SpherePosition property</strong> from the <b class="node">Position</b> node (set to <strong>World</strong> space), then put this into a <b class="node">Length</b> node. It&rsquo;s the same calculation but will make the steps later slightly simpler.</p>
+<p>That gives us the distance to the <strong>SpherePosition</strong> passed in, but that&rsquo;s just the center of the sphere. We need the distance to the <em>edge</em> (or face I guess) of the sphere. Luckily, spheres are super simple shapes and the distance to that is given by the <em>radius</em>, so if we <b class="node">Subtract</b> the <strong>SphereRadius property</strong> it results in values of 0 for fragments that intersect the sphere. Fragments outside the sphere are some positive distance away, and inside the sphere will be negative. This calculation is known as the <strong>Signed Distance Field</strong> (commonly shortened to SDF) of a sphere.</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="599" height="192" alt="(Image)" src="Graph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Right now it&rsquo;s a bunch of distances per fragment - we&rsquo;ll want to do some comparisons to check for values that lie inside the sphere. We could use <b class="node">Comparison</b> (GreaterOrEqual) and <b class="node">Branch</b> nodes but since we want a 0 or 1 output it&rsquo;s equivalent to using a <b class="node">Step</b></p>
+<p>We can put the result of this SDF into a <b class="node">Step</b> node with an <strong>Edge</strong> value of <strong>0</strong> (since we&rsquo;ve already subtracted the sphere radius). Make sure the ports are the correct way around or the result will be inverted.</p>
+<p>It&rsquo;ll be a good idea to right-click this node and put it in a group named &ldquo;Alpha&rdquo;. We&rsquo;ll now need to enable <strong>Alpha Clipping</strong> under the <strong>Graph Settings</strong>, then connect this to the <strong>Alpha</strong> port on the <strong>Master Stack</strong>, leaving the Alpha Clip Threshold at 0.5.</p>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="599" height="183" alt="(Image)" src="Graph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>By saving the graph and visualising in the Scene View, you should see that if you hide/disable the sphere&rsquo;s MeshRenderer temporarily, a hole is left in the waterfall which moves and scales with the sphere.</p>
+<div class="img-center">
+<a href="Scene1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="326" height="277" alt="(Image)" src="Scene1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>That&rsquo;s neat, but we&rsquo;d like the hole to continue below the sphere to look like it&rsquo;s parting flowing water. Since we subtracted the <strong>SpherePosition</strong> from our fragment Position, &ldquo;below&rdquo; in this case is any Y coordinates smaller than 0. If we clamp the negative values to 0, that would keep them inside the sphere and therefore be clipped.</p>
+<p>We only want this clamping on one axis, so will need to use a <b class="node">Split</b> node. There&rsquo;s a few ways to handle it, for example putting the <strong>G</strong> output through a <b class="node">Maximum</b> node with a value of 0, then into the <strong>Y</strong> port on a <b class="node">Vector3</b>, also connecting <strong>R to X</strong> and <strong>B to Z</strong>. The image below also shows another alternative - can use whichever.</p>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="259" alt="(Image)" src="Graph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Visualising in the scene we now see the hole being stretched downwards.</p>
+<div class="img-center">
+<a href="Scene2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="326" height="277" alt="(Image)" src="Scene2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Before moving on, let&rsquo;s take the output of the SDF again and put it into another <b class="node">Step</b> node. This time setting the <strong>Edge</strong> input to some small value, like <strong>0.05</strong>. I&rsquo;ve converted this to a Float property named <strong>FoamEdgeThickness</strong>.</p>
+<div class="img-center">
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="463" height="345" alt="(Image)" src="Graph4.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>As shown, put this in a group named &ldquo;Foam&rdquo;. You can temporarily connect this to the <strong>Base Color</strong> port in the <strong>Master Stack</strong> if you&rsquo;d like to visualise what it&rsquo;s doing. It&rsquo;s the same as the alpha, but offset slightly, so gives us a black outline around the hole. Later this will be recoloured.</p>
+<hr>
+<h3 id="shader-graph---sine">Shader Graph - Sine</h3>
+<p>Currently this hole created by our sphere-interaction is static, so the result doesn&rsquo;t look that water/fluid-like. We need to add some movement but I&rsquo;ve avoided Vertex Displacement here as that requires the mesh to have quite a few vertices, otherwise it won&rsquo;t look smooth. Instead we&rsquo;ll offset the positions used in the SDF calculations.</p>
+<p>The sides of the waterfall mesh are also static, so we should offset and clip some pixels there as well.</p>
+<p>To add this movement I&rsquo;ve used a <b class="node">Sine</b> wave/node on the UV. The water should be wobbling side-to-side, which means the wave needs to be orientated along the vertical axis (<strong>G</strong> output from <b class="node">Split</b>). We can <b class="node">Multiply</b> by some value before the <b class="node">Sine</b> to control the frequency and <b class="node">Multiply</b> after to control it&rsquo;s amplitude.</p>
+<p>To make it scroll/move, use the <strong>Time</strong> output from the <b class="node">Time</b> node, <b class="node">Multiply</b> by some value to control it&rsquo;s speed and <b class="node">Add</b> before the <b class="node">Sine</b>. You can use properties for the value inputs so it can be controlled from the Material, as shown below.</p>
+<div class="img-center">
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="287" alt="(Image)" src="Graph5.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We now need to combine this Float output with our SDF position.</p>
+<button id="" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ (click for some ramblings \/ older methods I used for this)</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ (click for some ramblings \/ older methods I used for this)</b>';
+
+    }
+"><b>⯈ (click for some ramblings / older methods I used for this)</b></button>
+<div class="foldout">
+<p>Since the positions used in the SDF calculations are in world space we can&rsquo;t just put our float into an axis of the <b class="node">Vector3</b> node and <b class="node">Add</b>/<b class="node">Subtract</b> it, as that would remain orientated to the world axis even if the waterfall was rotated - try it and you&rsquo;ll see the problem.</p>
+<p>In my original graph from 2019 I feel like I made quite a mess of this. After a bit of trial and error I ended up using the inverse-model matrix (<code>UNITY_MATRIX_I_M</code>) but in a matrix multiplication as the second parameter (same as the matrix being transposed). In graph form, it would look like this :</p>
+<div class="img-center">
+<a href="Graph6a.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="335" height="248" alt="(Image)" src="Graph6a.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>It does work. Normal vectors can actually be transformed this way too when there isn&rsquo;t uniform scaling (e.g. <a href="https://github.com/Unity-Technologies/Graphics/blob/5d52a65710d5a57605fa558aec688d7929ff7dbf/Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl#LL204C1">see SpaceTransforms.hlsl</a>), so it apparently <em>kinda</em> makes some sense. But when recreating the graph for this post I wanted to find a better way to handle it.</p>
+<p>The <b class="node">Vector3</b> (with the float in the X coordinate) is basically in object space. We could use a <b class="node">Transform</b> node to convert from <strong>Object</strong> to <strong>World</strong> space but with <strong>Direction</strong> mode that normalises the vector - which isn&rsquo;t what we want (really wish there was a Vector mode as well).</p>
+<p>We can use the <strong>Position</strong> mode instead, but as this also applies the translation of the waterfall GameObject, so we&rsquo;d also have to <b class="node">Subtract</b> the <strong>Position</strong> output from the <b class="node">Object</b> node to remove that.</p>
+<div class="img-center">
+<a href="Graph6b.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="531" height="320" alt="(Image)" src="Graph6b.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Again, works. Though I still find this a bit messy.</p>
+<p>We could instead use the <b class="node">Transformation Matrix</b> node with the <strong>Model</strong> matrix in the <strong>A</strong> port of a <b class="node">Multiply</b> and promote our <b class="node">Vector3</b> to a <b class="node">Vector4</b> node, with a <strong>W</strong> component of <strong>0</strong> - as that&rsquo;s how you handle matrix multiplication with vectors.</p>
+<div class="img-center">
+<a href="Graph6c.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="316" height="279" alt="(Image)" src="Graph6c.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Maybe a bit more intuivite than what I had originally. But I realised there&rsquo;s an easier way to handle it&hellip;</p>
+
+</div>
+<p>There is a <b class="node">Tangent Vector</b> stored at each vertex. Along with the mesh normals it&rsquo;s main purpose is converting tangent-space normal maps back into World space. The normals aren&rsquo;t important here but to make the Tangent→World space transformation work, these tangents are aligned to the horizontal axis of the UVs.</p>
+<p>That&rsquo;s where we want our wobbly offset so we can just offset along these vectors. We need to select <strong>World</strong> on the dropdown so it&rsquo;s in the correct space, <b class="node">Multiply</b> it with our Sine group output and <b class="node">Subtract</b> it from the Vector3 value just before the <b class="node">Length</b> node.</p>
+<div class="img-center">
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="229" alt="(Image)" src="Graph6.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>In the scene, it should now look something like this.</p>
+<div class="img-center">
+<a href="Scene3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="326" height="277" alt="(Image)" src="Scene3.png" />
+</a>
+<p class="img-text">(SineFrequency=12, SineAmplitude=0.05, ScrollSpeed=1)</p>
+</div>
+<p>For the sides of the waterfall, we&rsquo;ll add a <b class="node">UV</b> node, <b class="node">Split</b> and take the <strong>X/R</strong> axis and then <b class="node">Subtract</b> a value of <strong>0.5</strong>. From the preview you&rsquo;ll see that this shifts the horizontal UV so it ranges from -0.5 to 0.5, with 0 being in the center (where the black begins). This is useful, as we can <b class="node">Absolute</b> to make all values positive, allowing us to handle both sides of the waterfall at the same time. But before that, we want that <em>wobble</em> so need to <b class="node">Subtract</b> the output of the Sine group divided by 2 (as the horizontal UV axis is a 0-1 range but our waterfall is 2 units wide).</p>
+<div class="img-center">
+<a href="Graph7.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="283" alt="(Image)" src="Graph7.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>After the <b class="node">Absolute</b>, both edges of the waterfall have a value of 0.5. We could use a <b class="node">Step</b> node to compare this directly but we&rsquo;re going to need multiple - so it&rsquo;ll be more convienient if we <b class="node">Subtract</b> <strong>0.5</strong> first as shown above.</p>
+<p>It&rsquo;ll also be cut off at parts due to our wobble, so we also need to offset by <strong>half of the SineAmplitude</strong>. Then put it into the <strong>Edge</strong> inputs on two <b class="node">Step</b> nodes.</p>
+<div class="img-center">
+<a href="Graph8.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="452" alt="(Image)" src="Graph8.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>As shown, one of these <b class="node">Step</b> nodes will be used for the alpha clip and needs a value of <strong>0</strong> in the <strong>In</strong> port. Put this in a group named &ldquo;Alpha&rdquo;, similar to earlier. The output of both of these Alpha groups needs to be multiplied together for the <strong>Alpha</strong> port in the <strong>Master Stack</strong>.</p>
+<p>If you were to then visualise this in the scene, the edges would be wobbling too now :</p>
+<div class="img-center">
+<a href="Scene4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="326" height="277" alt="(Image)" src="Scene4.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The other <b class="node">Step</b> should have some small negative value like <strong>-0.025</strong>, but if you created the <strong>FoamEdgeThickness property</strong> earlier, you may want to <b class="node">Divide</b> that by <strong>2</strong> (again since the waterfall is 2 units wide), then <b class="node">Negate</b> it for that port (as shown above). This&rsquo;ll go in a group named &ldquo;Foam&rdquo;. These groups will also need multiplying together but we&rsquo;ll worry about that later.</p>
+<hr>
+<h3 id="shader-graph---noise-foam">Shader Graph - Noise Foam</h3>
+<p>To make the shader look more like flowing water, we can apply some scrolling noise (via a texture or <b class="node">Simple Noise</b> node).</p>
+<p>To make it scroll we&rsquo;d use the <strong>Time</strong> output from the <b class="node">Time</b> node, and <b class="node">Multiply</b> by a value to control the speed. We want it to scroll vertically, so put it into the <strong>Y</strong> port on a <b class="node">Vector2</b> node, which goes into an <strong>Offset</strong> port on a <b class="node">Tiling And Offset</b> node. This can go into the <strong>UV</strong> port on our <b class="node">Simple Noise</b> (or <b class="node">Sample Texture 2D</b> if you use a seamlessly repeating noise texture instead)</p>
+<div class="img-center">
+<a href="Graph9.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="312" alt="(Image)" src="Graph9.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We can use this noise to adjust the colour slightly (as shown in the next section) but I&rsquo;d also like this noise to represent some foaminess to the water as it starts to fall at the top as well near the base. To handle that we&rsquo;ll need some masks of those areas.</p>
+<p>Based on the <b class="node">UV</b> coordinates stored in the mesh, the base of the waterfall is where the vertical axis (<strong>G</strong> from <b class="node">Split</b>) is close to 0. We could just use a <b class="node">One Minus</b> node, but I&rsquo;m using a <b class="node">Smoothstep</b> instead as it gives a nicer result and better control over remapping the values.</p>
+<p>If you want a more linear result, an <b class="node">Inverse Lerp</b> could be used instead - that would also need a <b class="node">Saturate</b> node to be clamped between 0 and 1.</p>
+<p>The mask for the top / bevelled area of the waterfall is a bit more complicated but is similar to how we handled the waterfall sides (involving a <b class="node">Subtract</b>, <b class="node">Absolute</b> and another <b class="node">Subtract</b> but with ports reversed to negate the value at the same time). The value in the second subtract represents the width of the area being mask, we then <b class="node">Multiply</b> by a value to control the falloff, and <b class="node">Saturate</b> to remove any values outside the 0-1 range.</p>
+<div class="img-center">
+<a href="Graph10.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="329" alt="(Image)" src="Graph10.png" />
+</a>
+<p class="img-text">(Click image to view fullscreen)</p>
+</div>
+<p>The next step is combining these masks, which we can do with an <b class="node">Add</b> or <b class="node">Maximum</b> node. I&rsquo;m multiplying the top mask by <strong>0.75</strong> first so it&rsquo;s strength is a it lower.</p>
+<p>We could <b class="node">Multiply</b> this with the noise, but I&rsquo;m instead going to <b class="node">Add</b> them together, then use a <b class="node">Smoothstep</b> node with <strong>Edge1</strong> set to <strong>1.2</strong> and <strong>Edge2</strong> set to <strong>0.9</strong>. But feel free to try out other values! Put these nodes in another &ldquo;Foam&rdquo; group.</p>
+<div class="img-center">
+<a href="Graph11.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="500" height="332" alt="(Image)" src="Graph11.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<hr>
+<h3 id="shader-graph---apply-colour">Shader Graph - Apply Colour</h3>
+<p>We&rsquo;re almost done, we just need to actually combine the groups we&rsquo;ve made and apply some colours. Some nodes are grouped under headings of &ldquo;Alpha&rdquo; and &ldquo;Foam&rdquo;. Both sets of these need multiplying together separately. The alpha one should already be handled if you followed along, but we still need to <b class="node">Multiply</b> together the Foam groups.</p>
+<p>The result of this will be put into the <strong>T</strong> input on a <b class="node">Lerp</b> node so we can interpolate between two colours. The <strong>A</strong> port needs to be set to a <strong>Foam Color property</strong>, while <strong>B</strong> will be used for the water colour.</p>
+<div class="img-center">
+<a href="Graph12.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="224" alt="(Image)" src="Graph12.png" />
+</a>
+<p class="img-text">(Click image to view fullscreen)</p>
+</div>
+<p>We could have a single colour for the water, but as shown above I&rsquo;ve used a vertical gradient and the noise from earlier (multiplied by 0.2) to add a bit of texture (wasn&rsquo;t really in the original graph but improves the look a little). Those goes into the <strong>T</strong> input of another <b class="node">Lerp</b> with <strong>A</strong> and <strong>B</strong> set to <strong>two Water Color properties</strong>.</p>
+<p>It looks better in motion like the tweet and the start, but here&rsquo;s the final result! Feel free to tweak the properties to adjust how it looks.</p>
+<div class="img-center">
+<a href="Scene5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="326" height="277" alt="(Image)" src="Scene5.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<br><hr>
+
+<div style="display:block;text-align: center">
+<h2>Thanks for reading!</h2>
+<p> If this post helped, consider sharing a link with others!</p>
+</div>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a class="small-text" href="https://twitter.com/Cyanilux">© Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/index.xml">
+		
+		RSS Feed
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>
