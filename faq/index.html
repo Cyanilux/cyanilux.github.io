@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="FAQ">
 <meta itemprop="description" content="List of frequent (or interesting) questions I&#39;ve answered">
 
-<meta itemprop="wordCount" content="8258">
+<meta itemprop="wordCount" content="8514">
 <meta itemprop="keywords" content="" />
 	
 	
@@ -287,6 +287,35 @@
 <p>If you aren&rsquo;t upgrading, materials can also turn magenta when there is an error in the shader syntax (Should be able to see these in the Console, or in the Inspector when the shader asset is selected).</p>
 <p>If a magenta material is using a Shader Graph, be sure the <a href="https://www.cyanilux.com/faq/#sg-magenta">target is assigned correctly</a>, and save the graph using the <strong>Save Asset</strong> button in the top left of the shader graph window.</p>
 <p>In a build, magenta materials could also mean the shader uses a <a href="https://docs.unity3d.com/Manual/SL-ShaderCompileTargets.html">compile target</a> which is higher than what is supported by the platform.</p>
+
+</div>
+<button id="scene-always-refresh" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Material\/Shaders are animated during Play Mode but not in Editor \/ Scene View</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Material\/Shaders are animated during Play Mode but not in Editor \/ Scene View</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#scene-always-refresh';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Material/Shaders are animated during Play Mode but not in Editor / Scene View</b></button>
+<div class="foldout">
+<div class="img-right">
+<a href="scene-always-refresh.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="182" height="143" alt="(Image)" src="scene-always-refresh.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>By default the Scene View does not constantly re-render it&rsquo;s camera to help with editor performance.</p>
+<p>If requried though, there&rsquo;s a dropdown in the top right where you can enable &ldquo;Always Refresh&rdquo; (or &ldquo;Animated Materials&rdquo; in older versions)</p>
 
 </div>
 <button id="transparent-sorting" type="button" class="foldout_button" onclick="
@@ -1081,6 +1110,49 @@ Right : Render with Prepass<br>
 <li>Twitter Thread : <a href="https://twitter.com/Cyanilux/status/1396848736022802435">https://twitter.com/Cyanilux/status/1396848736022802435</a></li>
 <li>Shader Graph Include : <a href="https://gist.github.com/Cyanilux/4046e7bf3725b8f64761bf6cf54a16eb">https://gist.github.com/Cyanilux/4046e7bf3725b8f64761bf6cf54a16eb</a></li>
 <li>C# Script : <a href="https://gist.github.com/Cyanilux/e7afdc5c65094bfd0827467f8e4c3c54">https://gist.github.com/Cyanilux/e7afdc5c65094bfd0827467f8e4c3c54</a></li>
+</ul>
+
+</div>
+<button id="sg-scene-color" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Scene Color node info</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Scene Color node info</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-scene-color';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Scene Color node info</b></button>
+<div class="foldout">
+<p>The <b class="node">Scene Color</b> node samples a texture containing opaque geometry in the scene, allowing you to obtain the colour of opaque objects behind a transparent shader.</p>
+<p>This is useful to produce distortion effects. The default UVs input is the <b class="node">Screen Position</b> node, so you can <b class="node">Add</b> or <b class="node">Subtract</b> to that to distort the view, for example with a noise texture. Can find examples in the following posts :</p>
+<ul>
+<li><a href="https://www.cyanilux.com/tutorials/water-shader-breakdown/">Water Shader Breakdown</a> (also attempts to remove distortion of objects infront of the water)</li>
+<li><a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/">Forcefield Shader Breakdown</a></li>
+<li><a href="https://www.cyanilux.com/tutorials/crystal-shader-breakdown/">Crystal Shader Breakdown</a></li>
+<li><a href="https://www.cyanilux.com/tutorials/rain-effects-breakdown/#raindrop-complex">Rain Effects Breakdown : Raindrops on Surfaces (Complex)</a></li>
+</ul>
+<p>Note that the node will only function correctly when using a graph with <strong>Surface Mode : Transparent</strong> (or manually set RenderQueue to 2501+). See below for pipeline-specific differences.</p>
+<p><strong>URP</strong> :</p>
+<ul>
+<li>Enable <strong>Opaque Texture</strong> option under the <strong>URP Asset</strong>. (May have multiple of those assets for each quality setting)</li>
+<li>Also make sure dropdown on <strong>Camera</strong> isn&rsquo;t set to force the Opaque Texture off.</li>
+</ul>
+<p><strong>Built-in RP</strong> (Unity 2021.2+) :</p>
+<ul>
+<li>Add <a href="https://gist.github.com/Cyanilux/181893cd061e97eb12d5bfdec9fecaab">this SceneColorSetup script</a> to your <strong>Main Camera</strong> (and optionally other cameras that need the <code>_CameraOpaqueTexture</code>)</li>
+</ul>
+<p><strong>HDRP</strong> :</p>
+<ul>
+<li><b class="node">HD Scene Color</b> node may be more suitable for this pipeline. Provides exposure setting and different LOD levels.</li>
 </ul>
 
 </div>

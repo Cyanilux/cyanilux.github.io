@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Water Shader Breakdown">
 <meta itemprop="description" content="A water shader that uses the scene color to produce distortion/refractions and reconstructs a position from the scene depth to project caustics on underwater objects"><meta itemprop="datePublished" content="2019-06-10T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-06-10T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1606"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="wordCount" content="1610"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="URP,Shader Graph," />
 	
 	
@@ -292,7 +292,7 @@
 <li>In order to produce nice looking water caustics I’m using a technique I saw in a <a href="https://www.youtube.com/watch?v=Vg0L9aCRWPE">Brackeys video</a> (Which was based off of <a href="https://www.youtube.com/watch?v=jBmBb-je4Lg">this video</a>), but rather than sampling the <b class="node">Voronoi</b> using object UVs, I’m basing it off the X and Z components of world space positions reconstructed from depth.</li>
 </ul>
 <h2 id="breakdown">Breakdown</h2>
-<p>We’ll first create a <b class="node">Scene Color</b> node. This node will allow us to sample a texture of opaque objects the camera renders and we can offset the <strong>UVs</strong> put into this by some noise to create distortions. For this node to work properly, we need to click the cog on the <b class="node">Master</b> node and set the surface mode to <strong>Transparent</strong>. You will also need to enable the Opaque Texture (and Depth Texture for later) options on the URP/LWRP Asset. For more information see the <a href="https://www.cyanilux.com/tutorials/scene-color">Scene Color</a> post. Also see <a href="https://www.cyanilux.com/tutorials/depth/#scene-depth-node">Depth</a> for information on the <b class="node">Scene Depth</b> node.</p>
+<p>We’ll first create a <b class="node">Scene Color</b> node. This node will allow us to sample a texture of opaque objects the camera renders and we can offset the <strong>UVs</strong> put into this by some noise to create distortions. For this node to work properly, we need to click the cog on the <b class="node">Master</b> node and set the surface mode to <strong>Transparent</strong>. You will also need to enable the Opaque Texture (and Depth Texture for later) options on the URP/LWRP Asset. For more information see <a href="https://www.cyanilux.com/faq/#sg-scene-color">FAQ : Scene Color node info</a>. Also see <a href="https://www.cyanilux.com/tutorials/depth/#scene-depth-node">Depth</a> for information on the <b class="node">Scene Depth</b> node used later.</p>
 <p>So we can add some colour to our water, take the output of the <b class="node">Scene Color</b> node and put it into the <strong>B</strong> input on a <b class="node">Lerp</b> node. Then create a <b class="node">Color</b> node with a blue/cyan colour and put this into the <strong>A</strong> input. We can then plug a <b class="node">Vector1</b> value into the <strong>T</strong> input in order to control the visibility of our water. I’m using a value of <strong>0.6</strong> for this. You may also want to convert it to a <strong>Vector1 property</strong> so it can be edited from the material inspector. We’ll put the output of this <b class="node">Lerp</b> into the <strong>Color</strong> input on the <b class="node">Master</b> node.</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">

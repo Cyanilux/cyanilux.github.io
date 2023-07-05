@@ -3,27 +3,32 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.cyanilux.com/tutorials/breakdowns/</loc>
-    <lastmod>2023-05-29T00:00:00+00:00</lastmod>
+    <lastmod>2023-07-04T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/</loc>
-    <lastmod>2023-05-29T00:00:00+00:00</lastmod>
+    <lastmod>2023-07-04T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tutorials/rain-effects-breakdown/</loc>
+    <lastmod>2023-07-04T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tags/shader-graph/</loc>
-    <lastmod>2023-05-29T00:00:00+00:00</lastmod>
+    <lastmod>2023-07-04T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tags/</loc>
-    <lastmod>2023-05-29T00:00:00+00:00</lastmod>
+    <lastmod>2023-07-04T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/</loc>
-    <lastmod>2023-05-29T00:00:00+00:00</lastmod>
+    <lastmod>2023-07-04T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -129,11 +134,6 @@
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/depth/</loc>
     <lastmod>2020-11-25T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tutorials/scene-color/</loc>
-    <lastmod>2020-11-12T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>

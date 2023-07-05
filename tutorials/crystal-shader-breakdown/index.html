@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Crystal Shader Breakdown">
 <meta itemprop="description" content="An unlit/glowing crystal shader with a colour gradient based on object space Y position, and refraction via Scene Color node"><meta itemprop="datePublished" content="2021-02-01T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-02-01T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1348"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="wordCount" content="1309"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="URP,Shader Graph," />
 	
 	
@@ -288,8 +288,7 @@
 <p>I actually made this shader back in Nov/Dec 2020. While I released the graph on twitter I didn&rsquo;t make a proper breakdown until now, better late then never though!</p>
 <h2 id="notes">Notes</h2>
 <ul>
-<li>This is an <strong>Unlit</strong> shader using <strong>Transparent</strong> surface mode and <strong>Alpha</strong> blending. However the alpha will be left at <strong>1</strong> as we are using the <b class="node">Scene Color</b> node to fake refractions.</li>
-<li>The <strong>Opaque Texture</strong> option on the <strong>Universal RP Asset</strong> needs to be enabled for refraction to work. This asset will be somewhere in your assets (Project window). If you used the template, it&rsquo;s under Settings. There may be multiple for each Quality level. Without this option enabled, the <b class="node">Scene Color</b> result will just be grey. (Make sure the Main Camera also does not override the asset value)</li>
+<li>This is an <strong>Unlit</strong> shader using <strong>Transparent</strong> surface mode and <strong>Alpha</strong> blending. However the alpha will be left at <strong>1</strong> as we are using the <b class="node">Scene Color</b> node to fake refractions. For URP you&rsquo;ll need to enable the <strong>Opaque Texture</strong> on the <strong>URP Asset</strong>. For information about this node in other pipelines, see <a href="https://www.cyanilux.com/faq/#sg-scene-color">FAQ : Scene Color node info</a></li>
 <li>The gif above is also using <strong>point lights</strong> in the scene so the walls/floor are illuminated by the crystals. The crystals themselves are not producing the light and is also not affected by them, except for what appears on the camera opaque texture.</li>
 <li>The gif also contains some additional post processing, including <strong>Bloom</strong> and <strong>ACES Tonemapping</strong>. See <a href="https://twitter.com/Cyanilux/status/1332335323632766977">this twitter post</a> for full settings.</li>
 </ul>

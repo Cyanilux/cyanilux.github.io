@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=5 ">
+	
+	<meta itemprop="name" content="Rain Effects Breakdown">
+<meta itemprop="description" content="A few rain effects, including particles setup, and shaders for ripples in water/puddles and rain interacting with surfaces"><meta itemprop="datePublished" content="2023-07-04T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-07-04T00:00:00+00:00" />
+<meta itemprop="wordCount" content="4106"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="keywords" content="Shader Graph," />
+	
+	
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/rain-effects-breakdown/Preview.png"/>
+<meta name="twitter:title" content="Rain Effects Breakdown"/>
+<meta name="twitter:description" content="A few rain effects, including particles setup, and shaders for ripples in water/puddles and rain interacting with surfaces"/>
+
+	
+<meta property="og:title" content="Rain Effects Breakdown" />
+<meta property="og:description" content="A few rain effects, including particles setup, and shaders for ripples in water/puddles and rain interacting with surfaces" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/rain-effects-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/rain-effects-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2023-07-04T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-07-04T00:00:00+00:00" />
+	
+	
+	
+    
+    
+    <title>Rain Effects Breakdown | Cyanilux</title>
+	
+	
+	
+		
+		
+		<meta name="description" content="A few rain effects, including particles setup, and shaders for ripples in water/puddles and rain interacting with surfaces. Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/rain-effects-breakdown/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
+	
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
+	
+	<nav id="nav" class="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		FAQ
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Rain Effects Breakdown</h1>
+<div class="post-metadata">
+
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/breakdowns/" style="text-decoration: none; color:#eeeeee;">
+	Breakdowns
+	</a>
+</div>
+
+
+
+
+	<div class="tag" style="background-color:#101010;">
+	
+	<a href="https://www.cyanilux.com/tags/shader-graph" style="text-decoration: none; color:#eeeeee;">
+	Shader Graph
+	</a>
+	</div>
+
+
+
+<div style="width:10px"></div>
+
+
+<time datetime="2023-07-04">&#128337 Jul 4, 2023</time>
+
+</div>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eRain ☔️🌧️\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/OuQcTWxU4T\"\u003epic.twitter.com/OuQcTWxU4T\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1667922308034355203?ref_src=twsrc%5Etfw\"\u003eJune 11, 2023\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1667922308034355203\">https://twitter.com/Cyanilux/status/1667922308034355203</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<p>(Also <a href="https://twitter.com/Cyanilux/status/1670433411738091520">alternative pink version</a> with a few small improvements)</p>
+<h2 id="intro">Intro</h2>
+<p>I&rsquo;ve recently been experimenting with some rain VFX and wanted to share how I&rsquo;ve handled it. There&rsquo;s some rain particles, which is a relatively simple (Shuriken) Particle System, spawning Stretched Billboard particles in a box with gravity - nothing too special there really. But I&rsquo;ve also got some neat shader effects such as water ripples and raindrops appearing &amp; sliding down surfaces, to help show that the rain is affecting the scene.</p>
+<p>The ripples uses <a href="RippleFlipbook.png">this Ripple Flipbook texture</a>, which I baked by using the result of a ShaderGraph using my <a href="https://github.com/Cyanilux/BakeShader">BakeShader</a> editor tool. I still want to explain how I set that up below, but feel free to use that flipbook if you prefer.</p>
+<p>The umbrella shader has some dots &amp; scrolling lines to suggest the rain is interacting with it. Though this only really affects the colour slightly. Back in 2021 I also did a <a href="https://twitter.com/Cyanilux/status/1374350192623902723">Rainy Window Shader</a> which has a similar theme, but is a bit more complicated and distorts the <b class="node">Scene Color</b> to produce a more realistic looking result. I&rsquo;ve included a section to break that down a bit too~!</p>
+<h4 id="sections-">Sections :</h4>
+<ul>
+<li><a href="#rain-shuriken">Rain Particles (Shuriken)</a></li>
+<li><a href="#ripples">Water Ripples</a>
+<ul>
+<li><a href="#custom-function">Custom Function</a></li>
+<li><a href="#baking">Baking</a></li>
+<li><a href="#water-shader">Water Shader</a></li>
+</ul>
+</li>
+<li><a href="#raindrop-simple">Raindrops on Surfaces (Simple)</a>
+<ul>
+<li><a href="#raindrop-dots-simple">Raindrop Dots</a></li>
+<li><a href="#mask-top">Mask (Top)</a></li>
+<li><a href="#sliding-raindrops-simple">Sliding Raindrops</a></li>
+<li><a href="#mask-sides">Mask (Sides)</a></li>
+<li><a href="#combine-simple">Combine</a></li>
+</ul>
+</li>
+<li><a href="#raindrop-complex">Raindrops on Surfaces (Complex)</a>
+<ul>
+<li><a href="#raindrop-dots">Raindrop Dots</a></li>
+<li><a href="#sliding-raindrops">Sliding Raindrops</a></li>
+<li><a href="#usage-opaque">Usage (Opaque)</a></li>
+<li><a href="#usage-transparent">Usage (Transparent)</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="breakdown">Breakdown</h2>
+<h3 id="rain-shuriken">Rain Particles (Shuriken)</h3>
+<p>As mentioned in the intro I used a <strong>Particle System</strong> component (also known as Shuriken) for the rain.</p>
+<p>But if you&rsquo;re in URP or HDRP, using the <strong>Visual Effect Graph</strong> could be better for these as that handles particle simulation on the GPU. If interested, Daniel Illett has a similar <a href="https://danielilett.com/2020-05-19-tut5-7-urp-rain/">URP Rain tutorial</a> that uses that, with additional splash particles spawned when it collides with the ground. I didn&rsquo;t do splashes here, though that could be done in Shuriken too with the <strong>Collision</strong> and <strong>Sub Emitter</strong> modules.</p>
+<p>The particle system has the following settings :</p>
+<ul>
+<li>Start Speed : 0</li>
+<li>Start Size : 0.01</li>
+<li>Gravity Modifier : 1</li>
+<li>Simulation Space : Global, probably. So the system can follow the camera without existing particles moving with it.</li>
+<li>Scaling Mode : Shape, so that the particles themselves stay at a constant size but the GameObject can be scaled to affect the area the particles can spawn in.</li>
+<li>Max Particles to some large value. I&rsquo;ve got it set to 10,000.</li>
+<li><strong>Emission</strong> Module :
+<ul>
+<li>Rate Over Time : 2500</li>
+</ul>
+</li>
+<li><strong>Shape</strong> Module :
+<ul>
+<li>I&rsquo;m using a Box, scale is kept at (1,1,1) but the GameObject is scaled to something like (8, 1, 8) and raised somewhere above/infront of the camera. You&rsquo;d likely want to parent it to the camera, or use a C# Script to make it follow.</li>
+</ul>
+</li>
+<li><strong>Renderer</strong> Module :
+<ul>
+<li>Render Mode : Stretched Billboard
+<ul>
+<li>Camera Scale 0</li>
+<li>Speed Scale 0.1</li>
+<li>Length Scale 1</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Set Material to something appropiate. For example BiRP would use one under the Particles heading, or for URP under the <code>Universal Render Pipeline/Particles</code>. I&rsquo;ve used Unlit, set to Transparent with a low alpha value.</li>
+</ul>
+<p>The umbrella mesh in my tweet has a small rim with another similar <strong>Particle System</strong> that spawns dripping raindrops. It&rsquo;s the same setup, but I additionally used the <strong>Force Over Lifetime</strong> module with a Curve on the Y axis to better control how the water drops (slower at beginning).</p>
+<hr>
+<h3 id="ripples">Water Ripples</h3>
+<p>While we could add collision to our particle system and use a sub-emitter to create ripple particles, I wanted to use a cheaper approach by sampling a <strong>Flipbook</strong> texture in the water shader itself. This is also a normal map so properly affects the shading/reflections of the water.</p>
+<p>The water shader here could also be masked with a texture and put on a mesh/decal to create puddles on the ground, though that&rsquo;s not actually something I&rsquo;ll be going through here.</p>
+<h4 id="custom-function">Custom Function</h4>
+<p>For creating the ripples I&rsquo;m using a <b class="node">Custom Function</b> node that is somewhat similar to generating Voronoi/Worley noise. It involves splitting the UV space into square cells, each containing a random point. Each fragment/pixel loops over a 3x3 block of cells, taking the distances to those random points. With Voronoi that takes whichever distance is smallest. But here, we want to use the distances to generate a ripple based on a sine wave with random time offsets &amp; some masking.</p>
+<p>To make things slightly more complicated, I&rsquo;d like normal vectors rather than a greyscale result for our ripples (though I left this as an output too). These normals from each cell are combined additively and the result is normalised.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// Returns a random 2D vector</span>
+</span></span><span style="display:flex;"><span>float2 voronoi_randomVector (float2 UV, <span style="color:#66d9ef">float</span> offset) {
+</span></span><span style="display:flex;"><span>    float2x2 m = float2x2(<span style="color:#ae81ff">15.27</span>, <span style="color:#ae81ff">47.63</span>, <span style="color:#ae81ff">99.41</span>, <span style="color:#ae81ff">89.98</span>);
+</span></span><span style="display:flex;"><span>    UV = frac(sin(mul(UV, m)) * <span style="color:#ae81ff">46839.32</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> float2(sin(UV.y*+offset)*<span style="color:#ae81ff">0.5</span>+<span style="color:#ae81ff">0.5</span>, cos(UV.x*offset)*<span style="color:#ae81ff">0.5</span>+<span style="color:#ae81ff">0.5</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// GLSL modulus function, as hlsl&#39;s &#34;fmod()&#34; uses truncate instead of floor which treats negative values differently.</span>
+</span></span><span style="display:flex;"><span>float2 mod(float2 x, <span style="color:#66d9ef">float</span> y){
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> x - y * floor(x/y);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Custom Function for Shader Graph</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> Ripples_float(float2 UV, <span style="color:#66d9ef">float</span> AngleOffset, <span style="color:#66d9ef">float</span> CellDensity, <span style="color:#66d9ef">float</span> Time, <span style="color:#66d9ef">float</span> Strength, <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">float</span> Out, <span style="color:#66d9ef">out</span> float3 Normal) {
+</span></span><span style="display:flex;"><span>    float2 g = floor(UV * CellDensity); <span style="color:#75715e">// cells</span>
+</span></span><span style="display:flex;"><span>    float2 f = frac(UV * CellDensity);  <span style="color:#75715e">// 0-1 UV per cell</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Initalise outputs</span>
+</span></span><span style="display:flex;"><span>    Out = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    Normal = float3(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Loop over cell and it&#39;s neighbours</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> y=-<span style="color:#ae81ff">1</span>; y&lt;=<span style="color:#ae81ff">1</span>; y++) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> x=-<span style="color:#ae81ff">1</span>; x&lt;=<span style="color:#ae81ff">1</span>; x++) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Get distance to random point in cell</span>
+</span></span><span style="display:flex;"><span>            float2 lattice = float2(x,y);
+</span></span><span style="display:flex;"><span>            float2 offset = voronoi_randomVector(mod(lattice + g, CellDensity), AngleOffset);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">float</span> d = distance(lattice + offset, f);
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Random time offset</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">float</span> t = frac(Time + (offset.x * <span style="color:#ae81ff">5</span>));
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Ripple (greyscale)</span>
+</span></span><span style="display:flex;"><span>            d = (<span style="color:#ae81ff">1</span>-d) * (<span style="color:#ae81ff">1</span>-d) * Strength * pow(saturate(<span style="color:#ae81ff">1</span> - abs(d - t)), <span style="color:#ae81ff">8</span>) * (sin((d-t) * <span style="color:#ae81ff">30</span>));
+</span></span><span style="display:flex;"><span>            Out = max(Out, d);
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Ripple normal vector</span>
+</span></span><span style="display:flex;"><span>            Normal += d * (normalize(float3(normalize((lattice + offset).xy - f), <span style="color:#ae81ff">3</span>))).xyz;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    Normal = normalize(Normal);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>This would need to be put into a .HLSL file which is used with a <b class="node">Custom Function</b> set to <strong>File</strong> mode. Name of function is &ldquo;Rain&rdquo; and we need the same inputs &amp; outputs as shown by the params in the <code>Ripples_float</code> function.</p>
+<div class="img-center">
+<a href="RipplesGraph.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="278" alt="(Image)" src="RipplesGraph.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The graph here has been setup with baking it to a texture in mind, so it is <strong>Unlit</strong>, with the result put into the <strong>Base Color</strong>. It uses a &ldquo;Slice&rdquo; <strong>Float property</strong> in the <strong>Time</strong> input of our function, and a <b class="node">Inverse Lerp</b> node is used to convert from a -1 to 1 range, into a 0-1 range, since that&rsquo;s what a <code>.png</code> can store.</p>
+<h4 id="baking">Baking</h4>
+<p>While we could use the outputs from our ripples <b class="node">Custom Function</b> as-is, it&rsquo;ll be cheaper if we bake the result of this to a Flipbook texture - that&rsquo;s a texture containing multiple frames which we&rsquo;ll switch between to make the result look animated.</p>
+<p>If you just want to use the one I created, you can download <a href="RippleFlipbook.png">this Ripple Flipbook texture</a>, but I still wanted to also show how it was created.</p>
+<p>The shader/material is baked by using a bunch of Graphics.Blit calls to a 3D Render Texture, then reading that back to the CPU. I have a <a href="https://github.com/Cyanilux/BakeShader">BakeShader repo</a> shared on Github which I recently updated to include this Flipbook option. It can be installed via the <strong>Package Manager</strong> using the git URL (see the README for info).</p>
+<p>Once installed you can go to <strong>Window → Cyanilux → BakeShader</strong>, select <strong>Flipbook</strong> and drag/assign a Material using the Shader Graph created in the previous section.</p>
+<div class="img-center">
+<a href="BakeShader.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="321" height="200" alt="(Image)" src="BakeShader.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>You should be able to find the resulting texture under the <code>Assets/BakedTextures</code> folder. (If you don&rsquo;t see that, try baking again). It should be a fairly long vertical texture, as that&rsquo;s apparently the order a Texture3D is stored in when read from the GPU and the tool doesn&rsquo;t do anything to reformat it (as of writing).</p>
+<h4 id="water-shader">Water Shader</h4>
+<p>When importing the flipbook texture we created in the previous section, be sure to set it as a <strong>Normal Map</strong> rather than a regular texture.</p>
+<p>For the puddle shader I&rsquo;m using a new <strong>Lit Graph</strong>, with <strong>Smoothness</strong> set to <strong>1</strong>, <strong>Metallic</strong> set to <strong>0.5</strong> and <strong>Base Color</strong> uses a bluish-grey colour. Feel free to use properties here if you want to configure these from the material.</p>
+<p>Assign the flipbook texture we created in the previous section to a <strong>Texture2D property</strong> in the <strong>Blackboard</strong> and use the <b class="node">Sample Texture 2D</b> node to sample it. Change the mode to <strong>Normal</strong> since we&rsquo;re sampling a normal map.</p>
+<p>Connect a <b class="node">Flipbook</b> node to the <strong>UV</strong> port. This handy node will take a single frame from our texture. We need to provide it with the amount of rows/columns in our flipbook (for my texture it&rsquo;s only <strong>1</strong> frame wide but <strong>16</strong> frames tall).</p>
+<p>Can also connect an <strong>Absolute World</strong> space <b class="node">Position</b> node put through a <b class="node">Swizzle</b> (with &ldquo;xz&rdquo;) to the <strong>UV</strong> port on our <b class="node">Flipbook</b>. This <a href="https://www.cyanilux.com/faq/#sg-planar-mapping">planar mapping</a> will keep the rain texture tiling consistent across objects even at different scales.</p>
+<p>So it actually animates, we need to connect a <b class="node">Time</b> node to the <strong>Tile</strong> port. But first, <b class="node">Multiply</b> that by some value to control the speed of the animation.</p>
+<div class="img-center">
+<a href="PuddleGraph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="647" height="451" alt="(Image)" src="PuddleGraph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Can put the output of this into a <b class="node">Normal Strength</b> node to reduce the strength (around <strong>0.2</strong> seems good for my flipbook), then connect to the <strong>Normal (Tangent Space)</strong> port in the <strong>Master Stack</strong>.</p>
+<p>In the tweet above I also <b class="node">Multiply</b> this strength with a circle mask so ripples don&rsquo;t appear under the umbrella. This looks something like :</p>
+<div class="img-center">
+<a href="PuddleGraph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="749" height="287" alt="(Image)" src="PuddleGraph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Of course this only works with one object. If you wanted to support multiple, an orthographic camera pointing downwards and rendering to a <strong>Render Texture</strong> asset might be better to capture occulders. But that is outside the scope of this breakdown.</p>
+<hr>
+<h3 id="raindrop-simple">Raindrops on Surfaces (Simple)</h3>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-conversation=\"none\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eCloseup of raindrop effects~ 💧☔️ \u003ca href=\"https://t.co/0csC11XELf\"\u003epic.twitter.com/0csC11XELf\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1676253152465526785?ref_src=twsrc%5Etfw\"\u003eJuly 4, 2023\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1676253152465526785\">https://twitter.com/Cyanilux/status/1676253152465526785</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<p>As mentioned in the intro, the umbrella I made in the tweet shown at the start of the post has some raindrops (dots &amp; scrolling lines, as shown in the tweet above) to give the idea that the rain is interacting with it. There&rsquo;s multiple ways to handle this, but in this section I&rsquo;m trying to keep it as simple as possible - while the next section goes over slightly more complex techniques.</p>
+<p>The effect is based on UV coordinates. It&rsquo;ll be up to you unwrap your model, but the Y axis of the UV will be the direction of scrolling. You&rsquo;ll likely want something similar to the &ldquo;Unwrap → Sphere Projection&rdquo; in Blender. Can always use a secondary UV channel if necessary (and UV1 on nodes instead of UV0). Since it&rsquo;s based on UVs the scrolling will be in the wrong direction if the model is rotated, I&rsquo;m not accounting for this currently.</p>
+<p>If you want to avoid using Mesh UVs, you could instead <a href="https://www.cyanilux.com/faq/#sg-planar-mapping">project textures using worldspace coordinates</a> and blend between them based on the <b class="node">Normal Vector</b> (similar to triplanar mapping). That&rsquo;ll work even with rotated models, however it may be a bit more expensive due to the additional texture samples.</p>
+<p>I&rsquo;m using a <strong>Lit Graph</strong> here and I&rsquo;ve set the <strong>Smoothness</strong> to <strong>0.9</strong>, <strong>Metallic</strong> to <strong>0.2</strong>, and <strong>Alpha</strong> to <strong>0.25</strong> to get a similar look to those transparent plastic umbrellas. I&rsquo;ve hardcoded these values but you could use <strong>Float properties</strong> to be able to control them from the material, especially if you want the same shader to work for multiple meshes/surfaces. I&rsquo;ve also got a <strong>Color property</strong> connected to the <strong>Base Color</strong> port, which is set to a light grey.</p>
+<h4 id="raindrop-dots-simple">Raindrop Dots</h4>
+<p>For creating raindrop &ldquo;dots&rdquo; I&rsquo;ve used the <b class="node">Voronoi</b> node - though it&rsquo;s likely that using a texture could be cheaper. The <strong>Out</strong> port is put into the <strong>Edge</strong> of a <b class="node">Step</b> and <strong>In</strong> set to <strong>0.25</strong> as this&rsquo;ll give us a bunch of dots. You&rsquo;ll also want to increase the <strong>Cell Density</strong>, I&rsquo;ve set it to <strong>30</strong> though this may vary depending on the mesh and it&rsquo;s UVs.</p>
+<p>To fade these dots out, we need a random value per dot. Luckily, the <strong>Cells</strong> output gives us this. But we also need to <b class="node">Multiply</b> this by 0.999 (or 1.001). While mathematically this doesn&rsquo;t change the value all that much, it is currently needed as a workound of a bug when the <b class="node">Fraction</b> node is used directly on the <b class="node">Voronoi</b> outputs (at a guess something to do with the nested loop it uses).</p>
+<p>Before using that node, we&rsquo;ll need to <b class="node">Add</b> the <strong>Time</strong> output from the <b class="node">Time</b> node so it actually animates, and may want to <b class="node">Multiply</b> by some value first, to control the speed. We can put that into a <b class="node">Fraction</b> node, which will turn the seconds from our time into repeating values from <strong>0 - 1</strong>.</p>
+<p>I&rsquo;d rather the dots didn&rsquo;t reappear straight after fading, so will also <b class="node">Subtract</b> a value of <strong>0.25</strong> then <b class="node">Saturate</b> to remove those negative values. We then <b class="node">Multiply</b> this with the output from our <b class="node">Step</b> to mask these changing values to our dots.</p>
+<div class="img-center">
+<a href="SimpleGraph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="293" alt="(Image)" src="SimpleGraph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<h4 id="mask-top">Mask (Top)</h4>
+<p>It may also make sense to mask these raindrops so they only appear on surfaces that are facing upwards. I haven&rsquo;t done this for the umbrella as I want the rain visible from the underside but you&rsquo;d likely want to do this for other props/surfaces. Could handle this with a <b class="node">Normal Vector</b> node, and <b class="node">Smoothstep</b> on the Y/G axis. For example :</p>
+<div class="img-center">
+<a href="Mask1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="530" height="359" alt="(Image)" src="Mask1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The mask contains values of 1 where the rain should appear, and 0 where it should be hidden. Therefore, too use this mask you&rsquo;d <b class="node">Multiply</b> with the current raindrops output. Or in the case of the complex version later where we use normals, you&rsquo;d use it as the Strength of a <b class="node">Normal Strength</b> node (or <b class="node">Multiply</b> with an existing strength value)</p>
+<h4 id="sliding-raindrops-simple">Sliding Raindrops</h4>
+<p>For creating raindrops that &ldquo;slide&rdquo; down the mesh, we&rsquo;ll use a noise texture (or <b class="node">Simple Noise</b>), with a <b class="node">Tiling And Offset</b> node in the UV port. Adjust the <strong>Tiling</strong> so the noise is stretched vertically, and use a <b class="node">Time</b> node multiplied by a speed value into the <strong>Y</strong> on a <b class="node">Vector2</b> and connect to the <strong>Offset</strong> port to scroll the texture vertically.</p>
+<p>I&rsquo;ve put the output of the noise through a <b class="node">Step</b> node, but you could use a <b class="node">Smoothstep</b> if you prefer.</p>
+<div class="img-center">
+<a href="SimpleGraph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="245" alt="(Image)" src="SimpleGraph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>To make these raindrops a bit more interesting we can also add some horizontal distortion to the UV coordinates. Here I&rsquo;m using a <b class="node">Sine</b> wave setup on the Y/G axis of the <b class="node">UV</b> coordinates, with some <b class="node">Multiply</b> nodes to control the frequency, speed and amplitude.</p>
+<div class="img-center">
+<a href="SimpleGraph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="339" alt="(Image)" src="SimpleGraph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The result of this group, is put into the <strong>X</strong> port of that <b class="node">Vector2</b> for our <strong>Offset</strong>.</p>
+<h4 id="mask-sides">Mask (Sides)</h4>
+<p>Again it may make sense to mask these raindrops, in this case so they only appear on the sides and not on surfaces pointing directly upwards. Can handle this with a <b class="node">Normal Vector</b> node, <b class="node">Split</b> and take the Y/G axis. Use a <b class="node">Absolute</b> so we remove both the top and bottom surfaces, and <b class="node">Smoothstep</b>, with the A input set to a larger value, to invert the result. Alternatively could <b class="node">One Minus</b>.</p>
+<div class="img-center">
+<a href="Mask2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="643" height="359" alt="(Image)" src="Mask2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The mask contains values of 1 where the rain should appear, and 0 where it should be hidden. Therefore, too use this mask you&rsquo;d <b class="node">Multiply</b> with the current raindrops output. Or in the case of the complex version later where we use normals, you&rsquo;d use it as the Strength of a <b class="node">Normal Strength</b> node (or <b class="node">Multiply</b> with an existing strength value)</p>
+<h4 id="combine-simple">Combine</h4>
+<p>We can use <b class="node">Multiply</b> nodes on these two raindrop outputs to control their strengths (possibly with <strong>Float properties</strong> if you want to be able to control it from the Material or C#). We can then combine by using a <b class="node">Maximum</b> node, and I&rsquo;ve put the result into the <strong>Emission</strong> port. It may also make sense to use a <strong>Boolean Keyword</strong> before that if you want to be able to toggle the rain calculations on/off.</p>
+<p>For the umbrella in particular I&rsquo;m also flipping the <b class="node">Normal Vector</b> for back faces as without this the shading is incorrect for those faces. For more details, <a href="https://www.cyanilux.com/faq/#sg-two-sided-shading">see this question in FAQ page</a>. Though due to transparent-sorting issues it may be better to instead have duplicate faces in the mesh - see <a href="https://www.cyanilux.com/faq/#transparent-sorting">&ldquo;Pre-sorting Mesh Triangle Order&rdquo; heading under this answer</a>.</p>
+<hr>
+<h3 id="raindrop-complex">Raindrops on Surfaces (Complex)</h3>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eTrying out some rain shader effects ☔️🌧️\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://t.co/RxLPGzNoba\"\u003epic.twitter.com/RxLPGzNoba\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1374350192623902723?ref_src=twsrc%5Etfw\"\u003eMarch 23, 2021\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1374350192623902723\">https://twitter.com/Cyanilux/status/1374350192623902723</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<p>I made this Rainy Window shader back in 2021, based off this <a href="https://twitter.com/klemen_lozar/status/953731352175587328">Raindrop Shader tweet thread by @klemen_lozar</a>. That included dots and sliding raindrops similar to the simplfied example above, but here we&rsquo;re manipulating the UV coordinates even further, in order to animate the effects in a much more interesting way.</p>
+<p>Again like the simple version, the effect is still based on the Mesh UVs, though <a href="https://www.cyanilux.com/faq/#sg-planar-mapping">projecting textures using worldspace coordinates</a> could also be an option.</p>
+<p>Rather than a greyscale result, we&rsquo;re also using the following <strong>Normal Map</strong> here. This&rsquo;ll be used to affect the shading and create distortion which will help the result to look more realistic compared to the simple version.</p>
+<div class="img-center">
+<a href="RaindropNormalMap.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="256" height="256" alt="(Image)" src="RaindropNormalMap.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>You should import this with the <strong>Normal Map</strong> type, and set <strong>Wrap Mode</strong> to <strong>Repeat</strong>. I&rsquo;ve kept mipmaps enabled but ticked the &ldquo;Replicate Border&rdquo; (aka &ldquo;Border Mipmaps&rdquo;) so the edges of each mipmap are kept the same, which helped to reduce some artifacts.</p>
+<h4 id="raindrop-dots">Raindrop Dots</h4>
+<p>For creating raindrop &ldquo;dots&rdquo; we&rsquo;ll use the <b class="node">Tiling And Offset</b> node to increase the tiling of our UVs, while also distorting with some noise. I&rsquo;m using the <b class="node">Gradient Noise</b> node for this but could also use a seamless noise texture.</p>
+<div class="img-center">
+<a href="ComplexGraph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="305" alt="(Image)" src="ComplexGraph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>I&rsquo;ve used a <b class="node">Fraction</b> node to help visualise these UVs, but it is not actually needed in calculations as the texture itself should have the <strong>Repeat</strong> wrap mode as mentioned earlier.</p>
+<p>Similar to the simple version, we want the raindrops to randomally appear then fade out. We can assign a random value to each drop by using a <b class="node">Floor</b> node on our tiled UV, then using a <b class="node">Random Range</b> node. This is equivalent to <code>frac(sin(dot(Seed, float2(12.9898, 78.233)))*43758.5453)</code> which is a commonly used calculation for random numbers in shaders. It&rsquo;ll return the same value provided the Seed doesn&rsquo;t change, hence why the <b class="node">Floor</b> node is needed - making each unit square of the UVs the same. If we had use the UVs without flooring, their value would be different per pixel/fragment, and so the seed and random value would be too.</p>
+<p>For animating, We&rsquo;ll need to <b class="node">Add</b> some scaled <strong>Time</strong> from the <b class="node">Time</b> node and put it into a <b class="node">Fraction</b> node to convert that to repeating values of 0-1.</p>
+<p>I don&rsquo;t want the drops to reappear straight away, and compared to our simple version before, the dots here are aligned to a more obvious grid so we&rsquo;ll need a longer interval to hide that somewhat. To handle this, I&rsquo;ve used a <b class="node">Multiply</b> with other port set to 10, to scale the values into a 0-10 range, then <b class="node">Saturate</b> to clamp any values above 1 and take a <b class="node">One Minus</b>.</p>
+<div class="img-center">
+<a href="ComplexGraph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="250" alt="(Image)" src="ComplexGraph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We can now sample our normal map with a <b class="node">Sample Texture 2D</b> node (Type set to <strong>Normal</strong>), using our &ldquo;Raindrop UVs&rdquo; in the <strong>UV</strong> port. Take the <strong>RGBA</strong> output and put that into the <strong>In</strong> port of a <b class="node">Normal Strength</b> node. For the <strong>Strength</strong> we&rsquo;ll use the random fading we just calculated. Can also <b class="node">Multiply</b> just before to adjust the strength a bit.</p>
+<div class="img-center">
+<a href="ComplexGraph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="677" height="455" alt="(Image)" src="ComplexGraph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<h4 id="sliding-raindrops">Sliding Raindrops</h4>
+<p>For our more complex sliding raindrops, we&rsquo;ll be constructing some UV coords which involves distorted lines and scrolling them vertically at different speeds.</p>
+<p>Take the horizontal (R/X) component of the <b class="node">UV</b> coords and <b class="node">Multiply</b> by some tiling amount, then <b class="node">Add</b> some noise. This can be the same noise as used before.</p>
+<div class="img-center">
+<a href="ComplexGraph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="440" alt="(Image)" src="ComplexGraph4.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Similar to the random values we just did for the drops, to convert these coordinates to random lines we&rsquo;ll <b class="node">Floor</b> then use a <b class="node">Random Range</b> node.</p>
+<div class="img-center">
+<a href="ComplexGraph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="414" height="364" alt="(Image)" src="ComplexGraph5.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We can use these &ldquo;Random Lines&rdquo; values as our different speeds for scrolling, though they are currently in a 0-1 range and we don&rsquo;t want any drops to move slowly (or not at all). While we <em>could</em> just change the Min/Max on the <b class="node">Random Range</b> itself, I&rsquo;ll be reusing the values later so instead put them into the <strong>T</strong> of a <b class="node">Lerp</b> node to handle the remapping. Set <strong>A</strong> and <strong>B</strong> to the minimum and maximum speeds the lines/raindrops should scroll at (i.e. <strong>0.7</strong> and <strong>1.7</strong>).</p>
+<p>To actually scroll, <b class="node">Multiply</b> this by <b class="node">Time</b>, then <b class="node">Add</b> to the vertical (G/Y) component of the <b class="node">UV</b>. I then <b class="node">Multiply</b> by 0.3 to scale everything.</p>
+<p>Currently at Time=0, this results in the UV.y as normal, so all the lines are aligned to eachother. To prevent this, I <b class="node">Add</b> the RandomLines to provide an inital offset.</p>
+<div class="img-center">
+<a href="ComplexGraph6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="310" alt="(Image)" src="ComplexGraph6.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>We use a <b class="node">Fraction</b> node so the values in these lines repeat vertically in a 0-1 range. We can now <b class="node">Multiply</b> to scale the values in each repeating section, then <b class="node">Saturate</b>. This allows us to scale the raindrop while leaving a gap between the next one. For random sizes, we&rsquo;ll use the RandomLines output again put into the <strong>T</strong> of another <b class="node">Lerp</b> node, with A/B set to the Min/Max sizes (i.e. <strong>2</strong> and <strong>8</strong>).</p>
+<p>Inbetween the <b class="node">Multiply</b> and <b class="node">Saturate</b>, I&rsquo;ve also used a <b class="node">One Minus</b>, <b class="node">Power</b> and another <b class="node">One Minus</b> to make the result more 💧 shaped, rather than circular like it is in the normal map.</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+With this, each line always has the same droplet size. If you want them even more random, take the output of the &ldquo;inital offset&rdquo; group from before, <b class="node">Floor</b> it and use another <b class="node">Random Range</b>. That&rsquo;ll give you a random value for each section, rather than the entire line. Use that in the <b class="node">Lerp</b> rather than RandomLines.
+</div>
+</div>
+<div class="img-center">
+<a href="ComplexGraph7.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="213" alt="(Image)" src="ComplexGraph7.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Finally we can combine the &ldquo;DropUVx&rdquo; and &ldquo;DropUVy&rdquo; groups using a <b class="node">Combine</b> or <b class="node">Vector2</b> node, and use that as the <strong>UV</strong> coordinates for a <b class="node">Sample Texture 2D</b> of our normal map. Make sure to set the Type on the sample to <strong>Normal</strong>. Can also use a <b class="node">Normal Strength</b> node to adjust the strength if required.</p>
+<div class="img-center">
+<a href="ComplexGraph8.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="724" height="400" alt="(Image)" src="ComplexGraph8.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<h4 id="masking">Masking</h4>
+<p>Similar to the simple version it would make sense to mask these rain effects so the dots only appear on surfaces that are facing upwards (roughly) and sliding drops only appear on the sides. See the <a href="#mask-top">Mask (Top)</a> and <a href="#mask-sides">Mask (Sides)</a> sections from before for examples on how to handle this.</p>
+<h4 id="usage-opaque">Usage (Opaque)</h4>
+<p>For <strong>Opaque</strong> materials, we&rsquo;ll want to combine our calculated normals with a <b class="node">Normal Blend</b> node, then connect directly to the <strong>Normal (Tangent Space)</strong> port of the <strong>Master Stack</strong> (of a Lit Graph).</p>
+<p>You may also want to adjust the <strong>Smoothness</strong> to a value around or above 0.8, since wet materials are likely to be quite specular/shiny. Can use a <strong>Float property</strong> so this can be controlled from the material or C#.</p>
+<div class="img-center">
+<a href="ComplexGraph9.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="533" height="394" alt="(Image)" src="ComplexGraph9.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Similar to what was mentioned in the simple version above, you may also want to use a <strong>Float property</strong> (or two) for the <strong>Strength</strong> of <b class="node">Normal Blend</b> node(s) to control the strength of the rain effects, and/or a <strong>Boolean Keyword</strong> if you want to be able to toggle the rain calculations on/off.</p>
+<h4 id="usage-transparent">Usage (Transparent)</h4>
+<p>For transparent materials (such as glass windows or my plastic umbrella), I also use these calculated normals to apply distortion to the view through the object. For this, we&rsquo;ll need to change the surface type to <strong>Transparent</strong> under the <strong>Graph Settings</strong>.</p>
+<p>Same as in the Opaque version, we combine the calculated normals with a <b class="node">Normal Blend</b> node and connect that to the <strong>Normal (Tangent Space)</strong> port.</p>
+<p>To handle the distortion, we can use the Camera&rsquo;s Opaque Texture (aka <b class="node">Scene Color</b> node). This normally uses the <b class="node">Screen Position</b>, but to distort this connect it to a <b class="node">Tiling And Offset</b>, using the <strong>Offset</strong> port for the distortion amount. Alternatively can use an <b class="node">Add</b> node.</p>
+<p>This distortion amount will be our normals output, but you&rsquo;ll also want to use another <b class="node">Normal Strength</b> node (or just <b class="node">Multiply</b>) to lower the strength further (for the distortion only). The result of the <b class="node">Scene Color</b> should then be attached to the <strong>Emission</strong> port as it needs to be unaffected by the shading of the <strong>Lit Graph</strong>. Also set the  <strong>Base Color</strong> to <strong>Black</strong> (or another dark colour to tint the result).</p>
+<div class="img-center">
+<a href="ComplexGraph10.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="277" alt="(Image)" src="ComplexGraph10.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p><div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>Be aware that if you are in the Built-in RP the <b class="node">Scene Color</b> node won&rsquo;t work, unless you manually copy the camera colour target to the <code>_CameraOpaqueTexture</code> global texture property. <a href="https://gist.github.com/Cyanilux/181893cd061e97eb12d5bfdec9fecaab">This github gist</a> can handle that for you.</p>
+<p>In HDRP there&rsquo;s also a <b class="node">HD Scene Color</b> which may be more suitable. I think that also provides LODs/mipmaps which could make the glass look more frosted or condensated.</p>
+
+</div>
+</div>
+<br><hr>
+
+<div style="display:block;text-align: center">
+<h2>Thanks for reading!</h2>
+<p> If this post helped, consider sharing a link with others!</p>
+</div>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div></p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a class="small-text" href="https://twitter.com/Cyanilux">© Cyanilux</a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/index.xml">
+		
+		RSS Feed
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>
