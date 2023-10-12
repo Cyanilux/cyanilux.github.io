@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Vertex Displacement">
 <meta itemprop="description" content="A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies. Also includes info about recalculating normal vectors."><meta itemprop="datePublished" content="2019-06-14T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2019-06-14T00:00:00+00:00" />
-<meta itemprop="wordCount" content="2274"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="wordCount" content="2355"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="Shader Graph," />
 	
 	
@@ -382,7 +382,33 @@
 <hr>
 <h2 id="bounds">Bounds</h2>
 <p>Shaders run on the <strong>GPU</strong>, so it&rsquo;s important to understand that it will not actually update the CPU-side mesh/vertices, mesh bounds or affect colliders.</p>
-<p>If the camera goes outside the original bounds, the mesh renderer will be culled due to Frustum Culling - this is an optimisation Unity uses to avoid rendering objects outside of the camera view. But this can be a problem if our displaced vertices are outisde of these bounds. We either need to keep scaling/offsetting small, or override the bounds on the mesh. e.g.</p>
+<p>If the camera goes outside the original bounds, the mesh renderer will be culled due to Frustum Culling - this is an optimisation Unity uses to avoid rendering objects outside of the camera view. But this can be a problem if our displaced vertices are outisde of these bounds. We either need to keep scaling/offsetting small, or override the bounds.</p>
+<p>In 2021.2+ it&rsquo;s now possible to override the <code>Renderer.bounds</code> (which is in world space) or <code>Renderer.localBounds</code> (which is local/object space, so the position/rotation/scale of the Transform component still applies). e.g.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>Renderer renderer = GetComponent&lt;Renderer&gt;();
+</span></span><span style="display:flex;"><span>renderer.bounds = <span style="color:#66d9ef">new</span> Bounds(origin, size);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//or</span>
+</span></span><span style="display:flex;"><span>renderer.localBounds = <span style="color:#66d9ef">new</span> Bounds(origin, size);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// And if you need to clear these bounds back to the default values, use :</span>
+</span></span><span style="display:flex;"><span>renderer.ResetBounds();
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// or</span>
+</span></span><span style="display:flex;"><span>renderer.ResetLocalBounds();</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>In earlier versions, you&rsquo;d need to override the <code>Mesh.bounds</code> itself. e.g.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
