@@ -53,12 +53,12 @@
     
 	
     <item>
-      <title>Intro to Shaders</title>
-      <link>https://www.cyanilux.com/tutorials/intro-to-shaders/</link>
+      <title>Intro to the Shader Pipeline</title>
+      <link>https://www.cyanilux.com/tutorials/intro-to-the-shader-pipeline/</link>
       <pubDate>Sun, 10 Jan 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.cyanilux.com/tutorials/intro-to-shaders/</guid>
-      <description>An introduction to what a Mesh, Shader and Material is in Unity, how to set Shader Properties from C#, a brief look at Forward vs Deferred rendering and some information about Material instances and Batching</description>
+      <guid>https://www.cyanilux.com/tutorials/intro-to-the-shader-pipeline/</guid>
+      <description>An introduction to what a Mesh, Shader and Material is in Unity, how to set Shader Properties from C#, various types of Batching, and a brief look at Forward, Forward&#43; and Deferred rendering paths</description>
     </item>
 	
     

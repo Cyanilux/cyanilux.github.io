@@ -229,6 +229,26 @@ a:active {
 	color: #00ddff;
 }
 
+/*
+.card-grid {
+	display: grid;
+	grid: 200px / auto auto auto
+}
+
+.card-sqr {
+	display: inline-grid;
+	clear : left;
+	border-radius : 10px;
+	background-color: #282828;
+	border: 3px solid #303030;
+	height : 146px;
+}
+
+.card-sqr > .card-text {
+	display: none;
+}
+*/
+
 /* (Assume PC) */
 @media screen and (min-width: 600px) {
 
@@ -250,7 +270,7 @@ a:active {
 	
 	.card-compact {
 		clear : left;
-		margin-top: 10px;
+		margin-top: 6px;
 		border-radius : 10px;
 		background-color: #282828;
 		line-height: 120%;
@@ -364,7 +384,7 @@ time {
 	background-color: #00aabb;
 	border-radius : 10px;
 	padding : 5px;
-	margin : 2px;
+	margin-left : 2px;
 }
 
 .node {
@@ -447,7 +467,6 @@ video {
 .highlight > pre {
 	overflow : auto;
 	padding : 20px;
-
 }
 
 /* Table */
