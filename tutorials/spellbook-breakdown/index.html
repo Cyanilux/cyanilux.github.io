@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=5 ">
+	
+	<meta itemprop="name" content="Book (w/ Turnable Pages) Breakdown">
+<meta itemprop="description" content="A book with pages that flip/turn via vertex displacement, and selects a portion of a texture containing all pages."><meta itemprop="datePublished" content="2023-10-21T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-10-21T00:00:00+00:00" />
+<meta itemprop="wordCount" content="4077"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="keywords" content="URP,Shader Graph," />
+	
+	
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/spellbook-breakdown/Preview.png"/>
+<meta name="twitter:title" content="Book (w/ Turnable Pages) Breakdown"/>
+<meta name="twitter:description" content="A book with pages that flip/turn via vertex displacement, and selects a portion of a texture containing all pages."/>
+
+	
+<meta property="og:title" content="Book (w/ Turnable Pages) Breakdown" />
+<meta property="og:description" content="A book with pages that flip/turn via vertex displacement, and selects a portion of a texture containing all pages." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/spellbook-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/spellbook-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2023-10-21T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-10-21T00:00:00+00:00" />
+	
+	
+	
+    
+    
+    <title>Book (w/ Turnable Pages) Breakdown | Cyanilux</title>
+	
+	
+	
+		
+		
+		<meta name="description" content="A book with pages that flip/turn via vertex displacement, and selects a portion of a texture containing all pages.. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/spellbook-breakdown/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
+	
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
+	
+	<nav id="nav" class="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		FAQ
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Book (w/ Turnable Pages) Breakdown</h1>
+<div class="post-metadata">
+
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/breakdowns/" style="text-decoration: none; color:#eeeeee;">
+	Breakdowns
+	</a>
+</div>
+
+
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	
+	<a href="https://www.cyanilux.com/tags/urp" style="text-decoration: none; color:#eeeeee;">
+	URP
+	</a>
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	
+	<a href="https://www.cyanilux.com/tags/shader-graph" style="text-decoration: none; color:#eeeeee;">
+	Shader Graph
+	</a>
+	</div>
+
+
+
+<div style="width:10px"></div>
+
+
+<time datetime="2023-10-21">&#128337 Oct 21, 2023</time>
+
+</div>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"fr\" dir=\"ltr\"\u003e\u003ca href=\"https://twitter.com/hashtag/TechnicallyAChallenge?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#TechnicallyAChallenge\u003c/a\u003e - Grimoire 📔👁️🕯️✨\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://t.co/AQFFFGb0KZ\"\u003epic.twitter.com/AQFFFGb0KZ\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1680308010831192070?ref_src=twsrc%5Etfw\"\u003eJuly 15, 2023\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1680308010831192070\">https://twitter.com/Cyanilux/status/1680308010831192070</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>I&rsquo;ve been taking an extended break recently so haven&rsquo;t made or written any tutorials in a while. But the latest shader experiment I did involved a Grimore/Spellbook, which had turnable pages. I&rsquo;ve already shared some info &amp; graphs on socials - though it&rsquo;s not always easy to find content there (and who knows how long Twitter/X will last&hellip; 🙄), so here&rsquo;s a proper breakdown too!</p>
+<p>I wanted the book to be able to open and close, and felt that rigging the model and animating it in the usual way made sense. While I could have rigged pages too, I thought it was more interesting to use a vertex shader to turn these. The page only really needs to flip around it&rsquo;s origin - so should be a fairly simple displacement. (Though this assumes the book is fully open)</p>
+<p>A C# script is used to control when pages should flip - (in my case, when the mouse is clicked). It also pools the page GameObjects and reuses them to avoid unnecessary instantiation &amp; destroying, and is responsible for setting material properties to control the turning/flipping and which pages are displayed.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Made this in URP using <strong>Lit Graph</strong>, but may work in others.</li>
+<li>In my original attempt (shown in tweet above), the normals on the flippable page didn&rsquo;t <em>exactly</em> match that of the book mesh (due to issues with the model). I&rsquo;ve since fixed this.</li>
+<li>Note that the heights of the page stacks on either side of the book mesh do not change. It always appears to be halfway through regardless of which page is shown. Might be possible to change the shaders to account for this, but it isn&rsquo;t something I tried to tackle.</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<h3 id="setup">Model &amp; Setup</h3>
+<p>First up, we&rsquo;ll need models for the book and a page. As I want the tutorial to focus more on the shader, I&rsquo;m not going through the modelling process here in any detail - (I&rsquo;m certainly no expert at that anyway).</p>
+<p>If interested you can download a <a href="BookModel.fbx">Book Model</a> I made (CC0 License). It&rsquo;s similar to the one shown in the tweet at the start of the post, but without the pentagram decoration on the front cover. It is rigged &amp; animated - (but if you don&rsquo;t want that can disable those in the import settings). To handle the animation you&rsquo;ll probably want to create an <a href="https://docs.unity3d.com/Manual/class-AnimatorController.html">Animator Controller</a> but that&rsquo;s somewhat outside the scope of the tutorial.</p>
+<p>Alternatively you can make your own - the foldout below will go through some tips &amp; things important for the shader to work correctly, (or can look at the models I made as examples).</p>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Model setup tips\/info</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Model setup tips\/info</b>';
+
+    }
+"><b>⯈ Model setup tips/info</b></button>
+<div class="foldout">
+<ul>
+<li>The origin of the book (and page model) should be in the center - though it&rsquo;s only important for the X axis iirc. In my case I have it at the center along it&rsquo;s spine.</li>
+<li>Modelling the book in it&rsquo;s open state may help keep normals consistent.</li>
+<li>Fairly important the book is symmetrical. If using Blender, I&rsquo;d recommend using the Mirror modifier. Can use the mirror on both the X and Y axis. (I did this as two separate modifiers to also flip the UVs correctly)</li>
+<li>To make it easier to apply textures/shaders, I apply different materials to the top faces/pages of the book. With this you can unwrap the rest of the book in basically any way you want - But the pages can be unwrapped with &ldquo;Project From View (Bounds)&rdquo;. If using mirror modifiers like I am, you&rsquo;d want to scale this down and move it to a corner :</li>
+</ul>
+<div class="img-center">
+<a href="BookUV.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="741" height="754" alt="(Image)" src="BookUV.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<ul>
+<li>Once modelled and unwrapped, you&rsquo;ll want to duplicate the <strong>right page</strong>. Can do this in Blender by highlighting faces, Shift+D to duplicate, P to separate (by selection). Go into object mode, select new object and remove the second mirror modifier. (If the model is already rigged/animated, may need to first duplicate the whole model and apply the armature modifier while the book is open)</li>
+</ul>
+
+</div>
+<p>Import the model into Unity and place it in scene. While Shader Graph itself gives previews (including Main Preview which can have custom meshes), I&rsquo;ve always found it much easier to save the graph asset and visualise in scene. You may want to do this at various times during the tutorial to see how nodes affect the result.</p>
+<p>We&rsquo;ll need to create two Lit Graphs. In my case I&rsquo;ve named them &ldquo;BookPages&rdquo; and &ldquo;PageTurn&rdquo;. Create materials using these shaders and apply them to the book&rsquo;s pages and separate page objects respectively.</p>
+<p>For my model, the book has two submeshes so will need two materials applied. The cover can use a regular material using the default shader (Standard, URP/Lit, etc). I&rsquo;m not going through that part, you can unwrap that part of the model and texture this as you wish.</p>
+<h3 id="graph-book">Shader Graph (Book Pages)</h3>
+<p>The book uses a shader graph as we want to apply page textures. While these could be put into a Texture2DArray (assuming target platform supports them), I chose to instead just use a long Texture2D. We can then offset the UV coordinates to select which page should be shown - and to make this easier, we can use the <b class="node">Flipbook</b> node.</p>
+<p>You&rsquo;ll probably want to create your own texture later - (I show how I generated mine in the final section, or you can manually draw one) - but for now it&rsquo;ll be easier to use this :</p>
+<div class="img-center">
+<a href="Pages0-7.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="93" alt="(Image)" src="Pages0-7.png" />
+</a>
+<p class="img-text">0-7 Numbered Pages Texture (CC0 License)</p>
+</div>
+<p>First, set up some properties in the <strong>Blackboard</strong> :</p>
+<ul>
+<li>PagesTex (Texture2D), Default = (set to 0-7 numbered texture above)</li>
+<li>PageCount (Float), Default = 8 (for this texture)</li>
+<li>PageIndexL (Float), Default = 0</li>
+<li>PageIndexR (Float), Default = 1</li>
+</ul>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>Make sure the Reference fields of these properties match the name, but starting with &ldquo;<code>_</code>&rdquo;</p>
+<p>Shader Graph should do this automatically, but older versions may instead use an auto-generated string of characters which will need to be changed - otherwise the C# script later will not work.</p>
+
+</div>
+</div>
+<p>Set the <strong>Width</strong> port of the <b class="node">Flipbook</b> to the PageCount property, and <strong>Height</strong> to 1. As we want to map the texture to both pages, we&rsquo;ll need to use a <b class="node">Tiling And Offset</b> node with Tiling set to <strong>(2, 1)</strong> for the <strong>UV</strong> port.</p>
+<p>For the <strong>Tile</strong> input, we need to use either the PageIndexL or PageIndexR properties depending which page the fragment/pixel is part of. Can handle this with a <b class="node">Branch</b> where the Predicate is set to a <b class="node">Comparison</b> (Less) between the X coordinate of the <b class="node">UV</b> and <strong>0.5</strong>.</p>
+<p>We actually also need to <b class="node">Subtract</b> <strong>1</strong> from the PageIndexR to obtain the correct result, due to the tiling.</p>
+<div class="img-center">
+<a href="BookGraph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="198" alt="(Image)" src="BookGraph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>With this we can sample the texture. But instead of a <b class="node">Sample Texture 2D</b> I&rsquo;m actually using a <b class="node">Custom Function</b> node instead to handle this. Given the function body here is fairly short, I find it easiest to use the <strong>String</strong> mode - (can put it in a SubGraph if you want to reuse it) :</p>
+<div class="foldout" style="display:block; line-height:120%">
+<p><strong>Inputs</strong> :</p>
+<ul>
+<li>Texture (Texture2D)</li>
+<li>UV (Vector2)</li>
+<li>UV_Grad (Vector2)</li>
+</ul>
+<p><strong>Outputs</strong> :</p>
+<ul>
+<li>RGBA (Vector4)</li>
+<li>A (Float)</li>
+</ul>
+<p><strong>Name</strong> :</p>
+<ul>
+<li>SampleGrad</li>
+</ul>
+<p><strong>Body</strong> :
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>RGBA <span style="color:#f92672">=</span> SAMPLE_TEXTURE2D_GRAD(Texture, Texture.samplerstate, UV, ddx(UV_Grad), ddy(UV_Grad));
+</span></span><span style="display:flex;"><span>A <span style="color:#f92672">=</span> RGBA.a;</span></span></code></pre></div></p>
+</div>
+<p>We pass in our UV and a second UV set scaled in the same way. Reasons for this is explained in the foldout below.</p>
+<div class="img-center">
+<a href="BookGraph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="298" alt="(Image)" src="BookGraph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Why are we avoiding \u003cb class=\u0022node\u0022\u003eSample Texture 2D\u003c\/b\u003e here?</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Why are we avoiding \u003cb class=\u0022node\u0022\u003eSample Texture 2D\u003c\/b\u003e here?</b>';
+
+    }
+"><b>⯈ Why are we avoiding <b class="node">Sample Texture 2D</b> here?</b></button>
+<div class="foldout">
+<p>Technically, you could use that node instead. But as our <b class="node">Flipbook</b> node can select different Tiles for the left and right pages, it can cause a jump/seam in the UVs down the center of the book. This leads to a larger derivative (difference in values) across the 2x2 pixel blocks that fragment shaders run in.</p>
+<p>This is interpreted as <em>needing to fit more of the texture inbetween those pixels</em>, so the gpu samples a higher mipmap level (more blurry / smaller resolution). It only does this for those pixels along the seam so isn&rsquo;t a <em>huge</em> issue, but it can be noticeable and I wanted to avoid it.</p>
+<p>To fix this, there are some options:</p>
+<ul>
+<li>We can disable mipmaps on the texture (or use <b class="node">Sample Texture 2D LOD</b> with LOD set to 0). But this leads to visual artifacts when viewing it at a distance - what mipmaps are intended to solve.</li>
+<li>We can use the <b class="node">Calculate Level Of Detail Texture 2D</b> node for the LOD level in the <b class="node">Sample Texture 2D LOD</b> node. This somewhat works, but only based on distance - it ignores <em>Anisotropic filtering</em> which helps sharpen the texture/mipmap when viewing the texture from a side angle.</li>
+<li>Instead, we can use <strong>different UV coordinates</strong> for calculating derivatives across the 2x2 pixel block. There isn&rsquo;t a node in ShaderGraph that handles this, but we can use the <code>SAMPLE_TEXTURE2D_GRAD</code> macro in a <b class="node">Custom Function</b>. We&rsquo;d want to scale the other UVs in the same way (as shown by the UV_Grad input used below), but avoid creating seams.</li>
+</ul>
+
+</div>
+<p>My book pages mesh also includes the sides of the pages which currently may be textured a bit strangely.</p>
+<p>To apply a different textures/colour to the side we first need some way to distinguish between these faces. I (somewhat lazily) used the <b class="node">Normal Vector</b> as only the top faces have normals pointing roughly upwards, so can <b class="node">Split</b> to take the Y/G axis and do a <b class="node">Comparison</b> with a value of 0.6-ish. (Could alternatively use <b class="node">Vertex Color</b>)</p>
+<p>This can be put into the <strong>Predicate</strong> on a <b class="node">Branch</b> node - the <strong>True</strong> port being the top, so result from our SampleGrad <b class="node">Custom Function</b>, while <strong>False</strong> is for the sides. To look like a stack of paper/pages, I sample a noise texture for this with the <strong>X Tiling</strong> set to <strong>0</strong>, but you could instead make a texture with random lines. (Could also use maths, but I&rsquo;d recommend textures as mipmaps help avoid aliasing/moiré artifacts when viewing from a distance)</p>
+<div class="img-center">
+<a href="BookGraph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="314" alt="(Image)" src="BookGraph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Due to how the mirror modifier works on the mesh UVs (which I haven&rsquo;t applied, so don&rsquo;t have full control over), there will be a seam at the middle if you use the UV as-is. To fix this, I <b class="node">Subtract</b> and <b class="node">Absolute</b> as shown above, to undo the mirroring (for sides only).</p>
+<p>Finally, connect the output of the <b class="node">Branch</b> to the <strong>Base Color</strong> on the <strong>Master Stack</strong>. I&rsquo;ve also hardcoded Smoothness and Metallic at 0 as they shouldn&rsquo;t really be needed here, but you can create properties for these other ports if you prefer.</p>
+<h3 id="graph-page">Shader Graph (Page Turn)</h3>
+<p>Our book can now select different pages, but to complete the illusion we need to be able to spawn extra page objects that turn. We&rsquo;ll worry about spawning them later - for now, we&rsquo;ll set up our second graph for these pages.</p>
+<p>Under the <strong>Graph Settings</strong> set <strong>Render Face</strong> to <strong>Both</strong>. With this, both front and back faces of the mesh are visible. We&rsquo;ll be able to texture these differently later, by using <b class="node">Is Front Face</b> nodes.</p>
+<h4 id="vertex">Vertex</h4>
+<p>But first, let&rsquo;s tackle the vertex stage. Our page mesh is currently on the right side of the book. You might think about <em>rotating</em> the vertices counter-clockwise with the <b class="node">Rotate About Axis</b> node, but the page isn&rsquo;t perfectly flat (it bends slightly in the middle) so makes it trickier - the page mesh would be upside down!</p>
+<p>In order to turn correctly we want it to end up <em>mirrored/flipped</em> across the book (object space X axis). In terms of math, that means multiplying the vertex position by <strong>(-1, 1, 1)</strong>. The first component should start at <strong>1</strong> (page on right side), and animate towards <strong>-1</strong> (page on left side). For animating there is the <b class="node">Time</b> node, but this is constant increasing and can&rsquo;t be started/stopped. For complete control, we should instead create a <strong>Float Property</strong>. In my case I named it &ldquo;PageFlip&rdquo;.</p>
+<p>It&rsquo;s somewhat arbitary what range of values the property could use, but it makes the most sense to pass it in from C# in a 0-1 range (similar to the &ldquo;t&rdquo; input in lerp and other interpolations). You may also want to set the type of the property to <strong>Slider</strong> to make testing from the Material Inspector easier.</p>
+<p>In the shader we could remap the property into the -1 to 1 range we need for mirroring, but as this is meant to simulate a <em>rotation</em> we&rsquo;ll want to instead be using <strong>trigonometric functions</strong> (<b class="node">Sine</b> and <b class="node">Cosine</b>).</p>
+<p>As these functions take an angle in radians, we first <b class="node">Multiply</b> the property by <strong>PI</strong> from a <b class="node">Constant</b> node - (equivalent to 180 degrees). Put this into <b class="node">Cosine</b>, then into <strong>X</strong> port on a <b class="node">Vector3</b> node with <strong>Y</strong> and <strong>Z</strong> set to <strong>1</strong>. To apply this, <b class="node">Multiply</b> this by the <b class="node">Position</b> node (set to Object space).</p>
+<div class="img-center">
+<a href="PageGraph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="191" alt="(Image)" src="PageGraph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Feel free to attach this to the <strong>Position</strong> port in the Vertex stage of the <strong>Master Stack</strong>. Then adjust the property on the material to see how it affects the mesh.</p>
+<p>To actually make the page move in an arc / semi-circular motion we&rsquo;ll need to add some offset to the Y axis. Take the angle again, but this time put it into a <b class="node">Sine</b> node. We&rsquo;ll also want to <b class="node">Add</b> a small amount (i.e. 0.005) to avoid the page <a href="https://en.wikipedia.org/wiki/Z-fighting">Z-Fighting</a> with the pages of the book mesh.</p>
+<p>We don&rsquo;t want vertices closer to the center of the book moving as much. We&rsquo;ll want to take the <b class="node">UV</b>, <b class="node">Split</b> to take the <strong>X/R</strong> axis (or <b class="node">Swizzle</b> with &ldquo;x&rdquo;) as that&rsquo;s horizontal along the page. As the mesh UVs take up the right half of the UV quad, we&rsquo;ll also need to remap slightly. Put this into the <strong>T</strong> input on an <b class="node">Inverse Lerp</b> node, with <strong>A</strong> set to <strong>0.5</strong> and <strong>B</strong> set to <strong>1</strong>.</p>
+<p><b class="node">Multiply</b> with the result of the <b class="node">Add</b> node from before, and put into the <strong>Y</strong> input on a <b class="node">Vector3</b> node, leaving <strong>X</strong> and <strong>Z</strong> at <strong>0</strong>. Then <b class="node">Add</b> this to the scaled/mirrored position from before to apply the offset. Put this into the <strong>Position</strong> port in the <strong>Master Stack</strong>.</p>
+<div class="img-center">
+<a href="PageGraph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="293" alt="(Image)" src="PageGraph2.png" />
+</a>
+<p class="img-text">(Selected groups are the new additions)</p>
+</div>
+<p>This works quite well, but when mirrored the shading doesn&rsquo;t perfectly match the left page of the book mesh. This is because while we&rsquo;ve changed the vertex positions, the normals remain untouched.</p>
+<p>Calculating new normals for this displacement is actually quite easy - we can take the <b class="node">Vector3</b> used in the mirroring and <b class="node">Multiply</b> this with the current <b class="node">Normal Vector</b>, flipping it in the same way. We can then use a <b class="node">Rotate About Axis</b> node with <strong>Axis</strong> set to <strong>(0, 0, -1)</strong> and set the <strong>Rotation</strong> to our angle we calculated earlier. (Can use this node as normals are directions - not positions, so the page not being flat doesn&rsquo;t really affect us here)</p>
+<div class="img-center">
+<a href="PageGraph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="296" alt="(Image)" src="PageGraph3.png" />
+</a>
+<p class="img-text">(Selected groups are the new additions)</p>
+</div>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+To ensure shading is correct, we&rsquo;ll also need to <a href="https://www.cyanilux.com/faq/#sg-two-sided-shading">flip the normals for back faces</a> during the Fragment stage - refer to one of the images shown in the FAQ to handle that.
+</div>
+</div>
+<h4 id="fragment">Fragment</h4>
+<p>Similar to the prior graph, we&rsquo;ll use a <b class="node">Flipbook</b> node to select a portion of our long pages Texture2D. As there is no issue with seams this time, we can also use a <b class="node">Sample Texture 2D</b> node.</p>
+<p>Set up the following properties in the <strong>Blackboard</strong> :</p>
+<ul>
+<li>PagesTex (Texture2D), Default = (set to 0-7 numbered texture)</li>
+<li>PageCount (Float), Default = 8 (for this texture)</li>
+<li>PageIndex (Float), Default = 0</li>
+</ul>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>Make sure the Reference fields of these properties match the name, but starting with &ldquo;<code>_</code>&rdquo;</p>
+<p>Shader Graph should do this automatically, but older versions may instead use an auto-generated string of characters which will need to be changed - otherwise the C# script later will not work.</p>
+
+</div>
+</div>
+<p>Like before, set the <strong>Width</strong> port to the PageCount property, and <strong>Height</strong> to 1.</p>
+<p>Since this graph is applied to the single-page mesh, we only need one PageIndex this time. The other side of the page does need to be different - but it&rsquo;ll always be the <em>next page</em>, so we can easily <b class="node">Add</b> a value of <strong>1</strong> to obtain that. We can use an <b class="node">Is Front Face</b> and <b class="node">Branch</b> to select between these two indices, which is used as the <strong>Tile</strong> input on the <b class="node">Flipbook</b>.</p>
+<div class="img-center">
+<a href="PageGraph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="361" alt="(Image)" src="PageGraph4.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Currently the texture takes up the entire UV quad, but since we copied the <em>right page</em> for this mesh, it&rsquo;s UVs are still set to only the right half. (While we could have edited the UVs in the mesh itself, I thought it easier to keep them consistent with the book mesh). To account for this, we can put the UV.x into the <strong>T</strong> of an <b class="node">Inverse Lerp</b> node with <strong>A</strong> set to <strong>0.5</strong> and <strong>B</strong> set to <strong>1</strong>. This results in a 0-1 gradient across the range provided.</p>
+<p>As the vertices &amp; UV coordinates are the same for both sides of the face, the page texture will actually be flipped on the back face. To fix this, use a <b class="node">One Minus</b> node - but only for back faces, so use another <b class="node">Is Front Face</b> and <b class="node">Branch</b> setup.</p>
+<p>Put the result into the <strong>X</strong> port on a <b class="node">Vector2</b>, with <strong>Y</strong> set to the <strong>Y/G</strong> axis of the <b class="node">UV</b>.</p>
+<div class="img-center">
+<a href="PageGraph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="346" alt="(Image)" src="PageGraph5.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Connect this to the <strong>UV</strong> port on the <b class="node">Flipbook</b>. The sampled texture preview should now show &ldquo;7 | 0&rdquo;, but the left side can be ignored as that part isn&rsquo;t mapped to any part of the mesh.</p>
+<p>Connect the <b class="node">Sample Texture 2D</b> <strong>RGBA</strong> output to the <strong>Base Color</strong> in the <strong>Master Stack</strong>. Also set the Metallic/Smoothness/etc to the same values as used in the book graph - it&rsquo;s important it looks the same so there isn&rsquo;t any noticeable flicker as the page is spawned in.</p>
+<h3 id="script">C# Script</h3>
+<p>These two shaders should all be set up now, but currently the only way to test if they&rsquo;re working correctly is by manually adjusting properties on the materials. To handle spawning of page objects and turning them on mouse presses (left and right), I use the following C# Script. It&rsquo;s a bit long, so I&rsquo;ve put it under a foldout.</p>
+<p>Hopefully it&rsquo;s clear how it works based on the comments.</p>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ View Code</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ View Code</b>';
+
+    }
+"><b>⯈ View Code</b></button>
+<div class="foldout">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 70
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 71
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 72
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 73
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 74
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 75
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 76
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 77
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 78
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 79
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 80
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 81
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 82
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 83
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 84
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 85
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 86
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 87
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 88
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 89
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 90
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 91
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 92
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 93
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 94
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 95
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 96
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 97
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 98
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 99
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">100
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">101
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">102
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">103
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">104
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">105
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">106
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">107
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">108
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">109
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">110
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">111
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">112
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">113
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">114
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">115
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">116
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">117
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">118
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">119
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">120
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">121
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">122
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">123
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">124
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">125
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">126
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">127
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">128
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">129
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">130
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">131
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">132
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">133
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">134
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">135
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">136
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">137
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">138
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">139
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">140
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">141
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">142
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Collections;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Collections.Generic;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BookPageHandler</span> : MonoBehaviour {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> GameObject pagePrefab;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Material bookPageMaterial;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> pageIndexL, pageCount;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> allowLoop;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> pageIndexR;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Queue&lt;GameObject&gt; pool = <span style="color:#66d9ef">new</span> Queue&lt;GameObject&gt;();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Queue&lt;<span style="color:#66d9ef">int</span>&gt; pageFlipQueue = <span style="color:#66d9ef">new</span> Queue&lt;<span style="color:#66d9ef">int</span>&gt;();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> pagesCurrentlyFlipping; <span style="color:#75715e">// (also positive or negative, depending on flip direction)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">float</span> cooldownTimer;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> IsFlipping =&gt; pagesCurrentlyFlipping != <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> Start(){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Set inital pages. (Alternatively could set these on the material and use GetFloat here)</span>
+</span></span><span style="display:flex;"><span>        pageIndexR = pageIndexL + <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        bookPageMaterial.SetFloat(<span style="color:#e6db74">&#34;_PageIndexL&#34;</span>, pageIndexL);
+</span></span><span style="display:flex;"><span>        bookPageMaterial.SetFloat(<span style="color:#e6db74">&#34;_PageIndexR&#34;</span>, pageIndexR);
+</span></span><span style="display:flex;"><span>        bookPageMaterial.SetFloat(<span style="color:#e6db74">&#34;_PageCount&#34;</span>, pageCount);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/// &lt;summary&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/// Queues a page flip -</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/// Set direction to positive to go to next page (flip right to left), </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/// or negative to go to previous page (flip left to right).</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/// &lt;/summary&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> QueueFlip(<span style="color:#66d9ef">int</span> direction){
+</span></span><span style="display:flex;"><span>        direction = (<span style="color:#66d9ef">int</span>)Mathf.Sign(direction);
+</span></span><span style="display:flex;"><span>        pageFlipQueue.Enqueue(direction);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> Update() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Queue input presses (feel free to comment out if you handle your own input elsewhere)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (Input.GetMouseButtonDown(<span style="color:#ae81ff">0</span>)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Next page</span>
+</span></span><span style="display:flex;"><span>            QueueFlip(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (Input.GetMouseButtonDown(<span style="color:#ae81ff">1</span>)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Previous page</span>
+</span></span><span style="display:flex;"><span>            QueueFlip(-<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (cooldownTimer &gt; <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// On cooldown</span>
+</span></span><span style="display:flex;"><span>            cooldownTimer -= Time.deltaTime;
+</span></span><span style="display:flex;"><span>        }<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (pageFlipQueue.Count != <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// If already flipping, Are we flipping in same direction?</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (IsFlipping &amp;&amp; pageFlipQueue.Peek() != Mathf.Sign(pagesCurrentlyFlipping)) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Prevent looping</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">int</span> direction = pageFlipQueue.Dequeue();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (!allowLoop){
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (direction &gt; <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> (pageIndexR &gt;= pageCount-<span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>                }<span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> (pageIndexL &lt;= <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Flip!</span>
+</span></span><span style="display:flex;"><span>            StartCoroutine(PageFlip(direction));
+</span></span><span style="display:flex;"><span>            cooldownTimer = <span style="color:#ae81ff">0.1f</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> OnDestroy(){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Clean up page objects &amp; page material instances</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">foreach</span> (GameObject obj <span style="color:#66d9ef">in</span> pool){
+</span></span><span style="display:flex;"><span>            Destroy(obj.GetComponent&lt;MeshRenderer&gt;().material);
+</span></span><span style="display:flex;"><span>            Destroy(obj);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> InstantiatePage(){
+</span></span><span style="display:flex;"><span>        GameObject page = Instantiate(pagePrefab);
+</span></span><span style="display:flex;"><span>        page.transform.SetParent(transform, <span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>        page.GetComponent&lt;Renderer&gt;().localBounds = <span style="color:#66d9ef">new</span> Bounds(<span style="color:#66d9ef">new</span> Vector3(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.6f</span>, <span style="color:#ae81ff">0</span>), <span style="color:#66d9ef">new</span> Vector3(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1.2f</span>, <span style="color:#ae81ff">1.6f</span>));
+</span></span><span style="display:flex;"><span>        Material pageMaterial = page.GetComponent&lt;MeshRenderer&gt;().material;
+</span></span><span style="display:flex;"><span>        pageMaterial.SetFloat(<span style="color:#e6db74">&#34;_PageCount&#34;</span>, pageCount);
+</span></span><span style="display:flex;"><span>        pool.Enqueue(page);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> IEnumerator PageFlip(<span style="color:#66d9ef">int</span> direction){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (direction == <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Invalid Direction, cannot be zero.</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        pagesCurrentlyFlipping += direction;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Get page object</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (pool.Count == <span style="color:#ae81ff">0</span>) InstantiatePage();
+</span></span><span style="display:flex;"><span>        GameObject page = pool.Dequeue();
+</span></span><span style="display:flex;"><span>        page.SetActive(<span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Adjust properties</span>
+</span></span><span style="display:flex;"><span>        Material pageMaterial = page.GetComponent&lt;MeshRenderer&gt;().material;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (direction &gt; <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>            pageMaterial.SetFloat(<span style="color:#e6db74">&#34;_PageIndex&#34;</span>, pageIndexR);
+</span></span><span style="display:flex;"><span>            pageIndexR += <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>            bookPageMaterial.SetFloat(<span style="color:#e6db74">&#34;_PageIndexR&#34;</span>, pageIndexR);
+</span></span><span style="display:flex;"><span>        }<span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>            pageMaterial.SetFloat(<span style="color:#e6db74">&#34;_PageIndex&#34;</span>, pageIndexL-<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>            pageIndexL -= <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>            bookPageMaterial.SetFloat(<span style="color:#e6db74">&#34;_PageIndexL&#34;</span>, pageIndexL);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">float</span> t = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">float</span> flipSpeed = <span style="color:#ae81ff">1.2f</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span>(t &lt; <span style="color:#ae81ff">1</span>){
+</span></span><span style="display:flex;"><span>            t += Time.deltaTime * flipSpeed;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (t &gt;= <span style="color:#ae81ff">1</span>){
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Loop End, finished flipping</span>
+</span></span><span style="display:flex;"><span>                t = <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Update book page property</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (direction &gt; <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>                    pageIndexL += <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>                    bookPageMaterial.SetFloat(<span style="color:#e6db74">&#34;_PageIndexL&#34;</span>, pageIndexL);
+</span></span><span style="display:flex;"><span>                }<span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>                    pageIndexR -= <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>                    bookPageMaterial.SetFloat(<span style="color:#e6db74">&#34;_PageIndexR&#34;</span>, pageIndexR);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Animate page flipping</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//float v = Mathf.SmoothStep(0, 1, t);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">float</span> v = t * t * t * (t * (t * <span style="color:#ae81ff">6f</span> - <span style="color:#ae81ff">15f</span>) + <span style="color:#ae81ff">10f</span>); <span style="color:#75715e">// SmootherStep</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">float</span> flipAmount = (direction &gt; <span style="color:#ae81ff">0</span>) ? v : <span style="color:#ae81ff">1</span> - v;
+</span></span><span style="display:flex;"><span>            pageMaterial.SetFloat(<span style="color:#e6db74">&#34;_PageFlip&#34;</span>, flipAmount);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Return page to pool</span>
+</span></span><span style="display:flex;"><span>        page.SetActive(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>        pool.Enqueue(page);
+</span></span><span style="display:flex;"><span>        pagesCurrentlyFlipping -= direction;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+
+</div>
+<p>That&rsquo;s mostly it for the tutorial, though I will quickly mention how I made the pages for my Grimoire/Spellbook scene (tweet at beginning of post) :</p>
+<h3 id="runes">Pages Texture</h3>
+<p>You could manually draw out textures for the pages, but in my scene I used some procedurally generated runes based on <a href="https://www.shadertoy.com/view/4ltyDM">this GLSL shader on shadertoy</a> - which I rewrote in HLSL as a <b class="node">Custom Function</b> :</p>
+<ul>
+<li><strong>Type</strong> : File (Runes.hlsl, as shown below)</li>
+<li><strong>Name</strong> : Runes</li>
+<li><strong>Input</strong> : UV (Vector2)</li>
+<li><strong>Output</strong> : Out (Float)</li>
+</ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// Based on https://www.shadertoy.com/view/4ltyDM
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define S(d,r) smoothstep( r, 0., d)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> <span style="color:#a6e22e">drawLine</span>(float2 p, float2 a, float2 b) {
+</span></span><span style="display:flex;"><span>    p <span style="color:#f92672">-=</span> a, b <span style="color:#f92672">-=</span> a;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">float</span> h <span style="color:#f92672">=</span> clamp(dot(p, b) <span style="color:#f92672">/</span> dot(b, b), <span style="color:#ae81ff">0.</span>, <span style="color:#ae81ff">1.</span>);
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> length(p <span style="color:#f92672">-</span> b <span style="color:#f92672">*</span> h);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> <span style="color:#a6e22e">rand</span>(float2 Seed) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> frac(sin(dot(Seed, float2(<span style="color:#ae81ff">12.9898</span>, <span style="color:#ae81ff">78.233</span>)))<span style="color:#f92672">*</span><span style="color:#ae81ff">43758.5453</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Runes_float</span>(float2 UV, out <span style="color:#66d9ef">float</span> Out) {
+</span></span><span style="display:flex;"><span>    float2 U <span style="color:#f92672">=</span> frac(UV);
+</span></span><span style="display:flex;"><span>    float2 Seed <span style="color:#f92672">=</span> floor(UV);
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">float</span> d <span style="color:#f92672">=</span> <span style="color:#ae81ff">1e5</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">5</span>; i<span style="color:#f92672">++</span>)	{
+</span></span><span style="display:flex;"><span>        float4 pos <span style="color:#f92672">=</span> float4(rand(Seed), rand(Seed<span style="color:#f92672">+</span><span style="color:#ae81ff">7</span>), rand(Seed<span style="color:#f92672">+</span><span style="color:#ae81ff">13</span>), rand(Seed<span style="color:#f92672">+</span><span style="color:#ae81ff">17</span>));
+</span></span><span style="display:flex;"><span>		Seed <span style="color:#f92672">+=</span> <span style="color:#ae81ff">2.</span>;
+</span></span><span style="display:flex;"><span>		pos <span style="color:#f92672">=</span> frac(pos <span style="color:#f92672">*</span> <span style="color:#ae81ff">128.</span>);
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> (i <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) pos.y <span style="color:#f92672">=</span> <span style="color:#ae81ff">.0</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> (i <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) pos.x <span style="color:#f92672">=</span> <span style="color:#ae81ff">.999</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> (i <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>) pos.x <span style="color:#f92672">=</span> <span style="color:#ae81ff">.0</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> (i <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span>) pos.y <span style="color:#f92672">=</span> <span style="color:#ae81ff">.999</span>;
+</span></span><span style="display:flex;"><span>		float4 snaps <span style="color:#f92672">=</span> float4(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>);
+</span></span><span style="display:flex;"><span>		pos <span style="color:#f92672">=</span> ( floor(pos <span style="color:#f92672">*</span> snaps) <span style="color:#f92672">+</span> <span style="color:#ae81ff">.5</span>) <span style="color:#f92672">/</span> snaps;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (pos.x <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.5</span>){
+</span></span><span style="display:flex;"><span>            pos.x <span style="color:#f92672">=</span> pos.z;
+</span></span><span style="display:flex;"><span>        }<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (pos.y <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.5</span>){
+</span></span><span style="display:flex;"><span>            pos.y <span style="color:#f92672">=</span> pos.w;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>		d <span style="color:#f92672">=</span> min(d, drawLine(U, pos.xy, pos.zw <span style="color:#f92672">+</span> <span style="color:#ae81ff">.001</span>) );
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	Out <span style="color:#f92672">=</span> S(d,<span style="color:#ae81ff">40.</span><span style="color:#f92672">/</span><span style="color:#ae81ff">360.</span>);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Used in this <strong>Unlit Graph</strong> :</p>
+<div class="img-center">
+<a href="RunesGraph.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="449" alt="(Image)" src="RunesGraph.png" />
+</a>
+<p class="img-text">(Click image to view full screen)</p>
+</div>
+<p>The <strong>PageCount property</strong> in the graph above defaults to <strong>2</strong>, to make previews easier to visualise. When baking, you&rsquo;d likely want to change this on the Material. I used my <a href="https://github.com/Cyanilux/BakeShader">BakeShader tool</a> to bake this out to a long texture (Texture2D/png, specifically 8 pages, 2048x256, set under Window → Cyanilux → Bake Shader).</p>
+<p>In GIMP (free image manipulation software), I then manually removed some runes and drew random magic circles, symbols and eyes to make the pages a bit more unique and interesting. (To make this easier, I actually edited the graph above to bake the background and runes to separate textures, then combined them in GIMP)</p>
+<p>I only made 8 pages for this scene, but it can support any number - the texture just needs to be longer and properties updated. I also made the pages repeat (to make it look like the book is larger) but the C# Script has an option to turn this off.</p>
+<p><script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-conversation=\"none\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eThe runes are based on \u003ca href=\"https://t.co/LPk4ynEqUS\"\u003ehttps://t.co/LPk4ynEqUS\u003c/a\u003e - I baked them out to a texture, cleared some space and drew in random magic circles/symbols/etc.\u003cbr\u003eMight also notice the pages repeat. I only made 8, but it can have more to act more like a proper book. Here\u0026#39;s one with 26~! \u003ca href=\"https://t.co/xwfKycvpbs\"\u003epic.twitter.com/xwfKycvpbs\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1680530188117979137?ref_src=twsrc%5Etfw\"\u003eJuly 16, 2023\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1680530188117979137\">https://twitter.com/Cyanilux/status/1680530188117979137</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<a style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+<br><hr>
+
+<div style="display:block;text-align: center">
+<h2>Thanks for reading!</h2>
+<p> If this post helped, consider sharing a link with others!</p>
+</div>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div></p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/index.xml">
+		
+		RSS Feed
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>

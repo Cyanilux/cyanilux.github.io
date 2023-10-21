@@ -2,38 +2,43 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://www.cyanilux.com/tutorials/spellbook-breakdown/</loc>
+    <lastmod>2023-10-21T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
     <loc>https://www.cyanilux.com/tutorials/breakdowns/</loc>
-    <lastmod>2023-07-04T00:00:00+00:00</lastmod>
+    <lastmod>2023-10-21T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/</loc>
-    <lastmod>2023-07-04T00:00:00+00:00</lastmod>
+    <lastmod>2023-10-21T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tags/shader-graph/</loc>
+    <lastmod>2023-10-21T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tags/</loc>
+    <lastmod>2023-10-21T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tutorials/</loc>
+    <lastmod>2023-10-21T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tags/urp/</loc>
+    <lastmod>2023-10-21T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/rain-effects-breakdown/</loc>
     <lastmod>2023-07-04T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tags/shader-graph/</loc>
-    <lastmod>2023-07-04T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tags/</loc>
-    <lastmod>2023-07-04T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tutorials/</loc>
-    <lastmod>2023-07-04T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tags/urp/</loc>
-    <lastmod>2023-05-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>

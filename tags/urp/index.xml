@@ -6,7 +6,18 @@
     <description>Recent content in URP on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Mon, 29 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/urp/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 21 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/urp/index.xml" rel="self" type="application/rss+xml" />
+	
+    <item>
+      <title>Book (w/ Turnable Pages) Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/spellbook-breakdown/</link>
+      <pubDate>Sat, 21 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/spellbook-breakdown/</guid>
+      <description>A book with pages that flip/turn via vertex displacement, and selects a portion of a texture containing all pages.</description>
+    </item>
+	
+    
 	
     <item>
       <title>Waterfall Shader Breakdown</title>

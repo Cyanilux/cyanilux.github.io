@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Intro to the Shader Pipeline">
 <meta itemprop="description" content="An introduction to what a Mesh, Shader and Material is in Unity, how to set Shader Properties from C#, various types of Batching, and a brief look at Forward, Forward&#43; and Deferred rendering paths"><meta itemprop="datePublished" content="2021-01-10T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-01-10T00:00:00+00:00" />
-<meta itemprop="wordCount" content="4519"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="wordCount" content="4560"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="HLSL," />
 	
 	
@@ -598,21 +598,23 @@
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
-<p>Typically for the built-in pipeline using many material instances is bad, as it breaks something called <strong>Batching</strong>, which combines meshes that use the same material together so they can be drawn all at once, rather than separately. This helps with performance - though it is worth noting that since it combines meshes, certain data (like the Model matrix, <code>UNITY_MATRIX_M</code> / <code>Unity_ObjectToWorld</code> and inverse ones) is no longer on a per-object basis which may lead to unintended results if the shader relies on Object space.</p>
-<p>This same thing occurs with Sprites and Particles as well. For performance reasons they are batched and drawn together, so &ldquo;object space&rdquo; isn&rsquo;t really a thing.</p>
-<p>When referring to batching, there&rsquo;s a few difference types :</p>
+<p>Typically for the built-in pipeline using many material instances is bad, as it breaks <strong>Batching</strong> - which typically combines meshes that use the same material together so they can be drawn all at once, rather than separately. This can help with performance - though it is worth noting that since it combines meshes, certain data (like the Model matrix, <code>UNITY_MATRIX_M</code> / <code>Unity_ObjectToWorld</code> and inverse ones) is no longer on a per-object basis which may lead to unintended results if the shader relies on Object space.</p>
+<p>When referring to batching, there&rsquo;s a few difference types, see docs pages linked below for more details :</p>
 <ul>
-<li><strong>Static</strong> Batching, which requires the GameObjects to be marked as <a href="https://docs.unity3d.com/Manual/StaticObjects.html">static</a>. (This is the tickbox on the GameObject in the top right of the inspector. There&rsquo;s a dropdown next to it if you want to toggle the specific types, in this case we&rsquo;re talking about the &ldquo;Batching Static&rdquo; option)</li>
-<li><strong>Dynamic</strong> Batching which is automatic but has some things to be aware of (see the <a href="https://docs.unity3d.com/Manual/DrawCallBatching.html">DrawCallBatching docs page</a> for more information on these types).</li>
+<li><a href="https://docs.unity3d.com/Manual/static-batching.html">Static Batching</a> - Requires GameObjects to be marked as <a href="https://docs.unity3d.com/Manual/StaticObjects.html">static</a> (or at least have the &ldquo;Batching Static&rdquo; flag enabled). This combines meshes that share the same material into one large mesh, in order to reduce the number of draw calls required to render those objects.</li>
+<li><a href="https://docs.unity3d.com/Manual/dynamic-batching.html">Dynamic Batching</a> - Always used for Particles, Sprites. Can be enabled for meshes too (would likely only do this in Built-in RP). Similar to static batching, but according to the docs vertices are transformed into world space on the CPU. On modern devices, this can be more expensive than the regular draw call overhead.</li>
+<li><a href="https://docs.unity3d.com/Manual/SRPBatcher.html">SRP Batching</a> - For SRPs (e.g. URP, HDRP, Custom SRP). This batches the <em>setup between</em> draw calls in order to make them cheaper, rather than combining meshes. Material data is also persistent on GPU. Next section goes into a bit more detail.</li>
 </ul>
-<p>Similar to batching, another way to draw lots of objects together but still have different material values is to use <a href="https://docs.unity3d.com/Manual/GPUInstancing.html">GPU Instancing</a> and <a href="https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html">Material Property Blocks</a> together. MPBs can also be used without GPU Instancing, however it will still lead to separate draw calls so there will be little performance benefit without also making the shader support instancing. (It might provide a bit less memory overhead than an material instance though). Look at their docs pages linked above for more information. Should also avoid MPBs in scriptable render pipelines as the SRP Batcher does not support them :</p>
+<p>Similar to batching, another way to draw lots of objects together but still have different material values is to use <a href="https://docs.unity3d.com/Manual/GPUInstancing.html">GPU Instancing</a> and <a href="https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html">Material Property Blocks</a> together. MPBs can also be used without GPU Instancing, however it will still lead to separate draw calls so there will be little performance benefit without also making the shader support instancing.</p>
 <hr>
 <h2 id="srp-batcher">SRP Batcher</h2>
 <p>The Scriptable Render Pipelines (URP or HDRP) also have another method of batching - the <strong>SRP Batcher</strong>.</p>
-<p>Rather than combining meshes and draw calls, it batches the <strong>setup between those draw calls</strong> - which is actually the expensive part. This allows batching to work even with different material instances (as long as they share the same shader variant, meaning they won&rsquo;t batch if materials use different keywords).</p>
-<p>This means in URP and HDRP, it&rsquo;s actually safe to use <code>renderer.material</code> to create material instances and change properties as explained in the previous section. They&rsquo;ll produce some memory overhead but can still be batched together! You should of course still also use material.sharedMaterial if you don&rsquo;t actually want different property values, in order to avoid unnecessary material instances.</p>
-<p>Also, since the SRP Batcher doesn&rsquo;t combine meshes, the Model matrix and it&rsquo;s inverse stays intact (assuming those GameObjects also aren&rsquo;t using static batching). Object space can be used in the shader without the unintended results you would get with the other batching methods.</p>
-<p>Shaders created using Shader Graph will automatically support the SRP Batcher, but custom HLSL code shaders need to define a <strong>UnityPerMaterial CBUFFER</strong>. This should contain all the per-material properties except for textures. Every pass in the shader needs to use the same CBUFFER values, so I&rsquo;d recommend putting it inside the SubShader in HLSLINCLUDE tags, as this will automatically include it in every pass for you. For example the following should work for URP :</p>
+<p>Rather than combining meshes / draw calls, it batches the <em>setup between</em> those draw calls. According to the <a href="https://docs.unity3d.com/Manual/SRPBatcher.html">docs page</a>, materials also have persistent constant buffers (UnityPerMaterial CBUFFERs) located in GPU memory, that would only need updating when properties change.</p>
+<p>This type of batching works even with different material instances (as long as they share the same shader variant - they won&rsquo;t batch if materials use different keywords or shaders). So in the SRPs (URP, HDRP and Custom SRP), it&rsquo;s actually safe to use <code>renderer.material</code> to edit properties without breaking these batches. They&rsquo;ll likely still produce some memory overhead though. Of course, you should still use <code>.sharedMaterial</code> to avoid creating instances where they aren&rsquo;t necessary.</p>
+<p>Also, since the SRP Batcher doesn&rsquo;t combine meshes, the Model matrix and it&rsquo;s inverse stays intact. Object space can be used in the shader without the unintended results you would get with the other batching methods.</p>
+<p>Shaders created using Shader Graph will automatically support the SRP Batcher, but custom HLSL code shaders need to define a <strong>UnityPerMaterial CBUFFER</strong>. This should contain all the per-material properties except for textures. Every pass in the shader needs to use the same CBUFFER values, so I&rsquo;d recommend putting it inside the SubShader in HLSLINCLUDE tags, as this will automatically include it in every pass for you.</p>
+<p>It also needs a <strong>UnityPerDraw CBUFFER</strong>, but this is set up automatically by URP/HDRP when using the correct include files.</p>
+<p>The following example would work for URP (assuming these floats/vectors are also defined in the Properties block) :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -642,8 +644,7 @@
 </div>
 </div>
 <p>You can find some full examples in my <a href="https://www.cyanilux.com/tutorials/urp-shader-code/">Writing Shader Code for URP (v2)</a> article.</p>
-<p>Note that Material Property Blocks will break batching via the SRP Batcher. You can typically see what is being batched by using the <a href="https://docs.unity3d.com/Manual/FrameDebugger.html">Frame Debugger</a> window to check if it&rsquo;s working properly or not.</p>
-<p>More information on the SRP Batcher can be found on it&rsquo;s <a href="https://docs.unity3d.com/Manual/SRPBatcher.html">docs page</a>.
+<p>Note that <strong>Material Property Blocks</strong> will break batching via the SRP Batcher so must be avoided in URP/HDRP. You can see what is being batched by using the <a href="https://docs.unity3d.com/Manual/FrameDebugger.html">Frame Debugger</a> window to check if it&rsquo;s working properly or not (e.g. would be displayed as &ldquo;SRP Batch&rdquo; rather than Draw commands)
 <br><hr>
 
 <div style="display:block;text-align: center">
@@ -666,7 +667,7 @@ Join my discord! 💬
         </div>
         </br>
 <p class="footer">
-<a class="small-text" href="https://twitter.com/Cyanilux">© Cyanilux</a>
+<a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a>
 	<p class="small-text" style="text-align:center;">
 	
 	
