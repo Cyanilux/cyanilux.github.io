@@ -17,7 +17,7 @@
 	<meta itemprop="name" content="Toon Glass Shader Breakdown">
 <meta itemprop="description" content="A shader which produces solid diagonal lines across a quad&#39;s surface that moves with the camera position to simulate toon-like glass reflections"><meta itemprop="datePublished" content="2020-01-03T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2020-01-03T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1387"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="wordCount" content="1391"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="URP,Shader Graph," />
 	
 	
@@ -294,7 +294,7 @@
 </ul>
 <h2 id="breakdown">Breakdown</h2>
 <h3 id="properties">Properties</h3>
-<p>Before we begin the graph, I’m going to define a bunch of properties. Make sure you are using the same default values as the previews may look different otherwise. You can define these properties in the Blackboard, press the &ldquo;+&rdquo; icon, choose the type and then right-click to rename the property. Click on the small arrow next to each property name to change their settings, such as the default value. (Note : In newer versions this moved to the Shader Graph &ldquo;Inspector&rdquo; window).</p>
+<p>Before we begin the graph, let&rsquo;s define a bunch of properties. This is done in the <strong>Blackboard</strong> window, press the &ldquo;+&rdquo; icon, choose the type and then right-click to rename the property. The default values can be set under the <strong>Node Settings</strong> tab of the Graph Inspector window while the property is selected. These defaults will help your previews look the same as mine.</p>
 <ul>
 <li>Color &ldquo;Colour&rdquo; – Default : White (255,255,255) with 20 alpha.</li>
 <li>Vector1 &ldquo;Offset&rdquo; – Default : 0.2</li>
@@ -304,15 +304,40 @@
 <li>Vector1 &ldquo;Line Width&rdquo; – Default : 0.5</li>
 <li>Vector1 &ldquo;Line Alpha&rdquo; – Default : 0.4</li>
 </ul>
-<p>Note that in the material’s inspector, I’m using an Offset of 1 and a Scale Multiplier of 0.3. These values won’t look good in the shadergraph previews though!</p>
-<p>I also haven’t named the &ldquo;A&rdquo; and &ldquo;B&rdquo; properties very well, but they both control the number of diagonal lines produced by the shader. However A also affects how small the lines are in the center while B is more linear. The line count (per side) is equal to A*B. For best results, B should remain an integer. A doesn’t have to be an integer, but A*B should be. So, A=2.5 and B=2 is fine, for 5 lines per side. A=5 and B=1 would also give 5 lines per side, but the width of the lines would be different.</p>
+<p>Note that on the actual Material, I&rsquo;ve changed some of these settings (Offset of 1 and a Scale Multiplier of 0.3). These values look nice in scene, but won&rsquo;t look good in the shadergraph previews!</p>
+<p>I also haven’t named the &ldquo;A&rdquo; and &ldquo;B&rdquo; properties very well, but they both control the number of diagonal lines produced by the shader. However A also affects how small the lines are in the center while B is more linear. The line count (per side) is equal to A*B.</p>
+<p>There is probably a better way to handle this mathematically but what I ended up with worked well enough for me. For best results, B should remain an integer. A doesn’t have to be an integer, but A*B should be. So, A=2.5 and B=2 is fine, for 5 lines per side. A=5 and B=1 would also give 5 lines per side, but the width of the lines would be different.</p>
 <h3 id="breakdown-1">Breakdown</h3>
 <p>First we create a <b class="node">Position</b> node set to <strong>Absolute World</strong> space, and <b class="node">Subtract</b> the camera’s position (in world space, via the <strong>Position</strong> output on the <b class="node">Camera</b> node) to obtain the position relative to the camera. The origin of the effect will now be at the camera’s position so it will move as the camera moves (in terms of translation, not rotation).</p>
 <p>We can then <b class="node">Transform</b> to <strong>Tangent</strong> space, which appears to make the position relative to the meshes’ surface – kind of? Well, at least for our purposes the <strong>R/X</strong> component of the position is horizontal across the surface, and <strong>G/Y</strong> is vertical, but there may be better ways of handling this.</p>
-<p>Note : This is now broken as the <b class="node">Transform</b> node normalises the <strong>Tangent</strong> space output which we don&rsquo;t want here. You can instead use a <b class="node">Matrix Construction</b> node with the Tangent Vector, Bitangent Vector and Normal Vector nodes connected (in that order, each in <strong>Absolute World</strong> space) and <b class="node">Multiply</b> to handle matrix multiplication. Alternatively, just use the <b class="node">UV</b> or <b class="node">Position</b> in <strong>Object</strong> space but it will stretch when the GameObject is scaled.</p>
-<p>We can <b class="node">Split</b> to obtain these components, and <b class="node">Add</b> them together to make a diagonal gradient. An <b class="node">Absolute</b> function will then convert any negative values to positive. Any changes made will now be mirrored across the diagonal line as both sides share the same values.</p>
-<p>The preview on our <b class="node">Absolute</b> node doesn’t seem to look right though. This is due to the transform to tangent space, but even if we were to change it, the preview will still show the &ldquo;3D&rdquo; circular version. Instead, we can create a <b class="node">UV</b> node and put it into a <b class="node">Remap</b> node with values of <strong>0 and 1</strong> for the <strong>In Min Max</strong> and <strong>-1 and 1</strong> for the <strong>Out Min Max</strong>. This remaps the values so the value at the center of the preview has a value of 0. When we connect this to the <b class="node">Split</b> we can visualise the previews properly which will help a lot when creating the rest of the graph, then at the end we can reconnect the other position instead.</p>
-<p>(In v10.3+ you can now set the Preview to 2D using the Node Settings tab of the Graph Inspector)</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<ul>
+<li>This is now a bit broken as the <b class="node">Transform</b> node normalises the <strong>Tangent</strong> space output which we don&rsquo;t want.</li>
+<li>You can instead use a <b class="node">Matrix Construction</b> node with the <b class="node">Tangent Vector</b>, <b class="node">Bitangent Vector</b> and <b class="node">Normal Vector</b> nodes connected (in that order, each in <strong>Absolute World</strong> space) and <b class="node">Multiply</b> to handle matrix multiplication.</li>
+<li>Alternatively, can use the <b class="node">UV</b> or <b class="node">Position</b> in <strong>Object</strong> space but it will stretch when the GameObject is scaled. <strong>Scale</strong> from <b class="node">Object</b> node might help fix that.</li>
+</ul>
+
+</div>
+</div>
+<p>We can <b class="node">Split</b> to obtain values for each axis individually, and <b class="node">Add</b> them together to make a diagonal gradient. An <b class="node">Absolute</b> function will then convert any negative values to positive. Any changes made will now be mirrored across the diagonal line as both sides share the same values.</p>
+<p>The preview on our <b class="node">Absolute</b> node looks like a sphere which can make things a bit harder to visualise here.</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+Nowadays in Shader Graph (v10.3+) the Preview style can be toggled under the <strong>Node Settings</strong> tab (of the <strong>Graph Inspector</strong> window), while the node is selected. In this case, the 2D preview is more useful for visualising the result. All other nodes after it should inherit that setting.
+</div>
+</div>
+<p>For older versions of Shader Graph, can temporarily use a <b class="node">UV</b> node and put it into a <b class="node">Remap</b> node with values of <strong>0 and 1</strong> for the <strong>In Min Max</strong> and <strong>-1 and 1</strong> for the <strong>Out Min Max</strong>. This remaps the values so the value at the center of the preview has a value of 0 to closer match the other coordinates we have. When we connect this to the <b class="node">Split</b> we can visualise the previews properly which will help a lot when creating the rest of the graph, then at the end we can reconnect the other position instead.</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="382" alt="(Image)" src="Graph1.png" />
@@ -326,26 +351,43 @@
 </a>
 <p class="img-text"></p>
 </div>
-<p>To handle creating multiple lines, I’m using this setup as shown above. By using a <b class="node">Power</b> in our calculations, we can allow the values to be more exponential / less linear. This affects the width of each line based on the distance from the diagonal, as shown in the <b class="node">Fraction</b> node preview. To better show how this works, I’ve plotted the functions here :</p>
-<p><div class="img-center">
+<p>To handle creating multiple lines, I’m using this setup as shown above. By using a <b class="node">Power</b> in our calculations, we can allow the values to be more exponential / less linear, which affects the width of each line based on the distance from the diagonal (as shown in the <b class="node">Fraction</b> node preview).</p>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ How does this work?</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ How does this work?</b>';
+
+    }
+"><b>⯈ How does this work?</b></button>
+<div class="foldout">
+<p>To possibly better show how this works, I’ve plotted the functions of <b class="node">Power</b> (^x) and <b class="node">Fraction</b> (frac) here :</p>
+<div class="img-center">
 <a href="Plots.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="202" alt="(Image)" src="Plots.png" />
 </a>
 <p class="img-text"></p>
 </div>
-(Source : Wolfram|Alpha, Wolfram Alpha LLC, Date : 01/01/2020, Links : <a href="https://www.wolframalpha.com/input/?i=plot+%7B+y+%3D+2%5Ex+%2C+y+%3D+3%5Ex+%2C+y+%3D+4%5Ex+%2C+y+%3D+5%5Ex+%7D+x+%3D+0+to+1%2C+y+%3D+1+to+5">Plot1</a>, <a href="https://www.wolframalpha.com/input/?i=plot+%7B+y+%3D+frac%282%5Ex%29+%2C+y+%3D+frac%283%5Ex%29+%2C+y+%3D+frac%284%5Ex%29+%2C+y+%3D+frac%285%5Ex%29+%7D+x+%3D+0+to+1%2C+y+%3D+0+to+1">Plot2</a>)</p>
-<p>Both plots show the <strong>&ldquo;A&rdquo; property</strong> set to <strong>0 to 4</strong> and <strong>&ldquo;B&rdquo; set to 1</strong>. Note that the input on the <b class="node">Power</b> is <strong>A+1.01</strong>, which I’ve rounded to <strong>A+1</strong>, therefore the plots show <strong>2^x to 5^x</strong> as labelled.</p>
-<p>Looking at the plot on the left, When A is higher, the plot results in a more curved line.</p>
-<p>More importantly though, the <b class="node">Fraction</b> node (a.k.a frac function) returns the fractional (decimal) part of the number (without the integer component). This results in values only between 0 and 1 which is shown by the plot on the right. The line jumps from 1 back to 0 on the Y axis. The higher A values produce more line sections, and each line further to the right on the X axis gets smaller (takes up less horizontal space). It’s a bit of a mess but easier to see if you focus only on the green line.</p>
-<p>We use a <b class="node">One Minus</b> node on our second input on the <b class="node">Power</b>, so that we input values near 1 on diagonal line rather than 0, resulting in smaller width gradients rather than larger. There’s also a <b class="node">Saturate</b> in place which clamps values between 0 and 1. The extra .01 on the <b class="node">Add</b> node is in place to prevent the <b class="node">Fraction</b> node outputting 1 in the center (the spacing created by the <strong>Offset</strong>) for certain integer values of A, although it can still occur if B or A*B isn’t an integer, hence the mention of setting these to integers at the start of the breakdown. We could instead mask that area to always be black, but it felt a bit unnecessary.</p>
-<p>Hopefully those plots help explain what is going on here, as the maths might not be easy to grasp by looking at the nodes alone. All we need to do now is <b class="node">Step</b> the gradient-like result from the <b class="node">Fraction</b> node, using the <strong>Line Width property</strong> to obtain solid lines which we can then <b class="node">Multiply</b> by our <strong>Line Alpha</strong>. We also need to <b class="node">Add</b> the <strong>Color property’s alpha</strong>, to control the glass’ surface alpha, then put this into the <strong>Alpha</strong> input on the <b class="node">Master</b> node, and also set the <strong>Color</strong> input as shown.</p>
-<p>Also don’t forget to connect the (camera relative &amp; tangent) position rather than the UVs at the beginning when saving the graph, as the UVs were only there for better previews while editing!</p>
+<p>(Source : Wolfram|Alpha, Wolfram Alpha LLC, Date : 01/01/2020, Links : <a href="https://www.wolframalpha.com/input/?i=plot+%7B+y+%3D+2%5Ex+%2C+y+%3D+3%5Ex+%2C+y+%3D+4%5Ex+%2C+y+%3D+5%5Ex+%7D+x+%3D+0+to+1%2C+y+%3D+1+to+5">Plot1</a>, <a href="https://www.wolframalpha.com/input/?i=plot+%7B+y+%3D+frac%282%5Ex%29+%2C+y+%3D+frac%283%5Ex%29+%2C+y+%3D+frac%284%5Ex%29+%2C+y+%3D+frac%285%5Ex%29+%7D+x+%3D+0+to+1%2C+y+%3D+0+to+1">Plot2</a>)</p>
+<p>Both plots show the <strong>&ldquo;A&rdquo; property</strong> set to <strong>0 to 4</strong> and <strong>&ldquo;B&rdquo; set to 1</strong>. It can be a little messy with the overlapping lines, but try to focus on one at a time. Note that the input on the <b class="node">Power</b> is <strong>A+1.01</strong>, which I’ve rounded to <strong>A+1</strong>.</p>
+<p>Looking at the plot on the left, When A is higher, the plot results in a more curved line. This should make sense if you&rsquo;re familiar with powers/exponentials, but the important thing is what happens when putting this through the other function.</p>
+<p>The <b class="node">Fraction</b> node returns the fractional (decimal) part of the number (without the integer component). This results in values only between 0 and 1, shown on the right plot. The line jumps from 1 back to 0 on the Y axis. The more curved lines from the previous plot produce more line sections.</p>
+
+</div>
+<p>We use a <b class="node">One Minus</b> node on our second input on the <b class="node">Power</b>, so that we input values near 1 on diagonal line rather than 0, resulting in smaller width gradients rather than larger.</p>
+<p>There’s also a <b class="node">Saturate</b> in place which clamps values between 0 and 1. The extra .01 on the <b class="node">Add</b> node is in place to prevent the <b class="node">Fraction</b> node outputting 1 in the center (the spacing created by the <strong>Offset</strong>) for certain integer values of A, although it can still occur if B or A*B isn’t an integer, hence the mention of setting these to integers at the start of the breakdown. We could instead mask that area to always be black, but it felt a bit unnecessary.</p>
+<p>Finally we can <b class="node">Step</b> the gradient-like result from the <b class="node">Fraction</b> node, using the <strong>Line Width property</strong> to obtain solid lines which we can then <b class="node">Multiply</b> by our <strong>Line Alpha</strong>. We also need to <b class="node">Add</b> the <strong>Color property’s alpha</strong>, to control the glass’ surface alpha, then put this into the <strong>Alpha</strong> input on the <b class="node">Master</b> node, and also set the <strong>Color</strong> input as shown.</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="412" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>
+<p>Don&rsquo;t forget to reconnect our tangent <b class="node">Position</b> coordinates as well if you&rsquo;re using the <b class="node">UV</b> for visualising/2D previews.
 <br><hr>
 
 <div style="display:block;text-align: center">
@@ -362,7 +404,7 @@ Join my discord! 💬
 </img>
 </div>
 </a>
-</div>
+</div></p>
 
 
         </div>
