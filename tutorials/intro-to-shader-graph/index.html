@@ -20,7 +20,7 @@
 	<meta itemprop="name" content="Intro to Shader Graph">
 <meta itemprop="description" content="A detailed introduction on how to use Unity Shader Graph (updated for v12&#43;)! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!"><meta itemprop="datePublished" content="2021-03-05T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-03-05T00:00:00+00:00" />
-<meta itemprop="wordCount" content="17205"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="wordCount" content="17207"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
 <meta itemprop="keywords" content="Shader Graph,URP,HDRP," />
 	
 	
@@ -438,7 +438,7 @@
 <p class="img-text"></p>
 </div>
 <p>At the top there will be some options related to writing shaders using code (CG/HLSL), Surface Shader, Unlit Shader, etc. These templates are intended for the Built-in Render Pipeline and may not function in other pipelines. As the focus of this article is on Shader Graph, we want to ignore these. Under them, you should see a list of &ldquo;Graph&rdquo; options assuming Shader Graph has been installed correctly. If not, see the previous section.</p>
-<p>In v10+ there is three graphs listed here :</p>
+<p>In v10+ (Unity 2020.2+) there is three graphs listed here :</p>
 <ul>
 <li><strong>Blank Shader Graph</strong> : A shader graph with no predefined settings. All other graphs (except for Sub Graphs) are a version of this graph with settings already adjusted. It&rsquo;s possible to switch between them at any time through the use of the <strong>Graph Settings</strong> as discussed in the next section. While a Material can be created using a Blank Shader Graph, the resulting shader will be the magenta error shader unless configured into one of the other types. Using one of the other templates can provide quicker setup.</li>
 <li><strong>Sub Graph</strong> : A special type of graph that can be used as a node in other graphs. Useful for creating functions that you will want to reuse many times and for organising large graphs. Sub Graphs can also be nested in other Sub Graphs. A later section will go into these in more detail.</li>
@@ -600,7 +600,7 @@
 <p class="img-text">A collection of nodes showing different previews</p>
 </div>
 <p>Nodes like <b class="node">Position</b> and <b class="node">Normal Vector</b> use a <strong>3D/Sphere</strong> version of the Preview rather than the <strong>2D/Quad</strong> one, as they are meant to show 3D positions/vectors. All nodes in the chain after it will also switch to using the 3D one when connected.</p>
-<p>In Shader Graph <strong>v11+</strong> (Unity <strong>2021.2+</strong>) it is also now possible to choose between the 2D and 3D versions of the preview on a per-node basis. Can do this in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window. (This was something I suggested, though some others may have too. Still, I&rsquo;m very happy to see it included). For Sub Graphs you can also find a setting in the <strong>Graph Settings</strong> to select it&rsquo;s default preview state.</p>
+<p>In Shader Graph <strong>v11+</strong> (Unity <strong>2021.1+</strong>) it is also now possible to choose between the 2D and 3D versions of the preview on a per-node basis. Can do this in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window. (This was something I suggested, though some others may have too. Still, I&rsquo;m very happy to see it included). For Sub Graphs you can also find a setting in the <strong>Graph Settings</strong> to select it&rsquo;s default preview state.</p>
 <p>Before we can go into exactly what these previews are showing, we need to understand the different data types included in Shader Graph :</p>
 <hr>
 <h2 id="data-types">Data Types</h2>
