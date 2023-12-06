@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#00aba9">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml">
+	
+	
+    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=5 ">
+	
+	<meta itemprop="name" content="Ultraviolet Lights &amp; Invisible Ink">
+<meta itemprop="description" content="Examples for revealing invisible objects (especially decals, such as fingerprints or hidden messages) based on lights, stencils and other masking methods"><meta itemprop="datePublished" content="2023-12-05T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-12-05T00:00:00+00:00" />
+<meta itemprop="wordCount" content="3088"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
+<meta itemprop="keywords" content="URP,Shader Graph," />
+	
+	
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/ultraviolet-lights-invisible-ink/Preview.png"/>
+<meta name="twitter:title" content="Ultraviolet Lights &amp; Invisible Ink"/>
+<meta name="twitter:description" content="Examples for revealing invisible objects (especially decals, such as fingerprints or hidden messages) based on lights, stencils and other masking methods"/>
+
+	
+<meta property="og:title" content="Ultraviolet Lights &amp; Invisible Ink" />
+<meta property="og:description" content="Examples for revealing invisible objects (especially decals, such as fingerprints or hidden messages) based on lights, stencils and other masking methods" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/ultraviolet-lights-invisible-ink/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/ultraviolet-lights-invisible-ink/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2023-12-05T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-12-05T00:00:00+00:00" />
+	
+	
+	
+    
+    
+    <title>Ultraviolet Lights &amp; Invisible Ink | Cyanilux</title>
+	
+	
+	
+		
+		
+		<meta name="description" content="Examples for revealing invisible objects (especially decals, such as fingerprints or hidden messages) based on lights, stencils and other masking methods. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+		
+	
+	
+	
+	<link rel="canonical" href="https://www.cyanilux.com/tutorials/ultraviolet-lights-invisible-ink/" />
+	
+	
+	<div class="cookie-container">
+	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+	  <button class="cookie-accept-btn"><b>Accept</b></button>
+	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
+	</div>
+	
+	<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	  
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+	
+	</script>
+	
+	
+	
+	<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+	</script>
+	
+</head>
+    <body>
+        
+<div class="header">
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
+	
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
+	
+	<nav id="nav" class="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		FAQ
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Ultraviolet Lights &amp; Invisible Ink</h1>
+<div class="post-metadata">
+
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/breakdowns/" style="text-decoration: none; color:#eeeeee;">
+	Breakdowns
+	</a>
+</div>
+
+
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	
+	<a href="https://www.cyanilux.com/tags/urp" style="text-decoration: none; color:#eeeeee;">
+	URP
+	</a>
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	
+	<a href="https://www.cyanilux.com/tags/shader-graph" style="text-decoration: none; color:#eeeeee;">
+	Shader Graph
+	</a>
+	</div>
+
+
+
+<div style="width:10px"></div>
+
+
+<time datetime="2023-12-05">&#128337 Dec 5, 2023</time>
+
+</div>
+<h2 id="intro">Intro</h2>
+<p>Lately I&rsquo;ve been thinking about effects that involve revealing hidden objects (especially decals)</p>
+<p>I&rsquo;ve collected some examples from various games :</p>
+<ul>
+<li>
+<p>Fingerprints/Handprints in ghost-hunting or detective games, simulating <strong>Ultraviolet Lights</strong>.</p>
+<ul>
+<li><em>Phasmophobia</em> and <em>Shadows of Doubt</em> come to mind. These games could use the light attenuation in the decal shader as an alpha mask - so outside of the light, the decal is invisible.</li>
+</ul>
+<div class="img-center">
+    <a href="Fingerprints.png" target="_blank" rel="noopener noreferrer">
+    <img loading="lazy" width="500" height="283" alt="(Image)" src="Fingerprints.png" />
+    </a>
+    <p class="img-text"></p>
+    </div>
+<ul>
+<li>I&rsquo;m also aware there may have been <a href="https://store.steampowered.com/news/app/739630/view/3721707060689594069">changes to <em>Phasmophobia</em>&rsquo;s Ultraviolet lights</a> which involves the decals being visible for a short duration even after turning off the light, so there&rsquo;s likely CPU side calculations happening instead - probably involving signed distance fields (SDFs) and raycasts, then passing visibility/alpha values to shader (e.g. for URP Decal Projector can adjust properties via the MaterialPropertyBlock it uses). But anyway, I want to focus on gpu-side approaches so won&rsquo;t be going through that in this post.</li>
+<li>SDFs could potentially also work on the GPU/shader side if light data is unavaliable - but since I&rsquo;m using URP this isn&rsquo;t much of a problem. That approach also wouldn&rsquo;t really account for shadows. (Though that might not be noticeable if light source is camera?)</li>
+</ul>
+</li>
+<li>
+<p>Some tool (usually a lens) that reveals <strong>hidden symbols/messages</strong></p>
+<ul>
+<li>A few games in the <em>Legend of Zelda</em> series have a <em>&ldquo;Lens of Truth&rdquo;</em>. When active it tints the outer parts of the screen, leaving a circular portion untinted. Inside this, hidden/invisible objects are shown and fake walls/floor disappear.</li>
+</ul>
+<div class="img-center">
+<a href="LensOfTruth.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="450" height="273" alt="(Image)" src="LensOfTruth.png" />
+</a>
+<p class="img-text">Lens of Truth, revealing a hidden path to walk across. From Ocarina of Time 3D</p>
+</div>
+<ul>
+<li>While the tint has a bit of gradient/falloff, the actual objects get cut off instantly, suggesting <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil</a> operations are involved (as these don&rsquo;t allow for partial transparency). However it would also be possible to calculate a screenspace mask in the shader, which could provide a softer transition for transparent objects. And for opaque objects, that could be paired with <a href="https://danielilett.com/2020-04-19-tut5-5-urp-dither-transparency/">dithering &amp; alpha clipping</a> to fake the transparency (though that is a bit more expensive to render)</li>
+<li>Similarly, <em>The Room</em> series of puzzle games has an <em>&ldquo;Eyepiece&rdquo;</em> that reveals decals. As well as having some special surfaces disappear when viewed through it.</li>
+</ul>
+<div class="img-center">
+    <a href="TheRoomEyepiece.png" target="_blank" rel="noopener noreferrer">
+    <img loading="lazy" width="400" height="222" alt="(Image)" src="TheRoomEyepiece.png" />
+    </a>
+    <p class="img-text"></p>
+    </div>
+<ul>
+<li>But as the effect here always covers the entire screen (cannot see outside of the lens circle) there&rsquo;s no stencils or masking needed. It&rsquo;s actually just a toggle, e.g. of a global keyword or float property used by the decal shader - but more likely, enabling/disabling the objects themselves so there is less overdraw when the eyepiece isn&rsquo;t active.</li>
+<li><em>Bendy And The Ink Machine</em> also has many hidden message decals (as well as a couple meshes and some particles) revealed by a <em>&ldquo;Seeing Tool&rdquo;</em> obtained near the end of the game (and can be used in a second playthrough)</li>
+</ul>
+<div class="img-center">
+    <a href="BendySeeingTool.png" target="_blank" rel="noopener noreferrer">
+    <img loading="lazy" width="450" height="320" alt="(Image)" src="BendySeeingTool.png" />
+    </a>
+    <p class="img-text"></p>
+    </div>
+<ul>
+<li>These decals are masked to only appear through it&rsquo;s rectangular shape, and as the tool is animated, it&rsquo;s likely stencils are involved again here.</li>
+</ul>
+</li>
+</ul>
+<p>This post will provide example shaders/graphs of how to achieve effects similar to these. The concepts may translate to other pipelines but there is a heavy focus on the <strong>Universal Render Pipeline</strong>, the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.0/manual/renderer-feature-decal.html">Decal Renderer Feature &amp; Projectors</a> and uses the <strong>Decal Graph</strong>.</p>
+<ul>
+<li><a href="#decal-graph">Inital Decal Graph</a></li>
+<li><a href="#UV-lights">Ultraviolet Lights</a>
+<ul>
+<li><a href="#light-colour">Using Light Colour</a></li>
+<li><a href="#light-layer">Using Light Layers</a></li>
+</ul>
+</li>
+<li><a href="#lens">Special Lens</a>
+<ul>
+<li><a href="#lens-mask">Using Screenspace Circular Mask</a></li>
+<li><a href="#lens-stencil">Using Stencils</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="inital-decal-graph">Inital Decal Graph</h2>
+<p>For all the methods shown below, we&rsquo;ll start by creating a basic <strong>Decal Graph</strong>.</p>
+<p>We want a <em>Texture2D property</em> for the decal texture, use <b class="node">Sample Texture 2D</b> on it, and connect the <strong>RGBA</strong> output to <strong>Base Color</strong> in the <strong>Master Stack</strong>. We can also provide a <em>Color property</em> for <strong>Emission</strong> (preferably with <strong>HDR</strong> enabled under <strong>Node Settings</strong> while property is selected).</p>
+<div class="img-center">
+<a href="GraphDecal.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="202" alt="(Image)" src="GraphDecal.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>A <b class="node">Multiply</b> node is used on the alpha channel of the texture before connecting to the <strong>Alpha</strong>. The <strong>B</strong> input of this will be where we handle the visibility of the decal - such as using light attenuation or some other mask. This will be where graphs below should connect - though you may also want to <b class="node">Saturate</b> before that to keep alpha values in a 0-1 range!</p>
+<p>Feel free to also use Normals, MAOS (metallic, AO, smoothness) if required.</p>
+<hr>
+<h2 id="UV-lights">Ultraviolet Lights</h2>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>This method works best when the Decal Renderer Feature is set to <strong>Screen Space</strong> mode. (Or if you handle your own decals by rendering meshes after opaques and project the texture onto surfaces by reconstructing world positions from the depth texture, which is essentially the same idea).</p>
+<p>In &ldquo;DBuffer&rdquo; mode it has some issues&hellip; the foldout below has more details if interested.</p>
+
+</div>
+</div>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Can this work in DBuffer mode?</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Can this work in DBuffer mode?</b>';
+
+    }
+"><b>⯈ Can this work in DBuffer mode?</b></button>
+<div class="foldout">
+<p>In this mode the decal itself does not typically handle shading. They instead are rendered as unlit into separate buffer(s), then sampled by opaque surfaces later which applies the shading. The decal shader pass that is used isn&rsquo;t set up to properly handle lighting.</p>
+<p>But during testing, I did find a workaround for the Forward+ path (untested in builds though), which involves manually adding keywords to the graph (though this does cause some warnings about duplicate keywords). Can do this either through the Blackboard or by adding these lines to the hlsl include file that we&rsquo;ll set up below (this also creates warnings about unknown pragmas, but still works - a bit odd)</p>
+<pre tabindex="0"><code>#pragma multi_compile _ _ADDITIONAL_LIGHTS
+#pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
+#pragma multi_compile _ _FORWARD_PLUS
+</code></pre><p>If you want to avoid any warnings, you&rsquo;d probably have to convert the graph to code and add the keywords to the correct Pass instead. (Frame Debugger should tell you which pass is being used. Otherwise just make sure all passes have those keywords once)</p>
+<p>Adding these keywords is enough in the Forward+ path, but for the regular Forward path it appears that <code>unity_LightData</code> and <code>unity_LightIndices</code> are not being set during decal rendering in DBuffer mode, so afaik not possible to get working for that rendering path. If you require Forward, use Screenspace decals instead.</p>
+
+</div>
+<p>The aim here is to make our decals appear only when spot or point lights shine on them -</p>
+<div class="img-center">
+<a href="UltravioletLights.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="606" height="375" alt="(Image)" src="UltravioletLights.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>To read light data in URP &amp; Shader Graph we&rsquo;ll need a <b class="node">Custom Function</b> node.</p>
+<p>It&rsquo;s likely that you may have other lights in the scene and only want <em>specific lights</em> to affect the decals in this way, so will also need a way to determine which light is which. There&rsquo;s a few ways we could handle this, in particular - by comparing the <strong>light colour</strong> to a specific value, or using the <strong>Rendering Layers</strong> set on the Light component. Will explain both these options below.</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+In the below functions I&rsquo;m also hardcoding the Shadowmask as <code>half4(1,1,1,1)</code>. I&rsquo;m unsure if it&rsquo;s important, but if you need to support the Shadowmask Baked GI mode for the decals, you&rsquo;ll want to provide it as an input param to the function (<code>half4 Shadowmask</code> before the out param) and connect the Sample Shadowmask subgraph from my <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Custom Lighting repo</a> to that port.
+</div>
+</div>
+<h3 id="light-colour">Using Light Colour</h3>
+<p>A relatively simple way to determine which lights should reveal decals is by it&rsquo;s colour. Ultraviolet lights are typically purplish, but let&rsquo;s assume it could be any specific colour - and pass it into the function as a parameter to avoid hardcoding it.</p>
+<p>To compare against that colour, we can take the <code>distance()</code> between it and the light&rsquo;s colour, then compare that distance against some max value (named Range here)</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// By Color
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// e.g. To only reveal decals with roughly magenta/purple lights could use Color = (1,0,1) and Range = 0.5
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">RevealUsingColor_float</span>(float3 WorldPosition, float4 Color, <span style="color:#66d9ef">float</span> Range, out <span style="color:#66d9ef">float</span> Out){
+</span></span><span style="display:flex;"><span>    half4 Shadowmask <span style="color:#f92672">=</span> half4(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span> totalAtten <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#ifndef SHADERGRAPH_PREVIEW
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    uint pixelLightCount <span style="color:#f92672">=</span> GetAdditionalLightsCount();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    InputData inputData <span style="color:#f92672">=</span> (InputData)<span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    float4 screenPos <span style="color:#f92672">=</span> ComputeScreenPos(TransformWorldToHClip(WorldPosition));
+</span></span><span style="display:flex;"><span>    inputData.normalizedScreenSpaceUV <span style="color:#f92672">=</span> screenPos.xy <span style="color:#f92672">/</span> screenPos.w;
+</span></span><span style="display:flex;"><span>    inputData.positionWS <span style="color:#f92672">=</span> WorldPosition;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    LIGHT_LOOP_BEGIN(pixelLightCount)
+</span></span><span style="display:flex;"><span>        Light light <span style="color:#f92672">=</span> GetAdditionalLight(lightIndex, WorldPosition, Shadowmask);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">float</span> intensity <span style="color:#f92672">=</span> length(light.color.rgb);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">float</span> atten <span style="color:#f92672">=</span> intensity <span style="color:#f92672">*</span> light.distanceAttenuation <span style="color:#f92672">*</span> light.shadowAttenuation;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">bool</span> LightShouldReveal <span style="color:#f92672">=</span> distance(normalize(light.color.rgb), Color.rgb) <span style="color:#f92672">&lt;</span> Range;
+</span></span><span style="display:flex;"><span>        totalAtten <span style="color:#f92672">+=</span> LightShouldReveal <span style="color:#f92672">?</span> atten : <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    LIGHT_LOOP_END
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Out <span style="color:#f92672">=</span> totalAtten;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>In the graph, connect a <b class="node">Position</b> node to the <strong>WorldPosition</strong> port, a <b class="node">Color</b> node to the <strong>Color</strong> port, and set <strong>Range</strong> to 0.5. (Or use Color and Float properties to be able to control these from the Material)</p>
+<div class="img-center">
+<a href="GraphLightColor.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="290" alt="(Image)" src="GraphLightColor.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<hr>
+<h3 id="light-layer">Using Light Layers</h3>
+<p>URP 2022.2+ introduced <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@14.0/manual/features/rendering-layers.html">Rendering Layers</a>. They have a few uses, but importantly they can be set for each Light, where the intended use is to make it possible for lights to affect certain meshes. Afaik that doesn&rsquo;t really apply to decals though, as the Decal Projector component uses the same rendering layers to determine which surfaces they should project onto. But anyway, the light layer masks are still available in the shader.</p>
+<p>I believe Rendering Layers should be enabled by default, but you might want to double-check that is the case on each URP Asset (it&rsquo;s under Lighting heading - but may need to click the 3 dots on the right and &ldquo;Show Additional Properties&rdquo; to actually show it)</p>
+<p>Under the <strong>URP Global Settings</strong> (can be found under Project Settings) we can configure these layers. By having two rendering layers, e.g. &ldquo;Default&rdquo; (Index 0) and &ldquo;Ultraviolet&rdquo; (Index 1) we can set any Lights that should reveal decals to use <strong>both</strong> these layers, while regular lights should only use the Default one. This should work fine even if there are other layers too, if you need them for other uses.</p>
+<div class="img-center">
+<a href="UltravioletLayer.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="535" height="218" alt="(Image)" src="UltravioletLayer.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>One disadvantage of this approach is that newly created lights always use all layers - so we have to remember to change it!</p>
+<p>In the function, we use <code>IsMatchingLightLayer(light.layerMask, X)</code>. We&rsquo;d normally use <code>GetMeshRenderingLayer()</code> as the second param to compare the rendering layer mask of the Light and MeshRenderer components, but here we just want to know if the Light has the &ldquo;Ultraviolet&rdquo; layer active, so need to use <code>1 &lt;&lt; layerIndex</code>.</p>
+<p><code>layerIndex</code> here will be 1 in my case, but rather than hardcoding values, I&rsquo;ve passed in the layer index as an input param so it can be set from the graph.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// By Light Rendering Layer
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// e.g. only reveal decals with lights that have a specific Layer set under it&#39;s Rendering Layers
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// note that new lights default to using all layers / &#34;Everything&#34; so need to remember to change it
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#pragma multi_compile _ _LIGHT_LAYERS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">RevealUsingLayer_float</span>(float3 WorldPosition, <span style="color:#66d9ef">float</span> UltravioletLayerIndex, out <span style="color:#66d9ef">float</span> Out){
+</span></span><span style="display:flex;"><span>    half4 Shadowmask <span style="color:#f92672">=</span> half4(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span> totalAtten <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#ifndef SHADERGRAPH_PREVIEW
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    uint pixelLightCount <span style="color:#f92672">=</span> GetAdditionalLightsCount();
+</span></span><span style="display:flex;"><span>    uint ultravioletLayerMask <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#66d9ef">int</span>(UltravioletLayerIndex);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    InputData inputData <span style="color:#f92672">=</span> (InputData)<span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    float4 screenPos <span style="color:#f92672">=</span> ComputeScreenPos(TransformWorldToHClip(WorldPosition));
+</span></span><span style="display:flex;"><span>    inputData.normalizedScreenSpaceUV <span style="color:#f92672">=</span> screenPos.xy <span style="color:#f92672">/</span> screenPos.w;
+</span></span><span style="display:flex;"><span>    inputData.positionWS <span style="color:#f92672">=</span> WorldPosition;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    LIGHT_LOOP_BEGIN(pixelLightCount)
+</span></span><span style="display:flex;"><span>        Light light <span style="color:#f92672">=</span> GetAdditionalLight(lightIndex, WorldPosition, Shadowmask);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#ifdef _LIGHT_LAYERS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (IsMatchingLightLayer(light.layerMask, ultravioletLayerMask))
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">float</span> intensity <span style="color:#f92672">=</span> length(light.color.rgb);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">float</span> atten <span style="color:#f92672">=</span> intensity <span style="color:#f92672">*</span> light.distanceAttenuation <span style="color:#f92672">*</span> light.shadowAttenuation;
+</span></span><span style="display:flex;"><span>            totalAtten <span style="color:#f92672">+=</span> atten;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    LIGHT_LOOP_END
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Out <span style="color:#f92672">=</span> totalAtten;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>In the graph, connect a <b class="node">Position</b> node to the <strong>WorldPosition</strong> port, and set <strong>LayerIndex</strong> to 1 (assuming &ldquo;Ultraviolet&rdquo; is Layer 1) or use a Float Property if you want to control the value from the Material. (Ideally also set the mode on that property to <strong>Integer</strong> under <strong>Node Settings</strong> while property is selected)</p>
+<div class="img-center">
+<a href="GraphLightLayer.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="277" alt="(Image)" src="GraphLightLayer.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<hr>
+<h2 id="lens">Special Lens</h2>
+<h3 id="lens-mask">Using Screenspace Circular Mask</h3>
+<p>While the intro examples don&rsquo;t use this, it would be possible for our decals to calculate their visibility based their position on the screen. By comparing with a screenspace mask, they could appear only when inside a circle - and can provide a soft transition, unlike a stencil approach.</p>
+<p>As we&rsquo;re using <b class="node">Screen Position</b> and the screen aspect ratio isn&rsquo;t necessarily square, the resulting circle would be stretched. To fix this, we can use a ratio of the <b class="node">Screen</b> <strong>Width</strong> and <strong>Height</strong> to scale the coordinates, as shown below.</p>
+<div class="img-center">
+<a href="GraphCircle1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="268" alt="(Image)" src="GraphCircle1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>By using the <strong>Center</strong> mode on the <b class="node">Screen Position</b> (and <strong>Center</strong> of <strong>(0, 0)</strong> on the <b class="node">Sphere Mask</b>) we ensure the circle stays in the center of the screen.</p>
+<p>In the above, I&rsquo;ve used the <b class="node">Sphere Mask</b> node which handles the circle calculations for us, while providing a soft falloff (unlike the <b class="node">Ellipse</b> node). Alternatively, below shows what this is doing :</p>
+<div class="img-center">
+<a href="GraphCircle2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="233" alt="(Image)" src="GraphCircle2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>This kind of method could work for other shapes too by swapping the Circle SDF group out for a different function, see <a href="https://iquilezles.org/articles/distfunctions2d/">Inigo Quilez&rsquo;s article on 2D SDFs</a>. Can replicate those in nodes, or convert the code to HLSL and use a <b class="node">Custom Function</b></p>
+<p>With just this masking in the decal shader, it may be difficult to see when the lens is actually active - so you may want to match this up with some kind of Lens Mesh, UI or Fullscreen effect (e.g. using this same circular mask inside a <strong>Fullscreen Graph</strong> to tint screen like the <em>Lens of Truth</em> does)</p>
+<hr>
+<h3 id="lens-stencil">Using Stencils</h3>
+<p>While the above is good for a static lens that stays attached to the screen center, it may be difficult to use that method if the lens is an animated mesh or of a more complex shape that can&rsquo;t be easily replicated in SDFs. In these cases, <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil operations</a> may work better.</p>
+<div>
+<video height="300" src="StencilLens.mp4"autoplay=""muted=""loop="">
+Your browser does not support the video tag.
+</video>
+</div>
+<p>In short, the process is :</p>
+<ul>
+<li>We render our lens mesh to the <strong>Stencil Buffer</strong>, which stores integer values (from 1 to 255) for each pixel.</li>
+<li>Then when rendering pixels of other objects (like our decals) they can test against this buffer using comparisons like Less, Greater, Equals, NotEqual, etc. Any pixels that pass the test are drawn, and any that fail are discarded.</li>
+</ul>
+<p>This approach is a bit convoluted when using Shader Graph, since it doesn&rsquo;t actually have proper support for adjusting these stencil values, but there are workarounds.</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>As render order is important, this method seems to only work correctly when the Decal Renderer Feature is set to <strong>Screen Space</strong> mode. (Or if you handle your own decals by rendering meshes after opaques and project them onto surfaces by reconstructing world positions from the depth texture, which is essentially the same idea)</p>
+<p>(Technically it should be possible even in DBuffer mode, but it seems there&rsquo;s some depth/stencil buffer copying/clearing going on which is messing with things)</p>
+
+</div>
+</div>
+<h4 id="rendering-the-lens-with-stencil">Rendering the Lens with Stencil</h4>
+<p>You&rsquo;ll need some kind of mesh to use as a lens - in my case I used a magnifying glass split into two submeshes (to apply separate materials to the handle and glass). Only the glass part is actually important here.</p>
+<p>To make this render to the stencil buffer, we can either :</p>
+<ul>
+<li>
+<p>Put it on a new Layer (e.g. named &ldquo;Lens&rdquo;, regular physics layer that is - not a rendering layer one). Remove that layer from the default <strong>Transparent Layer Mask</strong> at the top of the <strong>Universal Renderer</strong> asset. Then use a <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.0/manual/renderer-features/renderer-feature-render-objects.html">RenderObjects feature</a> to render this in the <strong>After Rendering Opaques</strong> event, filtered to Transparents &amp; using that layer and overriding Stencil :</p>
+<ul>
+<li><code>Value = 1, Compare = Always, Pass = Replace</code></li>
+</ul>
+</li>
+<li>
+<p>Since it&rsquo;s likely there&rsquo;s only one lens, using an entire layer might not be ideal. So alternatively, we could clone the GameObject and use a Material with the following shader (probably requires the lens/glass to be a separate mesh, as we don&rsquo;t really want to render the handle in this way)</p>
+<ul>
+<li>The shader will draw it to the stencil buffer only (not depth or colour buffers) :</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Shader <span style="color:#e6db74">&#34;Custom/StencilLens&#34;</span> {
+</span></span><span style="display:flex;"><span>    Properties { }
+</span></span><span style="display:flex;"><span>    SubShader {
+</span></span><span style="display:flex;"><span>        Tags { 
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Queue&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;AlphaTest+50&#34;</span> <span style="color:#75715e">// Render before Decals (Screenspace mode)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Pass {
+</span></span><span style="display:flex;"><span>            Cull Off        <span style="color:#75715e">// Make double sided (optional)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            ZWrite Off      <span style="color:#75715e">// Don&#39;t render to depth buffer
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            ColorMask <span style="color:#ae81ff">0</span>     <span style="color:#75715e">// Don&#39;t render to colour buffer
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            Stencil {
+</span></span><span style="display:flex;"><span>                Ref <span style="color:#ae81ff">1</span>           <span style="color:#75715e">// Value to compare with (and write, if using Replace)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                Comp Always     <span style="color:#75715e">// No comparison, always pass
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                Pass Replace    <span style="color:#75715e">// Replace value in stencil buffer with Ref above
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>In the above shader I&rsquo;ve hardcoded a value of 1, but if you prefer it&rsquo;s also possible to use properties to adjust the stencil (and other ShaderLab functions) from the Material - see <a href="https://www.cyanilux.com/faq/#shaderlab-operation-properties">FAQ : Using properties with ShaderLab operations</a>.</p>
+<p>Note if you have other features using stencils, you may need use a different value or additionally make use of the ReadMask/WriteMask to avoid the features interfering with eachother.</p>
+<h4 id="rendering-objectsdecals-with-stencil">Rendering Objects/Decals with Stencil</h4>
+<p>For regular meshes, we can use stencil overrides on the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.0/manual/renderer-features/renderer-feature-render-objects.html">RenderObjects feature</a> again :</p>
+<ul>
+<li><code>Value = 1, Compare = Equal</code> (or <code>NotEqual</code> if they should be hidden by lens)</li>
+</ul>
+<p>But this doesn&rsquo;t work for Decal Projectors as they are already rendered using a different feature</p>
+<ul>
+<li>It might be possible to write a custom version of the <em>Decal Renderer Feature</em>, that additionally draws decals on a specific layer using a StateBlock that overrides the stencil values. (Could even be possible to get it working with DBuffer mode as well). But writing a custom version of the feature is quite a bit beyond the scope of this tutorial.</li>
+<li>Or we can convert our Decal Graph to shader code (steps will be explained below), which would allow us to manually add the <code>Stencil{}</code> block under the SubShader. But a disadvantage is if we need to make changes to the graph, we must do this again.</li>
+</ul>
+<p>While the graph asset is selected in the Project window, the Inspector will have buttons at the top of the asset to show the generated shader code.</p>
+<div class="img-center">
+<a href="ViewGeneratedShader.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="487" height="186" alt="(Image)" src="ViewGeneratedShader.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Once open, you can move the file from the temporary folder (or File → Save As&hellip;) into your assets. Close the file and reopen the one in your assets.</p>
+<p>We can insert our Stencil block in the SubShader (after it&rsquo;s Tags), before the first Pass. It&rsquo;ll look something like this :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>SubShader
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    Tags
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        ...
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ---- start of edits to generated code ----
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Stencil
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        Ref <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        Comp Equal
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ---- end of edits to generated code ----
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    Pass
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>...</span></span></code></pre></div>
+<p>I&rsquo;d also recommend changing the name of the shader, from <code>Shader Graphs/Decal</code> to something like <code>Generated From Graph/Decal</code> so it&rsquo;s clear which version is which on the Shaders dropdown. Create a Material using this new shader.</p>
+<p>Any decals using this material should now only be drawn through the lens. (Or can use <code>NotEqual</code> comparison for objects that should be hidden by the lens)
+<br><hr>
+
+<div style="display:block;text-align: center">
+<h2>Thanks for reading! 😊</h2>
+<p> If this post helped, consider sharing a link with others!</p>
+</div>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div></p>
+
+
+        </div>
+        </br>
+<p class="footer">
+<a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a>
+	<p class="small-text" style="text-align:center;">
+	
+	
+	
+		<a href="https://www.cyanilux.com/#license">
+		
+		License / Usage
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/cookies">
+		
+		Cookies & Privacy
+		</a>
+		 &#8212; 
+	
+		<a href="https://www.cyanilux.com/index.xml">
+		
+		RSS Feed
+		</a>
+		
+	
+	</p>
+</p>
+</br>
+    </body>
+</html>
