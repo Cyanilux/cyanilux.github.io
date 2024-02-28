@@ -20,7 +20,7 @@
 	<meta itemprop="name" content="Custom Renderer Features">
 <meta itemprop="description" content="Goes through examples of Renderer Features and explains how to write Custom Renderer Features and Scriptable Render Passes for Universal RP"><meta itemprop="datePublished" content="2023-04-22T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-04-22T00:00:00+00:00" />
-<meta itemprop="wordCount" content="7422"><meta itemprop="image" content="https://www.cyanilux.com/Result.png">
+<meta itemprop="wordCount" content="7599"><meta itemprop="image" content="https://www.cyanilux.com/Result.png">
 <meta itemprop="keywords" content="URP," />
 	
 	
@@ -268,9 +268,9 @@
 
 </div>
 <p>One way to customise the <strong>Universal Render Pipeline</strong> (URP) is by writing custom <strong>Scriptable Render Passes</strong>. A typical example of this could involve rendering some objects to a separate off-screen texture, which we could then sample later - either in shaders used by any objects in the scene, or as a fullscreen pass to composite it with the camera/screen.</p>
-<p>These passes can be enqueued by a <strong>Custom Renderer Feature</strong>, which are assigned to the list at the bottom of the &ldquo;Renderer&rdquo; assets used by URP (i.e. the <strong>Universal Renderer</strong> asset, known as <em>Forward Renderer</em> prior to 2021, or the <strong>2D Renderer</strong> which supports renderer features from 2022.1 onwards).</p>
-<p>In this post, I&rsquo;d like to first provide some examples so you can get an idea of why you might use Renderer Features. Then show the layout/template of a custom feature/pass, and go through each function separately as I think it&rsquo;ll be more useful that way.</p>
-<p>The post is mostly aimed at Unity 2022+ versions of URP which introduced RTHandles, but be aware that I might also mention/link to older examples (there&rsquo;s not really that many for 2022 yet!)</p>
+<p>These passes can be enqueued by a <strong>Custom Renderer Feature</strong>, which are assigned to the list at the bottom of the &ldquo;Renderer&rdquo; assets used by URP (i.e. the <strong>Universal Renderer</strong> asset, known as <em>Forward Renderer</em> prior to 2021, or the <strong>2D Renderer</strong> which supports renderer features from 2022.1 onwards)</p>
+<p>This post will show the general layout/structure of a custom feature &amp; pass, going through each function separately as I think it&rsquo;ll be more useful that way.</p>
+<p>The post is mostly aimed at Unity 2022+ versions of URP which introduced RTHandles - this was quite a big change and the lack of examples is mainly why I&rsquo;ve written this. But be aware, I might also mention/link to older examples!</p>
 <hr>
 <h3 id="sections-">Sections :</h3>
 <ul>
@@ -278,8 +278,8 @@
 <ul>
 <li><a href="#fullscreen">Fullscreen / Post Process Effect</a></li>
 <li><a href="#renderobjects">RenderObjects</a></li>
-<li><a href="#edge-detection">Edge Detection</a></li>
 <li><a href="#screen-blur">Screen Blur</a></li>
+<li><a href="#edge-detection">Pre-passes &amp; Edge Detection</a></li>
 <li><a href="#screenspace-distortion">Screenspace Distortion</a></li>
 <li><a href="#lens-flares">Lens Flares</a></li>
 <li><a href="#internal-urp-passes">Internal URP Passes</a></li>
@@ -319,31 +319,18 @@
 </ul>
 <hr>
 <h2 id="examples">Example Uses</h2>
-<p>If you prefer, <a href="#layout">click to skip the examples</a>. Or just see the <a href="#full-example">full example code</a> based on snippets in this post.</p>
-<div class="notice">
-<div style="background-color: #303030; margin-right: 10px;">
-<div class="notice-exclamation">
-!
-</div>
-</div>
-<div style="margin: 5px;">
-Might add some images here but didn&rsquo;t have time when writing&hellip; Will hopefully come back to it!
-</div>
-</div>
+<p>First up, I thought I&rsquo;d provide some examples so you can get an idea of why you might use a Renderer Feature. But if you prefer, <a href="#layout">click to skip the examples</a>. Or just see the <a href="#full-example">full example code</a> based on snippets in this post.</p>
 <h3 id="fullscreen">Fullscreen / Post Process Effect</h3>
 <p>A very common use for renderer features is <strong>applying shaders/materials as a fullscreen effect</strong>, since URP&rsquo;s Post Processing Volumes do not support custom effects (as of 2022 at least).</p>
-<p>Applying fullscreen effects is usually referred to as a &ldquo;blit&rdquo;. For example, I have a <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Renderer Feature</a> shared on github. That repo has various branches as there are different ways to apply fullscreen effects, such as <code>CommandBuffer.Blit</code>, overriding view/projection matrices and using <code>CommandBuffer.DrawMesh</code>, or using the newer Blitter API (Unity 2022+), e.g. <code>Blitter.BlitCameraTexture</code>.</p>
+<p>Applying fullscreen effects is sometimes referred to as a &ldquo;blit&rdquo;. There are various ways to handle it, such as <code>CommandBuffer.Blit</code>, using <code>CommandBuffer.DrawMesh</code>/<code>CommandBuffer.DrawProcedural</code> (either with custom vertex shader, or overriding view/projection matrices), or using the newer Blitter API (Unity 2022+), e.g. <code>Blitter.BlitCameraTexture</code>.</p>
+<p>I have a <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Renderer Feature</a> shared on github - it has various branches showing some of these methods.</p>
 <p>Unity 2022.2 also introduced a new <strong>Fullscreen Graph</strong> type and <strong>Fullscreen Pass Renderer Feature</strong> built-in to URP, so if you just need to apply a shader to the camera you can use those instead of a custom feature! To blit to a different destination, we&rsquo;d still need a custom feature.</p>
 <p>The later <a href="#blit">Blit</a> section will go into more detail.</p>
 <h3 id="renderobjects">RenderObjects</h3>
-<p>URP provides the <strong>RenderObjects</strong> feature which, as the name might suggest, can render objects (e.g. MeshRenderers, SpriteRenderers, etc), filtered by Opaque/Transparent, Layer Mask and Shader Pass (LightMode) tags, while also providing overrides for the Material, Depth Test/Write, Stencil operations and Camera properties. It&rsquo;s a good example of what the <strong>ScriptableRenderContext.DrawRenderers</strong> function can do.</p>
+<p>URP provides the <strong>RenderObjects</strong> feature which, as the name might suggest, can render objects (e.g. MeshRenderers, SkinnedMeshRenderers, SpriteRenderers, etc), filtered by Opaque/Transparent, Layer Mask and Shader Pass (LightMode) tags, while also providing overrides for the Material, Depth Test/Write, Stencil operations and Camera properties.</p>
 <p>Some of those overrides are particularly useful as Shader Graph doesn&rsquo;t support Stencil operations and didn&rsquo;t expose Depth Test/Write params until v12 (2021.2).</p>
 <p>The <strong>Override Material</strong> is also useful for applying a material to many objects in the scene at once, such as Outline shaders using the &ldquo;Inverted Hull&rdquo; method <a href="https://github.com/Unity-Technologies/UniversalRenderingExamples/blob/master/Assets/_CompletedDemos/ToonOutlinePostprocessCompleted/Shaders/ToonBasicOutline.shader">such as this example from UniversalRenderingExamples</a>, or X-Ray / Highlighting through walls effects also using ZTest &ldquo;Greater&rdquo; like <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@16.0/manual/containers/how-to-custom-effect-render-objects.html">this example in the Unity docs</a>.</p>
 <p>Note that when you use the feature, it is actually <em>re-rendering</em> those objects. If you only want to render once, you need to also remove the Layer(s) used in the Layer Mask from the default Opaque/Transparent Layer Mask at the top of the Universal Renderer. (The 2D Renderer seems to lack this, so not sure how to do it there&hellip;)</p>
-<h3 id="edge-detection">Edge Detection</h3>
-<p>As is, the RenderObjects feature only renders to the camera buffers, but with a similar custom feature it is possible to render objects to another buffer (known as a Render Target). This is usually some form of <strong>Render Texture</strong>, but in features we tend to use RTHandle for 2022+, (or RenderTargetHandle/RenderTargetIdentifier in previous versions). Once you have this buffer it can be passed into other shaders using a Global Texture Property.</p>
-<p>A common example is for <strong>Edge Detection</strong> style outlines, such as <a href="https://alexanderameye.github.io/notes/edge-detection-outlines/">this tutorial by Alexander Ameye</a>. That uses a feature to first render the <strong>depth</strong> and <strong>normals</strong> of objects in the scene into a texture. Another feature then applies a fullscreen material, where this texture is sampled multiple times to detect where the edges of objects are.</p>
-<p>In v10+/2020.2+ we can also get URP to generate those depth and normals textures for us, by using <code>renderPass.ConfigureInput(ScriptableRenderPassInput.Normal);</code> before enqueuing the pass (in <code>AddRenderPasses</code> function). More info on that later.</p>
 <h3 id="screen-blur">Screen Blur</h3>
 <p>We can use a custom feature to apply blur operations to the screen. This can involve either blitting back to the screen, or to a custom buffer - which could then be sampled in UI shaders for example to make them appear to blur what is behind them.</p>
 <p>There are multiple ways to blur in a shader, such as Box Blur, Gaussian, Kawase. If you use those as search terms you should be able to find example implementations in Unity shaders. These can be applied to the screen by using a <a href="#blit">Blit</a> (may require shader to be modified depending on the blit method used).</p>
@@ -354,11 +341,13 @@ Might add some images here but didn&rsquo;t have time when writing&hellip; Will 
 <li><a href="https://alexanderameye.github.io/notes/scriptable-render-passes/">https://alexanderameye.github.io/notes/scriptable-render-passes/</a></li>
 <li><a href="https://danielilett.com/2023-06-01-tut6-6-gaussian-blur/">https://danielilett.com/2023-06-01-tut6-6-gaussian-blur/</a></li>
 </ul>
+<h3 id="edge-detection">Pre-passes &amp; Edge Detection</h3>
+<p>As is, the RenderObjects feature only renders to the camera buffers, but with a similar custom feature it is possible to render objects to another buffer (known as a Render Target). This is usually some form of <strong>Render Texture</strong>, but in features we tend to use RTHandle for 2022+, (or RenderTargetHandle/RenderTargetIdentifier in previous versions). Once you have this buffer it can be passed into other shaders using a Global Texture Property. Generating this buffer is usually referred to as a &ldquo;pre-pass&rdquo; as you need this additional pass <em>before</em> your main effect is rendered.</p>
+<p>A common example is for <strong>Edge Detection</strong> style outlines, such as <a href="https://alexanderameye.github.io/notes/edge-detection-outlines/">this tutorial by Alexander Ameye</a>. That uses a feature to first render a prepass to obtain the <strong>depth</strong> and <strong>normals</strong> of objects in the scene, sent into a global texture property. Another feature (or pass) then applies a fullscreen material, where this texture is sampled multiple times to detect where the edges of objects are.</p>
+<p>In URP v10+ (Unity 2020.2+) we can also now get URP to generate depth and normals textures for us, e.g. by using <code>renderPass.ConfigureInput(ScriptableRenderPassInput.Normal);</code> before enqueuing the pass (in <code>AddRenderPasses</code> function). More info on ConfigureInput is provided later.</p>
 <h3 id="screenspace-distortion">Screenspace Distortion</h3>
-<p>Another similar example is for screenspace distortion effects.</p>
-<p>Distortion in shaders in the scene typically uses the <b class="node">Scene Color</b> node, but this means transparent objects behind it cannot be seen. A potential solution is copying the screen after rendering transparents, a <a href="#blit-example-copy">later example</a> goes over that.</p>
-<p>In that case, the regular transparent queue can be distorted at least - but multiple layers of distortion still won&rsquo;t stack.</p>
-<p>For that we could instead have a feature render the distortion directions/strengths additively into a custom buffer (via a DrawRenderers call). We can then do a fullscreen blit on the camera targets, while sampling the buffer as a global texture to distort UV coords.</p>
+<p>Distortion for shaders used in the scene typically involves displacing the screen positions used to sample the <b class="node">Scene Color</b> node. This uses the <strong>Opaque Texture</strong> enabled on the URP Asset, which is a copy of the camera color buffer after rendering opaques. Since this texture only contains opaques, transparent objects behind it cannot be seen. A potential solution is copying the screen after rendering transparents and applying the distortion later instead, a <a href="#blit-example-copy">later example</a> goes over that.</p>
+<p>In that case, the regular transparent queue can be distorted at least - but multiple layers of distortion also won&rsquo;t stack. If that is the desired result, we could instead have a feature render a pre-pass to combine distortion directions/strengths additively into a custom buffer (e.g. via a DrawRenderers call). We can then do a fullscreen blit on the camera targets, while sampling the buffer as a global texture to distort UV coords.</p>
 <h3 id="lens-flares">Lens Flares</h3>
 <p>While URP now supports the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@13.1/manual/shared/lens-flare/lens-flare-component.html">Lens Flares (SRP) component</a>, older versions of the URP docs also provided a custom <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@12.1/manual/containers/create-custom-renderer-feature-1.html">Lens Flare Renderer Feature example</a> which could be a good reference if you need to do someting similar with lights.</p>
 <p>Specifically, their example makes use of <code>renderingData.lightData.visibleLights</code> to loop through those lights, then drawing a quad mesh with a flare texture through <code>cmd.DrawMesh</code>.</p>
@@ -802,6 +791,18 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 </ul>
 <hr>
 <h2 id="drawrenderers">DrawRenderers</h2>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>As of Unity 2023, DrawRenderers is now obsolete. It&rsquo;s replacement is to create a RendererList using <a href="https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CreateRendererList.html">ScriptableRenderContext.CreateRendererList</a> and then draw it using <code>CommandBuffer.DrawRendererList</code>. I haven&rsquo;t got an example of this currently - I&rsquo;ve mostly stuck to 2022 versions - but it should be a similar setup to DrawRenderers (as shown below)</p>
+<p>Note there is two overloads for <code>CreateRendererList</code>: one using a <code>RendererListDesc</code> struct (looks slightly simpler / concise), while the other uses <code>RendererListParams</code> which contains other structs like <code>CullingResults</code>, <code>FilteringSettings</code>, <code>DrawingSettings</code>, etc that were also used by DrawRenderers.</p>
+
+</div>
+</div>
 <p>As the method name suggests, this allows us to draw renderers to the current render target (specified in OnCameraSetup by ConfigureTarget as previously discussed). Can see the function&rsquo;s params/overloads in the Unity docs for <a href="https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.DrawRenderers.html">ScriptableRenderContext.DrawRenderers</a></p>
 <p>The <strong>DrawingSettings</strong> struct parameter allows us to configure how the renderers will be drawn. It&rsquo;s typically created using the <code>CreateDrawingSettings</code> method of the ScriptableRenderPass class (which calls the same method in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Runtime/RenderingUtils.cs">RenderingUtils</a>). After this, can set properties on it.</p>
 <p>Can see which properties are available in the Unity docs for <a href="https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings.html">DrawingSettings</a>. For example :</p>
@@ -893,15 +894,15 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 <ul>
 <li>Can work with XR. Likely the recommended method for versions prior to 2022.</li>
 <li>Would need to pass source into shader yourself. e.g. using <code>cmd.SetGlobalTexture(</code>_SomeReference<code>, source);</code></li>
-<li>Would require a specific vertex shader (output vertex positions as-is, rather than using <code>TransformObjectToHClip</code>), unless you also override the View/Projection matrices to identity, then switch back after.</li>
+<li>Requires a specific vertex shader (output vertex positions as-is, rather than using <code>TransformObjectToHClip</code>), unless you also override the View/Projection matrices to identity, then switch back after. Otherwise will render in the scene, not fullscreen.</li>
 <li>Example : <a href="https://github.com/Cyanilux/URP_BlitRenderFeature/blob/cmd-drawMesh/Blit.cs">Blit Renderer Feature / cmd-DrawMesh branch</a></li>
 </ul>
 </li>
-<li><code>CoreUtils.DrawFullScreen</code>
+<li><code>CoreUtils.DrawFullScreen</code> (aka <code>CommandBuffer.DrawProcedural</code>)
 <ul>
-<li>Draws a fullscreen triangle</li>
+<li>Can draw a fullscreen triangle</li>
 <li>(Has various overloads, see the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/Runtime/Utilities/CoreUtils.cs">CoreUtils class</a>)</li>
-<li>Similar to above but uses <a href="https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.DrawProcedural.html"><code>CommandBuffer.DrawProcedural</code></a>. Would require a specific vertex shader (e.g. see <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl">Blit.hlsl</a>) to make sure it actually is fullscreen rather than rendering it in the world.</li>
+<li>Requires a specific vertex shader, Otherwise will render in the scene, not fullscreen. (e.g. see <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl">Blit.hlsl</a>)</li>
 </ul>
 </li>
 </ul>
@@ -909,7 +910,7 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 </div>
 <h3 id="blit-example">Example</h3>
 <p>When rendering we need to make sure we do not <em>read</em> and <em>write</em> to the same texture/target as this can cause &ldquo;unintended behaviour&rdquo; (to quote the <code>CommandBuffer.Blit</code> documentation). Because of this, if the source/destination needs to be the same, we actually need to instead use <strong>two blits</strong> with an additional target in-between.</p>
-<p>In older versions this would typically be a &ldquo;Temporary Render Texture&rdquo; but with the change to RTHandles that&rsquo;s not really used anymore. But I&rsquo;ve still named it temp, and by using <code>RenderingUtils.ReAllocateIfNeeded</code>, the texture won&rsquo;t be set up multiple times if the feature is used multiple times (or if other features use the same <code>_TemporaryColorTexture</code> reference) - so in a way, it still acts as a temporary texture, kinda.</p>
+<p>In older versions this would typically be a &ldquo;Temporary Render Texture&rdquo;, but with the change to RTHandles that&rsquo;s not really used anymore. In the example below I&rsquo;ve used <code>RenderingUtils.ReAllocateIfNeeded</code> so the texture won&rsquo;t be set up multiple times if the feature is used multiple times (or if other features use the same <code>_TemporaryColorTexture</code> reference) - so in a way, this still acts as a &ldquo;temporary&rdquo; texture (kinda).</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// In pass :</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> RTHandle rtTemp;
 </span></span><span style="display:flex;"><span>...
@@ -947,7 +948,7 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 <p>However to prevent graphical artifacts, it is important that any objects/shaders that sample the texture are rendered in a <strong>later event</strong>! Can force this by putting the object on a layer removed from the <strong>Default Opaque/Transparent Layer Mask</strong> at the top of the UniversalRenderer, and render that layer with a <a href="#drawrenderers">DrawRenderers</a> call, or use the RenderObjects feature.</p>
 <hr>
 <h2 id="full-example">Full Renderer Feature Example</h2>
-<p>Here&rsquo;s a full code example based on snippets mentioned in this post. (And the usage foldout explains what it could be used for)</p>
+<p>Here&rsquo;s a full code example based on snippets mentioned in this post. It involves rendering objects to a custom texture, then a fullscreen pass on the camera which also uses that texture. (The usage foldout below also provides example shaders that the materials could use)</p>
 <button  type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
