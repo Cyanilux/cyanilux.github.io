@@ -1,35 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-	
-	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
-	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
-	<meta name="msapplication-TileColor" content="#00aba9">
-	<meta name="theme-color" content="#ffffff">
-	
-	
-	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml">
-	
-	
-    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=5 ">
-	
-	<meta itemprop="name" content="Crystal Shader Breakdown">
-<meta itemprop="description" content="An unlit/glowing crystal shader with a colour gradient based on object space Y position, and refraction via Scene Color node"><meta itemprop="datePublished" content="2021-02-01T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2021-02-01T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1310"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
-<meta itemprop="keywords" content="URP,Shader Graph," />
-	
-	
-	<meta name="twitter:card" content="summary_large_image"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="theme-color" content="#ffffff">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Crystal Shader Breakdown",
+  "name": "Crystal Shader Breakdown",
+  "description": "An unlit\/glowing crystal shader with a colour gradient based on object space Y position, and refraction via Scene Color node",
+  "datePublished": "2021-02-01",
+  "dateModified": "2021-02-01",
+  "author": {
+	"@type": "Person",
+	"name": "Cyanilux",
+	"url": "https://www.cyanilux.com"
+  },
+  "image": {
+    "@type": "ImageObject",
+    "@id": "https://www.cyanilux.com/tutorials/crystal-shader-breakdown/Preview_hud2d565c32b14ae366eab68ee015868c7_204774_300x0_resize_box_3.png",
+    "url": "https://www.cyanilux.com/tutorials/crystal-shader-breakdown/Preview_hud2d565c32b14ae366eab68ee015868c7_204774_300x0_resize_box_3.png",
+    "height": "214",
+    "width": "300"
+  },
+  "url": "https://www.cyanilux.com/tutorials/crystal-shader-breakdown/",
+  "inLanguage": "en-gb",
+  "wordCount": "1310",
+  "isPartOf": {
+    "@type" : "Blog",
+    "@id": "https://www.cyanilux.com",
+    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+  },
+  "keywords": [
+    "Unity",
+    "Tutorial",
+    "URP",
+    "Shader Graph",
+  ],
+}
+</script>
+
+<meta name="twitter:card" content="summary_large_image"/>
 	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/crystal-shader-breakdown/Preview.png"/>
 <meta name="twitter:title" content="Crystal Shader Breakdown"/>
 <meta name="twitter:description" content="An unlit/glowing crystal shader with a colour gradient based on object space Y position, and refraction via Scene Color node"/>
 
-	
 <meta property="og:title" content="Crystal Shader Breakdown" />
 <meta property="og:description" content="An unlit/glowing crystal shader with a colour gradient based on object space Y position, and refraction via Scene Color node" />
 <meta property="og:type" content="article" />
@@ -43,41 +69,11 @@
     
 <meta property="article:published_time" content="2021-02-01T00:00:00+00:00" />
 <meta property="article:modified_time" content="2021-02-01T00:00:00+00:00" />
-	
-	
-	
-    
-    
-    <title>Crystal Shader Breakdown | Cyanilux</title>
-	
-	
-	
-		
-		
-		<meta name="description" content="An unlit/glowing crystal shader with a colour gradient based on object space Y position, and refraction via Scene Color node. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
-		
-	
-	
-	
-	<link rel="canonical" href="https://www.cyanilux.com/tutorials/crystal-shader-breakdown/" />
-	
-	
-	<div class="cookie-container">
-	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
-	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
-	  <button class="cookie-accept-btn"><b>Accept</b></button>
-	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
-	</div>
-	
-	<script>
+<title>Crystal Shader Breakdown | Cyanilux</title>
+<meta name="description" content="An unlit/glowing crystal shader with a colour gradient based on object space Y position, and refraction via Scene Color node. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+<link rel="canonical" href="https://www.cyanilux.com/tutorials/crystal-shader-breakdown/" />
+<script>
 	var webStorageSupported = (typeof(Storage) !== undefined);
-	
-	function setCookie(cname, cvalue, exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays*24*60*60*1000));
-		var expires = "expires="+ d.toUTCString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-	}
 	
 	function getCookie(cname) {
 		var name = cname + "=";
@@ -95,38 +91,6 @@
 		return "";
 	}
 	
-	const cookieContainer = document.querySelector(".cookie-container");
-	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
-	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
-	
-	cookieAcceptButton.addEventListener("click", () => {
-		cookieContainer.classList.remove("active");
-	  
-		if (webStorageSupported){
-			localStorage.setItem("cookiesAccepted", "true");
-		}else{
-			
-			setCookie("cookiesAccepted", "true", 365);
-		}
-		
-		location.reload();
-	});
-	
-	cookieRefuseButton.addEventListener("click", () => {
-		cookieContainer.classList.remove("active");
-	  
-		
-		
-		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-		
-		if (webStorageSupported){
-			localStorage.setItem("cookiesAccepted", "false");
-		}else{
-			
-			setCookie("cookiesAccepted", "false", 14);
-		}
-	});
-	
 	var cookie;
 	if (webStorageSupported){
 		cookie = localStorage.getItem("cookiesAccepted");
@@ -142,18 +106,11 @@
 	}else if (cookie === null || cookie == ""){
 		showBanner = true;
 	}
-	
-	setTimeout(() => {
-		if (showBanner) {
-			cookieContainer.classList.add("active");
-		}
-	}, 1000);
-	
-	</script>
-	
-	
-	
-	<script>
+</script>
+
+
+
+<script>
 	if (cookiesAccepted){
 		
 		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
@@ -164,8 +121,9 @@
 		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
 		"<\/script>");
 	}
-	</script>
-	
+</script>
+
+
 </head>
     <body>
         
@@ -268,10 +226,10 @@
 
 
 
+
 <div style="width:10px"></div>
+<time datetime="2021-02-01">&#128337 1 Feb 2021</time>
 
-
-<time datetime="2021-02-01">&#128337 Feb 1, 2021</time>
 
 </div>
 <script>
@@ -280,10 +238,10 @@
 	}else{
 		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1332335315848224769\">https://twitter.com/Cyanilux/status/1332335315848224769</a><p>"+
 		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
-		"<a style=\"color:#00aabb\" onclick=\""+
+		"<b style=\"color:#00aabb\" onclick=\""+
 		"const cookieContainer = document.querySelector('.cookie-container');" +
 		"cookieContainer.classList.add('active');" +
-		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>");
 	}
 </script>
 <h2 id="intro">Intro</h2>
@@ -347,10 +305,10 @@
 	}else{
 		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1332702853476081666\">https://twitter.com/Cyanilux/status/1332702853476081666</a><p>"+
 		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
-		"<a style=\"color:#00aabb\" onclick=\""+
+		"<b style=\"color:#00aabb\" onclick=\""+
 		"const cookieContainer = document.querySelector('.cookie-container');" +
 		"cookieContainer.classList.add('active');" +
-		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>");
 	}
 </script>
 <p>One thing I thought of while writing : It might be good to try mixing some additional noise (e.g. <b class="node">Gradient Noise</b>) into the refraction (before multiplying with the Refraction Strength that is). These crystals are meant to more &ldquo;raw&rdquo; than cut, so would make sense to have imperfections that cause a distorted refraction rather than a perfect one. Could also use a texture instead of generated noise to be able to swap it out for different crystal types. The noise could also affect the opacity or colour somehow. Mixing in some parallax effects would also be nice to look into.
@@ -375,32 +333,88 @@ Join my discord! 💬
 
         </div>
         </br>
-<p class="footer">
-<a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a>
-	<p class="small-text" style="text-align:center;">
+
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a></p>
+
+<p class="small-text" style="text-align:center;">
+
+
+
+	<a href="https://www.cyanilux.com/#license">
 	
+	License / Usage
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/cookies">
 	
+	Cookies & Privacy
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/index.xml">
 	
-		<a href="https://www.cyanilux.com/#license">
-		
-		License / Usage
-		</a>
-		 &#8212; 
+	RSS Feed
+	</a>
 	
-		<a href="https://www.cyanilux.com/cookies">
-		
-		Cookies & Privacy
-		</a>
-		 &#8212; 
-	
-		<a href="https://www.cyanilux.com/index.xml">
-		
-		RSS Feed
-		</a>
-		
-	
-	</p>
+
 </p>
 </br>
+
+<div class="cookie-container">
+<p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+<button class="cookie-accept-btn"><b>Accept</b></button>
+<button class="cookie-refuse-btn"><b>Refuse</b></button>
+</div>
+
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+</script>
     </body>
 </html>

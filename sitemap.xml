@@ -8,22 +8,22 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/</loc>
-    <lastmod>2023-12-05T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tags/shader-graph/</loc>
-    <lastmod>2023-12-05T00:00:00+00:00</lastmod>
+    <lastmod>2023-12-07T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tags/</loc>
-    <lastmod>2023-12-05T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/</loc>
-    <lastmod>2023-12-05T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -33,7 +33,12 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tags/urp/</loc>
-    <lastmod>2023-12-05T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-05T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/faq/</loc>
+    <lastmod>2023-11-28T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -53,22 +58,22 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/custom-renderer-features/</loc>
-    <lastmod>2023-04-22T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/posts/</loc>
-    <lastmod>2023-04-22T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tags/blender/</loc>
-    <lastmod>2023-03-07T00:00:00+00:00</lastmod>
+    <lastmod>2023-04-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/fractured-cube-breakdown/</loc>
-    <lastmod>2023-03-07T00:00:00+00:00</lastmod>
+    <lastmod>2023-04-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -103,12 +108,12 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tags/hlsl/</loc>
-    <lastmod>2021-05-17T00:00:00+00:00</lastmod>
+    <lastmod>2023-10-13T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/urp-shader-code/</loc>
-    <lastmod>2021-05-17T00:00:00+00:00</lastmod>
+    <lastmod>2022-04-24T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -123,12 +128,12 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tags/hdrp/</loc>
-    <lastmod>2021-03-05T00:00:00+00:00</lastmod>
+    <lastmod>2022-07-24T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/intro-to-shader-graph/</loc>
-    <lastmod>2021-03-05T00:00:00+00:00</lastmod>
+    <lastmod>2022-07-24T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -138,17 +143,17 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/intro-to-the-shader-pipeline/</loc>
-    <lastmod>2021-01-10T00:00:00+00:00</lastmod>
+    <lastmod>2023-10-13T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/depth/</loc>
-    <lastmod>2020-11-25T00:00:00+00:00</lastmod>
+    <lastmod>2023-04-22T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/fire-shader-breakdown/</loc>
-    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+    <lastmod>2023-10-12T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -168,7 +173,7 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/toon-glass-shader-breakdown/</loc>
-    <lastmod>2020-01-03T00:00:00+00:00</lastmod>
+    <lastmod>2023-10-31T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -178,12 +183,12 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/cloud-shader-breakdown/</loc>
-    <lastmod>2019-09-25T00:00:00+00:00</lastmod>
+    <lastmod>2023-03-31T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/</loc>
-    <lastmod>2019-09-04T00:00:00+00:00</lastmod>
+    <lastmod>2023-03-31T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -198,12 +203,12 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/vertex-displacement/</loc>
-    <lastmod>2019-06-14T00:00:00+00:00</lastmod>
+    <lastmod>2023-01-31T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/water-shader-breakdown/</loc>
-    <lastmod>2019-06-10T00:00:00+00:00</lastmod>
+    <lastmod>2023-03-31T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -218,7 +223,7 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/polar-coordinates/</loc>
-    <lastmod>2019-05-13T00:00:00+00:00</lastmod>
+    <lastmod>2023-12-07T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -237,10 +242,6 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/cookies/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/faq/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>

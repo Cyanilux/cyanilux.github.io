@@ -1,35 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-	
-	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
-	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
-	<meta name="msapplication-TileColor" content="#00aba9">
-	<meta name="theme-color" content="#ffffff">
-	
-	
-	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml">
-	
-	
-    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=5 ">
-	
-	<meta itemprop="name" content="Snowglobe Breakdown">
-<meta itemprop="description" content="Glass globe shader with background refraction &amp; reflection. Particles are contained inside which inherit Rigidbody movements."><meta itemprop="datePublished" content="2023-01-04T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2023-01-04T00:00:00+00:00" />
-<meta itemprop="wordCount" content="3509"><meta itemprop="image" content="https://www.cyanilux.com/Preview.png">
-<meta itemprop="keywords" content="URP,Shader Graph,VFX Graph," />
-	
-	
-	<meta name="twitter:card" content="summary_large_image"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="theme-color" content="#ffffff">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Snowglobe Breakdown",
+  "name": "Snowglobe Breakdown",
+  "description": "Glass globe shader with background refraction \u0026 reflection. Particles are contained inside which inherit Rigidbody movements.",
+  "datePublished": "2023-01-04",
+  "dateModified": "2023-01-04",
+  "author": {
+	"@type": "Person",
+	"name": "Cyanilux",
+	"url": "https://www.cyanilux.com"
+  },
+  "image": {
+    "@type": "ImageObject",
+    "@id": "https://www.cyanilux.com/tutorials/snowglobe-breakdown/Preview_hu3c2189b3c027b12428a5e910deef6385_200790_300x0_resize_box_3.png",
+    "url": "https://www.cyanilux.com/tutorials/snowglobe-breakdown/Preview_hu3c2189b3c027b12428a5e910deef6385_200790_300x0_resize_box_3.png",
+    "height": "243",
+    "width": "300"
+  },
+  "url": "https://www.cyanilux.com/tutorials/snowglobe-breakdown/",
+  "inLanguage": "en-gb",
+  "wordCount": "3509",
+  "isPartOf": {
+    "@type" : "Blog",
+    "@id": "https://www.cyanilux.com",
+    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+  },
+  "keywords": [
+    "Unity",
+    "Tutorial",
+    "URP",
+    "Shader Graph",
+    "VFX Graph",
+  ],
+}
+</script>
+
+<meta name="twitter:card" content="summary_large_image"/>
 	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/snowglobe-breakdown/Preview.png"/>
 <meta name="twitter:title" content="Snowglobe Breakdown"/>
 <meta name="twitter:description" content="Glass globe shader with background refraction &amp; reflection. Particles are contained inside which inherit Rigidbody movements."/>
 
-	
 <meta property="og:title" content="Snowglobe Breakdown" />
 <meta property="og:description" content="Glass globe shader with background refraction &amp; reflection. Particles are contained inside which inherit Rigidbody movements." />
 <meta property="og:type" content="article" />
@@ -43,41 +70,11 @@
     
 <meta property="article:published_time" content="2023-01-04T00:00:00+00:00" />
 <meta property="article:modified_time" content="2023-01-04T00:00:00+00:00" />
-	
-	
-	
-    
-    
-    <title>Snowglobe Breakdown | Cyanilux</title>
-	
-	
-	
-		
-		
-		<meta name="description" content="Glass globe shader with background refraction &amp; reflection. Particles are contained inside which inherit Rigidbody movements.. URP, Shader Graph, VFX Graph | Unity Shader Tutorials, @Cyanilux" />
-		
-	
-	
-	
-	<link rel="canonical" href="https://www.cyanilux.com/tutorials/snowglobe-breakdown/" />
-	
-	
-	<div class="cookie-container">
-	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
-	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
-	  <button class="cookie-accept-btn"><b>Accept</b></button>
-	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
-	</div>
-	
-	<script>
+<title>Snowglobe Breakdown | Cyanilux</title>
+<meta name="description" content="Glass globe shader with background refraction &amp; reflection. Particles are contained inside which inherit Rigidbody movements.. URP, Shader Graph, VFX Graph | Unity Shader Tutorials, @Cyanilux" />
+<link rel="canonical" href="https://www.cyanilux.com/tutorials/snowglobe-breakdown/" />
+<script>
 	var webStorageSupported = (typeof(Storage) !== undefined);
-	
-	function setCookie(cname, cvalue, exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays*24*60*60*1000));
-		var expires = "expires="+ d.toUTCString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-	}
 	
 	function getCookie(cname) {
 		var name = cname + "=";
@@ -95,38 +92,6 @@
 		return "";
 	}
 	
-	const cookieContainer = document.querySelector(".cookie-container");
-	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
-	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
-	
-	cookieAcceptButton.addEventListener("click", () => {
-		cookieContainer.classList.remove("active");
-	  
-		if (webStorageSupported){
-			localStorage.setItem("cookiesAccepted", "true");
-		}else{
-			
-			setCookie("cookiesAccepted", "true", 365);
-		}
-		
-		location.reload();
-	});
-	
-	cookieRefuseButton.addEventListener("click", () => {
-		cookieContainer.classList.remove("active");
-	  
-		
-		
-		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-		
-		if (webStorageSupported){
-			localStorage.setItem("cookiesAccepted", "false");
-		}else{
-			
-			setCookie("cookiesAccepted", "false", 14);
-		}
-	});
-	
 	var cookie;
 	if (webStorageSupported){
 		cookie = localStorage.getItem("cookiesAccepted");
@@ -142,18 +107,11 @@
 	}else if (cookie === null || cookie == ""){
 		showBanner = true;
 	}
-	
-	setTimeout(() => {
-		if (showBanner) {
-			cookieContainer.classList.add("active");
-		}
-	}, 1000);
-	
-	</script>
-	
-	
-	
-	<script>
+</script>
+
+
+
+<script>
 	if (cookiesAccepted){
 		
 		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
@@ -164,8 +122,9 @@
 		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
 		"<\/script>");
 	}
-	</script>
-	
+</script>
+
+
 </head>
     <body>
         
@@ -275,10 +234,10 @@
 
 
 
+
 <div style="width:10px"></div>
+<time datetime="2023-01-04">&#128337 4 Jan 2023</time>
 
-
-<time datetime="2023-01-04">&#128337 Jan 4, 2023</time>
 
 </div>
 <script>
@@ -287,10 +246,10 @@
 	}else{
 		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1606669778164191232\">https://twitter.com/Cyanilux/status/1606669778164191232</a><p>"+
 		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
-		"<a style=\"color:#00aabb\" onclick=\""+
+		"<b style=\"color:#00aabb\" onclick=\""+
 		"const cookieContainer = document.querySelector('.cookie-container');" +
 		"cookieContainer.classList.add('active');" +
-		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>");
 	}
 </script>
 <h2 id="intro">Intro</h2>
@@ -328,10 +287,10 @@
 	}else{
 		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1610261894127828993\">https://twitter.com/Cyanilux/status/1610261894127828993</a><p>"+
 		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
-		"<a style=\"color:#00aabb\" onclick=\""+
+		"<b style=\"color:#00aabb\" onclick=\""+
 		"const cookieContainer = document.querySelector('.cookie-container');" +
 		"cookieContainer.classList.add('active');" +
-		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>");
 	}
 </script>
 <h3 id="particles-setup">Setup</h3>
@@ -496,10 +455,10 @@
 	}else{
 		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1610260318264954880\">https://twitter.com/Cyanilux/status/1610260318264954880</a><p>"+
 		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
-		"<a style=\"color:#00aabb\" onclick=\""+
+		"<b style=\"color:#00aabb\" onclick=\""+
 		"const cookieContainer = document.querySelector('.cookie-container');" +
 		"cookieContainer.classList.add('active');" +
-		"\">Click here</a> to show cookie dialog if you want to change that</p><hr>");
+		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>");
 	}
 </script>
 <h3 id="globe-refraction">Refraction</h3>
@@ -803,32 +762,88 @@ Join my discord! 💬
 
         </div>
         </br>
-<p class="footer">
-<a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a>
-	<p class="small-text" style="text-align:center;">
+
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a></p>
+
+<p class="small-text" style="text-align:center;">
+
+
+
+	<a href="https://www.cyanilux.com/#license">
 	
+	License / Usage
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/cookies">
 	
+	Cookies & Privacy
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/index.xml">
 	
-		<a href="https://www.cyanilux.com/#license">
-		
-		License / Usage
-		</a>
-		 &#8212; 
+	RSS Feed
+	</a>
 	
-		<a href="https://www.cyanilux.com/cookies">
-		
-		Cookies & Privacy
-		</a>
-		 &#8212; 
-	
-		<a href="https://www.cyanilux.com/index.xml">
-		
-		RSS Feed
-		</a>
-		
-	
-	</p>
+
 </p>
 </br>
+
+<div class="cookie-container">
+<p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+<button class="cookie-accept-btn"><b>Accept</b></button>
+<button class="cookie-refuse-btn"><b>Refuse</b></button>
+</div>
+
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+</script>
     </body>
 </html>

@@ -87,10 +87,19 @@ body {
 	background-color: #08151f; /* #252830 */
 	
 	background: repeating-linear-gradient(
+	0deg,
+	#05171d 0px,
+	#071f25 15px,
+    #05171d 200px
+	);
+
+	/*
+	background: repeating-linear-gradient(
 	45deg,
 	#081924 0px,
 	#08151f 60px
 	);
+	*/
 
 	/*
 	background: repeating-conic-gradient(#08151f 0% 25%, #081924 5% 50%);

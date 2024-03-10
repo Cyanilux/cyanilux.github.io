@@ -1,31 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-	
-	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
-	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
-	<meta name="msapplication-TileColor" content="#00aba9">
-	<meta name="theme-color" content="#ffffff">
-	
-	
-	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml">
-	
-	
-    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=5 ">
-	
-	<meta itemprop="name" content="Recent Posts">
-<meta itemprop="description" content="Tutorials for Unity Shader Graph and Universal Render Pipeline (URP), @Cyanilux">
-	
-	
-	<meta name="twitter:card" content="summary"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="theme-color" content="#ffffff">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Recent Posts",
+  "name": "Recent Posts",
+  "description": "Tutorials for Unity Shader Graph and Universal Render Pipeline (URP), @Cyanilux",
+  "author": {
+	"@type": "Person",
+	"name": "Cyanilux",
+	"url": "https://www.cyanilux.com"
+  },
+  "url": "https://www.cyanilux.com/recent/",
+  "inLanguage": "en-gb",
+  "wordCount": "16",
+  "isPartOf": {
+    "@type" : "Blog",
+    "@id": "https://www.cyanilux.com",
+    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+  },
+  "keywords": [
+    "Unity",
+    "Tutorial",
+  ],
+}
+</script>
+
+<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Recent Posts"/>
 <meta name="twitter:description" content="Tutorials for Unity Shader Graph and Universal Render Pipeline (URP), @Cyanilux"/>
 
-	
 <meta property="og:title" content="Recent Posts" />
 <meta property="og:description" content="Tutorials for Unity Shader Graph and Universal Render Pipeline (URP), @Cyanilux" />
 <meta property="og:type" content="website" />
@@ -33,40 +51,11 @@
 
 	
 
-	
-	
-	
-    
-    
-    <title>Recent Posts | Cyanilux</title>
-	
-	
-	
-		
-		<meta name="description" content="Tutorials for Unity Shader Graph and Universal Render Pipeline (URP), @Cyanilux. | Unity Shader Tutorials, @Cyanilux"/>
-		
-	
-	
-	
-	<link rel="canonical" href="https://www.cyanilux.com/recent/" />
-	
-	
-	<div class="cookie-container">
-	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
-	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
-	  <button class="cookie-accept-btn"><b>Accept</b></button>
-	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
-	</div>
-	
-	<script>
+<title>Recent Posts | Cyanilux</title>
+<meta name="description" content="Tutorials for Unity Shader Graph and Universal Render Pipeline (URP), @Cyanilux. | Unity Shader Tutorials, @Cyanilux"/>
+<link rel="canonical" href="https://www.cyanilux.com/recent/" />
+<script>
 	var webStorageSupported = (typeof(Storage) !== undefined);
-	
-	function setCookie(cname, cvalue, exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays*24*60*60*1000));
-		var expires = "expires="+ d.toUTCString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-	}
 	
 	function getCookie(cname) {
 		var name = cname + "=";
@@ -84,38 +73,6 @@
 		return "";
 	}
 	
-	const cookieContainer = document.querySelector(".cookie-container");
-	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
-	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
-	
-	cookieAcceptButton.addEventListener("click", () => {
-		cookieContainer.classList.remove("active");
-	  
-		if (webStorageSupported){
-			localStorage.setItem("cookiesAccepted", "true");
-		}else{
-			
-			setCookie("cookiesAccepted", "true", 365);
-		}
-		
-		location.reload();
-	});
-	
-	cookieRefuseButton.addEventListener("click", () => {
-		cookieContainer.classList.remove("active");
-	  
-		
-		
-		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-		
-		if (webStorageSupported){
-			localStorage.setItem("cookiesAccepted", "false");
-		}else{
-			
-			setCookie("cookiesAccepted", "false", 14);
-		}
-	});
-	
 	var cookie;
 	if (webStorageSupported){
 		cookie = localStorage.getItem("cookiesAccepted");
@@ -131,18 +88,11 @@
 	}else if (cookie === null || cookie == ""){
 		showBanner = true;
 	}
-	
-	setTimeout(() => {
-		if (showBanner) {
-			cookieContainer.classList.add("active");
-		}
-	}, 1000);
-	
-	</script>
-	
-	
-	
-	<script>
+</script>
+
+
+
+<script>
 	if (cookiesAccepted){
 		
 		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
@@ -153,8 +103,9 @@
 		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
 		"<\/script>");
 	}
-	</script>
-	
+</script>
+
+
 </head>
     <body>
         
@@ -252,8 +203,8 @@
 
 
 
+<time datetime="2023-12-05">&#128337 5 Dec 2023</time>
 
-<time datetime="2023-12-05">&#128337 Dec 5, 2023</time>
 
 </div>
 		</div>
@@ -278,8 +229,8 @@
 
 
 
+<time datetime="2023-10-21">&#128337 21 Oct 2023</time>
 
-<time datetime="2023-10-21">&#128337 Oct 21, 2023</time>
 
 </div>
 		</div>
@@ -300,8 +251,8 @@
 
 
 
+<time datetime="2023-07-04">&#128337 4 Jul 2023</time>
 
-<time datetime="2023-07-04">&#128337 Jul 4, 2023</time>
 
 </div>
 		</div>
@@ -326,8 +277,8 @@
 
 
 
+<time datetime="2023-05-29">&#128337 29 May 2023</time>
 
-<time datetime="2023-05-29">&#128337 May 29, 2023</time>
 
 </div>
 		</div>
@@ -348,8 +299,10 @@
 
 
 
+<time datetime="2023-04-22">&#128337 22 Apr 2023</time>
 
-<time datetime="2023-04-22">&#128337 Apr 22, 2023</time>
+
+<time datetime="2024-03-05"> (updated 5 Mar 2024)</time>
 
 </div>
 		</div>
@@ -378,8 +331,10 @@
 
 
 
+<time datetime="2023-03-07">&#128337 7 Mar 2023</time>
 
-<time datetime="2023-03-07">&#128337 Mar 7, 2023</time>
+
+<time datetime="2023-04-05"> (updated 5 Apr 2023)</time>
 
 </div>
 		</div>
@@ -400,8 +355,8 @@
 
 
 
+<time datetime="2023-02-17">&#128337 17 Feb 2023</time>
 
-<time datetime="2023-02-17">&#128337 Feb 17, 2023</time>
 
 </div>
 		</div>
@@ -430,8 +385,8 @@
 
 
 
+<time datetime="2023-01-04">&#128337 4 Jan 2023</time>
 
-<time datetime="2023-01-04">&#128337 Jan 4, 2023</time>
 
 </div>
 		</div>
@@ -456,8 +411,8 @@
 
 
 
+<time datetime="2022-05-19">&#128337 19 May 2022</time>
 
-<time datetime="2022-05-19">&#128337 May 19, 2022</time>
 
 </div>
 		</div>
@@ -482,8 +437,8 @@
 
 
 
+<time datetime="2022-01-26">&#128337 26 Jan 2022</time>
 
-<time datetime="2022-01-26">&#128337 Jan 26, 2022</time>
 
 </div>
 		</div>
@@ -494,32 +449,88 @@
 
         </div>
         </br>
-<p class="footer">
-<a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a>
-	<p class="small-text" style="text-align:center;">
+
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a></p>
+
+<p class="small-text" style="text-align:center;">
+
+
+
+	<a href="https://www.cyanilux.com/#license">
 	
+	License / Usage
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/cookies">
 	
+	Cookies & Privacy
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/index.xml">
 	
-		<a href="https://www.cyanilux.com/#license">
-		
-		License / Usage
-		</a>
-		 &#8212; 
+	RSS Feed
+	</a>
 	
-		<a href="https://www.cyanilux.com/cookies">
-		
-		Cookies & Privacy
-		</a>
-		 &#8212; 
-	
-		<a href="https://www.cyanilux.com/index.xml">
-		
-		RSS Feed
-		</a>
-		
-	
-	</p>
+
 </p>
 </br>
+
+<div class="cookie-container">
+<p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+<button class="cookie-accept-btn"><b>Accept</b></button>
+<button class="cookie-refuse-btn"><b>Refuse</b></button>
+</div>
+
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+</script>
     </body>
 </html>

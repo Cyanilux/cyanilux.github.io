@@ -1,34 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-	
-	<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
-	<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
-	<meta name="msapplication-TileColor" content="#00aba9">
-	<meta name="theme-color" content="#ffffff">
-	
-	
-	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml">
-	
-	
-    <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=5 ">
-	
-	<meta itemprop="name" content="Contents">
-<meta itemprop="description" content="Tutorials for Unity Shader Graph. Mostly intended for the Universal Render Pipeline">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="theme-color" content="#ffffff">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
 
-<meta itemprop="wordCount" content="1797">
-<meta itemprop="keywords" content="" />
-	
-	
-	<meta name="twitter:card" content="summary"/>
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebPage",
+  "headline": "Contents",
+  "name": "Contents",
+  "description": "Tutorials for Unity Shader Graph. Mostly intended for the Universal Render Pipeline",
+  "author": {
+	"@type": "Person",
+	"name": "Cyanilux",
+	"url": "https://www.cyanilux.com"
+  },
+  "url": "https://www.cyanilux.com/contents/",
+  "inLanguage": "en-gb",
+  "wordCount": "1849",
+  "isPartOf": {
+    "@type" : "Blog",
+    "@id": "https://www.cyanilux.com",
+    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+  },
+  "keywords": [
+    "Unity",
+    "Tutorial",
+  ],
+}
+</script>
+
+<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Contents"/>
 <meta name="twitter:description" content="Tutorials for Unity Shader Graph. Mostly intended for the Universal Render Pipeline"/>
 
-	
 <meta property="og:title" content="Contents" />
 <meta property="og:description" content="Tutorials for Unity Shader Graph. Mostly intended for the Universal Render Pipeline" />
 <meta property="og:type" content="article" />
@@ -36,40 +51,11 @@
 
 	
 
-	
-	
-	
-    
-    
-    <title>Contents | Cyanilux</title>
-	
-	
-	
-		
-		<meta name="description" content="Tutorials for Unity Shader Graph. Mostly intended for the Universal Render Pipeline. | Unity Shader Tutorials, @Cyanilux"/>
-		
-	
-	
-	
-	<link rel="canonical" href="https://www.cyanilux.com/contents/" />
-	
-	
-	<div class="cookie-container">
-	  <p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
-	  See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
-	  <button class="cookie-accept-btn"><b>Accept</b></button>
-	  <button class="cookie-refuse-btn"><b>Refuse</b></button>
-	</div>
-	
-	<script>
+<title>Contents | Cyanilux</title>
+<meta name="description" content="Tutorials for Unity Shader Graph. Mostly intended for the Universal Render Pipeline. | Unity Shader Tutorials, @Cyanilux"/>
+<link rel="canonical" href="https://www.cyanilux.com/contents/" />
+<script>
 	var webStorageSupported = (typeof(Storage) !== undefined);
-	
-	function setCookie(cname, cvalue, exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays*24*60*60*1000));
-		var expires = "expires="+ d.toUTCString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-	}
 	
 	function getCookie(cname) {
 		var name = cname + "=";
@@ -87,38 +73,6 @@
 		return "";
 	}
 	
-	const cookieContainer = document.querySelector(".cookie-container");
-	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
-	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
-	
-	cookieAcceptButton.addEventListener("click", () => {
-		cookieContainer.classList.remove("active");
-	  
-		if (webStorageSupported){
-			localStorage.setItem("cookiesAccepted", "true");
-		}else{
-			
-			setCookie("cookiesAccepted", "true", 365);
-		}
-		
-		location.reload();
-	});
-	
-	cookieRefuseButton.addEventListener("click", () => {
-		cookieContainer.classList.remove("active");
-	  
-		
-		
-		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-		
-		if (webStorageSupported){
-			localStorage.setItem("cookiesAccepted", "false");
-		}else{
-			
-			setCookie("cookiesAccepted", "false", 14);
-		}
-	});
-	
 	var cookie;
 	if (webStorageSupported){
 		cookie = localStorage.getItem("cookiesAccepted");
@@ -134,18 +88,11 @@
 	}else if (cookie === null || cookie == ""){
 		showBanner = true;
 	}
-	
-	setTimeout(() => {
-		if (showBanner) {
-			cookieContainer.classList.add("active");
-		}
-	}, 1000);
-	
-	</script>
-	
-	
-	
-	<script>
+</script>
+
+
+
+<script>
 	if (cookiesAccepted){
 		
 		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
@@ -156,8 +103,9 @@
 		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
 		"<\/script>");
 	}
-	</script>
-	
+</script>
+
+
 </head>
     <body>
         
@@ -240,6 +188,8 @@
 
 
 
+
+
 </div>
 <p>Most of the tutorials below are for the <strong>Universal Render Pipeline</strong> (URP), but content may still work in other pipelines, such as the <strong>Built-in Render Pipeline</strong> (BiRP) and <strong>High Definition Render Pipeline</strong> (HDRP). It may need adjusting in some places due to HDRP using <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">Camera-Relative rendering</a> which makes <strong>World</strong> space relative to the camera position (e.g. try using <strong>Absolute World</strong> spaces instead).</p>
 <h4 id="sections-">Sections :</h4>
@@ -287,8 +237,10 @@ Join my discord! 💬
 
 
 
+<time datetime="2023-04-22">&#128337 22 Apr 2023</time>
 
-<time datetime="2023-04-22">&#128337 Apr 22, 2023</time>
+
+<time datetime="2024-03-05"> (updated 5 Mar 2024)</time>
 
 </div>
 			</div>
@@ -306,8 +258,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2023-02-17">&#128337 17 Feb 2023</time>
 
-<time datetime="2023-02-17">&#128337 Feb 17, 2023</time>
 
 </div>
 			</div>
@@ -329,8 +281,10 @@ Join my discord! 💬
 
 
 
+<time datetime="2021-05-17">&#128337 17 May 2021</time>
 
-<time datetime="2021-05-17">&#128337 May 17, 2021</time>
+
+<time datetime="2022-04-24"> (updated 24 Apr 2022)</time>
 
 </div>
 			</div>
@@ -356,8 +310,10 @@ Join my discord! 💬
 
 
 
+<time datetime="2021-03-05">&#128337 5 Mar 2021</time>
 
-<time datetime="2021-03-05">&#128337 Mar 5, 2021</time>
+
+<time datetime="2022-07-24"> (updated 24 Jul 2022)</time>
 
 </div>
 			</div>
@@ -375,8 +331,10 @@ Join my discord! 💬
 
 
 
+<time datetime="2021-01-10">&#128337 10 Jan 2021</time>
 
-<time datetime="2021-01-10">&#128337 Jan 10, 2021</time>
+
+<time datetime="2023-10-13"> (updated 13 Oct 2023)</time>
 
 </div>
 			</div>
@@ -398,8 +356,10 @@ Join my discord! 💬
 
 
 
+<time datetime="2020-11-25">&#128337 25 Nov 2020</time>
 
-<time datetime="2020-11-25">&#128337 Nov 25, 2020</time>
+
+<time datetime="2023-04-22"> (updated 22 Apr 2023)</time>
 
 </div>
 			</div>
@@ -417,8 +377,10 @@ Join my discord! 💬
 
 
 
+<time datetime="2019-06-14">&#128337 14 Jun 2019</time>
 
-<time datetime="2019-06-14">&#128337 Jun 14, 2019</time>
+
+<time datetime="2023-01-31"> (updated 31 Jan 2023)</time>
 
 </div>
 			</div>
@@ -436,8 +398,10 @@ Join my discord! 💬
 
 
 
+<time datetime="2019-05-13">&#128337 13 May 2019</time>
 
-<time datetime="2019-05-13">&#128337 May 13, 2019</time>
+
+<time datetime="2023-12-07"> (updated 7 Dec 2023)</time>
 
 </div>
 			</div>
@@ -472,8 +436,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2023-12-05">&#128337 5 Dec 2023</time>
 
-<time datetime="2023-12-05">&#128337 Dec 5, 2023</time>
 
 </div>
 			</div>
@@ -495,8 +459,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2023-10-21">&#128337 21 Oct 2023</time>
 
-<time datetime="2023-10-21">&#128337 Oct 21, 2023</time>
 
 </div>
 			</div>
@@ -514,8 +478,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2023-07-04">&#128337 4 Jul 2023</time>
 
-<time datetime="2023-07-04">&#128337 Jul 4, 2023</time>
 
 </div>
 			</div>
@@ -537,8 +501,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2023-05-29">&#128337 29 May 2023</time>
 
-<time datetime="2023-05-29">&#128337 May 29, 2023</time>
 
 </div>
 			</div>
@@ -564,8 +528,10 @@ Join my discord! 💬
 
 
 
+<time datetime="2023-03-07">&#128337 7 Mar 2023</time>
 
-<time datetime="2023-03-07">&#128337 Mar 7, 2023</time>
+
+<time datetime="2023-04-05"> (updated 5 Apr 2023)</time>
 
 </div>
 			</div>
@@ -591,8 +557,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2023-01-04">&#128337 4 Jan 2023</time>
 
-<time datetime="2023-01-04">&#128337 Jan 4, 2023</time>
 
 </div>
 			</div>
@@ -614,8 +580,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2022-05-19">&#128337 19 May 2022</time>
 
-<time datetime="2022-05-19">&#128337 May 19, 2022</time>
 
 </div>
 			</div>
@@ -637,8 +603,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2022-01-26">&#128337 26 Jan 2022</time>
 
-<time datetime="2022-01-26">&#128337 Jan 26, 2022</time>
 
 </div>
 			</div>
@@ -660,8 +626,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2021-12-08">&#128337 8 Dec 2021</time>
 
-<time datetime="2021-12-08">&#128337 Dec 8, 2021</time>
 
 </div>
 			</div>
@@ -683,8 +649,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2021-04-21">&#128337 21 Apr 2021</time>
 
-<time datetime="2021-04-21">&#128337 Apr 21, 2021</time>
 
 </div>
 			</div>
@@ -706,8 +672,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2021-03-16">&#128337 16 Mar 2021</time>
 
-<time datetime="2021-03-16">&#128337 Mar 16, 2021</time>
 
 </div>
 			</div>
@@ -729,8 +695,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2021-02-01">&#128337 1 Feb 2021</time>
 
-<time datetime="2021-02-01">&#128337 Feb 1, 2021</time>
 
 </div>
 			</div>
@@ -752,8 +718,10 @@ Join my discord! 💬
 
 
 
+<time datetime="2020-08-04">&#128337 4 Aug 2020</time>
 
-<time datetime="2020-08-04">&#128337 Aug 4, 2020</time>
+
+<time datetime="2023-10-12"> (updated 12 Oct 2023)</time>
 
 </div>
 			</div>
@@ -775,8 +743,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2020-03-13">&#128337 13 Mar 2020</time>
 
-<time datetime="2020-03-13">&#128337 Mar 13, 2020</time>
 
 </div>
 			</div>
@@ -798,8 +766,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2020-02-24">&#128337 24 Feb 2020</time>
 
-<time datetime="2020-02-24">&#128337 Feb 24, 2020</time>
 
 </div>
 			</div>
@@ -821,8 +789,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2020-02-04">&#128337 4 Feb 2020</time>
 
-<time datetime="2020-02-04">&#128337 Feb 4, 2020</time>
 
 </div>
 			</div>
@@ -844,8 +812,10 @@ Join my discord! 💬
 
 
 
+<time datetime="2020-01-03">&#128337 3 Jan 2020</time>
 
-<time datetime="2020-01-03">&#128337 Jan 3, 2020</time>
+
+<time datetime="2023-10-31"> (updated 31 Oct 2023)</time>
 
 </div>
 			</div>
@@ -867,8 +837,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2019-12-05">&#128337 5 Dec 2019</time>
 
-<time datetime="2019-12-05">&#128337 Dec 5, 2019</time>
 
 </div>
 			</div>
@@ -890,8 +860,10 @@ Join my discord! 💬
 
 
 
+<time datetime="2019-09-25">&#128337 25 Sep 2019</time>
 
-<time datetime="2019-09-25">&#128337 Sep 25, 2019</time>
+
+<time datetime="2023-03-31"> (updated 31 Mar 2023)</time>
 
 </div>
 			</div>
@@ -913,8 +885,10 @@ Join my discord! 💬
 
 
 
+<time datetime="2019-09-04">&#128337 4 Sep 2019</time>
 
-<time datetime="2019-09-04">&#128337 Sep 4, 2019</time>
+
+<time datetime="2023-03-31"> (updated 31 Mar 2023)</time>
 
 </div>
 			</div>
@@ -936,8 +910,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2019-09-03">&#128337 3 Sep 2019</time>
 
-<time datetime="2019-09-03">&#128337 Sep 3, 2019</time>
 
 </div>
 			</div>
@@ -959,8 +933,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2019-06-17">&#128337 17 Jun 2019</time>
 
-<time datetime="2019-06-17">&#128337 Jun 17, 2019</time>
 
 </div>
 			</div>
@@ -982,8 +956,10 @@ Join my discord! 💬
 
 
 
+<time datetime="2019-06-10">&#128337 10 Jun 2019</time>
 
-<time datetime="2019-06-10">&#128337 Jun 10, 2019</time>
+
+<time datetime="2023-03-31"> (updated 31 Mar 2023)</time>
 
 </div>
 			</div>
@@ -1005,8 +981,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2019-05-27">&#128337 27 May 2019</time>
 
-<time datetime="2019-05-27">&#128337 May 27, 2019</time>
 
 </div>
 			</div>
@@ -1028,8 +1004,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2019-05-20">&#128337 20 May 2019</time>
 
-<time datetime="2019-05-20">&#128337 May 20, 2019</time>
 
 </div>
 			</div>
@@ -1051,8 +1027,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2019-05-13">&#128337 13 May 2019</time>
 
-<time datetime="2019-05-13">&#128337 May 13, 2019</time>
 
 </div>
 			</div>
@@ -1074,8 +1050,8 @@ Join my discord! 💬
 
 
 
+<time datetime="2019-05-06">&#128337 6 May 2019</time>
 
-<time datetime="2019-05-06">&#128337 May 6, 2019</time>
 
 </div>
 			</div>
@@ -1204,32 +1180,88 @@ Join my discord! 💬
 
         </div>
         </br>
-<p class="footer">
-<a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a>
-	<p class="small-text" style="text-align:center;">
+
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a></p>
+
+<p class="small-text" style="text-align:center;">
+
+
+
+	<a href="https://www.cyanilux.com/#license">
 	
+	License / Usage
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/cookies">
 	
+	Cookies & Privacy
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/index.xml">
 	
-		<a href="https://www.cyanilux.com/#license">
-		
-		License / Usage
-		</a>
-		 &#8212; 
+	RSS Feed
+	</a>
 	
-		<a href="https://www.cyanilux.com/cookies">
-		
-		Cookies & Privacy
-		</a>
-		 &#8212; 
-	
-		<a href="https://www.cyanilux.com/index.xml">
-		
-		RSS Feed
-		</a>
-		
-	
-	</p>
+
 </p>
 </br>
+
+<div class="cookie-container">
+<p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+<button class="cookie-accept-btn"><b>Accept</b></button>
+<button class="cookie-refuse-btn"><b>Refuse</b></button>
+</div>
+
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+</script>
     </body>
 </html>
