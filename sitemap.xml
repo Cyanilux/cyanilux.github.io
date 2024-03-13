@@ -2,28 +2,48 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.cyanilux.com/tutorials/breakdowns/</loc>
-    <lastmod>2023-12-05T00:00:00+00:00</lastmod>
+    <loc>https://www.cyanilux.com/faq/</loc>
+    <lastmod>2024-03-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tags/hlsl/</loc>
+    <lastmod>2024-03-13T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/</loc>
-    <lastmod>2024-03-05T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tutorials/sprite-local-uv/</loc>
+    <lastmod>2024-03-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tutorials/posts/</loc>
+    <lastmod>2024-03-13T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tags/shader-graph/</loc>
-    <lastmod>2023-12-07T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-13T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tags/</loc>
-    <lastmod>2024-03-05T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-13T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/</loc>
-    <lastmod>2024-03-05T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tutorials/breakdowns/</loc>
+    <lastmod>2023-12-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -34,11 +54,6 @@
   </url><url>
     <loc>https://www.cyanilux.com/tags/urp/</loc>
     <lastmod>2024-03-05T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/faq/</loc>
-    <lastmod>2023-11-28T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -58,11 +73,6 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/custom-renderer-features/</loc>
-    <lastmod>2024-03-05T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tutorials/posts/</loc>
     <lastmod>2024-03-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -104,11 +114,6 @@
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/sword-slash-shader-breakdown/</loc>
     <lastmod>2021-12-08T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tags/hlsl/</loc>
-    <lastmod>2023-10-13T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>

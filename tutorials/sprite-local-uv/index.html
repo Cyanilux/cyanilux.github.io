@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="theme-color" content="#ffffff">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Local UVs for Sprites in Sprite Sheet\/Atlas",
+  "name": "Local UVs for Sprites in Sprite Sheet\/Atlas",
+  "description": "A small post explaining how to convert the UVs of a sprite sheet (or sprites packed in an atlas) into local 0-1 coordinates across each sprite in the shader",
+  "datePublished": "2024-03-13",
+  "dateModified": "2024-03-13",
+  "author": {
+	"@type": "Person",
+	"name": "Cyanilux",
+	"url": "https://www.cyanilux.com"
+  },
+  "image": {
+    "@type": "ImageObject",
+    "@id": "https://www.cyanilux.com/tutorials/sprite-local-uv/Preview_hu39cc76331a748b918baa07a3fe2371e6_39863_300x0_resize_box_3.png",
+    "url": "https://www.cyanilux.com/tutorials/sprite-local-uv/Preview_hu39cc76331a748b918baa07a3fe2371e6_39863_300x0_resize_box_3.png",
+    "height": "223",
+    "width": "300"
+  },
+  "url": "https://www.cyanilux.com/tutorials/sprite-local-uv/",
+  "inLanguage": "en-gb",
+  "wordCount": "1112",
+  "isPartOf": {
+    "@type" : "Blog",
+    "@id": "https://www.cyanilux.com",
+    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+  },
+  "keywords": [
+    "Unity", 
+    "Tutorial", 
+    "Shader Graph", 
+    "HLSL"
+  ]
+}
+</script>
+
+<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/sprite-local-uv/Preview.png"/>
+<meta name="twitter:title" content="Local UVs for Sprites in Sprite Sheet/Atlas"/>
+<meta name="twitter:description" content="A small post explaining how to convert the UVs of a sprite sheet (or sprites packed in an atlas) into local 0-1 coordinates across each sprite in the shader"/>
+
+<meta property="og:title" content="Local UVs for Sprites in Sprite Sheet/Atlas" />
+<meta property="og:description" content="A small post explaining how to convert the UVs of a sprite sheet (or sprites packed in an atlas) into local 0-1 coordinates across each sprite in the shader" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/sprite-local-uv/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/sprite-local-uv/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2024-03-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-13T00:00:00+00:00" />
+<title>Local UVs for Sprites in Sprite Sheet/Atlas | Cyanilux</title>
+<meta name="description" content="A small post explaining how to convert the UVs of a sprite sheet (or sprites packed in an atlas) into local 0-1 coordinates across each sprite in the shader. Shader Graph, HLSL | Unity Shader Tutorials, @Cyanilux" />
+<link rel="canonical" href="https://www.cyanilux.com/tutorials/sprite-local-uv/" />
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+</script>
+
+
+
+<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+</script>
+
+
+</head>
+    <body>
+        
+<div class="header">
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
+	
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
+	
+	<nav id="nav" class="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		FAQ
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Local UVs for Sprites in Sprite Sheet/Atlas</h1>
+<div class="post-metadata">
+
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/posts/" style="text-decoration: none; color:#eeeeee;">
+	Posts
+	</a>
+</div>
+
+
+
+
+	<div class="tag" style="background-color:#101010;">
+	
+	<a href="https://www.cyanilux.com/tags/shader-graph" style="text-decoration: none; color:#eeeeee;">
+	Shader Graph
+	</a>
+	</div>
+
+	<div class="tag" style="background-color:#108010;">
+	
+	<a href="https://www.cyanilux.com/tags/hlsl" style="text-decoration: none; color:#eeeeee;">
+	HLSL
+	</a>
+	</div>
+
+
+
+
+<div style="width:10px"></div>
+<time datetime="2024-03-13">&#128337 13 Mar 2024</time>
+
+
+</div>
+<h2 id="intro">Intro</h2>
+<p>Some shader effects can rely on having a 0-1 UV coord across the sprite, but this breaks if the sprite is part of a larger sprite sheet (i.e. Sprite Mode set to Multiple) or if sprites are automatically packed via a Sprite Atlas asset.</p>
+<p>With those, the UV coords of the sprite mesh is a smaller section of the whole 0-1 range, in order to display only that sprite from the larger texture. For example, here is the UV coordinates for a sprite sheet that I&rsquo;ve made (used in <a href="https://cyanilux.itch.io/dungeon">this game jam project from 2022</a>)</p>
+<div class="img-center">
+<a href="SpriteSheet.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="315" height="284" alt="(Image)" src="SpriteSheet.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>But we may also want coordinates specific to each sprite for certain effects&hellip;</p>
+<div class="img-center">
+<a href="SpriteUVComparison.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="473" height="165" alt="(Image)" src="SpriteUVComparison.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>This post shows a few methods to obtain this :</p>
+<ul>
+<li>The <a href="#object-pos">first method</a> uses the Object space Position instead, offset by the pivot point (intended for URP, Unity 2023.1+)</li>
+<li>The <a href="#uv-remap">second method</a> below results in coordinates that behave exactly like if the sprite mode was Single and not packed, but it requires adding a C# Script to the sprite object. This should work in all pipelines/versions.</li>
+<li>The <a href="#world-aligned">third method</a> remaps world position coordinates based on bounds data already provided to shaders (as of Unity 2022.2+). This creates some similar 0-1 coords across the sprite, except they stay aligned to the world (do not rotate or flip with the sprite).</li>
+</ul>
+<p>I think both of these could be useful, depending on what effect the UVs are being used for.</p>
+<h2 id="object-pos">Object Position</h2>
+<p>As of Unity 2023.1, sprites seem to use the SRP Batcher in URP (during play mode at least), so an easy method to obtain relative coordinates is by using the <b class="node">Position</b> node, set to <strong>Object</strong> space. You may also want to <b class="node">Swizzle</b> this down to a Vector2 (using &ldquo;xy&rdquo; in the text field).</p>
+<p>In the Built-in RP, previous versions of URP, and also while not in play mode (can be a bit annoying), this method can lead to some odd results due to the dynamic batching that sprites use instead. You may want to use the next method below for those cases.</p>
+<p>The <b class="node">Position</b> has a value of <strong>(0,0)</strong> at the pivot of the sprite. So for sprites using a <strong>Center</strong> pivot (the default), you&rsquo;d want to <b class="node">Add</b> <strong>(0.5, 0.5)</strong> to this to obtain the usual 0-1 coordinates like the UVs of a quad. If you use a different pivot can hardcode a different value, or if you use multiple pivots, could use a <strong>Vector2 property</strong> instead and create multiple materials with the values you need.</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="583" height="202" alt="(Image)" src="Graph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<h2 id="uv-remap">Remapping UV</h2>
+<p>In order to convert to this &ldquo;local UV&rdquo; (0-1 coordinates across the sprite), we need to know the location and size of the sprite in the sheet/atlas texture.</p>
+<p>We&rsquo;ll need to pass that into the shader/material by using the following C# script (applied to GameObject containing the SpriteRenderer) :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">[ExecuteInEditMode]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SpriteLocalCoords</span> : MonoBehaviour {
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [SerializeField]</span> <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">bool</span> usePropertyBlock = <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// For URP 2023+ likely want set to false, as sprites support SRP batcher now</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// For Built-in RP / prior URP versions, may be better to keep true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> SpriteRenderer spriteRenderer;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> MaterialPropertyBlock mpb;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> OnEnable() {
+</span></span><span style="display:flex;"><span>        spriteRenderer = GetComponent&lt;SpriteRenderer&gt;();
+</span></span><span style="display:flex;"><span>        mpb = <span style="color:#66d9ef">new</span> MaterialPropertyBlock();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Sprite sprite = spriteRenderer.sprite;
+</span></span><span style="display:flex;"><span>        Rect rect = sprite.textureRect;
+</span></span><span style="display:flex;"><span>        Vector2 texelSize = sprite.texture.texelSize;
+</span></span><span style="display:flex;"><span>        Vector4 uvRemap = <span style="color:#66d9ef">new</span> (
+</span></span><span style="display:flex;"><span>            rect.x * texelSize.x,
+</span></span><span style="display:flex;"><span>            rect.y * texelSize.y,
+</span></span><span style="display:flex;"><span>            rect.width * texelSize.x,
+</span></span><span style="display:flex;"><span>            rect.height * texelSize.y
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (!usePropertyBlock &amp;&amp; Application.isPlaying){
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Use Material Instance (during Play Mode only)</span>
+</span></span><span style="display:flex;"><span>            spriteRenderer.material.SetVector(<span style="color:#e6db74">&#34;_UVRemap&#34;</span>, uvRemap);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Use Material Property Block</span>
+</span></span><span style="display:flex;"><span>            spriteRenderer.GetPropertyBlock(mpb);
+</span></span><span style="display:flex;"><span>            mpb.SetVector(<span style="color:#e6db74">&#34;_UVRemap&#34;</span>, uvRemap);
+</span></span><span style="display:flex;"><span>            spriteRenderer.SetPropertyBlock(mpb);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> OnDisable() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (!usePropertyBlock &amp;&amp; Application.isPlaying){
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Clean up Material Instance</span>
+</span></span><span style="display:flex;"><span>            Destroy(spriteRenderer.material);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>In the shader, we can use this <code>_UVRemap</code> Vector4 property to remap the mesh UV coordinates.</p>
+<h4 id="uv-remap-hlsl">Shader Code (CG/HLSL) :</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// In Properties :</span>
+</span></span><span style="display:flex;"><span>_UVRemap (<span style="color:#e6db74">&#34;Sprite UV Rect&#34;</span>, Vector) = (<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// In Global HLSL Scope / UnityPerMaterial CBUFFER :</span>
+</span></span><span style="display:flex;"><span>float4 _UVRemap;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// In Vertex/Fragment Shader :</span>
+</span></span><span style="display:flex;"><span>float2 spriteRectPos = _UVRemap.xy;
+</span></span><span style="display:flex;"><span>float2 spriteRectSize = _UVRemap.zw;
+</span></span><span style="display:flex;"><span>float2 localUV = (IN.uv - spriteRectPos) / spriteRectSize;</span></span></code></pre></div>
+<h4 id="uv-remap-graph">Shader Graph :</h4>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="488" height="317" alt="(Image)" src="Graph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<div style="height: 30px;"></div>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Small optimisation (optional)</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Small optimisation (optional)</b>';
+
+    }
+"><b>⯈ Small optimisation (optional)</b></button>
+<div class="foldout">
+<p>You could also change the script to set <code>uvRemap</code> to this instead :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>        Vector4 uvRemap = <span style="color:#66d9ef">new</span> (
+</span></span><span style="display:flex;"><span>            -rect.x / rect.width,
+</span></span><span style="display:flex;"><span>            -rect.y / rect.height,
+</span></span><span style="display:flex;"><span>            <span style="color:#ae81ff">1</span> / (rect.width * texelSize.x),
+</span></span><span style="display:flex;"><span>            <span style="color:#ae81ff">1</span> / (rect.height * texelSize.y)
+</span></span><span style="display:flex;"><span>        );</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Then in the shader/graph :</p>
+<ul>
+<li><code>IN.uv * _UVRemap.zw + _UVRemap.xy</code></li>
+<li><b class="node">Multiply</b> and <b class="node">Add</b> (or just <b class="node">Tiling And Offset</b> which does the same thing)</li>
+</ul>
+<p>In the compiled shader I think this would end up a single instruction (MAD)</p>
+
+</div>
+<hr>
+<h2 id="world-aligned">World-Aligned Local UV</h2>
+<p>In Unity 2022.2+ bounding box info from the renderer is now automatically passed to the shader (in URP and HDRP at least). I think this won&rsquo;t work for Built-in or older versions, unless you were to use a C# script to pass <code>Renderer.bounds.min and .max</code> into the shader.</p>
+<p>We can use this bounds info to remap the world position (of vertices/fragments). As mentioned in the intro the resulting coordinates stay aligned to the world so do not rotate or flip with the sprite. (0, 0) is always towards the bottom left of the screen and (1, 1) towards the top right.</p>
+<h4 id="world-aligned-graph">Shader Graph :</h4>
+<p>Use the <strong>World Bounds Min</strong> and <strong>World Bounds Max</strong> outputs from the <b class="node">Object</b> node into an <b class="node">Inverse Lerp</b>, with <strong>T</strong> set to <b class="node">Position</b> node (<strong>World</strong> space)</p>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="351" alt="(Image)" src="Graph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Sadly this seems to break node previews as the default values for those results in a division by zero, so the additional group here with a <b class="node">Comparison</b> and <b class="node">Branch</b> prevents that, by using the <b class="node">UV</b> when the <strong>Bounds Size</strong> is 0.</p>
+<p>I&rsquo;ve also selected that <b class="node">Branch</b> node, and under the <strong>Node Settings</strong> tab changed it to preview as <strong>2D</strong>.</p>
+<p>Note that we also assume sprites are aligned to <strong>XY</strong> axis. If aligned to a different axis, may need to change the swizzle (e.g. use XZ instead) or if not axis-aligned, apply rotation to Vector3 before truncating to Vector2.</p>
+<h4 id="world-aligned-hlsl">Shader Code :</h4>
+<p>For HLSL this would translate to something like :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// In Vertex Shader :</span>
+</span></span><span style="display:flex;"><span>VertexPositionInputs positionInputs = GetVertexPositionInputs(IN.positionOS.xyz);
+</span></span><span style="display:flex;"><span>float3 positionWS = positionInputs.positionWS;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>float3 worldBoundsMin = GetCameraRelativePositionWS(unity_RendererBounds_Min.xyz);
+</span></span><span style="display:flex;"><span>float3 worldBoundsMax = GetCameraRelativePositionWS(unity_RendererBounds_Max.xyz);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// note these &#34;unity_RendererBounds_&#34; variables are part of the </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// UnityPerDraw cbuffer defined in the ShaderLibrary files</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Inverse Lerp</span>
+</span></span><span style="display:flex;"><span>float3 positionBS = (positionWS - worldBoundsMin) / (worldBoundsMax - worldBoundsMin);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// &#34;Bounds Space&#34;</span>
+</span></span><span style="display:flex;"><span>OUT.localUV = positionBS.xy;</span></span></code></pre></div>
+<br><hr>
+
+<div style="display:block;text-align: center">
+<h2>Thanks for reading! 😊</h2>
+<p> If this post helped, consider sharing a link with others!</p>
+</div>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div>
+
+
+        </div>
+        </br>
+
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a></p>
+
+<p class="small-text" style="text-align:center;">
+
+
+
+	<a href="https://www.cyanilux.com/#license">
+	
+	License / Usage
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/cookies">
+	
+	Cookies & Privacy
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/index.xml">
+	
+	RSS Feed
+	</a>
+	
+
+</p>
+</br>
+
+<div class="cookie-container">
+<p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+<button class="cookie-accept-btn"><b>Accept</b></button>
+<button class="cookie-refuse-btn"><b>Refuse</b></button>
+</div>
+
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+</script>
+    </body>
+</html>

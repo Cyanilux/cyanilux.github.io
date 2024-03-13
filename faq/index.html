@@ -20,8 +20,8 @@
   "headline": "FAQ",
   "name": "FAQ",
   "description": "List of frequent (or interesting) questions I\u0027ve answered",
-  "datePublished": "2023-11-28",
-  "dateModified": "2023-11-28",
+  "datePublished": "2024-03-13",
+  "dateModified": "2024-03-13",
   "author": {
 	"@type": "Person",
 	"name": "Cyanilux",
@@ -29,7 +29,7 @@
   },
   "url": "https://www.cyanilux.com/faq/",
   "inLanguage": "en-gb",
-  "wordCount": "9951",
+  "wordCount": "9993",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -52,8 +52,8 @@
 <meta property="og:url" content="https://www.cyanilux.com/faq/" />
 
 	
-<meta property="article:published_time" content="2023-11-28T00:00:00+00:00" />
-<meta property="article:modified_time" content="2023-11-28T00:00:00+00:00" />
+<meta property="article:published_time" content="2024-03-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-13T00:00:00+00:00" />
 <title>FAQ | Cyanilux</title>
 <meta name="description" content="List of frequent (or interesting) questions I&#39;ve answered. | Unity Shader Tutorials, @Cyanilux"/>
 <link rel="canonical" href="https://www.cyanilux.com/faq/" />
@@ -194,7 +194,7 @@
 
 
 <div style="width:5px"></div>
-<time datetime="2023-11-28"> (updated 28 Nov 2023)</time>
+<time datetime="2024-03-13"> (updated 13 Mar 2024)</time>
 
 </div>
 <p>Over time I&rsquo;ve answered quite a few questions in the Shaders (and URP) channels on the <a href="https://discord.com/invite/unity">Official Unity Discord</a> (as well as my own <a href="http://discord.gg/2V93q9w">discord</a>). But one problem with using discords over regular forums, is those answers are no longer searchable through Google - so I&rsquo;ve made this page!</p>
@@ -475,7 +475,7 @@ Right : Render with Prepass<br>
 <p>OnRenderImage does not work in URP.</p>
 <p>If you are using it to apply image effects with <code>Graphics.Blit</code>, In 2022.2+ should use the <strong>Fullscreen Pass Renderer Feature</strong> and <strong>Fullscreen Graph</strong> - or custom shader including <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl">Blit.hlsl</a>. Use the Vert function as the vertex shader and call FragBlit in your fragment shader.</p>
 <p>For prior versions, can use my <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Renderer Feature</a>.</p>
-<p>For effects that require more than just a Blit, may need to write your own <a href="https://www.cyanilux.com/tutorials/custom-renderer-features">Custom Renderer Feature</a> - my post on them may help (aimed at 2022+).</p>
+<p>For effects that require more than just a Blit, may need to write your own <a href="https://www.cyanilux.com/tutorials/custom-renderer-features/">Custom Renderer Feature</a> - my post on them may help (aimed at 2022+).</p>
 
 </div>
 <button id="edit-material" type="button" class="foldout_button" onclick="
@@ -1832,8 +1832,29 @@ Right : Render with Prepass<br>
 <li>In Shader Graph, use the <b class="node">Vertex Color</b> node.</li>
 </ul>
 <p>Also note that Sprite Graphs will already automatically tint the output using this. There <a href="https://github.com/Unity-Technologies/Graphics/commit/3ca7a6bdefed68a482a2429f75b508f309b8c1a6">will be an option to disable this</a>. Might be in 2023.3 (currently a pre-release as of writing), but otherwise will have to wait for later versions.</p>
-<p>For Sprite Renderer, might vary slightly. If instanced, in Built-in RP sprites use a <code>_RendererColor</code> property in the instancing buffer. In newer versions of URP (2023.1+) that has been replaced with <code>unity_SpriteColor</code>.</p>
+<p>For Sprite Renderer, might vary slightly. If instanced, in Built-in RP sprites use a <code>_RendererColor</code> property in the instancing buffer. In newer versions of URP (2023.1+) that has been replaced with <code>unity_SpriteColor</code>, may need to try a Custom Function to access/output that.</p>
 
+</div>
+<button id="sprite-local-uv" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ How to obtain Local Sprite UVs (0-1 across each sprite) for sprite sheets \/ sprite atlas</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ How to obtain Local Sprite UVs (0-1 across each sprite) for sprite sheets \/ sprite atlas</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sprite-local-uv';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ How to obtain Local Sprite UVs (0-1 across each sprite) for sprite sheets / sprite atlas</b></button>
+<div class="foldout">
+See <a href="https://www.cyanilux.com/tutorials/sprite-local-uv/">Local UVs for Sprites in Sprite Sheet/Atlas</a> post.
 </div>
 <button id="mesh-origin" type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
@@ -1881,7 +1902,7 @@ Right : Render with Prepass<br>
     }
 "><b>⯈ Why does the Object space (&amp; <b class="node">Object</b> node) not work correctly for Sprites?</b></button>
 <div class="foldout">
-<p>Note : Unity 2023.1+ now uses SRP Batching for sprites which fixes this.</p>
+<p>Note : Unity 2023.1+ now uses SRP Batching for sprites (in play mode at least) which somewhat fixes this.</p>
 <p>For prior versions (and if SRP batching is disabled) :</p>
 <p>To save on drawcalls (and performance), Sprites on the screen that use the same material, are batched so they can be drawn together. It shows as &ldquo;Draw Dynamic&rdquo; in the Frame Debugger window. When this batching occurs, meshes for each sprite are transformed into World space and combined into a single object. The model matrix (<code>UNITY_MATRIX_M</code>) is cleared to an identity matrix (scale of 1, no rotation/translation)</p>
 <p>The model matrix is usually responsible for transforming vertex data stored in the mesh into World space, but an identity matrix is used so the values aren&rsquo;t altered. &ldquo;Object space&rdquo; now doesn&rsquo;t really exist on the shader side, as the vertex positions are <em>already stored in World space</em>.</p>
