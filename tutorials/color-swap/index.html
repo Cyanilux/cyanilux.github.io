@@ -13,13 +13,17 @@
 <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
 
 
+ 
+
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "BlogPosting",
+  "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/color-swap/",
   "headline": "Swapping Colours",
   "name": "Swapping Colours",
-  "description": "Examples of how to adjust\/swap colours or colour palettes for a given texture\/procedural input.",
+  "description": "Examples of how to adjust/swap colours or colour palettes for a given texture/procedural input.",
   "datePublished": "2023-02-17",
   "dateModified": "2023-02-17",
   "author": {
@@ -40,7 +44,7 @@
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+    "name": "Cyanilux - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -314,6 +318,7 @@
 <p>For a much more in-depth look at this, also see this article by Alan Zucconi : <a href="https://www.alanzucconi.com/2016/01/06/colour-interpolation/">The Secrets of Colour Interpolation</a></p>
 
 </div>
+
 <hr>
 <h3 id="tint-color-channels">Tint Color Channels</h3>
 <p>We could also extend the tint method to obtain up to 3 or 4 colours by packing multiple greyscale/float inputs in each colour channel of the texture (red, green, blue, alpha).</p>
@@ -382,6 +387,7 @@ Note the white edges around the shirt in the final preview :(</p>
 <p>However, the <em>mask texture</em> should still stay with a <strong>black background</strong> to avoid the colours stretching out. Though if it did have an alpha channel we could instead <b class="node">Multiply</b> the <strong>R</strong> and <strong>A</strong> outputs before applying the tint.</p>
 
 </div>
+
 <hr>
 <h3 id="replace-color-node">Replace Color Node</h3>
 <p>Let&rsquo;s also go over the <b class="node">Replace Color</b> node that Shader Graph includes&hellip; (also <b class="node">Color Mask</b>, which is essentially the same thing but without providing a colour to lerp to).</p>
@@ -430,6 +436,7 @@ Note the white edges around the shirt in the final preview :(</p>
 </div>
 
 </div>
+
 <p>As the name suggests, the node can be used to replace an existing colour with another. It can also select similar shades using the <strong>Range</strong> and <strong>Fuzziness</strong> inputs, but it can still pretty difficult to get it to do what you want. In practice, I&rsquo;ve found it only really works well with pixel art.</p>
 <div class="img-center">
 <a href="ReplaceColor.png" target="_blank" rel="noopener noreferrer">
@@ -526,6 +533,7 @@ Note the white edges around the shirt in the final preview :(</p>
 </ul>
 
 </div>
+
 <br><hr>
 
 <div style="display:block;text-align: center">

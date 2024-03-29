@@ -13,12 +13,16 @@
 <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
 
 
+ 
+
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "BlogPosting",
-  "headline": "Ultraviolet Lights \u0026 Invisible Ink",
-  "name": "Ultraviolet Lights \u0026 Invisible Ink",
+  "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/ultraviolet-lights-invisible-ink/",
+  "headline": "Ultraviolet Lights & Invisible Ink",
+  "name": "Ultraviolet Lights & Invisible Ink",
   "description": "Examples for revealing invisible objects (especially decals, such as fingerprints or hidden messages) based on lights, stencils and other masking methods",
   "datePublished": "2023-12-05",
   "dateModified": "2023-12-05",
@@ -40,7 +44,7 @@
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+    "name": "Cyanilux - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -357,6 +361,7 @@
 <p>Adding these keywords is enough in the Forward+ path, but for the regular Forward path it appears that <code>unity_LightData</code> and <code>unity_LightIndices</code> are not being set during decal rendering in DBuffer mode, so afaik not possible to get working for that rendering path. If you require Forward, use Screenspace decals instead.</p>
 
 </div>
+
 <p>The aim here is to make our decals appear only when spot or point lights shine on them -</p>
 <div class="img-center">
 <a href="UltravioletLights.png" target="_blank" rel="noopener noreferrer">

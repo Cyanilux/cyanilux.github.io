@@ -13,12 +13,16 @@
 <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
 
 
+ 
+
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "BlogPosting",
-  "headline": "Local UVs for Sprites in Sprite Sheet\/Atlas",
-  "name": "Local UVs for Sprites in Sprite Sheet\/Atlas",
+  "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/sprite-local-uv/",
+  "headline": "Local UVs for Sprites in Sprite Sheet/Atlas",
+  "name": "Local UVs for Sprites in Sprite Sheet/Atlas",
   "description": "A small post explaining how to convert the UVs of a sprite sheet (or sprites packed in an atlas) into local 0-1 coordinates across each sprite in the shader",
   "datePublished": "2024-03-13",
   "dateModified": "2024-03-13",
@@ -40,7 +44,7 @@
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+    "name": "Cyanilux - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -435,6 +439,7 @@
 <p>In the compiled shader I think this would end up a single instruction (MAD)</p>
 
 </div>
+
 <hr>
 <h2 id="world-aligned">World-Aligned Local UV</h2>
 <p>In Unity 2022.2+ bounding box info from the renderer is now automatically passed to the shader (in URP and HDRP at least). I think this won&rsquo;t work for Built-in or older versions, unless you were to use a C# script to pass <code>Renderer.bounds.min and .max</code> into the shader.</p>

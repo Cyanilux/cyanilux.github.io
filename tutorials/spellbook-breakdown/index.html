@@ -13,13 +13,17 @@
 <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
 
 
+ 
+
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "BlogPosting",
-  "headline": "Book (w\/ Turnable Pages) Breakdown",
-  "name": "Book (w\/ Turnable Pages) Breakdown",
-  "description": "A book with pages that flip\/turn via vertex displacement, and selects a portion of a texture containing all pages.",
+  "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/spellbook-breakdown/",
+  "headline": "Book (w/ Turnable Pages) Breakdown",
+  "name": "Book (w/ Turnable Pages) Breakdown",
+  "description": "A book with pages that flip/turn via vertex displacement, and selects a portion of a texture containing all pages.",
   "datePublished": "2023-10-21",
   "dateModified": "2023-10-21",
   "author": {
@@ -40,7 +44,7 @@
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+    "name": "Cyanilux - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -294,6 +298,7 @@
 </ul>
 
 </div>
+
 <p>Import the model into Unity and place it in scene. While Shader Graph itself gives previews (including Main Preview which can have custom meshes), I&rsquo;ve always found it much easier to save the graph asset and visualise in scene. You may want to do this at various times during the tutorial to see how nodes affect the result.</p>
 <p>We&rsquo;ll need to create two Lit Graphs. In my case I&rsquo;ve named them &ldquo;BookPages&rdquo; and &ldquo;PageTurn&rdquo;. Create materials using these shaders and apply them to the book&rsquo;s pages and separate page objects respectively.</p>
 <p>For my model, the book has two submeshes so will need two materials applied. The cover can use a regular material using the default shader (Standard, URP/Lit, etc). I&rsquo;m not going through that part, you can unwrap that part of the model and texture this as you wish.</p>
@@ -385,6 +390,7 @@
 </ul>
 
 </div>
+
 <p>My book pages mesh also includes the sides of the pages which currently may be textured a bit strangely.</p>
 <p>To apply a different textures/colour to the side we first need some way to distinguish between these faces. I (somewhat lazily) used the <b class="node">Normal Vector</b> as only the top faces have normals pointing roughly upwards, so can <b class="node">Split</b> to take the Y/G axis and do a <b class="node">Comparison</b> with a value of 0.6-ish. (Could alternatively use <b class="node">Vertex Color</b>)</p>
 <p>This can be put into the <strong>Predicate</strong> on a <b class="node">Branch</b> node - the <strong>True</strong> port being the top, so result from our SampleGrad <b class="node">Custom Function</b>, while <strong>False</strong> is for the sides. To look like a stack of paper/pages, I sample a noise texture for this with the <strong>X Tiling</strong> set to <strong>0</strong>, but you could instead make a texture with random lines. (Could also use maths, but I&rsquo;d recommend textures as mipmaps help avoid aliasing/moiré artifacts when viewing from a distance)</p>
@@ -786,6 +792,7 @@ To ensure shading is correct, we&rsquo;ll also need to <a href="https://www.cyan
 </div>
 
 </div>
+
 <p>That&rsquo;s mostly it for the tutorial, though I will quickly mention how I made the pages for my Grimoire/Spellbook scene (tweet at beginning of post) :</p>
 <h3 id="runes">Pages Texture</h3>
 <p>You could manually draw out textures for the pages, but in my scene I used some procedurally generated runes based on <a href="https://www.shadertoy.com/view/4ltyDM">this GLSL shader on shadertoy</a> - which I rewrote in HLSL as a <b class="node">Custom Function</b> :</p>

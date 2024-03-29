@@ -13,10 +13,14 @@
 <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
 
 
+ 
+
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "BlogPosting",
+  "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/",
   "headline": "Fog Plane Shader Breakdown",
   "name": "Fog Plane Shader Breakdown",
   "description": "Two examples of vertical fog effects produced using the depth texture (scene depth)",
@@ -40,7 +44,7 @@
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+    "name": "Cyanilux - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -290,6 +294,7 @@
 <p>We could instead use the <b class="node">Position</b> node set to <strong>View</strong> Space, and <b class="node">Negate</b> the <strong>Z/B</strong> output from a <b class="node">Split</b> node to obtain this object depth. In a perspective projection both of these would produce the same output.</p>
 
 </div>
+
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="739" height="243" alt="(Image)" src="Graph1.png" />

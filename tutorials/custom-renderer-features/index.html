@@ -13,10 +13,14 @@
 <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
 
 
+ 
+
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "BlogPosting",
+  "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/custom-renderer-features/",
   "headline": "Custom Renderer Features",
   "name": "Custom Renderer Features",
   "description": "Goes through examples of Renderer Features and explains how to write Custom Renderer Features and Scriptable Render Passes for Universal RP",
@@ -40,7 +44,7 @@
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+    "name": "Cyanilux - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -873,6 +877,7 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 </ul>
 
 </div>
+
 <h3 id="blit-example">Example</h3>
 <p>When rendering we need to make sure we do not <em>read</em> and <em>write</em> to the same texture/target as this can cause &ldquo;unintended behaviour&rdquo; (to quote the <code>CommandBuffer.Blit</code> documentation). Because of this, if the source/destination needs to be the same, we actually need to instead use <strong>two blits</strong> with an additional target in-between.</p>
 <p>In older versions this would typically be a &ldquo;Temporary Render Texture&rdquo;, but with the change to RTHandles that&rsquo;s not really used anymore. In the example below I&rsquo;ve used <code>RenderingUtils.ReAllocateIfNeeded</code> so the texture won&rsquo;t be set up multiple times if the feature is used multiple times (or if other features use the same <code>_TemporaryColorTexture</code> reference) - so in a way, this still acts as a &ldquo;temporary&rdquo; texture (kinda).</p>
@@ -1066,6 +1071,7 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 
 </div>
+
 <button  type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
@@ -1103,6 +1109,7 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 <p>Another similar example is <a href="https://twitter.com/Cyanilux/status/1575877789403815940">this Horizon Zero Dawn inspired highlight/glitch effect</a> I made a while ago.</p>
 
 </div>
+
 <hr>
 <h2 id="setting-values">Setting values on features at Runtime</h2>
 <p>For some effects, you may want to set public or serialised fields/properties on a feature, from a C# Script at runtime.</p>

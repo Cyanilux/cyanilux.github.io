@@ -13,13 +13,17 @@
 <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
 
 
+ 
+
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "BlogPosting",
+  "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/toon-glass-shader-breakdown/",
   "headline": "Toon Glass Shader Breakdown",
   "name": "Toon Glass Shader Breakdown",
-  "description": "A shader which produces solid diagonal lines across a quad\u0027s surface that moves with the camera position to simulate toon-like glass reflections",
+  "description": "A shader which produces solid diagonal lines across a quad's surface that moves with the camera position to simulate toon-like glass reflections",
   "datePublished": "2020-01-03",
   "dateModified": "2023-10-31",
   "author": {
@@ -40,7 +44,7 @@
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+    "name": "Cyanilux - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -347,6 +351,7 @@ Nowadays in Shader Graph (v10.3+) the Preview style can be toggled under the <st
 <p>The <b class="node">Fraction</b> node returns the fractional (decimal) part of the number (without the integer component). This results in values only between 0 and 1, shown on the right plot. The line jumps from 1 back to 0 on the Y axis. The more curved lines from the previous plot produce more line sections.</p>
 
 </div>
+
 <p>We use a <b class="node">One Minus</b> node on our second input on the <b class="node">Power</b>, so that we input values near 1 on diagonal line rather than 0, resulting in smaller width gradients rather than larger.</p>
 <p>There’s also a <b class="node">Saturate</b> in place which clamps values between 0 and 1. The extra .01 on the <b class="node">Add</b> node is in place to prevent the <b class="node">Fraction</b> node outputting 1 in the center (the spacing created by the <strong>Offset</strong>) for certain integer values of A, although it can still occur if B or A*B isn’t an integer, hence the mention of setting these to integers at the start of the breakdown. We could instead mask that area to always be black, but it felt a bit unnecessary.</p>
 <p>Finally we can <b class="node">Step</b> the gradient-like result from the <b class="node">Fraction</b> node, using the <strong>Line Width property</strong> to obtain solid lines which we can then <b class="node">Multiply</b> by our <strong>Line Alpha</strong>. We also need to <b class="node">Add</b> the <strong>Color property’s alpha</strong>, to control the glass’ surface alpha, then put this into the <strong>Alpha</strong> input on the <b class="node">Master</b> node, and also set the <strong>Color</strong> input as shown.</p>

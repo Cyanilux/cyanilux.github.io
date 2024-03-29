@@ -13,13 +13,17 @@
 <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
 
 
+ 
+
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "BlogPosting",
+  "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/",
   "headline": "2D Water Shader Breakdown",
   "name": "2D Water Shader Breakdown",
-  "description": "A water shader intended for 2D, with pixelated highlights, distortion, reflections and simplified shoreline waves\/ripples",
+  "description": "A water shader intended for 2D, with pixelated highlights, distortion, reflections and simplified shoreline waves/ripples",
   "datePublished": "2024-03-28",
   "dateModified": "2024-03-28",
   "author": {
@@ -40,7 +44,7 @@
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+    "name": "Cyanilux - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -445,6 +449,7 @@
 </div>
 
 </div>
+
 <p>So we can distort these later, capture the reflections to a <strong>Render Texture</strong> by using a second <strong>Camera</strong>.</p>
 <p>Reflection sprites are put on a specific <strong>Layer</strong> (e.g. named &ldquo;Reflection&rdquo;) and we adjust the <strong>Culling Mask</strong> on both cameras so that layer only renders to the second camera and not the main camera. Can create a <a href="https://docs.unity3d.com/Manual/class-RenderTexture.html">Render Texture Asset</a> (right-click in Project/Assets, will be somewhere under Create menu) and assign it to the <strong>Target/Output Texture</strong> field on the second camera - no scripting needed.</p>
 <div class="img-center">

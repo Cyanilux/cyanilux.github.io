@@ -13,13 +13,17 @@
 <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
 
 
+ 
+
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "BlogPosting",
+  "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/fractured-cube-breakdown/",
   "headline": "Fractured Cube Breakdown",
   "name": "Fractured Cube Breakdown",
-  "description": "Uses a shader which displaces (scales\/rotates) vertices of a prefractured mesh with pivots baked into UV maps",
+  "description": "Uses a shader which displaces (scales/rotates) vertices of a prefractured mesh with pivots baked into UV maps",
   "datePublished": "2023-03-07",
   "dateModified": "2023-04-05",
   "author": {
@@ -40,7 +44,7 @@
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+    "name": "Cyanilux - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -444,6 +448,7 @@
 <p>Though it&rsquo;s also worth noting, technically these channels can be up to Vector4 in Unity - but Blender/FBX files only deals with 2 axis in it&rsquo;s UV channels. So we&rsquo;ll only be using the X and Y axis (also labelled R and G). But if you wanted, you might be able to write a C# script (perhaps an AssetPostprocessor?) to combine them into a single UV channel. Not sure.</p>
 
 </div>
+
 <p>Put each of these <b class="node">UV</b> into a <b class="node">Split</b> node and create a <b class="node">Vector3</b> node. Put the <strong>R</strong> output from the first Pivot UV set into <strong>X</strong>, and <strong>R</strong> output from the second UV set into <strong>Z</strong>. The <strong>Y</strong> input can be set to the <strong>G</strong> output on either Pivot UV as they should both be equivalent (since the vertical axis is the same for the front and side axis).</p>
 <p>As we used <strong>Project From View (Bounds)</strong>, we&rsquo;ll need to <b class="node">Remap</b> the values a bit. The bounds of the UV is <strong>0-1</strong>, so that&rsquo;ll be the <strong>In Min Max</strong>. The default blender cube is 2 units wide, so I&rsquo;ve set the <strong>Out Min Max</strong> to <strong>-1 and 1</strong>. I then needed to <b class="node">Multiply</b> by (-1, 1, -1) likely due to some axis differences. (Perhaps if we projected from different views we wouldn&rsquo;t have to do this).</p>
 <div class="img-center">
@@ -523,6 +528,7 @@
 </ul>
 
 </div>
+
 <div class="img-center">
 <a href="Graph4.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="607" height="296" alt="(Image)" src="Graph4.png" />
@@ -624,6 +630,7 @@
 <p>If using the <b class="node">Scene Color</b> node and keeping <strong>Alpha</strong> set to <strong>1</strong> (like in the forcefield breakdown linked above) that will also prevent you seeing the fractured faces, though they will still be rendered. If many faces are overlapping you could still use a the prepass to reduce the overdraw cost.</p>
 
 </div>
+
 <hr>
 <h3 id="fractured-plane">Fractured Plane</h3>
 <script>
@@ -844,6 +851,7 @@
 </ul>
 
 </div>
+
 <hr>
 <h3 id="external-links">External Links</h3>
 <p>Some more examples using this technique (mostly fracturing floors or portal effects) :</p>

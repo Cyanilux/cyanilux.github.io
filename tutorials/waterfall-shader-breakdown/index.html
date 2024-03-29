@@ -13,10 +13,14 @@
 <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
 
 
+ 
+
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "BlogPosting",
+  "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/waterfall-shader-breakdown/",
   "headline": "Waterfall Shader Breakdown",
   "name": "Waterfall Shader Breakdown",
   "description": "A waterfall shader that interacts with a sphere to part the flowing water. Uses a signed distance field and alpha clipping.",
@@ -40,7 +44,7 @@
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+    "name": "Cyanilux - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -459,6 +463,7 @@
 <p>Maybe a bit more intuivite than what I had originally. But I realised there&rsquo;s an easier way to handle it&hellip;</p>
 
 </div>
+
 <p>There is a <b class="node">Tangent Vector</b> stored at each vertex. Along with the mesh normals it&rsquo;s main purpose is converting tangent-space normal maps back into World space. The normals aren&rsquo;t important here but to make the Tangent→World space transformation work, these tangents are aligned to the horizontal axis of the UVs.</p>
 <p>That&rsquo;s where we want our wobbly offset so we can just offset along these vectors. We need to select <strong>World</strong> on the dropdown so it&rsquo;s in the correct space, <b class="node">Multiply</b> it with our Sine group output and <b class="node">Subtract</b> it from the Vector3 value just before the <b class="node">Length</b> node.</p>
 <div class="img-center">
