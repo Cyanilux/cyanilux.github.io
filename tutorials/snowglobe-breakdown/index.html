@@ -36,7 +36,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/snowglobe-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "3509",
+  "wordCount": "3536",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -146,22 +146,27 @@
 		<ul>
 			
 			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
-			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			<img width="35" height="35" alt="Twitter" src="https://www.cyanilux.com/logo-twitter.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
-			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			<img width="35" height="35" alt="Mastodon" src="https://www.cyanilux.com/logo-mastodon.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
-			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			<img width="35" height="35" alt="Discord" src="https://www.cyanilux.com/logo-discord.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://github.com/Cyanilux">
-			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			<img width="35" height="35" alt="Github" src="https://www.cyanilux.com/logo-github.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://ko-fi.com/cyanilux">
+			<img width="35" height="35" alt="Ko-Fi" src="https://www.cyanilux.com/logo-kofi.png" ></img>
 			</a>
 			</li>
 			
@@ -249,18 +254,18 @@
 		"<b style=\"color:#00aabb\" onclick=\""+
 		"const cookieContainer = document.querySelector('.cookie-container');" +
 		"cookieContainer.classList.add('active');" +
-		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>");
+		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>\r\n\u003cdiv class=\u0022img-center\u0022\u003e\r\n\u003ca href=\u0022Preview.png\u0022 target=\u0022_blank\u0022 rel=\u0022noopener noreferrer\u0022\u003e\r\n\u003cimg  width=\u0022503\u0022 height=\u0022408\u0022 alt=\u0022(Image)\u0022 src=\u0022Preview.png\u0022 \/\u003e\r\n\u003c\/a\u003e\r\n\u003cp class=\u0022img-text\u0022\u003e\u003c\/p\u003e\r\n\u003c\/div\u003e\r\n");
 	}
 </script>
 <h2 id="intro">Intro</h2>
 <p>Recently I made this Snowglobe scene (as part of a tech art challenge, with themes &ldquo;Festive&rdquo; and &ldquo;Snow&rdquo;) in which I used a couple slightly different tools/techniques that I&rsquo;m used to. I used <strong>Unity 2021.3 LTS</strong> but may also work in other versions.</p>
-<p>There&rsquo;s especially two parts I&rsquo;d like to breakdown :</p>
+<p>There&rsquo;s especially two parts I&rsquo;d like to break down :</p>
 <p><strong>Snow particles</strong></p>
 <ul>
 <li>Made using a surprisingly simple <strong>Visual Effect Graph</strong>, mainly thanks to the <b class="node">Collide with Sphere</b> block which allows the particles to remain contained in the glass globe.</li>
 <li>These use a <strong>Lit Shader Graph</strong>, <strong>Opaque</strong> surface type.
 <ul>
-<li>I&rsquo;m using lit here so the particles recieve shadows correctly, but this does also require the normals to be overriden - otherwise (when using mesh normals) the shading changes as the particles rotate, since they are billboarded quads.</li>
+<li>I&rsquo;m using lit here so that the particles receive shadows correctly, but this does also require the normals to be overridden - otherwise (when using mesh normals) the shading changes as the particles rotate, since they are billboarded quads.</li>
 <li>Could alternatively use an Unlit shader if you want, and handle your own <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">custom lighting</a> (perhaps sampling shadows only), or keep particles completely unlit - in which case the regular URP/Unlit shader would probably work.</li>
 </ul>
 </li>
@@ -271,10 +276,10 @@
 <li>It&rsquo;s still an approximation though. It uses a <strong>Reflection Probe</strong> that is placed near the globe (preferably at its center, parented to it, and updated regularly - though that would add to the performance cost).</li>
 <li>The refraction was loosely based on an article I found during research - <a href="https://samdriver.xyz/article/refraction-sphere">&ldquo;Refraction in a sphere&rdquo; (by Sam Driver)</a>. In that, they explain the idea behind calculations with some great interactive examples, so it&rsquo;s definitely a good read.
 <ul>
-<li>In my use case I decided to use a <strong>Sphere Mesh</strong> rather than defining it fully with math, which means we don&rsquo;t need to calculate where the ray enters - as that is the interpolated position given by the <b class="node">Position</b> node. This simplifies things quite a bit.</li>
+<li>In my use case I decided to use a <strong>Sphere Mesh</strong> rather than defining it fully with maths, which means we don&rsquo;t need to calculate where the ray enters - as that is the interpolated position given by the <b class="node">Position</b> node. This simplifies things quite a bit.</li>
 </ul>
 </li>
-<li>I wanted to complete the scene before Christmas so I&rsquo;ve also ignored the objects inside the globe - these aren&rsquo;t affected by the refraction, only the background scene is.</li>
+<li>I wanted to complete the scene before Christmas, so I&rsquo;ve also ignored the objects inside the globe - these aren&rsquo;t affected by the refraction, only the background scene is.</li>
 <li>This uses an <strong>Unlit Shader Graph</strong>, <strong>Transparent</strong> surface type and <strong>Alpha</strong> blending.</li>
 </ul>
 <p class="img-clearfix"></p>
@@ -309,7 +314,7 @@
 <p>In the Project window somewhere in Assets, right-click and <strong>Create → Shader Graph → URP → Lit Shader Graph</strong>.</p>
 <p>The graph for the particles is very simple. Since we need it to work with VFX Graph make sure you tick the <strong>Support VFX Graph</strong> option in the <strong>Graph Settings</strong> (tab under <strong>Graph Inspector</strong> window). If you don&rsquo;t see this you may need to configure preferences, see above. If you&rsquo;re on older versions you may need to use the <em>&ldquo;VFX Graph&rdquo;</em> Target instead of the <em>&ldquo;Universal&rdquo;</em> one.</p>
 <p>To make them round we should also enable <strong>Alpha Clipping</strong>. Add an <b class="node">Ellipse</b> node with <strong>Width</strong> &amp; <strong>Height</strong> set to <strong>1</strong>, then connect it to the <strong>Alpha</strong> port in the <strong>Fragment</strong> stage of the <strong>Master Stack</strong>. We also want to set the <strong>Alpha Clip Threshold</strong> to <strong>0.9</strong> and <strong>Base Color</strong> to white.</p>
-<p>As mentioned in the intro the particles are billboarded quads so their shading will change as they rotate. To prevent this I&rsquo;ve connected a <b class="node">Vector3</b> node to the <strong>Normal</strong> port in the <strong>Vertex</strong> stage of the <strong>Master Stack</strong>. We can set this to <strong>(0, 1, 0)</strong>.</p>
+<p>As mentioned in the intro the particles are billboarded quads, so their shading will change as they rotate. To prevent this I&rsquo;ve connected a <b class="node">Vector3</b> node to the <strong>Normal</strong> port in the <strong>Vertex</strong> stage of the <strong>Master Stack</strong>. We can set this to <strong>(0, 1, 0)</strong>.</p>
 <div class="img-center">
 <a href="ParticlesSG.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="470" height="404" alt="(Image)" src="ParticlesSG.png" />
@@ -490,7 +495,7 @@
 </div>
 <p>You will need to copy this node as we&rsquo;ll need to use the function twice - once on <strong>entry</strong> of the sphere, and again on <strong>exit</strong>.</p>
 <p>In real life, it would be the light rays that get refracted which then enter the eye, but doing the opposite (simulating a ray for each pixel on our screen going outwards into the scene) is far more efficient. It&rsquo;s the same concept you&rsquo;ll find in <strong>ray tracing / ray marching</strong>. As with a lot of things in shaders, it can be difficult to visualise given each ray will vary, so it&rsquo;s best to think about one pixel/ray in particular, such as the center of the screen / camera forward vector.</p>
-<p>Our rays will start at the camera&rsquo;s position, and enter the sphere at each fragment&rsquo;s position. There is a couple ways we could calculate this, but it&rsquo;s less nodes if we use a <b class="node">View Direction</b> node put into a <b class="node">Negate</b>. This&rsquo;ll go into the <strong>In</strong> port on our <b class="node">Refract (Custom Function)</b>. That&rsquo;s only the direction part of the ray, but we don&rsquo;t actually need it&rsquo;s &ldquo;origin&rdquo; right now as there&rsquo;s no need for a sphere-ray intersection yet. That&rsquo;s because we already have the point where the ray enters the sphere (<b class="node">Position</b> node. We&rsquo;ll need this a bit later).</p>
+<p>Our rays will start at the camera&rsquo;s position, and enter the sphere at each fragment&rsquo;s position. There is a couple ways we could calculate this, but it&rsquo;s fewer nodes if we use a <b class="node">View Direction</b> node put into a <b class="node">Negate</b>. This&rsquo;ll go into the <strong>In</strong> port on our <b class="node">Refract (Custom Function)</b>. That&rsquo;s only the direction part of the ray, but we don&rsquo;t actually need it&rsquo;s &ldquo;origin&rdquo; right now as there&rsquo;s no need for a sphere-ray intersection yet. That&rsquo;s because we already have the point where the ray enters the sphere (<b class="node">Position</b> node. We&rsquo;ll need this a bit later).</p>
 <p>We&rsquo;ll keep all our calculations in <strong>Object</strong> space for now. This has some nice benefits, as (0,0,0) is the center of our sphere and so to calculate the normal vector at any point on the sphere it&rsquo;s simply the position of that point <strong>normalised</strong>! The <b class="node">Refract (Custom Function)</b> also needs the normal at the entry position, but in this case we can use the <b class="node">Normal Vector</b> node.</p>
 <p>For the <strong>RefractionRatio</strong> (ratio of refractive indices) we&rsquo;ll need to know the <strong>Refractive Index</strong> of the materials we&rsquo;re working with, which we can just search for online; such as <a href="https://en.wikipedia.org/wiki/List_of_refractive_indices">this list on Wikipedia</a>. Air is basically 1, Glass around 1.5, and Water around 1.33.</p>
 <p>While we could do 4 refraction calculations (air → glass → water → glass → air), as the glass is quite thin it doesn&rsquo;t actually affect the resulting ray all that much (I confirmed this by redoing the calculations in C# and drawing debug gizmos). So while less accurate, we can ignore it and treat our sphere as a ball of water (air → water → air).</p>
@@ -566,7 +571,7 @@
 <h4 id="globe-interior">Interior</h4>
 <p>As I was trying to make a Snowglobe, I wanted objects to appear inside the sphere too. In order to handle this I felt rendering those objects to a separate buffer (Temporary Render Texture) was best, as we can then sample that in our shader and it keeps the objects always rendering inside the globe. It also gives us the option to distort that texture to fake some interior refraction too (though I didn&rsquo;t get around to trying this).</p>
 <p>You could alternatively use <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil operations</a> (via <strong>Overrides</strong> on a <strong>RenderObjects</strong> feature since Shader Graph doesn&rsquo;t allow access to them).</p>
-<p>We&rsquo;ll put any interior <strong>GameObjects</strong> on a specific <strong>Layer</strong>, named something like <em>&ldquo;SnowglobeInterior&rdquo;</em>. To render this layer to another buffer, we could use another Camera but I felt it was easier to use a <strong>URP Custom Renderer Feature</strong> (intended for Unity 2021.3 LTS. If you&rsquo;re in newer versions you may want to rewrite this with an RTHandle) :</p>
+<p>We&rsquo;ll put any interior <strong>GameObjects</strong> on a specific <strong>Layer</strong>, named something like <em>&ldquo;SnowglobeInterior&rdquo;</em>. To render this layer to another buffer we could use another Camera, but I felt it was easier to use a <strong>URP Custom Renderer Feature</strong> (intended for Unity 2021.3 LTS. If you&rsquo;re in newer versions you may want to rewrite this with an RTHandle) :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -745,7 +750,9 @@
 
 <div style="display:block;text-align: center">
 <h2>Thanks for reading! 😊</h2>
-<p> If this post helped, consider sharing a link with others!</p>
+<p style="margin-bottom:0">If you find this post helpful, please consider sharing it with others / on socials<br>Donations are also <b>greatly</b> appreciated! 🙏✨</p>
+<p style="font-size:13px;margin-top:0;color:grey">(Keeps this site free from ads and allows me to focus more on tutorials)</p>
+
 </div>
 
 <div class="footer-btns">
@@ -763,7 +770,7 @@ Join my discord! 💬
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2024 Cyanilux </a></p>
 
 <p class="small-text" style="text-align:center;">
 

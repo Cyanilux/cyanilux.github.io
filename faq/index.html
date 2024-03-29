@@ -29,7 +29,7 @@
   },
   "url": "https://www.cyanilux.com/faq/",
   "inLanguage": "en-gb",
-  "wordCount": "9993",
+  "wordCount": "10042",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -130,22 +130,27 @@
 		<ul>
 			
 			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
-			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			<img width="35" height="35" alt="Twitter" src="https://www.cyanilux.com/logo-twitter.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
-			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			<img width="35" height="35" alt="Mastodon" src="https://www.cyanilux.com/logo-mastodon.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
-			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			<img width="35" height="35" alt="Discord" src="https://www.cyanilux.com/logo-discord.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://github.com/Cyanilux">
-			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			<img width="35" height="35" alt="Github" src="https://www.cyanilux.com/logo-github.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://ko-fi.com/cyanilux">
+			<img width="35" height="35" alt="Ko-Fi" src="https://www.cyanilux.com/logo-kofi.png" ></img>
 			</a>
 			</li>
 			
@@ -749,6 +754,13 @@ Right : Render with Prepass<br>
 <li>A better way to fix this is by using a <b class="node">Custom Function</b> node with <code>Out = SAMPLE_TEXTURE2D_GRAD(Texture, Texture.samplerstate, frac(UV), ddx(UV), ddy(UV));</code> with inputs &ldquo;Texture&rdquo; (Texture2D), &ldquo;UV&rdquo; (Vector2) and outputs &ldquo;Out&rdquo; (Vector4). You can then remove the <b class="node">Fraction</b> node from your graph as it is handled in the code instead (but only on the 2nd parameter, not the derivates!)</li>
 <li>If you aren&rsquo;t using <b class="node">Fraction</b> but a different method that causes seams, you could use a similar function, but provide a separate UV input for the derivates e.g. <code>Out = SAMPLE_TEXTURE2D_GRAD(Texture, Texture.samplerstate, UV, ddx(DerivativeUV), ddy(DerivativeUV));</code>. Can then set the DerivativeUV to the <b class="node">UV</b> node.</li>
 </ul>
+<p>In Unity 2022.2+ can also now handle this all in graph by using the &ldquo;Gradient&rdquo; <strong>Mip Sampling Mode</strong> under the <strong>Node Settings</strong> on the <b class="node">Sample Texture 2D</b> node itself, to expose derivative inputs. Use the <b class="node">DDX</b> and <b class="node">DDY</b> nodes on some continous UV coordinates when connecting to these ports.</p>
+<div class="img-center">
+<a href="sg-gradient-sample.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="600" height="355" alt="(Image)" src="sg-gradient-sample.png" />
+</a>
+<p class="img-text"></p>
+</div>
 
 </div>
 <button id="sg-unlit-shadows" type="button" class="foldout_button" onclick="
@@ -2026,7 +2038,7 @@ See <a href="https://www.cyanilux.com/tutorials/sprite-local-uv/">Local UVs for 
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2024 Cyanilux </a></p>
 
 <p class="small-text" style="text-align:center;">
 

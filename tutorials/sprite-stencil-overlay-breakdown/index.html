@@ -21,7 +21,7 @@
   "name": "Sprite Stencil Overlay Breakdown",
   "description": "An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer)",
   "datePublished": "2020-02-24",
-  "dateModified": "2020-02-24",
+  "dateModified": "2024-03-28",
   "author": {
 	"@type": "Person",
 	"name": "Cyanilux",
@@ -36,7 +36,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "1362",
+  "wordCount": "1304",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -46,7 +46,8 @@
     "Unity", 
     "Tutorial", 
     "URP", 
-    "Shader Graph"
+    "Shader Graph", 
+    "2D"
   ]
 }
 </script>
@@ -68,9 +69,9 @@
         
     
 <meta property="article:published_time" content="2020-02-24T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-02-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-28T00:00:00+00:00" />
 <title>Sprite Stencil Overlay Breakdown | Cyanilux</title>
-<meta name="description" content="An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer). URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+<meta name="description" content="An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer). URP, Shader Graph, 2D | Unity Shader Tutorials, @Cyanilux" />
 <link rel="canonical" href="https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/" />
 <script>
 	var webStorageSupported = (typeof(Storage) !== undefined);
@@ -145,22 +146,27 @@
 		<ul>
 			
 			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
-			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			<img width="35" height="35" alt="Twitter" src="https://www.cyanilux.com/logo-twitter.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
-			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			<img width="35" height="35" alt="Mastodon" src="https://www.cyanilux.com/logo-mastodon.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
-			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			<img width="35" height="35" alt="Discord" src="https://www.cyanilux.com/logo-discord.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://github.com/Cyanilux">
-			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			<img width="35" height="35" alt="Github" src="https://www.cyanilux.com/logo-github.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://ko-fi.com/cyanilux">
+			<img width="35" height="35" alt="Ko-Fi" src="https://www.cyanilux.com/logo-kofi.png" ></img>
 			</a>
 			</li>
 			
@@ -224,12 +230,22 @@
 	</a>
 	</div>
 
+	<div class="tag" style="background-color:#2d88ff;">
+	
+	<a href="https://www.cyanilux.com/tags/2d" style="text-decoration: none; color:#eeeeee;">
+	2D
+	</a>
+	</div>
+
 
 
 
 <div style="width:10px"></div>
 <time datetime="2020-02-24">&#128337 24 Feb 2020</time>
 
+
+<div style="width:5px"></div>
+<time datetime="2024-03-28"> (updated 28 Mar 2024)</time>
 
 </div>
 <script>
@@ -241,21 +257,33 @@
 		"<b style=\"color:#00aabb\" onclick=\""+
 		"const cookieContainer = document.querySelector('.cookie-container');" +
 		"cookieContainer.classList.add('active');" +
-		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>");
+		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>\r\n\u003cdiv class=\u0022img-center\u0022\u003e\r\n\u003ca href=\u0022Preview.png\u0022 target=\u0022_blank\u0022 rel=\u0022noopener noreferrer\u0022\u003e\r\n\u003cimg  width=\u0022600\u0022 height=\u0022400\u0022 alt=\u0022(Image)\u0022 src=\u0022Preview.png\u0022 \/\u003e\r\n\u003c\/a\u003e\r\n\u003cp class=\u0022img-text\u0022\u003e\u003c\/p\u003e\r\n\u003c\/div\u003e\r\n");
 	}
 </script>
 <h2 id="intro">Intro</h2>
-<p>Hey! I recently helped someone out with an effect they wanted to create, which involved creating an dithering-like overlay effect when the character is behind other sprites, (similar to the example shown in the tweet above). I thought this might provide a nice example of how to use the Universal RP’s Forward Renderer to override Stencil values.</p>
+<p>Hey! I recently helped someone out with an effect they wanted to create, which involved creating a dithering-like overlay effect when the character is behind other sprites, (similar to the example shown in the tweet above). I thought this might provide a nice example of how to use the Universal RP’s Renderer Features to override Stencil values.</p>
 <h2 id="notes">Notes</h2>
 <ul>
-<li>This uses an <strong>Unlit Sprite</strong> shader for the checkboard overlay, but it&rsquo;s main focus is on URP&rsquo;s <strong>Forward Renderer</strong> and the <strong>RenderObjects</strong> feature.</li>
-<li>This example is for <strong>2D/Sprites</strong>, but a similar approach would work for 3D and opaque geometry too, however the set up may need to be different. You can also achieve a similar effect in 3D using the depth overrides instead of stencil, as shown in this <a href="https://www.youtube.com/watch?v=szsWx9IQVDI">Brackeys video</a>.</li>
-<li>While I’m using sprites, this is <strong>not compatible</strong> with the URP 2D Renderer (which gives you access to the 2D Lighting system), as it doesn’t have renderer features (yet?). If you require using the 2D Renderer you would have to use a different approach, e.g. writing Stencil operations in the shaders directly (see <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil docs page</a>), or use the <a href="https://docs.unity3d.com/Manual/class-SpriteMask.html">Sprite Mask component</a>, but it may be a little tedious to set up depending on how many objects will be in-front of the player.</li>
-<li>Also, something to be aware of – Due to the way the <strong>RenderObjects</strong> feature works, the objects on the Infront layer and Player overlay will always render on top of everything else transparent, regardless of the SpriteRenderer’s sorting layers / order in layer, and/or material’s Render Queue. If you want to render something after this effect you might need to set up an additional layer and create another RenderObjects feature after the other two, to render that layer on top (and also excluding that layer from the default layer mask to prevent it rendering twice).</li>
+<li>This uses an <strong>Unlit Sprite</strong> shader for the checkerboard pattern overlay, but the main focus is on <strong>RenderObjects</strong> feature in URP.</li>
+<li>This example is for <strong>2D/Sprites</strong>, but a similar approach would work for 3D and opaque geometry too (though the setup may need to be slightly different). You can also achieve a similar effect in 3D using the depth overrides instead of stencil, as shown in this <a href="https://www.youtube.com/watch?v=szsWx9IQVDI">Brackeys video</a>.</li>
+<li>Due to the way the <strong>RenderObjects</strong> feature works, the objects on the Infront layer and Player overlay will always render on top of everything else transparent, regardless of the SpriteRenderer’s sorting layers / order in layer, and/or material’s Render Queue. If you want to render something after this effect you might need to set up an additional layer and RenderObjects feature.</li>
 </ul>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>This may only be fully compatible with the <strong>Universal Renderer</strong> (aka Forward Renderer in older versions).</p>
+<p>When this post was written the <strong>2D Renderer</strong> didn&rsquo;t support features. As of Unity 2021.2+ it does, but as there is no &ldquo;Default Layer Mask&rdquo; you cannot prevent objects from rendering normally and only render them with the feature. This might be okay if using an override material with shader using <code>ColorMask 0</code>, to only render to the stencil buffer and avoid rendering to the color buffer twice. Kinda annoying to still have it a separate pass though.</p>
+<p>It is also possible to handle stencils separate from renderer features too which could work instead (though is not the focus of this tutorial). e.g. writing Stencil operations in the shaders directly (see <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil docs page</a>), or use the <a href="https://docs.unity3d.com/Manual/class-SpriteMask.html">Sprite Mask component</a>.</p>
+
+</div>
+</div>
 <h2 id="breakdown">Breakdown</h2>
 <h3 id="layer-setup">Layer Setup</h3>
-<p>To start with this effect, our <strong>Player</strong> GameObject (with the SpriteRenderer) needs to be assigned to a new Layer, which we will call “Player”.</p>
+<p>To start with this effect, our <strong>Player</strong> GameObject (with the SpriteRenderer) needs to be assigned to a new <strong>Layer</strong>, which we will call “Player”.</p>
 <p>Objects that are in-front of the player (where the overlay will appear) will also be assigned to another layer, named “Infront” (or “Foreground”, the name isn’t too important).</p>
 <div class="img-center">
 <a href="Image1.png" target="_blank" rel="noopener noreferrer">
@@ -264,7 +292,7 @@
 <p class="img-text"></p>
 </div>
 <h3 id="example-overlay-shader">Example Overlay Shader</h3>
-<p>Next we need to write a shader for the overlay effect. I’ve created a new Shader Graph using the 2D <b class="node">Sprite Unlit Master</b> node. I’d like to create a dithering-like effect which could be achieved using the <b class="node">Dither</b> node. I don’t want it too small though and it uses screenspace pixels, and the “pixels” in my sprites are actually made up of multiple screen pixels. Therefore, I’ll be using a checker-board approach instead. There is a <b class="node">Checkerboard</b> node, however this is anti-aliased, so will have transparent parts, which may not be the intended result if using a pixel perfect approach. Instead, I’m creating the checker pattern by using a combination of <b class="node">Fraction</b>, <b class="node">Step</b> and <b class="node">Lerp</b> nodes – (but play around with each approach and see which suits your project best!)</p>
+<p>Next we need to write a shader for the overlay effect, for this I&rsquo;ve used a <strong>Sprite Unlit Graph</strong>. There is a <b class="node">Checkerboard</b> node, however this is anti-aliased, so will have transparent parts, which may not be the intended result if using a pixel perfect approach. Instead, I’m creating the checker pattern by using a combination of <b class="node">Fraction</b>, <b class="node">Step</b> and <b class="node">Lerp</b> nodes – (but play around with each approach and see which suits your project best!)</p>
 <div class="img-center">
 <a href="Graph.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="271" alt="(Image)" src="Graph.png" />
@@ -272,18 +300,17 @@
 <p class="img-text"></p>
 </div>
 <p>Can use <b class="node">Position</b> set to <strong>World</strong> rather than <strong>UVs</strong> if you don’t want the effect being stretched &amp; scaled by UVs. (Note, the twitter gif also uses <b class="node">Add</b> <strong>0.5</strong> after the <b class="node">Lerp</b>).</p>
-<p>To use the sprite from the SpriteRenderer component, we use the texture property with the <strong>_MainTex</strong> reference. Since this is just for an overlay, I only need the alpha component of the texture, which is multiplied with the checkboard effect to ensure it stays within the bounds of the sprite.</p>
-<p>We need to create a new <strong>Material</strong> using this graph. We’ll be overlaying this material on top of the player sprite, but only when it is hidden behind objects in the Infront/Foreground layer. This can be achieved by using the <strong>Stencil overrides</strong> on the Forward Renderer&rsquo;s <strong>RenderObjects</strong> feature.</p>
-<h3 id="forward-renderer">Forward Renderer</h3>
+<p>To use the sprite from the SpriteRenderer component, we use the <strong>Texture2D property</strong> with the <code>_MainTex</code> reference. Since this is just for an overlay, I only need the alpha component of the texture, which is multiplied with the checkerboard effect to ensure it stays within the bounds of the sprite.</p>
+<p>Create a new <strong>Material</strong> using this graph. We’ll be using <strong>Stencil overrides</strong> on the Renderer asset to overlay this material on top of the player sprite - but only when it is hidden behind objects in the Infront/Foreground layer.</p>
+<h3 id="renderer-asset">Renderer Asset</h3>
 <div class="img-center">
 <a href="Image2.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="562" height="536" alt="(Image)" src="Image2.png" />
 </a>
 <p class="img-text"></p>
 </div>
-<p>Before going into the stencil overrides, we need to make sure the Forward Renderer is set up correctly. You should have a <strong>Universal Render Pipeline Asset</strong> object, somewhere in your Assets. If you used the URP button when creating the project, there may be multiple pipeline assets, named like “UniversalRP-HighQuality” under the <strong>Settings</strong> folder, you’ll want to make sure each quality setting is using the same <strong>Forward Renderer</strong>. If you don’t have these, you’ll want to go through the URP set up as shown in the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@7.2/manual/InstallingAndConfiguringURP.html">docs</a>.</p>
-<p>The <strong>Forward Renderer</strong> has a box to add <strong>Renderer Features</strong> to the pipeline. Unity provides a feature known as <strong>RenderObjects</strong>, which re-renders any objects specified by the Filters on the feature, but also allowing certain things to be overriden, such as Depth, Stencil and Camera projection. We’ll only be focusing on the Stencil overrides.</p>
-<p>As we don’t want to render the <strong>Infront</strong> layer objects twice however, we should also exclude them from the <strong>Default Layer Mask</strong> (split into Opaque and Transparent Layer Masks in newer versions), at the top of the Forward Renderer. This means we won’t render objects normally on that layer, so in the scene/game view those objects should disappear. But we can then add a <strong>RenderObjects</strong> feature to render them, specifying the additional overrides (We&rsquo;ll be going over this in a bit).</p>
+<p>Assuming you have URP set up correctly, under your project/assets you should have a <strong>Renderer Asset</strong>. At the bottom of this (in the inspector) is a list where you can add <strong>Renderer Features</strong>. Unity provides some features, one of which is <strong>RenderObjects</strong> which re-renders any objects specified by the Filters on the feature, while also allowing certain things to be overridden - such as Depth, Stencil and Camera projection. We’ll only be focusing on the Stencil overrides in this post.</p>
+<p>Ideally, we don’t want to render objects on the <strong>Infront</strong> layer twice, so should also exclude them from the <strong>Default Layer Mask</strong> (split into Opaque and Transparent Layer Masks in newer versions), at the top of the Renderer Asset (though only for the Universal/Forward Renderer). This means we won’t render objects normally on that layer, so in the scene/game view those objects should disappear. But we can then add a <strong>RenderObjects</strong> feature to render them, specifying the additional overrides (as explained below).</p>
 <p>For the <strong>Player</strong> layer, we want to render it twice so should keep it in the default mask. This is because we will be overriding the material to create the overlay and still want the normal sprite/material to show.</p>
 <div class="img-center">
 <a href="Image3.png" target="_blank" rel="noopener noreferrer">
@@ -302,7 +329,7 @@
 <p class="img-text"></p>
 </div>
 <h3 id="render-infront-objects">Render Infront Objects</h3>
-<p>So in order to create our overlay effect, we first need to have our <strong>Infront</strong> layer objects write a value of <strong>1</strong> into the <strong>Stencil buffer</strong>. The full <strong>RenderObjects</strong> feature is as shown :</p>
+<p>So in order to create our overlay effect, we first need to have our <strong>Infront</strong> layer objects write a value of <strong>1</strong> into the <strong>Stencil buffer</strong>. Will need <strong>Replace</strong> to do this. Since we don&rsquo;t want a comparison here, we use <strong>Always</strong>. The full <strong>RenderObjects</strong> feature is as shown :</p>
 <p>Note that all objects are currently using the default sprite material, which places them into the <strong>Transparent</strong> render queue. We need to specify this in the <strong>Queue</strong> under the <strong>Filters</strong> on the feature.</p>
 <div class="img-center">
 <a href="Image5.png" target="_blank" rel="noopener noreferrer">
@@ -333,7 +360,7 @@
 </li>
 </ul>
 <h3 id="render-player-overlay">Render Player Overlay</h3>
-<p>Then, we need to render the <strong>Player</strong> (again, since the Default Layer Mask includes that layer too), using another <strong>RenderObjects</strong> feature. This time testing against the value in the buffer, and overriding the material to show our overlay :</p>
+<p>Now we need to render the <strong>Player</strong> (for a second time - since the Default Layer Mask includes that layer too), using another <strong>RenderObjects</strong> feature. This time testing against the value in the buffer (<strong>Equal</strong> comparison), and overriding the material to show our overlay :</p>
 <div class="img-center">
 <a href="Image6.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="532" height="410" alt="(Image)" src="Image6.png" />
@@ -375,7 +402,9 @@
 
 <div style="display:block;text-align: center">
 <h2>Thanks for reading! 😊</h2>
-<p> If this post helped, consider sharing a link with others!</p>
+<p style="margin-bottom:0">If you find this post helpful, please consider sharing it with others / on socials<br>Donations are also <b>greatly</b> appreciated! 🙏✨</p>
+<p style="font-size:13px;margin-top:0;color:grey">(Keeps this site free from ads and allows me to focus more on tutorials)</p>
+
 </div>
 
 <div class="footer-btns">
@@ -393,7 +422,7 @@ Join my discord! 💬
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2024 Cyanilux </a></p>
 
 <p class="small-text" style="text-align:center;">
 

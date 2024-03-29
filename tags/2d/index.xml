@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>2D on Cyanilux</title>
+    <link>https://www.cyanilux.com/tags/2d/</link>
+    <description>Recent content in 2D on Cyanilux</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Thu, 28 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/2d/index.xml" rel="self" type="application/rss+xml" />
+	
+    <item>
+      <title>2D Water Shader Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/</link>
+      <pubDate>Thu, 28 Mar 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/</guid>
+      <description>A water shader intended for 2D, with pixelated highlights, distortion, reflections and simplified shoreline waves/ripples</description>
+    </item>
+	
+    
+	
+    <item>
+      <title>Local UVs for Sprites in Sprite Sheet/Atlas</title>
+      <link>https://www.cyanilux.com/tutorials/sprite-local-uv/</link>
+      <pubDate>Wed, 13 Mar 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/sprite-local-uv/</guid>
+      <description>A small post explaining how to convert the UVs of a sprite sheet (or sprites packed in an atlas) into local 0-1 coordinates across each sprite in the shader</description>
+    </item>
+	
+    
+	
+    <item>
+      <title>Sprite Glow/Outline Shader Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/sprite-outline-shader-breakdown/</link>
+      <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/sprite-outline-shader-breakdown/</guid>
+      <description>A shader which uses a signed distance field stored in the sprite texture&#39;s alpha channel to create an outline/glow (and inner-glow) effect, with control over the colour and thickness</description>
+    </item>
+	
+    
+	
+    <item>
+      <title>Sprite Stencil Overlay Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/</link>
+      <pubDate>Mon, 24 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/</guid>
+      <description>An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer)</description>
+    </item>
+	
+    
+  </channel>
+</rss>

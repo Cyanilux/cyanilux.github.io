@@ -36,7 +36,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/urp-shader-code/",
   "inLanguage": "en-gb",
-  "wordCount": "14099",
+  "wordCount": "14123",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -145,22 +145,27 @@
 		<ul>
 			
 			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
-			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			<img width="35" height="35" alt="Twitter" src="https://www.cyanilux.com/logo-twitter.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
-			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			<img width="35" height="35" alt="Mastodon" src="https://www.cyanilux.com/logo-mastodon.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
-			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			<img width="35" height="35" alt="Discord" src="https://www.cyanilux.com/logo-discord.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://github.com/Cyanilux">
-			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			<img width="35" height="35" alt="Github" src="https://www.cyanilux.com/logo-github.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://ko-fi.com/cyanilux">
+			<img width="35" height="35" alt="Ko-Fi" src="https://www.cyanilux.com/logo-kofi.png" ></img>
 			</a>
 			</li>
 			
@@ -235,11 +240,12 @@
 <time datetime="2022-04-24"> (updated 24 Apr 2022)</time>
 
 </div>
+<h2 id="intro">Intro</h2>
 <p>Many shader code tutorials online are intended to be used in Unity’s <strong>Built-in Render Pipeline</strong> and might not work in the <strong>Universal Render Pipeline</strong> – They’ll either produce magenta errors or at least won’t be compatible with the <a href="https://www.cyanilux.com/tutorials/intro-to-shaders/#srp-batcher">SRP Batcher</a>, which batches the setup between draw calls for each shader/material, so rendering many objects with that shader will be more performant.</p>
 <p>You can check if a shader is compatible with the SRP Batcher by looking in the <strong>Inspector</strong> when the shader is selected in the <strong>Project</strong> window. And you can check objects are being batched correctly via the <a href="https://docs.unity3d.com/Manual/FrameDebugger.html">Frame Debugger</a> window. If the shader is <strong>Unlit</strong> and doesn&rsquo;t use any properties (except textures) it may already be compatible.</p>
 <p>If not, then ideally it should be re-written. Any shaders using the Surface Shader template (<code>#pragma surface</code> function) also aren&rsquo;t compatible with URP and will need rewriting into a vertex/fragment one. Using Shader Graph can be easier, but it doesn&rsquo;t have access to everything and some people may prefer writing code instead.</p>
-<p>If you aren&rsquo;t that familiar with shaders, see my <a href="https://www.cyanilux.com/tutorials/intro-to-shaders">Intro to Shaders</a> post first, and consider using Shader Graph as it should be easier for beginners. I&rsquo;ve got an <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph">Intro to Shader Graph</a> post too.</p>
-<p>If you are already familiar with writing shaders for the <strong>Built-in Render Pipeline</strong> you may want to skip to the final sections for summaries of differences, list of functions and templates you can use. No credit is required but would be greatly appreciated. If this article is helpful, please share it with others too!</p>
+<p>If you&rsquo;re unsure what a shader even is, see my <a href="https://www.cyanilux.com/tutorials/intro-to-shaders">Intro to Shaders</a> post first, and consider using Shader Graph as it should be easier for beginners. I&rsquo;ve got an <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph">Intro to Shader Graph</a> post too.</p>
+<p>If you are already familiar with writing shaders for the <strong>Built-in Render Pipeline</strong> you may want to skip to the final sections for summaries of differences, list of functions and templates you can use.</p>
 <div class="notice">
 <div style="background-color: #303030; margin-right: 10px;">
 <div class="notice-exclamation">
@@ -250,6 +256,12 @@
 This post is an improved version of my <a href="https://cyangamedev.wordpress.com/2020/06/05/urp-shader-code/">old wordpress article</a> of the same name. All on a single page, more detailed, better formatting, and no annoying ads. There&rsquo;s a few sections I might rewrite further but enjoy! 💙
 </div>
 </div>
+<hr>
+<div style="display:block;text-align: center">
+<p>If this article is helpful, please share it with others! Maybe also consider buying me a coffee~</p>
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+</div>
+<hr>
 <h3 id="sections-">Sections :</h3>
 <p class="">
 <!-- bit of a hack to make the spacing better for list -->
@@ -2009,7 +2021,9 @@ We can then use <code>#if defined(KEYWORD)</code> / <code>#ifdef KEYWORD</code> 
 
 <div style="display:block;text-align: center">
 <h2>Thanks for reading! 😊</h2>
-<p> If this post helped, consider sharing a link with others!</p>
+<p style="margin-bottom:0">If you find this post helpful, please consider sharing it with others / on socials<br>Donations are also <b>greatly</b> appreciated! 🙏✨</p>
+<p style="font-size:13px;margin-top:0;color:grey">(Keeps this site free from ads and allows me to focus more on tutorials)</p>
+
 </div>
 
 <div class="footer-btns">
@@ -2027,7 +2041,7 @@ Join my discord! 💬
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2024 Cyanilux </a></p>
 
 <p class="small-text" style="text-align:center;">
 

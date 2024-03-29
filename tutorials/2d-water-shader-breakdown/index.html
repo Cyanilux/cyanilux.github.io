@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="theme-color" content="#ffffff">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "headline": "2D Water Shader Breakdown",
+  "name": "2D Water Shader Breakdown",
+  "description": "A water shader intended for 2D, with pixelated highlights, distortion, reflections and simplified shoreline waves\/ripples",
+  "datePublished": "2024-03-28",
+  "dateModified": "2024-03-28",
+  "author": {
+	"@type": "Person",
+	"name": "Cyanilux",
+	"url": "https://www.cyanilux.com"
+  },
+  "image": {
+    "@type": "ImageObject",
+    "@id": "https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/Preview_hu94b8da0cfb1df137edae63f8a0e74a4b_335784_300x0_resize_box_3.png",
+    "url": "https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/Preview_hu94b8da0cfb1df137edae63f8a0e74a4b_335784_300x0_resize_box_3.png",
+    "height": "225",
+    "width": "300"
+  },
+  "url": "https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/",
+  "inLanguage": "en-gb",
+  "wordCount": "2613",
+  "isPartOf": {
+    "@type" : "Blog",
+    "@id": "https://www.cyanilux.com",
+    "name": "Cyanilux - Game Dev Blog \u0026 Tutorials"
+  },
+  "keywords": [
+    "Unity", 
+    "Tutorial", 
+    "URP", 
+    "Shader Graph", 
+    "2D"
+  ]
+}
+</script>
+
+<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/Preview.png"/>
+<meta name="twitter:title" content="2D Water Shader Breakdown"/>
+<meta name="twitter:description" content="A water shader intended for 2D, with pixelated highlights, distortion, reflections and simplified shoreline waves/ripples"/>
+
+<meta property="og:title" content="2D Water Shader Breakdown" />
+<meta property="og:description" content="A water shader intended for 2D, with pixelated highlights, distortion, reflections and simplified shoreline waves/ripples" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2024-03-28T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-28T00:00:00+00:00" />
+<title>2D Water Shader Breakdown | Cyanilux</title>
+<meta name="description" content="A water shader intended for 2D, with pixelated highlights, distortion, reflections and simplified shoreline waves/ripples. URP, Shader Graph, 2D | Unity Shader Tutorials, @Cyanilux" />
+<link rel="canonical" href="https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/" />
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+</script>
+
+
+
+<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+</script>
+
+
+</head>
+    <body>
+        
+<div class="header">
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
+	
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
+			<img width="35" height="35" alt="Twitter" src="https://www.cyanilux.com/logo-twitter.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			<img width="35" height="35" alt="Mastodon" src="https://www.cyanilux.com/logo-mastodon.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			<img width="35" height="35" alt="Discord" src="https://www.cyanilux.com/logo-discord.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			<img width="35" height="35" alt="Github" src="https://www.cyanilux.com/logo-github.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://ko-fi.com/cyanilux">
+			<img width="35" height="35" alt="Ko-Fi" src="https://www.cyanilux.com/logo-kofi.png" ></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
+	
+	<nav id="nav" class="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		FAQ
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>2D Water Shader Breakdown</h1>
+<div class="post-metadata">
+
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/breakdowns/" style="text-decoration: none; color:#eeeeee;">
+	Breakdowns
+	</a>
+</div>
+
+
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	
+	<a href="https://www.cyanilux.com/tags/urp" style="text-decoration: none; color:#eeeeee;">
+	URP
+	</a>
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	
+	<a href="https://www.cyanilux.com/tags/shader-graph" style="text-decoration: none; color:#eeeeee;">
+	Shader Graph
+	</a>
+	</div>
+
+	<div class="tag" style="background-color:#2d88ff;">
+	
+	<a href="https://www.cyanilux.com/tags/2d" style="text-decoration: none; color:#eeeeee;">
+	2D
+	</a>
+	</div>
+
+
+
+
+<div style="width:10px"></div>
+<time datetime="2024-03-28">&#128337 28 Mar 2024</time>
+
+
+</div>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-conversation=\"none\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eSome tweaks 🌊🦆\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/hI3w9txEir\"\u003epic.twitter.com/hI3w9txEir\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1770511907432063350?ref_src=twsrc%5Etfw\"\u003eMarch 20, 2024\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1770511907432063350\">https://twitter.com/Cyanilux/status/1770511907432063350</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<b style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>\r\n\u003cdiv class=\u0022img-center\u0022\u003e\r\n\u003ca href=\u0022Preview.png\u0022 target=\u0022_blank\u0022 rel=\u0022noopener noreferrer\u0022\u003e\r\n\u003cimg  width=\u0022640\u0022 height=\u0022480\u0022 alt=\u0022(Image)\u0022 src=\u0022Preview.png\u0022 \/\u003e\r\n\u003c\/a\u003e\r\n\u003cp class=\u0022img-text\u0022\u003e\u003c\/p\u003e\r\n\u003c\/div\u003e\r\n");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>I&rsquo;ve mostly stuck to 3D rendering but recently have been experimenting a bit with 2D (well, kinda 2.5D here), mostly to gain more experience working with sprites and tilemaps. I wanted to try out some 2D reflections and ended up with this water shader.</p>
+<p>Sampling the noise textures with pixelated UVs really helped to make it fit with the pixel art style.</p>
+<p>Overall, quite happy with how it looks. I know a few others are already interested, so thought I&rsquo;d do a breakdown.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>I used <strong>URP</strong> (though nothing pipeline specific - I avoided renderer features), and the <strong>Sprite Unlit</strong> graph (but regular Unlit also works, or even Lit graph types if you want it affected by lights)</li>
+<li>Shader is applied to a tilemap. Can work on other things (sprites, quad mesh, etc) though maybe without the shoreline/edge ripples.</li>
+<li>Sprites in the scene are from a <a href="https://assetstore.unity.com/packages/2d/environments/pixel-art-top-down-basic-187605">free asset pack by Cainos</a>, with some minor edits. Except the duck sprite, that one I drew 🦆</li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<h3 id="reflections">Reflections</h3>
+<p>For the reflections, I&rsquo;ve used duplicate flipped sprites. In my case the sprites are angled towards the camera, and the scene is actually aligned to the XZ plane, but the same concept should work in full 2D / XY plane as well. (Especially if you want to use 2D Physics, that&rsquo;s only XY)</p>
+<div class="img-center">
+<a href="ReflectedSprites.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="736" height="390" alt="(Image)" src="ReflectedSprites.png" />
+</a>
+<p class="img-text">Scene View (during play mode), with reflection sprites highlighted</p>
+</div>
+<p>At first, I did think about using a RenderObject features with an override material/shader that flips sprites automatically. But while this can work, it&rsquo;s difficult to create accurate reflections for sprites that already have custom shaders (e.g. the swaying grass/foliage). This also doesn&rsquo;t allow you to override the texture. In my case, the pillars use an alternate sprite for reflections - so the top isn&rsquo;t reflected.</p>
+<p>Instead, it&rsquo;s better to just duplicate and rotate/flip the sprites manually, or use a <strong>C# Script</strong> to instantiate them at runtime. The script I wrote for this is shown in the foldout below. It should already work in both 2.5D and 2D scenes.</p>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Sprite Reflection Script</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Sprite Reflection Script</b>';
+
+    }
+"><b>⯈ Sprite Reflection Script</b></button>
+<div class="foldout">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SpriteReflection</span> : MonoBehaviour {
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> Axis { X, Y, Z }
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [Tooltip(&#34;Axis reflected around. (e.g. use Z for typical 2D, Y for top-down)&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Axis reflectionAxis = Axis.Z;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [Tooltip(&#34;Position of water plane along the chosen axis&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">float</span> reflectionOffset = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [Tooltip(&#34;Layer to place reflections on&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> reflectionLayer = <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [Tooltip(&#34;Override the sprite used for reflections (Optional)&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Sprite reflectionSprite;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [Tooltip(&#34;Updates reflection position and SpriteRenderer params each frame. (Enable for non-static sprites, e.g. player)&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> updatePerFrame;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> GameObject reflectionObj;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> SpriteRenderer spriteRenderer, reflectionRenderer;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Vector3 axis;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Transform parent;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">bool</span> useParentAsPivot;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> Start(){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (reflectionAxis == Axis.X) axis = <span style="color:#66d9ef">new</span>(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (reflectionAxis == Axis.Y) axis = <span style="color:#66d9ef">new</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (reflectionAxis == Axis.Z) axis = <span style="color:#66d9ef">new</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>        spriteRenderer = GetComponent&lt;SpriteRenderer&gt;();
+</span></span><span style="display:flex;"><span>        reflectionObj = <span style="color:#66d9ef">new</span> GameObject(<span style="color:#e6db74">&#34;Reflection&#34;</span>) {
+</span></span><span style="display:flex;"><span>            layer = reflectionLayer
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>        reflectionRenderer = reflectionObj.AddComponent&lt;SpriteRenderer&gt;();
+</span></span><span style="display:flex;"><span>        parent = transform.parent;
+</span></span><span style="display:flex;"><span>        useParentAsPivot = parent != <span style="color:#66d9ef">null</span> &amp;&amp; parent.TryGetComponent(<span style="color:#66d9ef">out</span> SpriteReflection _);
+</span></span><span style="display:flex;"><span>        DoReflection();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> OnDestroy(){
+</span></span><span style="display:flex;"><span>        Destroy(reflectionObj);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> LateUpdate(){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (updatePerFrame) DoReflection();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> DoReflection(){
+</span></span><span style="display:flex;"><span>        Vector3 pivot = transform.position;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (useParentAsPivot){
+</span></span><span style="display:flex;"><span>            pivot = parent.transform.position;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        pivot = <span style="color:#66d9ef">new</span> Vector3(
+</span></span><span style="display:flex;"><span>            axis.x * pivot.x,
+</span></span><span style="display:flex;"><span>            axis.y * pivot.y,
+</span></span><span style="display:flex;"><span>            axis.z * pivot.z
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Transform</span>
+</span></span><span style="display:flex;"><span>        Vector3 pos = Quaternion.Euler(<span style="color:#ae81ff">180</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>) * (transform.position - pivot) + pivot;
+</span></span><span style="display:flex;"><span>        reflectionObj.transform.SetPositionAndRotation(
+</span></span><span style="display:flex;"><span>            pos, transform.rotation * Quaternion.Euler(<span style="color:#ae81ff">180</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>        reflectionObj.transform.localScale = transform.localScale;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Sprite Data</span>
+</span></span><span style="display:flex;"><span>        reflectionRenderer.sprite = reflectionSprite != <span style="color:#66d9ef">null</span> ? reflectionSprite : spriteRenderer.sprite;
+</span></span><span style="display:flex;"><span>        reflectionRenderer.flipX = spriteRenderer.flipX;
+</span></span><span style="display:flex;"><span>        reflectionRenderer.flipY = spriteRenderer.flipY;
+</span></span><span style="display:flex;"><span>        reflectionRenderer.color = spriteRenderer.color;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+
+</div>
+<p>So we can distort these later, capture the reflections to a <strong>Render Texture</strong> by using a second <strong>Camera</strong>.</p>
+<p>Reflection sprites are put on a specific <strong>Layer</strong> (e.g. named &ldquo;Reflection&rdquo;) and we adjust the <strong>Culling Mask</strong> on both cameras so that layer only renders to the second camera and not the main camera. Can create a <a href="https://docs.unity3d.com/Manual/class-RenderTexture.html">Render Texture Asset</a> (right-click in Project/Assets, will be somewhere under Create menu) and assign it to the <strong>Target/Output Texture</strong> field on the second camera - no scripting needed.</p>
+<div class="img-center">
+<a href="Camera.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="486" height="584" alt="(Image)" src="Camera.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>In URP, you could probably use a <strong>Custom Renderer Feature</strong> if you prefer (may avoid some overhead from an additional camera?)</p>
+<p>Although when using the <strong>2D Renderer</strong> I don&rsquo;t think you can stop layers from rendering normally (like the <strong>Universal Renderer</strong> has with it&rsquo;s &ldquo;Default Opaque/Transparent Layer Masks&rdquo;), a bit annoying.</p>
+
+</div>
+</div>
+<h3 id="sky">Sky</h3>
+<p>I also wanted this reflection texture to include the sky. I think this is something you rarely get to see in top-down games and while the water could just show a solid colour I thought being able to see reflected clouds would be far more interesting. (Though this is specific to outdoor scenes of course)</p>
+<p>This could likely be a static texture, or we could use a shader to add some scrolling - or perhaps even mix multiple noise textures. I&rsquo;ve left the graph I used for the sky out, but it&rsquo;s mostly just sampling a noise texture, put through a <b class="node">Smoothstep</b> to remap and <b class="node">Lerp</b> to apply blue (sky) and white (cloud) colours.</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>Ideally we&rsquo;d want to keep this sky shader fairly cheap, as the current setup means every pixel on the second camera is rendered, regardless if the reflections will actually be shown by the water.</p>
+<p>This might not be a big deal if texture is downsampled / small resolution. But if performance is an issue, could also try looking into optimisations to avoid rendering parts of the reflection texture - maybe via stencil buffer.</p>
+
+</div>
+</div>
+<p>This sky shader/texture is placed on a quad, assigned to the <strong>Reflection Layer</strong> (so only rendered by that second camera). The quad should be big enough to cover that camera view and parented to it (which helps give a nice parallax effect when the camera moves!)</p>
+<p>May also want to toggle the visibility in the <strong>Hierarchy</strong>, so you don&rsquo;t see this in Scene View.</p>
+<div class="img-center">
+<a href="Hierarchy.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="347" height="242" alt="(Image)" src="Hierarchy.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>Assuming URP, rendering the sky using a <strong>Fullscreen Graph</strong> &amp; <strong>Fullscreen Pass Renderer Feature</strong> on a second <strong>Renderer</strong> asset (used by that second camera) might also work, to avoid needing to manually scale the quad.</p>
+<p>If using a <strong>2D Renderer</strong>, may need a custom feature instead, as it seems the &ldquo;Before Rendering Transparents&rdquo; event isn&rsquo;t actually before rendering sprites for some reason (in 2022.3 at least)</p>
+
+</div>
+</div>
+<h3 id="noise">Noise</h3>
+<p>Okay! With that setup out the way, actually starting the water shader now&hellip;</p>
+<p>To apply distortions and handle specular reflections, we&rsquo;ll need some seamless noise textures (or could use <b class="node">Gradient Noise</b> / <b class="node">Simple Noise</b> nodes - but these procedural methods can be more expensive). Here are the textures I used (CC0 License) :</p>
+<div style="display: flex; width: 100%; justify-content:center">
+<div class="img-left">
+<a href="ValueNoise.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="256" height="256" alt="(Image)" src="ValueNoise.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<div class="img-left">
+<a href="GradientNoise.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="256" height="256" alt="(Image)" src="GradientNoise.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p class="img-clearfix"></p>
+</div>
+<p>Use a <b class="node">Sample Texture 2D</b> node with a noise texture. In the <strong>UV</strong> port, we&rsquo;ll need a <b class="node">Tiling And Offset</b> node, where you can adjust the <strong>Tiling</strong> values and add scrolling by providing an <strong>Offset</strong> using the <strong>Time</strong> output from the <b class="node">Time</b> node and <b class="node">Multiply</b> by a <strong>Vector2</strong> (node or property) to adjust its speed in each direction. The values are up to you - but keep them quite small (ideally below <strong>0.1</strong>) as we don&rsquo;t want the water flowing by too fast.</p>
+<div class="img-center">
+<a href="Graph0.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="323" alt="(Image)" src="Graph0.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Since the texture ranges from <strong>0 to 1</strong> (roughly), we <b class="node">Subtract</b> a value of <strong>0.5</strong> to shift the range. When we distort using this later, it offsets in both directions, keeping the overall image centered (rather than shifting towards the top corner). Can also <b class="node">Multiply</b> to adjust the strength for better control of how the result will look.</p>
+<p>Do the same setup for the other noise texture (but make sure to use a different scrolling direction) and <b class="node">Add</b> both results together.</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="464" alt="(Image)" src="Graph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>As I&rsquo;d like to apply the shader to a tilemap and have the noise seamlessly connect over each tile, we need to use the <b class="node">Position</b> rather than the mesh UV0 coordinates. Those are Vector3, so also <b class="node">Swizzle</b> to convert them to Vector2. Can use <code>&quot;xy&quot;</code> if aligned to the usual 2D plane. In my case, I used <code>&quot;xz&quot;</code> since that is how my scene is set up.</p>
+<p>You may want to handle the pixelation in the shader by using a <b class="node">Posterize</b> node (equivalent to <code>floor(UV * Steps) / Steps</code>). Though if you already plan to render at lower resolution and use upscaling (i.e. on a <a href="https://docs.unity3d.com/Packages/com.unity.2d.pixel-perfect@5.0/manual/index.html">2D Pixel Perfect Camera</a> or manually via another camera &amp; Render Texture) then you can skip the pixelation.</p>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="334" alt="(Image)" src="Graph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The result of this should be put into the UV ports on the <b class="node">Tiling And Offset</b> nodes.</p>
+<h3 id="distorting-reflections">Distorting Reflections</h3>
+<p>Add a <strong>Texture2D property</strong> in the <strong>Blackboard</strong> where we can assign the <strong>Reflection Render Texture</strong> set up earlier. (Can set it as the <strong>Default</strong> under <strong>Node Settings</strong> and/or apply to material just like any other texture asset. If you use a custom feature to generate the reflection texture instead, would likely uncheck Exposed and use <code>cmd.SetGlobalTexture</code>)</p>
+<p>To handle the distortion we need to alter the UV coordinates used to sample the texture. The current noise output would likely be far too strong of an offset though, so we&rsquo;ll first need to <b class="node">Multiply</b> by a value like 0.05 to lower the strength. Can hardcode that or use a <strong>Float property</strong> for this to have control from the material.</p>
+<p>We can limit the distortion to only occur on the X axis by putting it into a <b class="node">Vector2</b> (keeping <strong>Y</strong> set to 0). This avoids the reflections &ldquo;un-attaching&rdquo; from the sprites which can look slightly odd. Then <b class="node">Add</b> this to the <b class="node">Screen Position</b> and put into the <strong>UV</strong> port on a <b class="node">Sample Texture 2D</b> node sampling the reflection texture property.</p>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="390" alt="(Image)" src="Graph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<h3 id="water-colour">Water Colour</h3>
+<p>Having the reflections perfectly mirror the colours of the scene can be a bit jarring, so let&rsquo;s add a cyan/blue tint to better show the surface is water.</p>
+<p>Connect the sample result to the <strong>B</strong> port on a <b class="node">Lerp</b> node, and create a <strong>Color property</strong> for the <strong>A</strong> port. To control how much the texture should be tinted (<strong>T</strong> port) we can use the alpha of this property. You&rsquo;ll need a <b class="node">Split</b> (or <b class="node">Swizzle</b> with &ldquo;a&rdquo;) to extract that.</p>
+<p>Can optionally also <b class="node">Multiply</b> by the alpha channel of the reflection texture, which would result in showing the water colour if you don&rsquo;t render the sky (and assuming the second camera&rsquo;s background colour is transparent)</p>
+<div class="img-center">
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="694" height="316" alt="(Image)" src="Graph4.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<h3 id="specular-highlights">Specular Highlights</h3>
+<p>While I intend to keep the shader unlit, I think it&rsquo;s still important to add some highlights to give the impression that the water surface is moving and catching the sunlight. But there&rsquo;s no need for actual specular lighting calculations, (that would probably require normal maps which I haven&rsquo;t used here), instead we can achieve something similar by reusing our scrolling noise.</p>
+<p>Put the noise into the <strong>In</strong> port on a <b class="node">Step</b> node, then try adjusting the <strong>Edge</strong> value input until there is only a few white parts appearing in the preview. Since there are two sets of noise scrolling past each other (and combined additively), they occasionally line up and produce values higher than the <strong>Edge</strong>.</p>
+<p>You may need to adjust the noise scrolling directions until you get a good result. Also try outputting the result to the <strong>Master Stack</strong> and save the graph to preview in scene too.</p>
+<p>We can add a subtler version of this to mimic shading too, by using the noise output again into the <strong>In</strong> on a <b class="node">Smoothstep</b> to remap (I used an <strong>Edge1</strong> of <strong>0</strong> and <strong>Edge2</strong> of <strong>0.5</strong>), then <b class="node">Multiply</b> by a small value (i.e. <strong>0.15</strong>).</p>
+<p>Feel free to use properties for these values if you want control over them from the material.</p>
+<div class="img-center">
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="718" height="476" alt="(Image)" src="Graph5.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>As shown in the above we <b class="node">Add</b> these two outputs together. To actually apply this to the rest of our graph, we can <b class="node">Add</b> again to the output of the &ldquo;Apply Water Colour&rdquo; group (from the previous section). If you connect that to the <strong>Base Color</strong> in the <strong>Master Stack</strong> and apply the shader (e.g. to a quad) it should look similar to the <a href="https://twitter.com/Cyanilux/status/1770095395848237506">first tweet</a>.</p>
+<h3 id="shoreline-ripples">Shoreline Ripples</h3>
+<p>I initially had the water shader (using the above sections) on a quad mesh, but later swapped to applying to a Tilemap (separate from the rest of the scene that is - since they need different materials). This is so I could add a ripping effect to the edges of the water.</p>
+<p>To handle this, it uses the following texture :</p>
+<div class="img-center">
+<a href="WaterTiles.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="384" height="128" alt="(Image)" src="WaterTiles.png" />
+</a>
+<p class="img-text">Gradient tiles (4 rows, 12 columns)</p>
+</div>
+<p>In the scene I mostly used the corner and straight tiles (on the right side). But made all 48 tiles of the <a href="https://www.boristhebrave.com/2013/07/14/tileset-roundup/">blob tileset</a> - just in case!~</p>
+<p>Should import this as :</p>
+<ul>
+<li>Type : Sprite (2D and UI)</li>
+<li>Sprite Mode : Multiple</li>
+<li>Pixels Per Unit : 32</li>
+<li>Filter Mode : Point
+<ul>
+<li>If you don&rsquo;t want pixelated look can use Bilinear, but you&rsquo;ll likely need to manually edit the texture to add a few pixels of padding, to avoid cell edges bleeding into neighbouring cells.</li>
+</ul>
+</li>
+<li>In Sprite Editor, Slice by Cell Size of 32x32</li>
+</ul>
+<p>After importing, drag the texture into a <a href="https://docs.unity3d.com/Manual/Tilemap-Palette.html">Sprite Palette</a>, can then select tiles and paint on the Tilemap (with brush tool). May also be able to automatically paint the correct tiles with a <a href="https://learn.unity.com/tutorial/using-rule-tiles">Rule Tiles asset</a>, though it looks a pain to set up.</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+If you&rsquo;re unfamiliar with working with tilemaps, please refer to the <a href="https://docs.unity3d.com/Manual/Tilemap.html">documentation</a> or find other tutorials, as that is outside the scope of this breakdown
+</div>
+</div>
+<p>The shader samples this by using a <strong>Texture2D property</strong> with the <code>_MainTex</code> reference, and by applying a scrolling <b class="node">Sine</b> wave we create some nice repeating ripples moving out from the edges.</p>
+<div class="img-center">
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="286" alt="(Image)" src="Graph6.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>There&rsquo;s some <b class="node">Multiply</b> nodes here to control the speed and frequency of the wave (feel free to use properties for these if you want control from the inspector). We <b class="node">Multiply</b> again with the texture, to fade the waves as they get further from the edge. Then the <b class="node">Saturate</b> clamps between <strong>0 and 1</strong> (mostly removing negative values from the <b class="node">Sine</b> as I didn&rsquo;t like it darkening the water)</p>
+<p>To actually apply these ripples, the result of this group is put into another <b class="node">Add</b> node to combine with the &ldquo;+ Highlights&rdquo; group (from previous section)</p>
+<h3 id="distorting-ripples">Distorting Ripples</h3>
+<p>Finally, I also wanted to apply distortion to make these ripples look more interesting.</p>
+<p>It&rsquo;s possible this could be done by editing the gradients, but I handled this in the shader by re-using the output of the &ldquo;Distortion Strength&rdquo; group from earlier. However, since this is a tilemap we can&rsquo;t really just add it to the UV. If you try, you&rsquo;ll notice it leads to sampling parts of neighbouring tiles.</p>
+<p>To avoid that, I lower the strength of the distortion based on the distance to the edge of the tile using this setup :</p>
+<div class="img-center">
+<a href="Graph7.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="190" alt="(Image)" src="Graph7.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>In short, the <b class="node">Vector2</b> node at the start uses a value of <strong>(12, 4)</strong> as that&rsquo;s the number of columns/rows in the texture. The <b class="node">Fraction</b> is responsible for it repeating, and the rest is basically a <strong>Square SDF</strong> (Signed Distance Field).</p>
+<p>We <b class="node">Multiply</b> this by the output of the &ldquo;Distortion Strength&rdquo; group from earlier. Then <b class="node">Add</b> to the <b class="node">UV</b> node and put into the <strong>UV</strong> port on the <b class="node">Sample Texture 2D</b> node (in &ldquo;Sample Tilemap&rdquo; group from previous section)</p>
+<div class="img-center">
+<a href="Graph8.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="381" alt="(Image)" src="Graph8.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<br><hr>
+
+<div style="display:block;text-align: center">
+<h2>Thanks for reading! 😊</h2>
+<p style="margin-bottom:0">If you find this post helpful, please consider sharing it with others / on socials<br>Donations are also <b>greatly</b> appreciated! 🙏✨</p>
+<p style="font-size:13px;margin-top:0;color:grey">(Keeps this site free from ads and allows me to focus more on tutorials)</p>
+
+</div>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div>
+
+
+        </div>
+        </br>
+
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2024 Cyanilux </a></p>
+
+<p class="small-text" style="text-align:center;">
+
+
+
+	<a href="https://www.cyanilux.com/#license">
+	
+	License / Usage
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/cookies">
+	
+	Cookies & Privacy
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/index.xml">
+	
+	RSS Feed
+	</a>
+	
+
+</p>
+</br>
+
+<div class="cookie-container">
+<p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+<button class="cookie-accept-btn"><b>Accept</b></button>
+<button class="cookie-refuse-btn"><b>Refuse</b></button>
+</div>
+
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+</script>
+    </body>
+</html>

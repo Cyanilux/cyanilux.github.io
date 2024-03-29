@@ -6,7 +6,18 @@
     <description>Recent content in Breakdowns on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Tue, 05 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tutorials/breakdowns/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 28 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tutorials/breakdowns/index.xml" rel="self" type="application/rss+xml" />
+	
+    <item>
+      <title>2D Water Shader Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/</link>
+      <pubDate>Thu, 28 Mar 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/</guid>
+      <description>A water shader intended for 2D, with pixelated highlights, distortion, reflections and simplified shoreline waves/ripples</description>
+    </item>
+	
+    
 	
     <item>
       <title>Ultraviolet Lights &amp; Invisible Ink</title>

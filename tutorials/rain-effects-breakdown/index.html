@@ -36,7 +36,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/rain-effects-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "4107",
+  "wordCount": "4123",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -144,22 +144,27 @@
 		<ul>
 			
 			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
-			<img src="https://www.cyanilux.com/logo-twitter.png" alt="Twitter"></img>
+			<img width="35" height="35" alt="Twitter" src="https://www.cyanilux.com/logo-twitter.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
-			<img src="https://www.cyanilux.com/logo-mastodon.png" alt="Mastodon"></img>
+			<img width="35" height="35" alt="Mastodon" src="https://www.cyanilux.com/logo-mastodon.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
-			<img src="https://www.cyanilux.com/logo-discord.png" alt="Discord"></img>
+			<img width="35" height="35" alt="Discord" src="https://www.cyanilux.com/logo-discord.png" ></img>
 			</a>
 			</li>
 			
 			<li><a class="nav-link" href="https://github.com/Cyanilux">
-			<img src="https://www.cyanilux.com/logo-github.png" alt="Github"></img>
+			<img width="35" height="35" alt="Github" src="https://www.cyanilux.com/logo-github.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://ko-fi.com/cyanilux">
+			<img width="35" height="35" alt="Ko-Fi" src="https://www.cyanilux.com/logo-kofi.png" ></img>
 			</a>
 			</li>
 			
@@ -233,7 +238,7 @@
 		"<b style=\"color:#00aabb\" onclick=\""+
 		"const cookieContainer = document.querySelector('.cookie-container');" +
 		"cookieContainer.classList.add('active');" +
-		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>");
+		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>\r\n\u003cdiv class=\u0022img-center\u0022\u003e\r\n\u003ca href=\u0022Preview.png\u0022 target=\u0022_blank\u0022 rel=\u0022noopener noreferrer\u0022\u003e\r\n\u003cimg  width=\u0022750\u0022 height=\u0022492\u0022 alt=\u0022(Image)\u0022 src=\u0022Preview.png\u0022 \/\u003e\r\n\u003c\/a\u003e\r\n\u003cp class=\u0022img-text\u0022\u003e\u003c\/p\u003e\r\n\u003c\/div\u003e\r\n");
 	}
 </script>
 <p>(Also <a href="https://twitter.com/Cyanilux/status/1670433411738091520">alternative pink version</a> with a few small improvements)</p>
@@ -453,7 +458,7 @@
 		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>");
 	}
 </script>
-<p>As mentioned in the intro, the umbrella I made in the tweet shown at the start of the post has some raindrops (dots &amp; scrolling lines, as shown in the tweet above) to give the idea that the rain is interacting with it. There&rsquo;s multiple ways to handle this, but in this section I&rsquo;m trying to keep it as simple as possible - while the next section goes over slightly more complex techniques.</p>
+<p>As mentioned in the intro, the umbrella material I made has some raindrops (dots &amp; scrolling lines, as shown in the tweet above) to give the idea that the rain is interacting with it. There&rsquo;s multiple ways to handle this, but in this section I&rsquo;m trying to keep it as simple as possible - while the next section goes over slightly more complex techniques.</p>
 <p>The effect is based on UV coordinates. It&rsquo;ll be up to you unwrap your model, but the Y axis of the UV will be the direction of scrolling. You&rsquo;ll likely want something similar to the &ldquo;Unwrap → Sphere Projection&rdquo; in Blender. Can always use a secondary UV channel if necessary (and UV1 on nodes instead of UV0). Since it&rsquo;s based on UVs the scrolling will be in the wrong direction if the model is rotated, I&rsquo;m not accounting for this currently.</p>
 <p>If you want to avoid using Mesh UVs, you could instead <a href="https://www.cyanilux.com/faq/#sg-planar-mapping">project textures using worldspace coordinates</a> and blend between them based on the <b class="node">Normal Vector</b> (similar to triplanar mapping). That&rsquo;ll work even with rotated models, however it may be a bit more expensive due to the additional texture samples.</p>
 <p>I&rsquo;m using a <strong>Lit Graph</strong> here and I&rsquo;ve set the <strong>Smoothness</strong> to <strong>0.9</strong>, <strong>Metallic</strong> to <strong>0.2</strong>, and <strong>Alpha</strong> to <strong>0.25</strong> to get a similar look to those transparent plastic umbrellas. I&rsquo;ve hardcoded these values but you could use <strong>Float properties</strong> to be able to control them from the material, especially if you want the same shader to work for multiple meshes/surfaces. I&rsquo;ve also got a <strong>Color property</strong> connected to the <strong>Base Color</strong> port, which is set to a light grey.</p>
@@ -644,7 +649,9 @@ With this, each line always has the same droplet size. If you want them even mor
 
 <div style="display:block;text-align: center">
 <h2>Thanks for reading! 😊</h2>
-<p> If this post helped, consider sharing a link with others!</p>
+<p style="margin-bottom:0">If you find this post helpful, please consider sharing it with others / on socials<br>Donations are also <b>greatly</b> appreciated! 🙏✨</p>
+<p style="font-size:13px;margin-top:0;color:grey">(Keeps this site free from ads and allows me to focus more on tutorials)</p>
+
 </div>
 
 <div class="footer-btns">
@@ -662,7 +669,7 @@ Join my discord! 💬
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2023 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2024 Cyanilux </a></p>
 
 <p class="small-text" style="text-align:center;">
 
