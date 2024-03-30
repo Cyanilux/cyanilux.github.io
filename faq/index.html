@@ -43,7 +43,7 @@
     "Unity", 
     "Tutorial"
   ],
-  "mainEntity" : {
+  "mainEntity" : [
 	{
 		"@type": "Question",
 		"name": "Scene Materials are Magenta/Pink",
@@ -364,7 +364,7 @@
 			"text": "<p>While many shaders in the Built-in RP use <code>CGPROGRAM</code> and <code>ENDCG</code> in their shader code, they are still actually written (and compiled) using <strong>HLSL</strong>. Unity used to use Nvidia’s <strong>CG</strong> language, but it was deprecated and is no longer used.</p><br><p>When using the <code>CGPROGRAM</code> tag, Unity automatically includes some files from the Built-in RP shader includes (such as <code>HLSLSupport.cginc</code> and <code>UnityShaderVariables.cginc</code>). This can cause conflicts with other shader libraries - so shaders written for the Post Processing package, URP, and HDRP, should all use <code>HLSLPROGRAM</code> and <code>ENDHLSL</code> instead.</p><br><p>Even if it is all HLSL, it’s important to note that the code written for each pipeline can still vary quite a lot as they use separate include files, which can contain different functions and macros. Can view the ShaderLibrary code via :</p><br><ul><br><li>For Built-in RP, can view via <a href=\"https://github.com/TwoTailsGames/Unity-Built-in-Shaders\">this unofficial Github repo</a>, or <a href=\"https://unity3d.com/get-unity/download/archive\">download it from Unity’s site</a> (Select “Built-in Shaders” option from a dropdown for the version you are using)</li><br><li><a href=\"https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.core/ShaderLibrary\">SRP (Scriptable Render Pipeline) core</a> - Accessible to URP, HDRP and custom SRPs.</li><br><li><a href=\"https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary\">URP</a> - Also see my <a href=\"/tutorials/urp-shader-code/\">Writing Shader Code for URP</a> post.</li><br><li><a href=\"https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.high-definition/Runtime\">HDRP</a></li><br></ul><br>"
 		}
 	}
-  }
+  ]
 }
 </script>
 
