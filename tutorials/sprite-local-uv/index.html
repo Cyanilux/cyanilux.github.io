@@ -25,7 +25,7 @@
   "name": "Local UVs for Sprites in Sprite Sheet/Atlas",
   "description": "A small post explaining how to convert the UVs of a sprite sheet (or sprites packed in an atlas) into local 0-1 coordinates across each sprite in the shader",
   "datePublished": "2024-03-13",
-  "dateModified": "2024-03-13",
+  "dateModified": "2024-03-31",
   "author": {
 	"@type": "Person",
 	"name": "Cyanilux",
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/sprite-local-uv/",
   "inLanguage": "en-gb",
-  "wordCount": "1137",
+  "wordCount": "1295",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -73,7 +73,7 @@
         
     
 <meta property="article:published_time" content="2024-03-13T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-03-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-31T00:00:00+00:00" />
 <title>Local UVs for Sprites in Sprite Sheet/Atlas | Cyanilux</title>
 <meta name="description" content="A small post explaining how to convert the UVs of a sprite sheet (or sprites packed in an atlas) into local 0-1 coordinates across each sprite in the shader. Shader Graph, HLSL, 2D | Unity Shader Tutorials, @Cyanilux" />
 <link rel="canonical" href="https://www.cyanilux.com/tutorials/sprite-local-uv/" />
@@ -248,6 +248,9 @@
 <time datetime="2024-03-13">&#128337 13 Mar 2024</time>
 
 
+<div style="width:5px"></div>
+<time datetime="2024-03-31"> (updated 31 Mar 2024)</time>
+
 </div>
 <h2 id="intro">Intro</h2>
 <p>Some shader effects can rely on having a 0-1 UV coord across the sprite, but this breaks if the sprite is part of a larger sprite sheet (i.e. Sprite Mode set to Multiple) or if sprites are automatically packed via a Sprite Atlas asset.</p>
@@ -265,26 +268,30 @@
 </a>
 <p class="img-text"></p>
 </div>
-<p>This post shows a few methods to obtain this :</p>
+<p>The first section below results in coordinates that behave exactly like if the sprite mode was &ldquo;Single&rdquo; and not packed, and should work in all pipelines/versions. But it requires adding a C# Script to the sprite object.</p>
+<p>There is also some later sections providing alternatives, intended more for URP. But these have some slightly buggy behaviours (as explained in notice boxes)</p>
 <ul>
-<li>The <a href="#object-pos">first method</a> uses the Object space Position instead, offset by the pivot point (intended for URP, Unity 2023.1+)</li>
-<li>The <a href="#uv-remap">second method</a> below results in coordinates that behave exactly like if the sprite mode was Single and not packed, but it requires adding a C# Script to the sprite object. This should work in all pipelines/versions.</li>
-<li>The <a href="#world-aligned">third method</a> remaps world position coordinates based on bounds data already provided to shaders (as of Unity 2022.2+). This creates some similar 0-1 coords across the sprite, except they stay aligned to the world (do not rotate or flip with the sprite).</li>
+<li>The <a href="#object-pos">second method</a> uses object space positions, offset by the pivot point (intended for Unity 2023.1+)</li>
+<li>The <a href="#world-aligned">third method</a> remaps world position coordinates based on bounds data (provided as of Unity 2022.2+). This creates some similar 0-1 coords across the sprite, except they stay aligned to the world and do not rotate or flip with the sprite. Could be useful.</li>
 </ul>
-<p>I think both of these could be useful, depending on what effect the UVs are being used for.</p>
-<h2 id="object-pos">Object Position</h2>
-<p>As of Unity 2023.1, sprites seem to use the SRP Batcher in URP (during play mode at least), so an easy method to obtain relative coordinates is by using the <b class="node">Position</b> node, set to <strong>Object</strong> space. You may also want to <b class="node">Swizzle</b> this down to a Vector2 (using &ldquo;xy&rdquo; in the text field).</p>
-<p>In the Built-in RP, previous versions of URP, and also while not in play mode (can be a bit annoying), this method can lead to some odd results due to the dynamic batching that sprites use instead. You may want to use the next method below for those cases.</p>
-<p>The <b class="node">Position</b> has a value of <strong>(0,0)</strong> at the pivot of the sprite. So for sprites using a <strong>Center</strong> pivot (the default), you&rsquo;d want to <b class="node">Add</b> <strong>(0.5, 0.5)</strong> to this to obtain the usual 0-1 coordinates like the UVs of a quad. If you use a different pivot can hardcode a different value, or if you use multiple pivots, could use a <strong>Vector2 property</strong> instead and create multiple materials with the values you need.</p>
-<div class="img-center">
-<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="583" height="202" alt="(Image)" src="Graph1.png" />
-</a>
-<p class="img-text"></p>
-</div>
 <h2 id="uv-remap">Remapping UV</h2>
 <p>In order to convert to this &ldquo;local UV&rdquo; (0-1 coordinates across the sprite), we need to know the location and size of the sprite in the sheet/atlas texture.</p>
-<p>We&rsquo;ll need to pass that into the shader/material by using the following C# script (applied to GameObject containing the SpriteRenderer) :</p>
+<p>We&rsquo;ll need to pass that into the shader/material by using the following C# script (applied to GameObject containing the SpriteRenderer).</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<ul>
+<li>For URP 2022 and earlier, and Built-in RP, have <code>usePropertyBlock = true</code> to avoid breaking dynamic batching for Unity 2022 and earlier.</li>
+<li>For URP 2023+ you may want <code>usePropertyBlock = false</code>, as sprites can use SRP Batcher instead.</li>
+<li>(For HDRP may need to experiment and check Frame Debugger - I don&rsquo;t know if it handles sprite batching in the same way)</li>
+</ul>
+
+</div>
+</div>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -441,8 +448,50 @@
 </div>
 
 <hr>
+<h2 id="object-pos">Object Position</h2>
+<p>As of Unity 2023.1, sprites seem to use the SRP Batcher in URP (during play mode at least), so an easy method to obtain relative coordinates is by using the <b class="node">Position</b> node, set to <strong>Object</strong> space. You may also want to <b class="node">Swizzle</b> this down to a Vector2 (using &ldquo;xy&rdquo; in the text field).</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<ul>
+<li>While easy, this method can lead to some odd results if sprites use dynamic batching instead (&ldquo;Draw Dynamic&rdquo; under frame debugger). That occurs in the Built-in RP and URP prior to 2023, and even in URP 2023+ while not in play mode (kinda annoying, but works if you can ignore that)</li>
+</ul>
+
+</div>
+</div>
+<p>The <b class="node">Position</b> has a value of <strong>(0,0)</strong> at the pivot of the sprite. So for sprites using a <strong>Center</strong> pivot (the default), you&rsquo;d want to <b class="node">Add</b> <strong>(0.5, 0.5)</strong> to this to obtain the usual 0-1 coordinates like the UVs of a quad. If you use a different pivot can hardcode a different value, or if you use multiple pivots, could use a <strong>Vector2 property</strong> instead and create multiple materials with the values you need.</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="583" height="202" alt="(Image)" src="Graph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<hr>
 <h2 id="world-aligned">World-Aligned Local UV</h2>
-<p>In Unity 2022.2+ bounding box info from the renderer is now automatically passed to the shader (in URP and HDRP at least). I think this won&rsquo;t work for Built-in or older versions, unless you were to use a C# script to pass <code>Renderer.bounds.min and .max</code> into the shader.</p>
+<p>As of Unity 2022.2, bounding box info from the renderer is now automatically passed to the shader (in URP and HDRP at least). It passes this into <code>unity_RendererBounds_Min</code> and <code>unity_RendererBounds_Max</code> - part of the UnityPerDraw cbuffer in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/UnityInput.hlsl">UnityInput.hlsl</a>)</p>
+<p>This won&rsquo;t work for Built-in or older versions, (unless you were to manually pass <code>Renderer.bounds.min and .max</code> into your own shader properties via a C# script)</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<ul>
+<li>Appears to be a very odd bug where the <strong>first sprite</strong> (with shader using bounds) rendered after a <strong>Tilemap</strong> will contain incorrect bounds info. So can render incorrectly for that sprite.
+<ul>
+<li>Only affects the sprite if rendered as &ldquo;Dynamic Draw&rdquo; (in frame debugger). Using the bounds also breaks dynamic batches (so each of these draw calls will be a single sprite)</li>
+<li>SRP batches are fine! (Requires URP 2023.1+. But they also only srp-batch during play mode, not during edit mode, so not ideal&hellip;)</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
 <p>We can use this bounds info to remap the world position (of vertices/fragments). As mentioned in the intro the resulting coordinates stay aligned to the world so do not rotate or flip with the sprite. (0, 0) is always towards the bottom left of the screen and (1, 1) towards the top right.</p>
 <h4 id="world-aligned-graph">Shader Graph :</h4>
 <p>Use the <strong>World Bounds Min</strong> and <strong>World Bounds Max</strong> outputs from the <b class="node">Object</b> node into an <b class="node">Inverse Lerp</b>, with <strong>T</strong> set to <b class="node">Position</b> node (<strong>World</strong> space)</p>
