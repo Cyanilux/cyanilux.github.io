@@ -397,7 +397,7 @@
 </span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">float</span> t = frac(Time + (offset.x * <span style="color:#ae81ff">5</span>));
 </span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Ripple (greyscale)</span>
 </span></span><span style="display:flex;"><span>            d = (<span style="color:#ae81ff">1</span>-d) * (<span style="color:#ae81ff">1</span>-d) * Strength * pow(saturate(<span style="color:#ae81ff">1</span> - abs(d - t)), <span style="color:#ae81ff">8</span>) * (sin((d-t) * <span style="color:#ae81ff">30</span>));
-</span></span><span style="display:flex;"><span>            Out = max(Out, d);
+</span></span><span style="display:flex;"><span>            Out = max(Out, -d);
 </span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Ripple normal vector</span>
 </span></span><span style="display:flex;"><span>            Normal += d * (normalize(float3(normalize((lattice + offset).xy - f), <span style="color:#ae81ff">3</span>))).xyz;
 </span></span><span style="display:flex;"><span>        }
