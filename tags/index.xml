@@ -6,23 +6,12 @@
     <description>Recent content in Tags on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Thu, 28 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/index.xml" rel="self" type="application/rss+xml" />
-	
-    <item>
-      <title>2D</title>
-      <link>https://www.cyanilux.com/tags/2d/</link>
-      <pubDate>Thu, 28 Mar 2024 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.cyanilux.com/tags/2d/</guid>
-      <description></description>
-    </item>
-	
-    
+    <lastBuildDate>Wed, 22 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/index.xml" rel="self" type="application/rss+xml" />
 	
     <item>
       <title>Shader Graph</title>
       <link>https://www.cyanilux.com/tags/shader-graph/</link>
-      <pubDate>Thu, 28 Mar 2024 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 22 May 2024 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tags/shader-graph/</guid>
       <description></description>
@@ -33,9 +22,20 @@
     <item>
       <title>URP</title>
       <link>https://www.cyanilux.com/tags/urp/</link>
-      <pubDate>Thu, 28 Mar 2024 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 22 May 2024 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tags/urp/</guid>
+      <description></description>
+    </item>
+	
+    
+	
+    <item>
+      <title>2D</title>
+      <link>https://www.cyanilux.com/tags/2d/</link>
+      <pubDate>Thu, 28 Mar 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tags/2d/</guid>
       <description></description>
     </item>
 	

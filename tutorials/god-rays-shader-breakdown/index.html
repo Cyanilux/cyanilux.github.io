@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="theme-color" content="#ffffff">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
+
+
+ 
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/",
+  "headline": "Sun Beams / God Rays Shader Breakdown",
+  "name": "Sun Beams / God Rays Shader Breakdown",
+  "description": "Using billboarded quads (or particles) to produce a god rays effect",
+  "datePublished": "2024-05-22",
+  "dateModified": "2024-05-22",
+  "author": {
+	"@type": "Person",
+	"name": "Cyanilux",
+	"url": "https://www.cyanilux.com"
+  },
+  "image": {
+    "@type": "ImageObject",
+    "@id": "https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/Preview_hud76d21e6b1f9373264af9c0bd2196c48_243281_300x0_resize_box_3.png",
+    "url": "https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/Preview_hud76d21e6b1f9373264af9c0bd2196c48_243281_300x0_resize_box_3.png",
+    "height": "171",
+    "width": "300"
+  },
+  "url": "https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/",
+  "inLanguage": "en-gb",
+  "wordCount": "2817",
+  "isPartOf": {
+    "@type" : "Blog",
+    "@id": "https://www.cyanilux.com",
+    "name": "Cyanilux - Game Dev Blog & Tutorials"
+  },
+  "keywords": [
+    "Unity", 
+    "Tutorial", 
+    "URP", 
+    "Shader Graph"
+  ]
+}
+</script>
+
+<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/Preview.png"/>
+<meta name="twitter:title" content="Sun Beams / God Rays Shader Breakdown"/>
+<meta name="twitter:description" content="Using billboarded quads (or particles) to produce a god rays effect"/>
+
+<meta property="og:title" content="Sun Beams / God Rays Shader Breakdown" />
+<meta property="og:description" content="Using billboarded quads (or particles) to produce a god rays effect" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2024-05-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-05-22T00:00:00+00:00" />
+<title>Sun Beams / God Rays Shader Breakdown | Cyanilux</title>
+<meta name="description" content="Using billboarded quads (or particles) to produce a god rays effect. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+<link rel="canonical" href="https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/" />
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+</script>
+
+
+
+<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+</script>
+
+
+</head>
+    <body>
+        
+<div class="header">
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
+	
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
+			<img width="35" height="35" alt="Twitter" src="https://www.cyanilux.com/logo-twitter.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			<img width="35" height="35" alt="Mastodon" src="https://www.cyanilux.com/logo-mastodon.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			<img width="35" height="35" alt="Discord" src="https://www.cyanilux.com/logo-discord.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			<img width="35" height="35" alt="Github" src="https://www.cyanilux.com/logo-github.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://ko-fi.com/cyanilux">
+			<img width="35" height="35" alt="Ko-Fi" src="https://www.cyanilux.com/logo-kofi.png" ></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
+	
+	<nav id="nav" class="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		FAQ
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Sun Beams / God Rays Shader Breakdown</h1>
+<div class="post-metadata">
+
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/breakdowns/" style="text-decoration: none; color:#eeeeee;">
+	Breakdowns
+	</a>
+</div>
+
+
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	
+	<a href="https://www.cyanilux.com/tags/urp" style="text-decoration: none; color:#eeeeee;">
+	URP
+	</a>
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	
+	<a href="https://www.cyanilux.com/tags/shader-graph" style="text-decoration: none; color:#eeeeee;">
+	Shader Graph
+	</a>
+	</div>
+
+
+
+
+<div style="width:10px"></div>
+<time datetime="2024-05-22">&#128337 22 May 2024</time>
+
+
+</div>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eMade some light rays ✨\u003cbr\u003eBasically billboarded quads stretched in light direction, though lots of masking to get right too (hide in shadow, light cookie, fade at sides/bottom, depth fade)\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/gamedev?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#gamedev\u003c/a\u003e \u003ca href=\"https://t.co/Bs5SBuxeWo\"\u003epic.twitter.com/Bs5SBuxeWo\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1783442615939297380?ref_src=twsrc%5Etfw\"\u003eApril 25, 2024\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1783442615939297380\">https://twitter.com/Cyanilux/status/1783442615939297380</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<b style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>\r\n\u003cdiv class=\u0022img-center\u0022\u003e\r\n\u003ca href=\u0022Preview.png\u0022 target=\u0022_blank\u0022 rel=\u0022noopener noreferrer\u0022\u003e\r\n\u003cimg  width=\u0022750\u0022 height=\u0022428\u0022 alt=\u0022(Image)\u0022 src=\u0022Preview.png\u0022 \/\u003e\r\n\u003c\/a\u003e\r\n\u003cp class=\u0022img-text\u0022\u003e\u003c\/p\u003e\r\n\u003c\/div\u003e\r\n");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>In my current project I wanted to add some light/sun beams (also referred to as god rays or light shafts), to somewhat simulate light passing between leaves/trees in a dense forest.</p>
+<p>(And to make the scene look pretty ✨)</p>
+<p>There&rsquo;s a few techniques I&rsquo;m aware of that can achieve effects like this :</p>
+<ul>
+<li>Rendering light source (e.g. a sun) into an off-screen buffer while ztesting against camera, and apply a radial blur. This only works when looking towards the light source though, so not good for a top-down scene like in my case.</li>
+<li>Volumetric solutions also exist, likely involving raymarching through shadowmaps. Could be fairly expensive though.
+<ul>
+<li>I did a <a href="https://twitter.com/Cyanilux/status/1407727586986311687">stained glass shader effect</a> a while ago that was something kinda similar, though I don&rsquo;t have a tutorial on that.</li>
+</ul>
+</li>
+<li>Using billboard quads / particles with top vertices displaced in light direction. We can also sample the shadowmap to control the alpha to hide them in areas fully in shadow. The post uses this method~</li>
+</ul>
+<h2 id="setup">Setup</h2>
+<ul>
+<li>Uses <strong>URP</strong> and my <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">ShaderGraphCustomLighting package</a> to obtain light direction and shadow info.
+<ul>
+<li>The graph might work in other pipelines (by replacing light direction nodes with a global property), but if you want to mask based on shadows you&rsquo;ll need to find your own replacement as I&rsquo;m not aware of methods for that</li>
+</ul>
+</li>
+<li>Uses <strong>Unlit Graph</strong>, <strong>Transparent</strong> surface mode with <strong>Alpha</strong> blending (<strong>Additive</strong> also works)</li>
+<li>Also set <strong>Render Face</strong> to <strong>Both</strong> and disable <strong>Cast Shadows</strong></li>
+</ul>
+<h2 id="breakdown">Breakdown</h2>
+<h3 id="billboarding">Billboarding</h3>
+<p>For rendering billboarded quads there&rsquo;s a few options we should go through.</p>
+<p>The simplest (and method I used) is to just use regular <strong>GameObjects</strong> with a quad mesh assigned to <strong>MeshFilter</strong>, and hope the SRP Batcher helps with optimising (assuming URP/HDRP). Alternatively, using GPU instanced draw calls from the Graphics/CommandBuffer APIs may be an option if you&rsquo;re familiar with coding that kind of stuff. For either of these the shader would need to handle the billboarding calculations.</p>
+<p>You could also use particles, as those systems are designed to handle billboarding for us, specifically :</p>
+<ul>
+<li><strong>Particle System</strong> component (aka Shuriken), under the <strong>Renderer</strong> module you&rsquo;ll want to use <strong>Render Mode : Vertical Billboard</strong>
+<ul>
+<li>Would want Start Speed set to 0, and likely a Circle for Shape module, rotated 90 deg on X axis. For a system that follows the player/camera, could simulate in World Space and emit based on time/distance, fading particles in/out with Color Over Lifetime module. Or set the Start Lifetime to Infinity and under Emission have a single burst to produce a specific number of particles fixed at a location.</li>
+<li>Somewhat optional, but may want to use a 3D Start Size, with Y set to 0</li>
+</ul>
+</li>
+<li><strong>VFX Graph</strong> (URP/HDRP only), under the <strong>Particle Output Unlit Quad</strong> context, can add the <strong>Orient: Fixed Axis</strong> block with an Up axis of (0, 1, 0)
+<ul>
+<li>Will also want to enable <strong>Support VFX Graph</strong> under the <strong>Graph Settings</strong> (or use the Visual Effect target in older Unity versions)</li>
+<li>If you don&rsquo;t see the <strong>Shader Graph</strong> field in the output context, you may also need to enable <strong>Experimental Operators/Blocks</strong> under Edit → Preferences → Visual Effects</li>
+</ul>
+</li>
+</ul>
+<p>I won&rsquo;t go over further details of how to set these systems up as I didn&rsquo;t use them - I&rsquo;m focusing more on the Shader Graph itself. But if you can figure it out and want to use particles, you can add a <b class="node">Position</b> node set to <strong>World</strong> space to the Shader Graph and <a href="#stretch-towards-light">skip to next section</a>, otherwise click the foldout below.</p>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Shader Graph Billboarding (if not using particles)</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Shader Graph Billboarding (if not using particles)</b>';
+
+    }
+"><b>⯈ Shader Graph Billboarding (if not using particles)</b></button>
+<div class="foldout">
+<p>For billboarding we typically want to skip using the view/camera matrix for rotation. This is fairly easy to do in shader code where the vertex shader is responsible for converting the vertex positions from object to clip space, but Shader Graph does this for us behind the scenes.</p>
+<p>Instead, we can use <strong>Inverse View</strong> matrix from the <b class="node">Transformation Matrix</b> node. The idea is to do the inverse of the view matrix so when it&rsquo;s applied later by Shader Graph, it cancels out. Since we only want this on the rotational parts, we should <b class="node">Multiply</b> using a 3x3 matrix, or (4x4 but set the W/A component of the input Vector4 to 0). When multiplying with matrices, the order is also important - the matrix should be in the A port in this case.</p>
+<div class="img-center">
+<a href="GraphBillboard.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="416" alt="(Image)" src="GraphBillboard.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>There&rsquo;s also some extra nodes in the image though these are unlikely to make much difference in the final result - so I&rsquo;d consider them optional :</p>
+<ul>
+<li>I&rsquo;m removing one of the columns of this matrix so the billboarding isn&rsquo;t applied to the Y axis</li>
+<li>The <b class="node">Negate</b> node stops the face from flipping, though with the graph setting <strong>Render Face : Both</strong> we see both sides anyway</li>
+<li>We <b class="node">Multiply</b> the <strong>Object</strong> space <b class="node">Position</b> by (1, 0, 1) to remove the vertical component, as we can then accurately stretch in the light direction without the slight additional offsets.</li>
+</ul>
+<p>I&rsquo;d like to apply the stretching (towards light) in world space, but want to avoid a <b class="node">Transform</b> node here as I&rsquo;d rather not apply rotations from the GameObject/Transform.</p>
+<p>We still might want the ability to scale the god rays horizontally (e.g. for variation), so take the <strong>Scale</strong> output from the <b class="node">Object</b> node, <b class="node">Split</b> or <b class="node">Swizzle</b> to obtain the R/X component and put it into the X and Z axis on a <b class="node">Vector3</b> node. Then <b class="node">Multiply</b> with the output from our billboarding group.</p>
+<p>And to apply translation, <b class="node">Add</b> the <strong>Position</strong> output from the <b class="node">Object</b> node.</p>
+<div class="img-center">
+<a href="GraphBillboard2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="226" alt="(Image)" src="GraphBillboard2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+
+</div>
+
+<h3 id="stretch-towards-light">Stretch Towards Light</h3>
+<p>To stretch these quads towards the light, we&rsquo;ll need the light direction. Newer versions of Shader Graph have a <b class="node">Get Main Light Direction</b> node for this that should work in URP. My <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Custom Lighting package</a> also contains a <strong>Main Light</strong> subgraph that outputs this. For other pipelines, another option is to use a <strong>Vector3 property</strong> (e.g. with <strong>Reference</strong> of <code>_MainLightDirection</code>, and <strong>Exposed</strong> option unticked to make it global) and a C# script on the light that uses <code>Shader.SetGlobalVector(&quot;_MainLightDirection&quot;, -transform.forward);</code></p>
+<p>Since the direction would only move vertices by a single unit, we&rsquo;ll want to <b class="node">Multiply</b> by some value to increase the length. I&rsquo;ve hardcoded this as <strong>25</strong>, but could use a float property if you want control from the Material. If the quads are rendered via GameObjects, could also use the Y axis of the <strong>Scale</strong> from the <b class="node">Object</b> node.</p>
+<p>We only want the top vertices to be displaced, so we <b class="node">Multiply</b> by the <strong>G/Y</strong> component of the <b class="node">UV</b> to mask it. (Which works as the bottom vertices have a value of 0 here, and top ones have a value of 1).</p>
+<p>We <b class="node">Add</b> this to our position (from the billboard group, or <b class="node">Position</b> node set to <strong>World</strong> space if using particles). But before connecting to the <strong>Vertex</strong> stage of the <strong>Master Stack</strong>, we&rsquo;ll also need to <b class="node">Transform</b> from <strong>World</strong> to <strong>Object</strong> space as that is what space the <strong>Position</strong> port expects.</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="299" alt="(Image)" src="Graph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<h3 id="scene-and-camera-fade">Scene &amp; Camera Fades</h3>
+<p>For the fragment stage, we&rsquo;ll be putting together a bunch of groups to mask the alpha. These will all be multiplied together and are mostly optional, depending on what you want the shader to do.</p>
+<p>Ideally we don&rsquo;t want to see the rays intersecting with objects or the camera near plane, so we&rsquo;ll use depth values to fade the alpha.</p>
+<p>To obtain the depth of the fragments/pixels being drawn, use the <b class="node">Position</b> node set to <strong>View</strong> space, <b class="node">Split</b> or <b class="node">Swizzle</b> to obtain the B/Z axis and <b class="node">Absolute</b> (or <b class="node">Negate</b>). You&rsquo;ll want to group this under a &ldquo;Fragment Depth&rdquo; to help keep track of it, as we&rsquo;ll need the output twice.</p>
+<p>To fade when the camera gets close, we just need to remap this a bit. <b class="node">Subtract</b> the distance you want it to start fading (e.g. 5), and <b class="node">Multiply</b> to control the falloff (e.g. 0.5). (Alternatively could use an <b class="node">Inverse Lerp</b> or <b class="node">Smoothstep</b> and specify the start and end points of the fade in the A/B or Edge ports). We should then <b class="node">Saturate</b> to clamp the value between 0 and 1 (as values outside this range don&rsquo;t make sense for alpha values, and would mess with the other masks)</p>
+<p>To fade into the floor and other objects, can use the <b class="node">Scene Depth</b> node (make sure <strong>Depth Texture</strong> is enabled on the URP Asset for this to work), and <b class="node">Subtract</b> the &ldquo;Fragment Depth&rdquo; group. Use a <b class="node">Multiply</b> to control the falloff and <b class="node">Saturate</b> like before.</p>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="251" alt="(Image)" src="Graph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<h3 id="stripes">Stripes</h3>
+<p>Currently, the rays would mostly be a single transparency (unless multiple quads overlap that is). To add more variation we can sample a <a href="Stripes.png">stripy texture</a>, e.g.</p>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="662" height="395" alt="(Image)" src="Graph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Or create one procedurally. e.g. using <b class="node">Gradient Noise</b> with <b class="node">Tiling And Offset</b> in the <strong>UV</strong> port and Y axis of the <strong>Tiling</strong> as <strong>0</strong> to stretch it vertically.</p>
+<p>For added variation could use one of the following values as an <strong>Offset</strong> (assuming texture is imported with <strong>Repeat</strong> wrap mode!) :</p>
+<ul>
+<li>If quads are rendered using GameObjects that don&rsquo;t move, can use <strong>Position</strong> output from the <b class="node">Object</b> node, likely combining both the R/X and B/Z axis using <b class="node">Add</b>, as shown in the above graph</li>
+<li>For a Particle System (Shuriken), you can pass a random value (StableRandom.x) using the <strong>Custom Vertex Streams</strong> option under the <strong>Renderer</strong> module, which would be accessed in graph using the <b class="node">UV</b> node. I have a <a href="https://cyangamedev.wordpress.com/2020/07/19/custom-vertex-streams/">tutorial on my old site</a> that may provide an example</li>
+<li>For VFX Graph, would likely use it&rsquo;s <a href="https://docs.unity3d.com/Packages/com.unity.visualeffectgraph@10.2/manual/Operator-RandomNumber.html">Random Number</a> node (as Per-Particle &amp; Constant). To pass that into the shader, use a <strong>Float property</strong> (created in Shader Graph&rsquo;s Blackboard. After saving, should appear under the <strong>Particle Output Unlit Quad</strong> context)</li>
+</ul>
+<p>Could also add some scrolling to the <strong>Offset</strong> if you want, by adding <strong>Time</strong> output from <b class="node">Time</b> node with <b class="node">Multiply</b> to control the speed.</p>
+<h3 id="fade-edges">Fade Edges</h3>
+<p>If you want to fade the sides of the quad, use a <b class="node">Smoothstep</b> on the X axis of the <b class="node">UV</b>. <b class="node">Subtract</b> a value of <strong>0.5</strong> (as that is the center of the quad) and put into <b class="node">Absolute</b> to handle both sides at once.</p>
+<p>Can also do the same on the Y axis of the <b class="node">UV</b> to produce a mask which fades the top/bottom. (In my case I had to do this as the god rays can appear over the void, and so I couldn&rsquo;t rely just on fading using scene depth)</p>
+<div class="img-center">
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="745" height="545" alt="(Image)" src="Graph4.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>I chose to show them separately above, but we can even do both axis at the same time without duplicating nodes, by using &ldquo;xy&rdquo; in the <b class="node">Swizzle</b>, and using a <b class="node">Split</b> node to obtain the R and G channels after the <b class="node">Smoothstep</b>.</p>
+<h3 id="shadows">Shadows</h3>
+<p>Ideally we wouldn&rsquo;t want rays appearing in areas completely in shadow. You could maybe hand-place them to prevent this, but that also assumes the light direction won&rsquo;t change as areas of shadow would shift. If generating quads procedurally / using particles, it is likely we&rsquo;d want to mask based on the shadowmap. If using URP, we can use the <strong>Main Light Shadows</strong> subgraph from my <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Custom Lighting package</a>. I&rsquo;m not sure on methods for other pipelines, sorry~!</p>
+<p>This likely won&rsquo;t apply to others, but in my case I also had to replicate some things from the toon shaders used in the scene, as shadows are put through a <b class="node">Step</b> node for a harsh transition and I use the <strong>Main Light Cookie</strong> subgraph to fake additional shadows for clouds.</p>
+<h3 id="dust">Dust/Sparkles</h3>
+<p>You may be able to handle dust/sparkles as additional particles, but I chose to use some good ol&rsquo; <em>scrolling textures~</em></p>
+<div class="img-center">
+<a href="Voronoi.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="300" alt="(Image)" src="Voronoi.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Voronoi/Worley Noise like the texture above, can produce a good distribution of dots (though as these are black in the above, we&rsquo;ll also need to <b class="node">One Minus</b>). While there is a <b class="node">Voronoi</b> node, handling it procedurally is likely more costly than sampling a texture (using <b class="node">Sample Texture 2D</b>), especially as I&rsquo;d like to sample <em>twice</em> with different amounts/directions of scrolling, by using <b class="node">Time</b> as an <strong>Offset</strong> to <b class="node">Tiling And Offset</b> node. The Y axis of the <strong>Tiling</strong> should also higher since our quads are stretched vertically.</p>
+<p>We can combine the two scrolling textures by using a <b class="node">Multiply</b>, then <b class="node">Multiply</b> again by 2 to increase the brightness a bit.</p>
+<p>Currently the dots/texture in the preview is always visible, though some parts are brighter when the textures overlap. We can <b class="node">Smoothstep</b> to remap and only obtain a few dots when the value falls into a given range (the Edge1 and Edge2 inputs). Higher values means less of the texture is visible - so with values of 0.9 and 1 it produces &ldquo;occassional dots/sparkles&rdquo;, which we can then <b class="node">Multiply</b> by a high value like 500 to make them very bright. For some &ldquo;ambient dust&rdquo;, you can use another <b class="node">Smoothstep</b> with slightly lower values like 0.6 and 0.8, which makes the dots more common (but not always visible).</p>
+<div class="img-center">
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="313" alt="(Image)" src="Graph5.png" />
+</a>
+<p class="img-text">(Click image to view fullscreen)</p>
+</div>
+<p>We also <b class="node">Add</b> a value of 1 at the end so the result can be multiplied with the other masks without hiding the rays. Note we don&rsquo;t clamp the value anywhere after this - I want to keep the high intensity values for the final colour output so it&rsquo;ll glow when using <strong>Bloom Post Processing</strong> (and assuming HDR is enabled on the URP asset)</p>
+<h3 id="colour--alpha">Colour &amp; Alpha</h3>
+<p>Finally we can add a colour to tint and adjust the intensity of the god rays. If applying the shader to a <strong>Shuriken Particle System</strong>, can use the <b class="node">Vertex Color</b> node - otherwise for VFX Graph or regular GameObjects &amp; MeshRenderers, create a <strong>Color property</strong> in the Blackboard window. Connect that to the <strong>Base Color</strong> port in the <strong>Master Stack</strong>.</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+If using a property, can change the Default value under the Node Settings. Be sure to set the alpha component! Shader Graph defaults this to 0 which means the god rays will be invisible! (unless overidden on material)
+</div>
+</div>
+<p>For the <strong>Alpha</strong> port, <b class="node">Split</b> that colour, take the A component and <b class="node">Multiply</b> with the result of all the masks (created in the above sections) multiplied together.</p>
+<div class="img-center">
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="119" alt="(Image)" src="Graph6.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<h3 id="final-notes">Final Notes</h3>
+<p>The shader should now be complete. We can assign it to a material on our objects / particle systems and manually place these in areas of the scene we want to draw attention to - maybe chests, level entrance/exits, etc.</p>
+<p>We can also have these spawn around the player/camera for general ambient rays - assuming that&rsquo;s appropriate for the scenery (e.g. forest, maybe dungeons or cavern close to surface)</p>
+<ul>
+<li>To handle this with particle systems you could maybe have them simulating in World Space and use some alpha changes over lifetime to hide them popping in and out</li>
+<li>For GameObjects, you might want a script to generate &amp; randomise the positions of the light ray quads. In my case, I also teleport the rays to the opposite side as the player moves, to keep them inside a bounding box roughly the size of the screen. I&rsquo;ve shared the script I wrote in the foldout below if interested in that kind of setup.</li>
+</ul>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Script</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Script</b>';
+
+    }
+"><b>⯈ Script</b></button>
+<div class="foldout">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Collections.Generic;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LightRayHandler</span> : MonoBehaviour {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> lightRayCount = <span style="color:#ae81ff">50</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">float</span> boundsSize = <span style="color:#ae81ff">35</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Transform player;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Mesh quadMesh;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Material lightRayMaterial;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List&lt;Transform&gt; rays = <span style="color:#66d9ef">new</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">float</span> halfBounds;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Mesh meshInstance;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">float</span> initalY;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> Start() {
+</span></span><span style="display:flex;"><span>        halfBounds = boundsSize * <span style="color:#ae81ff">0.5f</span>;
+</span></span><span style="display:flex;"><span>        initalY = transform.position.y;
+</span></span><span style="display:flex;"><span>        Vector3 targetPos = player.position;
+</span></span><span style="display:flex;"><span>        targetPos.y = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Create instance of mesh &amp; adjust bounds to avoid frustum culling</span>
+</span></span><span style="display:flex;"><span>        meshInstance = Instantiate(quadMesh);
+</span></span><span style="display:flex;"><span>        meshInstance.bounds = <span style="color:#66d9ef">new</span> Bounds(Vector3.zero, Vector3.one * <span style="color:#ae81ff">100</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Spawn rays </span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; lightRayCount; i++) {
+</span></span><span style="display:flex;"><span>            GameObject obj = <span style="color:#66d9ef">new</span>(<span style="color:#e6db74">&#34;LightRay&#34;</span>);
+</span></span><span style="display:flex;"><span>            obj.transform.SetParent(transform);
+</span></span><span style="display:flex;"><span>            obj.AddComponent&lt;MeshFilter&gt;().sharedMesh = meshInstance;
+</span></span><span style="display:flex;"><span>            obj.AddComponent&lt;MeshRenderer&gt;().sharedMaterial = lightRayMaterial;
+</span></span><span style="display:flex;"><span>            rays.Add(obj.transform);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Randomise starting location</span>
+</span></span><span style="display:flex;"><span>            obj.transform.position = targetPos + <span style="color:#66d9ef">new</span> Vector3(
+</span></span><span style="display:flex;"><span>                Random.Range(-halfBounds, halfBounds),
+</span></span><span style="display:flex;"><span>                initalY,
+</span></span><span style="display:flex;"><span>                Random.Range(-halfBounds, halfBounds)
+</span></span><span style="display:flex;"><span>            );
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Randomise scale</span>
+</span></span><span style="display:flex;"><span>            obj.transform.localScale = <span style="color:#66d9ef">new</span> Vector3(
+</span></span><span style="display:flex;"><span>              Random.Range(<span style="color:#ae81ff">0.5f</span>, <span style="color:#ae81ff">3</span>),
+</span></span><span style="display:flex;"><span>              <span style="color:#ae81ff">25</span>,
+</span></span><span style="display:flex;"><span>              <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            );
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> FixedUpdate() {
+</span></span><span style="display:flex;"><span>        Vector3 targetPos = player.position;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; rays.Count; i++) {
+</span></span><span style="display:flex;"><span>            Transform ray = rays[i];
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (ray.position.x &lt; targetPos.x - halfBounds) {
+</span></span><span style="display:flex;"><span>                ray.position += Vector3.right * (boundsSize - <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (ray.position.x &gt; targetPos.x + halfBounds) {
+</span></span><span style="display:flex;"><span>                ray.position -= Vector3.right * (boundsSize - <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (ray.position.z &lt; targetPos.z - halfBounds) {
+</span></span><span style="display:flex;"><span>                ray.position += Vector3.forward * (boundsSize - <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (ray.position.z &gt; targetPos.z + halfBounds) {
+</span></span><span style="display:flex;"><span>                ray.position -= Vector3.forward * (boundsSize - <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> OnDestroy(){
+</span></span><span style="display:flex;"><span>        Destroy(meshInstance);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+
+</div>
+
+<br><hr>
+
+<div style="display:block;text-align: center">
+<h2>Thanks for reading! 😊</h2>
+<p style="margin-bottom:0">If you find this post helpful, please consider sharing it with others / on socials<br>Donations are also <b>greatly</b> appreciated! 🙏✨</p>
+<p style="font-size:13px;margin-top:0;color:grey">(Keeps this site free from ads and allows me to focus more on tutorials)</p>
+
+</div>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div>
+
+
+        </div>
+        </br>
+
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2024 Cyanilux </a></p>
+
+<p class="small-text" style="text-align:center;">
+
+
+
+	<a href="https://www.cyanilux.com/#license">
+	
+	License / Usage
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/cookies">
+	
+	Cookies & Privacy
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/index.xml">
+	
+	RSS Feed
+	</a>
+	
+
+</p>
+</br>
+
+<div class="cookie-container">
+<p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+<button class="cookie-accept-btn"><b>Accept</b></button>
+<button class="cookie-refuse-btn"><b>Refuse</b></button>
+</div>
+
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+</script>
+    </body>
+</html>

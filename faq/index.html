@@ -33,7 +33,7 @@
   },
   "url": "https://www.cyanilux.com/faq/",
   "inLanguage": "en-gb",
-  "wordCount": "10042",
+  "wordCount": "10118",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -233,7 +233,7 @@
 		"name": "Billboarding (rotating mesh to face camera)",
 		"acceptedAnswer": { 
 			"@type": "Answer", 
-			"text": "<p>While it’s possible to rotate meshes in C# to produce billboarding (e.g. with <code>transform.LookAt</code>), it’s usually cheaper to handle effects like this in the shader - especially if many objects require billboarding.</p><br><p>Shader Graph makes it a little trickier to handle as it does space conversions behind the scenes. The <strong>Position</strong> port in the <strong>Master Stack</strong> is intended to be in <strong>Object</strong> space, rather than the clip space output a written vertex shader would usually have.</p><br><p>First up, we need a matrix to handle the effect. Can use one of the following.</p><br><ul><br><li><b class=\"node\">Transformation Matrix</b> node set to “Inverse View”</li><br><li><b class=\"node\">Custom Function</b> node with <strong>Matrix4</strong> output, <code>Out = unity_CameraToWorld;</code>. This acts the same as the InverseView matrix, but uses the camera even in shadowcasting passes - so shadows will look correct. Should also use set <strong>Cast Shadows</strong> to “Two Sided” option on the <strong>Mesh Renderer</strong>.</li><br></ul><br><p>If you don’t want shadows (e.g. for billboard fire / light flares / etc), can use either of these, and turn off <strong>Cast Shadows</strong> in the <strong>Graph Settings</strong> (or via the Mesh Renderer)</p><br><p>To make billboard only rotate around the Y axis :</p><br><ul><br><li>Use one of the above (depending if shadows are required) into a <b class=\"node\">Matrix Split</b> (Column mode), and put M0 and M2 into a <b class=\"node\">Matrix Construction</b> node (Column mode). M1 should be set to (0, 1, 0, 0). M3 isn’t too important but should set it to (0, 0, 0, 1).</li><br></ul><br><div class=\"img-center\"><br><a href=\"sg-billboard-matrix.png\" target=\"_blank\" rel=\"noopener noreferrer\"><br><img loading=\"lazy\" width=\"750\" height=\"285\" alt=\"(Image)\" src=\"sg-billboard-matrix.png\" /><br></a><br><p class=\"img-text\"></p><br></div><br><p>One of the above matrices is then used in the following setup :</p><br><div class=\"img-center\"><br><a href=\"sg-billboard.png\" target=\"_blank\" rel=\"noopener noreferrer\"><br><img loading=\"lazy\" width=\"750\" height=\"180\" alt=\"(Image)\" src=\"sg-billboard.png\" /><br></a><br><p class=\"img-text\"></p><br></div><br>"
+			"text": "<p>While it’s possible to rotate meshes in C# to produce billboarding (e.g. with <code>transform.LookAt</code>), it’s usually cheaper to handle effects like this in the shader - especially if many objects require billboarding.</p><br><p>Billboarding usually requires the vertex shader to ignore using the view matrix for rotations, but Shader Graph makes it a little trickier to handle as it does space conversions behind the scenes. The <strong>Position</strong> port in the <strong>Master Stack</strong> is intended to be in <strong>Object</strong> space, rather than the clip space output a written vertex shader would usually have. So instead, we need to apply an inverse view matrix to cancel out the rotation Shader Graph applies later.</p><br><p>First up, we need a matrix to handle the effect. Can use one of the following.</p><br><ul><br><li><b class=\"node\">Transformation Matrix</b> node set to “Inverse View”</li><br><li><b class=\"node\">Custom Function</b> node with <strong>Matrix4</strong> output, <code>Out = unity_CameraToWorld;</code>. This acts the same as the InverseView matrix, but uses the camera even in shadowcasting passes - so shadows will look correct. Should also use set <strong>Cast Shadows</strong> to “Two Sided” option on the <strong>Mesh Renderer</strong>.</li><br></ul><br><p>These may also cause faces to flip too - you can Negate the first column to prevent this (would need <b class=\"node\">Matrix Split</b> and <b class=\"node\">Matrix Construction</b> like shown below), or change the <strong>Render Face</strong> option in the Graph Settings, e.g. to <strong>Both</strong>.</p><br><p>To make billboard only rotate around the Y axis, use one of the above (depending if shadows are required) into a <b class=\"node\">Matrix Split</b> (Column mode), and put M0 and M2 into a <b class=\"node\">Matrix Construction</b> node (Column mode). M1 should be set to (0, 1, 0, 0). M3 isn’t too important but can be set it to (0, 0, 0, 1).</p><br><p>Examples :</p><br><div class=\"img-center\"><br><a href=\"sg-billboard-matrix.png\" target=\"_blank\" rel=\"noopener noreferrer\"><br><img loading=\"lazy\" width=\"750\" height=\"285\" alt=\"(Image)\" src=\"sg-billboard-matrix.png\" /><br></a><br><p class=\"img-text\"></p><br></div><br><p>To apply the scale/rotations from the matrix (without translation parts), can use a 3x3 matrix, or 4x4 matrix and <b class=\"node\">Multiply</b> with <b class=\"node\">Vector4</b> with W/A component set to 0. (Be sure the matrix is in the A port - the order is important with matrix multiplication!)</p><br><div class=\"img-center\"><br><a href=\"sg-billboard.png\" target=\"_blank\" rel=\"noopener noreferrer\"><br><img loading=\"lazy\" width=\"750\" height=\"180\" alt=\"(Image)\" src=\"sg-billboard.png\" /><br></a><br><p class=\"img-text\"></p><br></div><br>"
 		}
 	},
 	{
@@ -1638,24 +1638,22 @@ Right : Render with Prepass<br>
 "><b>⯈ Billboarding (rotating mesh to face camera)</b></button>
 <div class="foldout">
 <p>While it&rsquo;s possible to rotate meshes in C# to produce billboarding (e.g. with <code>transform.LookAt</code>), it&rsquo;s usually cheaper to handle effects like this in the shader - especially if many objects require billboarding.</p>
-<p>Shader Graph makes it a little trickier to handle as it does space conversions behind the scenes. The <strong>Position</strong> port in the <strong>Master Stack</strong> is intended to be in <strong>Object</strong> space, rather than the clip space output a written vertex shader would usually have.</p>
+<p>Billboarding usually requires the vertex shader to ignore using the view matrix for rotations, but Shader Graph makes it a little trickier to handle as it does space conversions behind the scenes. The <strong>Position</strong> port in the <strong>Master Stack</strong> is intended to be in <strong>Object</strong> space, rather than the clip space output a written vertex shader would usually have. So instead, we need to apply an inverse view matrix to cancel out the rotation Shader Graph applies later.</p>
 <p>First up, we need a matrix to handle the effect. Can use one of the following.</p>
 <ul>
 <li><b class="node">Transformation Matrix</b> node set to &ldquo;Inverse View&rdquo;</li>
 <li><b class="node">Custom Function</b> node with <strong>Matrix4</strong> output, <code>Out = unity_CameraToWorld;</code>. This acts the same as the InverseView matrix, but uses the camera even in shadowcasting passes - so shadows will look correct. Should also use set <strong>Cast Shadows</strong> to &ldquo;Two Sided&rdquo; option on the <strong>Mesh Renderer</strong>.</li>
 </ul>
-<p>If you don&rsquo;t want shadows (e.g. for billboard fire / light flares / etc), can use either of these, and turn off <strong>Cast Shadows</strong> in the <strong>Graph Settings</strong> (or via the Mesh Renderer)</p>
-<p>To make billboard only rotate around the Y axis :</p>
-<ul>
-<li>Use one of the above (depending if shadows are required) into a <b class="node">Matrix Split</b> (Column mode), and put M0 and M2 into a <b class="node">Matrix Construction</b> node (Column mode). M1 should be set to (0, 1, 0, 0). M3 isn&rsquo;t too important but should set it to (0, 0, 0, 1).</li>
-</ul>
+<p>These may also cause faces to flip too - you can Negate the first column to prevent this (would need <b class="node">Matrix Split</b> and <b class="node">Matrix Construction</b> like shown below), or change the <strong>Render Face</strong> option in the Graph Settings, e.g. to <strong>Both</strong>.</p>
+<p>To make billboard only rotate around the Y axis, use one of the above (depending if shadows are required) into a <b class="node">Matrix Split</b> (Column mode), and put M0 and M2 into a <b class="node">Matrix Construction</b> node (Column mode). M1 should be set to (0, 1, 0, 0). M3 isn&rsquo;t too important but can be set it to (0, 0, 0, 1).</p>
+<p>Examples :</p>
 <div class="img-center">
 <a href="sg-billboard-matrix.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="285" alt="(Image)" src="sg-billboard-matrix.png" />
 </a>
 <p class="img-text"></p>
 </div>
-<p>One of the above matrices is then used in the following setup :</p>
+<p>To apply the scale/rotations from the matrix (without translation parts), can use a 3x3 matrix, or 4x4 matrix and <b class="node">Multiply</b> with <b class="node">Vector4</b> with W/A component set to 0. (Be sure the matrix is in the A port - the order is important with matrix multiplication!)</p>
 <div class="img-center">
 <a href="sg-billboard.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="180" alt="(Image)" src="sg-billboard.png" />

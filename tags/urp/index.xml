@@ -6,7 +6,18 @@
     <description>Recent content in URP on Cyanilux</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Thu, 28 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/urp/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 22 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/urp/index.xml" rel="self" type="application/rss+xml" />
+	
+    <item>
+      <title>Sun Beams / God Rays Shader Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/</link>
+      <pubDate>Wed, 22 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/</guid>
+      <description>Using billboarded quads (or particles) to produce a god rays effect</description>
+    </item>
+	
+    
 	
     <item>
       <title>2D Water Shader Breakdown</title>
