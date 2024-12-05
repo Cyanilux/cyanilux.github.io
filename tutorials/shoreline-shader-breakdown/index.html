@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="theme-color" content="#ffffff">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
+
+
+ 
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/",
+  "headline": "Shoreline Shader Breakdown",
+  "name": "Shoreline Shader Breakdown",
+  "description": "A few shader techniques I've used in the past for mapping waves crashing into the shore/beach & leaving behind wet sand",
+  "datePublished": "2024-12-04",
+  "dateModified": "2024-12-04",
+  "author": {
+	"@type": "Person",
+	"name": "Cyanilux",
+	"url": "https://www.cyanilux.com"
+  },
+  "image": {
+    "@type": "ImageObject",
+    "@id": "https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/Preview_hu875f3f3fe5ec9a38524e8a87df31408a_221062_300x0_resize_box_3.png",
+    "url": "https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/Preview_hu875f3f3fe5ec9a38524e8a87df31408a_221062_300x0_resize_box_3.png",
+    "height": "148",
+    "width": "300"
+  },
+  "url": "https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/",
+  "inLanguage": "en-gb",
+  "wordCount": "2687",
+  "isPartOf": {
+    "@type" : "Blog",
+    "@id": "https://www.cyanilux.com",
+    "name": "Cyanilux - Game Dev Blog & Tutorials"
+  },
+  "keywords": [
+    "Unity", 
+    "Tutorial", 
+    "URP", 
+    "Shader Graph"
+  ]
+}
+</script>
+
+<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/Preview.png"/>
+<meta name="twitter:title" content="Shoreline Shader Breakdown"/>
+<meta name="twitter:description" content="A few shader techniques I&#39;ve used in the past for mapping waves crashing into the shore/beach &amp; leaving behind wet sand"/>
+
+<meta property="og:title" content="Shoreline Shader Breakdown" />
+<meta property="og:description" content="A few shader techniques I&#39;ve used in the past for mapping waves crashing into the shore/beach &amp; leaving behind wet sand" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2024-12-04T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-04T00:00:00+00:00" />
+<title>Shoreline Shader Breakdown | Cyanilux</title>
+<meta name="description" content="A few shader techniques I&#39;ve used in the past for mapping waves crashing into the shore/beach &amp; leaving behind wet sand. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+<link rel="canonical" href="https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/" />
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+</script>
+
+
+
+<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+</script>
+
+
+</head>
+    <body>
+        
+<div class="header">
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
+	
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://bsky.app/profile/cyanilux.bsky.social">
+			<img width="35" height="35" alt="Bluesky" src="https://www.cyanilux.com/logo-bsky.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			<img width="35" height="35" alt="Mastodon" src="https://www.cyanilux.com/logo-mastodon.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			<img width="35" height="35" alt="Discord" src="https://www.cyanilux.com/logo-discord.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			<img width="35" height="35" alt="Github" src="https://www.cyanilux.com/logo-github.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://ko-fi.com/cyanilux">
+			<img width="35" height="35" alt="Ko-Fi" src="https://www.cyanilux.com/logo-kofi.png" ></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
+	
+	<nav id="nav" class="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		FAQ
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>Shoreline Shader Breakdown</h1>
+<div class="post-metadata">
+
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/breakdowns/" style="text-decoration: none; color:#eeeeee;">
+	Breakdowns
+	</a>
+</div>
+
+
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	
+	<a href="https://www.cyanilux.com/tags/urp" style="text-decoration: none; color:#eeeeee;">
+	URP
+	</a>
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	
+	<a href="https://www.cyanilux.com/tags/shader-graph" style="text-decoration: none; color:#eeeeee;">
+	Shader Graph
+	</a>
+	</div>
+
+
+
+
+<div style="width:10px"></div>
+<time datetime="2024-12-04">&#128337 4 Dec 2024</time>
+
+
+</div>
+<div class="img-center">
+<a href="Preview.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="370" alt="(Image)" src="Preview.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<h2 id="intro">Intro</h2>
+<p>Heya! I&rsquo;ve had a couple mini-breakdown threads related to shoreline/coastline water shaders on twitter/X for while, but since that site might implode at any minute&hellip; it&rsquo;s probably best to convert them into a post here. I could just copy those threads, but wanted to go into a bit more detail. And as both shaders have some similarities/overlap, I decided to merge them and basically rewrite everything&hellip; (whoops? 😅)</p>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Original Twitter\/X Threads</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Original Twitter\/X Threads</b>';
+
+    }
+"><b>⯈ Original Twitter/X Threads</b></button>
+<div class="foldout">
+<div style="display:flex">
+<div style="width: 50%; margin: 0px 5px">
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eShowing off my newest coastline water shader a bit more~ 🌊\u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/madewithunity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#madewithunity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/A2IpiQdl1n\"\u003epic.twitter.com/A2IpiQdl1n\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1567248922975916033?ref_src=twsrc%5Etfw\"\u003eSeptember 6, 2022\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1567248922975916033\">https://twitter.com/Cyanilux/status/1567248922975916033</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<b style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+</div>
+<div style="width: 50%; margin: 0px 5px">
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eHey all, wanted to share some info about how the shoreline shader is done. (This is a slightly simplified version).\u003cbr\u003e\u003cbr\u003e(note : while it\u0026#39;s based visually on the ACNH shoreline, it\u0026#39;s probably not exactly the same way they are handling it) 😄\u003cbr\u003e\u003cbr\u003eSee thread!! 🌊🏝️ \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e \u003ca href=\"https://t.co/DyWNSTKoUc\"\u003epic.twitter.com/DyWNSTKoUc\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1252298028607774721?ref_src=twsrc%5Etfw\"\u003eApril 20, 2020\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1252298028607774721\">https://twitter.com/Cyanilux/status/1252298028607774721</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<b style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>");
+	}
+</script>
+</div>
+</div>
+
+</div>
+
+<p>As with most of my work, I lean more on the stylised side, though it&rsquo;s possible it could be adapted to work in a realistic/PBR style. And to be clear, I&rsquo;m focusing on shoreline-specific parts of the water shader in this post, not sand material(s) or other details in the water which you might want - such as refraction or caustics (for that see the <a href="https://www.cyanilux.com/tutorials/water-shader-breakdown/">Water Shader Breakdown</a> or other links under the Water section of the <a href="https://www.cyanilux.com/resources/#water">Resources page</a>). The shader does use some transparency / alpha blending to darken the material below though, to simulate the sand being wet.</p>
+<p>There&rsquo;s two main ways I&rsquo;m discussing that can be used to map the waves to the scene - using the <strong>Depth Texture</strong> or <strong>Manual UVs</strong>. Below I&rsquo;ve listed some notes/pros/cons of each method. The later sections work for either of those setups.</p>
+<p><strong>Sections :</strong></p>
+<ul>
+<li><a href="#depth-based">Depth-Based Shoreline</a>
+<ul>
+<li>Potentially a simpler setup, but causes waves to follow along / projected onto the ground <em>below</em> the water. Therefore it might only look correct on quite shallow-sloped beaches and top-down camera perspectives.</li>
+<li>Is more difficult to give the waves a particular shape/texture. The depth produces a gradient towards the beach but not a horizontal one along it. You can map textures (i.e. noise) with a planar worldspace mapping, but those won&rsquo;t scroll in the same direction as the waves.</li>
+<li>Would also automatically cause the waves/foam to appear on any objects intersecting with the water. (Could probably be seen as both a pro or a con, depending on the situation)</li>
+</ul>
+</li>
+<li><a href="#uv-based">UV-Based Shoreline</a>
+<ul>
+<li>Requires 3D modelling a custom shoreline/water mesh and manually setting appropiate UVs to map the waves correctly.</li>
+<li>But unlike the depth method, the waves are actually on water surface and you have better control over what they look like (as you can map textures to those UVs)</li>
+<li>Waves/foam won&rsquo;t appear on other objects. You could still use depth to handle that intersection separately (e.g. edge foam example below), or use an alternative method to show interaction with water, such as spawning particles.</li>
+</ul>
+</li>
+<li><a href="#waves">Approaching Waves</a></li>
+<li><a href="#swash">Swash Wave</a></li>
+<li><a href="#wet-sand">Wet Sand</a></li>
+</ul>
+<h2 id="depth-based-shoreline">Depth-Based Shoreline</h2>
+<p>One of the simplest ways to have water interact with the rest of the scene is by using the depth texture, such as the <em>very</em> common &ldquo;depth intersection / edge foam&rdquo; technique you see in a lot of toon/stylised water shader tutorials. For example :</p>
+<div class="img-center">
+<a href="DepthIntersection.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="273" alt="(Image)" src="DepthIntersection.png" />
+</a>
+<p class="img-text">Or using the W/A component from Raw <b class="node">Screen Position</b> for the B input, which is the same but only works for perspective projections, while <code>abs(positionVS.z)</code> should work in orthographic too!</p>
+</div>
+<p>Though this method tends to have some warping as the camera rotates, likely because depth values are relative to the camera plane.</p>
+<p>Similar to the <a href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/">Fog Plane Shader Breakdown</a>, I instead tend to <strong>reconstruct the world position from depth</strong>, then take the Y coordinate of that and subtract it from the Y of the water plane.</p>
+<p>Provided the water plane GameObject isn&rsquo;t marked to use static batching, we can obtain it&rsquo;s Y coord from the <b class="node">Object</b> node (<strong>Position</strong> output), which returns the origin point of the mesh. Alternatively, you could use a <strong>Float Property</strong> and just control this value from the material inspector.</p>
+<div class="img-center">
+<a href="DepthReconstruct.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="227" alt="(Image)" src="DepthReconstruct.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>This produces a <em>gradient of how deep the surface below the water is</em>, which you could <b class="node">Step</b> in the same way as the earlier example to produce edge foam - But more importantly since it doesn&rsquo;t have that warping, and assuming the shore/beach terrain is sloped, we can also map waves using it!</p>
+<p>You can optionally have a <b class="node">Multiply</b> node after this to apply scaling - though it&rsquo;ll also scale depending on the steepness of the beach.</p>
+<p>May also want to <b class="node">Saturate</b> to clamp any values outside the 0-1 range, and then <b class="node">One Minus</b> to invert the gradient - so it matches how the UV method below works and the graphs later produce correct results.</p>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+This output may be used multiple times, so if you want to avoid long messy connections, you could use my <a href="https://github.com/Cyanilux/ShaderGraphVariables">ShaderGraphVariables</a> package to add <b class="node">Register Variable</b> &amp; <b class="node">Get Variable</b> nodes (installed via Package Manager -&gt; Add package via git URL : <code>https://github.com/Cyanilux/ShaderGraphVariables.git</code>)
+</div>
+</div>
+<p>(<a href="#waves">Optional skip to Approaching Waves section</a> if you&rsquo;re following this method)</p>
+<h2 id="uv-based-shoreline">UV-Based Shoreline</h2>
+<p>Another way to obtain a gradient towards the beach would be to use a custom mesh, where you could map Vertex Colors or unwrap UVs in a particular way. (This could also probably work on a tileset for a procedurally generated approach, i.e. a sections of beach which piece together to form an island)</p>
+<p>Unlike the depth approach, this would let us map waves to the water surface, rather than projected below. Using UVs also allows us to map textures of the waves, for more control over what they look like (and potentially cheaper if you swap out some of the calculations for additional textures? - but that&rsquo;s something you&rsquo;d have to test/profile)</p>
+<p>As an example of how you might set up a mesh for this, if we model the <strong>shoreline water</strong> as a strip of quads, in Blender you can then UV unwrap using these steps :</p>
+<ul>
+<li>Select one quad in the face selection mode</li>
+<li>Use <strong>UV</strong> (heading at top or U key shortcut) → <strong>Reset</strong>
+<ul>
+<li>May also want to check the orientation by applying a texture. In particular, I use a UV.y value of 0 for water/sea, and 1 at the shore/sand. Though it&rsquo;s not super important as you can also swap the axis or invert in shader later</li>
+</ul>
+</li>
+<li>Select all quads along shoreline</li>
+<li>While holding shift, double right-click to unselect and reselect the quad already unwrapped (to set it as the &ldquo;active face&rdquo;, if it isn&rsquo;t already)</li>
+<li>Use <strong>UV → Follow Active Quads</strong></li>
+<li>Optionally scale UVs horizontally in UV Editor window (or can apply scaling in shader later)</li>
+</ul>
+<div class="img-center">
+<a href="BlenderShorelineUV.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="555" alt="(Image)" src="BlenderShorelineUV.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Further modelling\/adjustments</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Further modelling\/adjustments</b>';
+
+    }
+"><b>⯈ Further modelling/adjustments</b></button>
+<div class="foldout">
+<p>After this, I used a duplicate of this mesh to model the section of beach, where the top set of vertices matches up to avoid any seams.</p>
+<p>Also optional and may not be important right now, but in the water mesh I also added a loop cut (near the top / beach-side of the quads) and moved the lower quads (water-side) down slightly, matching that loop with the slope of the beach (but slightly above to avoid any z-fighting). This creates a sloped section in the shoreline mesh will be where the waves move back and forth.</p>
+<div class="img-center">
+<a href="BlenderShorelineSlope.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="633" height="300" alt="(Image)" src="BlenderShorelineSlope.png" />
+</a>
+<p class="img-text"></p>
+</div>
+
+</div>
+
+<p>In Shader Graph, start by using the <b class="node">UV</b> node then <b class="node">Swizzle</b> - in my case using the &ldquo;Y&rdquo; axis. (Alternatively <b class="node">Split</b> and use <strong>G</strong> port). This obtains a <em>gradient towards the shore/beach</em>, which is important if we want to map waves and have them scroll in that direction.</p>
+<div class="img-center">
+<a href="UVGradient.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="331" height="219" alt="(Image)" src="UVGradient.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>The output of this may be used multiple times, but instead of long connections you can easily duplicate this group as it&rsquo;s small and not doing any calculations.</p>
+<h2 id="waves">Approaching Waves</h2>
+<p>A few stylised water shaders I&rsquo;ve seen (and made) actually have some small scrolling lines, as a way to &ldquo;dissolve/combine&rdquo; depth based edge foam into the rest of the water. That&rsquo;s the same technique but typically much more squished and scrolling in the opposite direction.</p>
+<p>Firstly, we can introduce some noise (either by sampling a seamless noise texture or procedurally via <b class="node">Gradient Noise</b> node) to distort the gradient a little, and then use <b class="node">Time</b> to make the waves scroll/move - In this case using <b class="node">Subtract</b>, as the gradient is 0 at the beach and increases to 1 in the water. (If it&rsquo;s reversed for you, can <b class="node">Add</b> the time instead, or use <b class="node">One Minus</b> on the gradient to invert it)</p>
+<div class="img-center">
+<a href="Graph1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="333" alt="(Image)" src="Graph1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>To create repeating lines, we can then <b class="node">Multiply</b> by some value (e.g. 3.2) and either use :</p>
+<ul>
+<li><b class="node">Fraction</b> (<code>frac</code> in hlsl), repeating at each integer value</li>
+<li><b class="node">Cosine</b>, producing a line at every <code>2*Pi</code> (aka <code>Tau</code>), <b class="node">Sine</b> works too, but is offset by <code>1/2 Pi</code>
+<ul>
+<li>To make this more consistent, I&rsquo;ve used a <b class="node">Multiply</b> by the TAU <b class="node">Constant</b>, but you could manually handle this by using a different scaling value (i.e. 20 instead of 3.2)</li>
+</ul>
+</li>
+</ul>
+<p>Then <b class="node">Smoothstep</b> to remap the range of values, making the lines thinner. It also clamps any negatives. (Can alternatively use <b class="node">Inverse Lerp</b> &amp; <b class="node">Saturate</b>)</p>
+<div class="img-center">
+<a href="Graph2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="363" alt="(Image)" src="Graph2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>To have the waves fade in, use <b class="node">Smoothstep</b> on the gradient (e.g. with an <strong>Edge1</strong> of 0 and <strong>Edge2</strong> of 0.5), and <b class="node">Multiply</b> to apply that</p>
+<div class="img-center">
+<a href="Graph3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="537" height="354" alt="(Image)" src="Graph3.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>You can also optionally mask the waves with some noise to break up the lines a bit, as shown below. If using the depth-based method for the shoreline gradient, using an XZ planar mapping may be more suitable than the UVs on the water mesh.</p>
+<div class="img-center">
+<a href="Graph4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="209" alt="(Image)" src="Graph4.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>For applying colours, I&rsquo;m using <b class="node">Lerp</b> with the the shoreline gradient in the <strong>T</strong> input, to interpolate between a blue and cyan - so the colour gets lighter at the shore. Then another <b class="node">Lerp</b> to apply the wave foam colour (set to white / 1,1,1,1)</p>
+<div class="img-center">
+<a href="Graph5.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="646" height="358" alt="(Image)" src="Graph5.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<div class="notice">
+<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+I&rsquo;m using the UV-Based gradient so the colours appear properly in previews here. If using the Depth-Based gradient, be aware that previews may be solid-coloured but should still work in scene when projecting on other objects
+</div>
+</div>
+<h2 id="swash">Swash Wave</h2>
+<p>In real life after waves hit the shore, a foamy layer of water (known as <a href="https://en.wikipedia.org/wiki/Swash">swash</a> in geography) moves up the beach until it loses enough energy, then retreats back to the sea. The easiest way to simulate this in the shader (that I could think of), is to add another wave which moves back and forth, synced with the scrolling of the others (though I won&rsquo;t lie, it took me far too long to figure out how to properly sync it 🙃)</p>
+<p>To handle that motion, we can use a <b class="node">Cosine</b> node (or <b class="node">Sine</b> if you use that for the approaching waves). This may not be entirely accurate to real life, where the flow of water up the shore tends to have a shorter duration than when it retreats, but I think it&rsquo;s good enough.</p>
+<p>The input needs to be <b class="node">Time</b>, multipled by the same <em>&ldquo;Scroll Speed&rdquo;</em> and <em>&ldquo;Wave Count&rdquo;</em> (value in &ldquo;no. of waves&rdquo; group) as used in the Approaching Waves section above. I&rsquo;ve converted those to <strong>Float Properties</strong> in both places, so they can be adjusted from the material and always match.</p>
+<p>We also need to <b class="node">Multiply</b> by the TAU <b class="node">Constant</b> - (unless you use the <b class="node">Cosine</b>/<b class="node">Sine</b> method for repeating lines and already removed the <b class="node">Divide</b> earlier!)</p>
+<div class="img-center">
+<a href="Graph6.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="169" alt="(Image)" src="Graph6.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Those multipliers means after one period/cycle of the swash wave (a back-and-forth), one approaching-wave will pass. The actual motions won&rsquo;t line up since one wave is sinusoidal and the other scrolling linear - but the durations are the same. But the phase might not match up yet, so as shown above, we also need to <b class="node">Add</b> a <strong>Float Property</strong> which I&rsquo;ve named <em>&ldquo;Time Offset&rdquo;</em>. This can be controlled from the material so we can manually sync it. (e.g. a value of roughly <strong>-2.5</strong> seems good when using a <em>Wave Count</em> of <strong>3.2</strong>)</p>
+<p>Since the <b class="node">Cosine</b> returns a value between -1 and 1, we <b class="node">Multiply</b> by a small value to adjust how far the wave will move. You <em>miiight</em> want this value dependant on the <em>Wave Count</em> (e.g. calculated as <code>0.5 * (1/waveCount)</code>), but it&rsquo;s not that important to match perfectly. I&rsquo;m just hardcoding it as <strong>0.1</strong> here.</p>
+<p>We apply this to the distorted shoreline gradient from earlier using an <b class="node">Add</b> node, then <b class="node">Smoothstep</b> to remap and position the wave (centered at around 0.8 along that 0-1 gradient)</p>
+<h3 id="combine-waves">Combine Waves</h3>
+<p>The output of this can be combined with the approaching waves using a <b class="node">Maximum</b> node, before the <b class="node">Lerp</b> that applies the foam colour (&ldquo;water vs (wave) foam&rdquo; group)</p>
+<div class="img-center">
+<a href="Graph6a.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="555" height="321" alt="(Image)" src="Graph6a.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Also take the output of the &ldquo;apply offset&rdquo; group and use another <b class="node">Smoothstep</b> with <strong>Edge1</strong> and <strong>Edge2</strong> values of 0.85 and 0.84 to produce a mask of where the water/swash ends. We&rsquo;ll temporarily use this for the <strong>Alpha</strong> output in the <strong>Master Stack</strong>.</p>
+<div class="img-center">
+<a href="Graph6b.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="457" height="354" alt="(Image)" src="Graph6b.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>Could alternatively use <b class="node">Step</b> here, but I&rsquo;m using <b class="node">Smoothstep</b> so the edge is slightly anti-aliased. There are also better ways to make an anti-aliased version of step with fwidth/<b class="node">DDXY</b> node, such as in <a href="https://www.ronja-tutorials.com/post/046-fwidth/">this article by Ronja</a>.</p>
+<h3 id="swash-voronoi">Adding Voronoi</h3>
+<p>That could work as-is, but it&rsquo;s a little boring, so lets add a texture to the swash wave. I&rsquo;ll be using this seamless Voronoi/Worley Noise I baked out. (The <b class="node">Voronoi</b> node could also work but using a texture here is likely cheaper)</p>
+<div class="img-center">
+<a href="Voronoi.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="512" height="250" alt="(Image)" src="Voronoi.png" />
+</a>
+<p class="img-text">Seamless Voronoi Texture (CC0)</p>
+</div>
+<p>Use the <b class="node">Sample Texture 2D</b> node to sample that texture. Like the earlier noise, using a XZ planar mapping for the UV input may be more suitable if using the Depth-Based Shoreline method.</p>
+<p>For the UV-Based Shoreline we can make the texture move with the swash wave, by using the output of the &ldquo;apply offset&rdquo; from the last graph screenshot in the <strong>Y</strong> of a <b class="node">Vector2</b> node, with the <strong>X</strong> set to the <strong>R/X</strong> of the <b class="node">UV</b></p>
+<div class="img-center">
+<a href="Graph7.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="221" alt="(Image)" src="Graph7.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>To combine this texture with our wave, we can <b class="node">Multiply</b> the <strong>R</strong> output with a small value (e.g. 0.15) then <b class="node">Add</b> in between the &ldquo;apply offset&rdquo; group and <b class="node">Smoothstep</b></p>
+<h3 id="swash-animate">Animating Values</h3>
+<p>To better animate the wave, take the output of the <b class="node">Cosine</b> / &ldquo;swash motion&rdquo; group and remap it into a 0-1 range using an <b class="node">Inverse Lerp</b> node using <strong>A</strong> and <strong>B</strong> inputs set to -1 and 1. (Alternatively can <b class="node">Multiply</b> by 0.5 then <b class="node">Add</b> 0.5)</p>
+<p><b class="node">One Minus</b> to invert this, producing a value of 0 when the wave is retreated, and 1 when fully up the beach/shore. We can <b class="node">Multiply</b> this by our voronoi (before the <b class="node">Add</b>) so the texture fades in as it approaches the shore.</p>
+<p>To add a bit of a &ldquo;dissolve&rdquo; effect, we can also animate the <strong>Edge1</strong> (on <b class="node">Smoothstep</b>) using the <b class="node">Inverse Lerp</b> output into the <strong>T</strong> of a <b class="node">Lerp</b>, with <strong>A</strong> set to 0.7 and <strong>B</strong> set to 0.8. (You can adjust these values if you want, but make sure <strong>B</strong> isn&rsquo;t greater than the <strong>Edge2</strong> input or the <b class="node">Smoothstep</b> result flips!)</p>
+<div class="img-center">
+<a href="Graph8.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="312" alt="(Image)" src="Graph8.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<h2 id="wet-sand">Wet Sand</h2>
+<p>A somewhat important effect I wanted to simulate was letting the swash wave leave the sand behind <strong>wet</strong> - which is basically just darker (and more reflective)</p>
+<p>Instead of making pixels/fragments beyond the swash wave completely transparent, we can use a black colour with a very low alpha. This is a main reason why I chose to use alpha blending instead of vertex displacement (which might also show too much of the geometry when as it clips)</p>
+<p>For the <strong>Base Color</strong> port in the <strong>Master Stack</strong>, we can take the current result and <b class="node">Multiply</b> by what we currently have in the <strong>Alpha</strong> (output of &ldquo;sand (0) / water (1)&rdquo; group)</p>
+<div class="img-center">
+<a href="Graph9.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="712" height="303" alt="(Image)" src="Graph9.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>For the <strong>Alpha</strong> port, we&rsquo;ll re-use the distorted gradient (from the start of the Approaching Waves section - quite a while ago!), and another <b class="node">Smoothstep</b> to mask out the area we want the sand to be wet in. This is also to avoid seeing the top edges of the shoreline geometry/mesh.</p>
+<p>We&rsquo;ll combine this with the current alpha value using <b class="node">Add</b> then <b class="node">Saturate</b> to make sure values don&rsquo;t go above 1. (Can alternatively use <b class="node">Maximum</b>)</p>
+<div class="img-center">
+<a href="Graph10.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="238" alt="(Image)" src="Graph10.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>To allow the water and wet sand to be shiny, could likely also use a duplicate of this setup for the <strong>Smoothness</strong> port, assuming a <strong>Lit Graph</strong> type. But with a higher value than 0.2. I rarely work with PBR so I&rsquo;ll leave that up to you.</p>
+<p>I guess you could also calculate specular highlights manually even in an Unlit Graph - my <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Custom Lighting</a> package has a node that might help with that for URP.
+<br><hr>
+
+<div style="display:block;text-align: center">
+<h2>Thanks for reading! 😊</h2>
+<p style="margin-bottom:0">If you find this post helpful, please consider sharing it with others / on socials<br>Donations are also <b>greatly</b> appreciated! 🙏✨</p>
+<p style="font-size:13px;margin-top:0;color:grey">(Keeps this site free from ads and allows me to focus more on tutorials)</p>
+
+</div>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div></p>
+
+
+        </div>
+        </br>
+
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2024 Cyanilux </a></p>
+
+<p class="small-text" style="text-align:center;">
+
+
+
+	<a href="https://www.cyanilux.com/#license">
+	
+	License / Usage
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/cookies">
+	
+	Cookies & Privacy
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/index.xml">
+	
+	RSS Feed
+	</a>
+	
+
+</p>
+</br>
+
+<div class="cookie-container">
+<p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+<button class="cookie-accept-btn"><b>Accept</b></button>
+<button class="cookie-refuse-btn"><b>Refuse</b></button>
+</div>
+
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+</script>
+    </body>
+</html>

@@ -33,7 +33,7 @@
   },
   "url": "https://www.cyanilux.com/faq/",
   "inLanguage": "en-gb",
-  "wordCount": "10118",
+  "wordCount": "10172",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -310,10 +310,10 @@
 	},
 	{
 		"@type": "Question",
-		"name": "How do I get color of Particle System, Trail Renderer & Sprite Renderer",
+		"name": "How do I get color of Particle System, Line/Trail Renderer & Sprite Renderer",
 		"acceptedAnswer": { 
 			"@type": "Answer", 
-			"text": "<p>Colors here are passed into vertex colors - data stored in each vertex of the mesh. To obtain this :</p><br><ul><br><li>In HLSL, use the <code>: COLOR</code> semantic in the vertex input struct.</li><br><li>In Shader Graph, use the <b class=\"node\">Vertex Color</b> node.</li><br></ul><br><p>Also note that Sprite Graphs will already automatically tint the output using this. There <a href=\"https://github.com/Unity-Technologies/Graphics/commit/3ca7a6bdefed68a482a2429f75b508f309b8c1a6\">will be an option to disable this</a>. Might be in 2023.3 (currently a pre-release as of writing), but otherwise will have to wait for later versions.</p><br><p>For Sprite Renderer, might vary slightly. If instanced, in Built-in RP sprites use a <code>_RendererColor</code> property in the instancing buffer. In newer versions of URP (2023.1+) that has been replaced with <code>unity_SpriteColor</code>, may need to try a Custom Function to access/output that.</p><br>"
+			"text": "<h4 id=\"particle-system-linetrail-renderer-\">Particle System, Line/Trail Renderer :</h4><br><p>Colors for these are usually passed into vertex colors - data stored in each vertex of the mesh. To obtain this :</p><br><ul><br><li>In HLSL, use the <code>: COLOR</code> semantic in the vertex input struct.</li><br><li>In Shader Graph, use the <b class=\"node\">Vertex Color</b> node.</li><br></ul><br><h3 id=\"sprite-renderer\">Sprite Renderer</h3><br><p>For Shader Graph, the <b class=\"node\">Vertex Color</b> node <em>should</em> be enough. For versions prior to Unity 6000.0.0b16, you had to use a <b class=\"node\">Custom Function</b> to access <code>unity_SpriteColor</code> (possibly <code>_RendererColor</code> in older versions?) - <a href=\"https://forum.unity.com/threads/2023-3-disable-color-tint-for-sprite-canvas-targets.1507484/#post-9586915\">see an example here</a>. Note that Sprite Graphs will already automatically tint the output, but there’s an option to disable this under Graph Settings (in 2023.3/6000). For older versions you can’t disable the tinting afaik.</p><br><p>For shader code, if instanced in Built-in RP, I believe sprites use a <code>_RendererColor</code> property (in the instancing buffer?). In URP the same property name was used, though as of 2023.1+ that has been replaced with <code>unity_SpriteColor</code>. To support all options should be able to use something like <code>IN.color * _RendererColor * unity_SpriteColor</code>, similar to what the <a href=\"https://github.com/Unity-Technologies/Graphics/blob/230dca58b3a5e75c0f0a482d3f64ffd84c9bd856/Packages/com.unity.render-pipelines.universal/Editor/2D/ShaderGraph/Includes/SpriteUnlitPass.hlsl#L12\">sprite graph does</a>.</p><br>"
 		}
 	},
 	{
@@ -455,8 +455,8 @@
 	<nav id="nav-links" class="nav-links">
 		<ul>
 			
-			<li><a class="nav-link" href="https://twitter.com/Cyanilux">
-			<img width="35" height="35" alt="Twitter" src="https://www.cyanilux.com/logo-twitter.png" ></img>
+			<li><a class="nav-link" href="https://bsky.app/profile/cyanilux.bsky.social">
+			<img width="35" height="35" alt="Bluesky" src="https://www.cyanilux.com/logo-bsky.png" ></img>
 			</a>
 			</li>
 			
@@ -2181,10 +2181,10 @@ Right : Render with Prepass<br>
     var content = this.nextElementSibling;
     if (content.style.display === 'block') {
       content.style.display = 'none';
-      this.innerHTML = '<b>⯈ How do I get color of Particle System, Trail Renderer \u0026amp; Sprite Renderer</b>';
+      this.innerHTML = '<b>⯈ How do I get color of Particle System, Line\/Trail Renderer \u0026amp; Sprite Renderer</b>';
     } else {
       content.style.display = 'block';
-      this.innerHTML = '<b>⯆ How do I get color of Particle System, Trail Renderer \u0026amp; Sprite Renderer</b>';
+      this.innerHTML = '<b>⯆ How do I get color of Particle System, Line\/Trail Renderer \u0026amp; Sprite Renderer</b>';
 
       if (history.pushState) {
         var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
@@ -2193,15 +2193,17 @@ Right : Render with Prepass<br>
       }
 
     }
-"><b>⯈ How do I get color of Particle System, Trail Renderer &amp; Sprite Renderer</b></button>
+"><b>⯈ How do I get color of Particle System, Line/Trail Renderer &amp; Sprite Renderer</b></button>
 <div class="foldout">
-<p>Colors here are passed into vertex colors - data stored in each vertex of the mesh. To obtain this :</p>
+<h4 id="particle-system-linetrail-renderer-">Particle System, Line/Trail Renderer :</h4>
+<p>Colors for these are usually passed into vertex colors - data stored in each vertex of the mesh. To obtain this :</p>
 <ul>
 <li>In HLSL, use the <code>: COLOR</code> semantic in the vertex input struct.</li>
 <li>In Shader Graph, use the <b class="node">Vertex Color</b> node.</li>
 </ul>
-<p>Also note that Sprite Graphs will already automatically tint the output using this. There <a href="https://github.com/Unity-Technologies/Graphics/commit/3ca7a6bdefed68a482a2429f75b508f309b8c1a6">will be an option to disable this</a>. Might be in 2023.3 (currently a pre-release as of writing), but otherwise will have to wait for later versions.</p>
-<p>For Sprite Renderer, might vary slightly. If instanced, in Built-in RP sprites use a <code>_RendererColor</code> property in the instancing buffer. In newer versions of URP (2023.1+) that has been replaced with <code>unity_SpriteColor</code>, may need to try a Custom Function to access/output that.</p>
+<h3 id="sprite-renderer">Sprite Renderer</h3>
+<p>For Shader Graph, the <b class="node">Vertex Color</b> node <em>should</em> be enough. For versions prior to Unity 6000.0.0b16, you had to use a <b class="node">Custom Function</b> to access <code>unity_SpriteColor</code> (possibly <code>_RendererColor</code> in older versions?) - <a href="https://forum.unity.com/threads/2023-3-disable-color-tint-for-sprite-canvas-targets.1507484/#post-9586915">see an example here</a>. Note that Sprite Graphs will already automatically tint the output, but there&rsquo;s an option to disable this under Graph Settings (in 2023.3/6000). For older versions you can&rsquo;t disable the tinting afaik.</p>
+<p>For shader code, if instanced in Built-in RP, I believe sprites use a <code>_RendererColor</code> property (in the instancing buffer?). In URP the same property name was used, though as of 2023.1+ that has been replaced with <code>unity_SpriteColor</code>. To support all options should be able to use something like <code>IN.color * _RendererColor * unity_SpriteColor</code>, similar to what the <a href="https://github.com/Unity-Technologies/Graphics/blob/230dca58b3a5e75c0f0a482d3f64ffd84c9bd856/Packages/com.unity.render-pipelines.universal/Editor/2D/ShaderGraph/Includes/SpriteUnlitPass.hlsl#L12">sprite graph does</a>.</p>
 
 </div>
 
