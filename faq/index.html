@@ -33,7 +33,7 @@
   },
   "url": "https://www.cyanilux.com/faq/",
   "inLanguage": "en-gb",
-  "wordCount": "10172",
+  "wordCount": "10392",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -206,10 +206,18 @@
 	},
 	{
 		"@type": "Question",
-		"name": "Scene Color node info",
+		"name": "<b class=\"node\">Scene Color</b> node info",
 		"acceptedAnswer": { 
 			"@type": "Answer", 
 			"text": "<p>The <b class=\"node\">Scene Color</b> node samples a texture containing opaque geometry in the scene, allowing you to obtain the colour of opaque objects behind a transparent shader.</p><br><p>This is useful to produce distortion effects. The default UVs input is the <b class=\"node\">Screen Position</b> node, so you can <b class=\"node\">Add</b> or <b class=\"node\">Subtract</b> to that to distort the view, for example with a noise texture. Can find examples in the following posts :</p><br><ul><br><li><a href=\"/tutorials/water-shader-breakdown/\">Water Shader Breakdown</a> (also attempts to remove distortion of objects infront of the water)</li><br><li><a href=\"/tutorials/forcefield-shader-breakdown/\">Forcefield Shader Breakdown</a></li><br><li><a href=\"/tutorials/crystal-shader-breakdown/\">Crystal Shader Breakdown</a></li><br><li><a href=\"/tutorials/rain-effects-breakdown/#raindrop-complex\">Rain Effects Breakdown : Raindrops on Surfaces (Complex)</a></li><br></ul><br><p>Note that the node will only function correctly when using a graph with <strong>Surface Mode : Transparent</strong> (or manually set RenderQueue to 2501+). See below for pipeline-specific differences.</p><br><p><strong>URP</strong> :</p><br><ul><br><li>Enable <strong>Opaque Texture</strong> option under the <strong>URP Asset</strong>. (May have multiple of those assets for each quality setting)</li><br><li>Also make sure dropdown on <strong>Camera</strong> isn’t set to force the Opaque Texture off.</li><br></ul><br><p><strong>Built-in RP</strong> (Unity 2021.2+) :</p><br><ul><br><li>Add <a href=\"https://gist.github.com/Cyanilux/181893cd061e97eb12d5bfdec9fecaab\">this SceneColorSetup script</a> to your <strong>Main Camera</strong> (and optionally other cameras that need the <code>_CameraOpaqueTexture</code>)</li><br></ul><br><p><strong>HDRP</strong> :</p><br><ul><br><li><b class=\"node\">HD Scene Color</b> node may be more suitable for this pipeline. Provides exposure setting and different LOD levels.</li><br></ul><br>"
+		}
+	},
+	{
+		"@type": "Question",
+		"name": "<b class=\"node\">Scene Depth</b> LOD (for sampling in Vertex Stage)",
+		"acceptedAnswer": { 
+			"@type": "Answer", 
+			"text": "<p>For URP, the <b class=\"node\">Scene Depth</b> node includes <a href=\"https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl\">this file</a> which uses regular texture sampling and prevents connecting to the Vertex Stage ports (for reasons explained briefly in the <a href=\"/tutorials/intro-to-shader-graph/#fragment-only-nodes\">fragment-only nodes</a> section of the Intro to Shader Graph post)</p><br><p>To handle that we’d need to use the LOD sample in a <b class=\"node\">Custom Function</b> node :</p><br><ul><br><li>Inputs :<br><ul><br><li>“ScreenPosition” (Vector2)</li><br></ul><br></li><br><li>Outputs<br><ul><br><li>“Out” (Float)</li><br></ul><br></li><br><li>Type : File</li><br><li>Function Name : “SceneDepthLOD”</li><br></ul><br><p>.HLSL File :</p><br><div class=\"highlight\"><div style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;\"><br><table style=\"border-spacing:0;padding:0;margin:0;border:0;\"><tr><td style=\"vertical-align:top;padding:0;margin:0;border:0;\"><br><pre tabindex=\"0\" style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;\"><code><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\"> 1<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\"> 2<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\"> 3<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\"> 4<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\"> 5<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\"> 6<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\"> 7<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\"> 8<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\"> 9<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">10<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">11<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">12<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">13<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">14<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">15<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">16<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">17<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">18<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">19<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">20<br></span></code></pre></td><br><td style=\"vertical-align:top;padding:0;margin:0;border:0;;width:100%\"><br><pre tabindex=\"0\" style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;\"><code class=\"language-c\" data-lang=\"c\"><span style=\"display:flex;\"><span><span style=\"color:#75715e\">#ifndef SCENEDEPTH_LOD<br></span></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\">#define SCENEDEPTH_LOD<br></span></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\"></span><br></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\">#ifndef SHADERGRAPH_PREVIEW<br></span></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\">#include</span> <span style=\"color:#75715e\">\"Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl\"</span><span style=\"color:#75715e\"><br></span></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\">#endif<br></span></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\"></span><br></span></span><span style=\"display:flex;\"><span><span style=\"color:#66d9ef\">void</span> <span style=\"color:#a6e22e\">SceneDepthLOD_float</span>(float2 ScreenPosition, out <span style=\"color:#66d9ef\">float</span> LinearDepth)<br></span></span><span style=\"display:flex;\"><span>{<br></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\">#ifdef SHADERGRAPH_PREVIEW<br></span></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\"></span>LinearDepth <span style=\"color:#f92672\">=</span> <span style=\"color:#ae81ff\">0</span>;<br></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\">//EyeDepth = 0;<br></span></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\"></span><span style=\"color:#75715e\">#else<br></span></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\"></span><span style=\"color:#66d9ef\">float</span> RawDepth <span style=\"color:#f92672\">=</span> SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTexture, UnityStereoTransformScreenSpaceTex(ScreenPosition), <span style=\"color:#ae81ff\">0</span>).r;<br></span></span><span style=\"display:flex;\"><span>LinearDepth <span style=\"color:#f92672\">=</span> Linear01Depth(RawDepth, _ZBufferParams);<br></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\">//EyeDepth = LinearEyeDepth(RawDepth, _ZBufferParams);<br></span></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\"></span><span style=\"color:#75715e\">#endif<br></span></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\"></span>}<br></span></span><span style=\"display:flex;\"><span><br></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\">#endif </span><span style=\"color:#75715e\">// SCENEDEPTH_LOD<br></span></span></span></code></pre></td></tr></table><br></div><br></div><br><p>Untested, but for Built-in RP, can try the same as the above function but without the <code>#include ...</code> line and define the texture yourself (i.e. <code>TEXTURE2D_X_FLOAT(_CameraDepthTexture); SAMPLER(sampler_CameraDepthTexture);</code>) or via the Blackboard as Texture2D property with Exposed unticked / Global scope.</p><br><p>For HDRP, <code>SampleCameraDepth(float2 uv)</code> in <a href=\"https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl\">ShaderVariables.hlsl</a> actually already uses an LOD version, but the node might still be locked to the fragment stage so you may need to call that function via a <b class=\"node\">Custom Function</b></p><br>"
 		}
 	},
 	{
@@ -1511,10 +1519,10 @@ Right : Render with Prepass<br>
     var content = this.nextElementSibling;
     if (content.style.display === 'block') {
       content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Scene Color node info</b>';
+      this.innerHTML = '<b>⯈ \u003cb class=\u0022node\u0022\u003eScene Color\u003c\/b\u003e node info</b>';
     } else {
       content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Scene Color node info</b>';
+      this.innerHTML = '<b>⯆ \u003cb class=\u0022node\u0022\u003eScene Color\u003c\/b\u003e node info</b>';
 
       if (history.pushState) {
         var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
@@ -1523,7 +1531,7 @@ Right : Render with Prepass<br>
       }
 
     }
-"><b>⯈ Scene Color node info</b></button>
+"><b>⯈ <b class="node">Scene Color</b> node info</b></button>
 <div class="foldout">
 <p>The <b class="node">Scene Color</b> node samples a texture containing opaque geometry in the scene, allowing you to obtain the colour of opaque objects behind a transparent shader.</p>
 <p>This is useful to produce distortion effects. The default UVs input is the <b class="node">Screen Position</b> node, so you can <b class="node">Add</b> or <b class="node">Subtract</b> to that to distort the view, for example with a noise texture. Can find examples in the following posts :</p>
@@ -1547,6 +1555,94 @@ Right : Render with Prepass<br>
 <ul>
 <li><b class="node">HD Scene Color</b> node may be more suitable for this pipeline. Provides exposure setting and different LOD levels.</li>
 </ul>
+
+</div>
+
+<button id="sg-scene-depth-lod" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ \u003cb class=\u0022node\u0022\u003eScene Depth\u003c\/b\u003e LOD (for sampling in Vertex Stage)</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ \u003cb class=\u0022node\u0022\u003eScene Depth\u003c\/b\u003e LOD (for sampling in Vertex Stage)</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-scene-depth-lod';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ <b class="node">Scene Depth</b> LOD (for sampling in Vertex Stage)</b></button>
+<div class="foldout">
+<p>For URP, the <b class="node">Scene Depth</b> node includes <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl">this file</a> which uses regular texture sampling and prevents connecting to the Vertex Stage ports (for reasons explained briefly in the <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#fragment-only-nodes">fragment-only nodes</a> section of the Intro to Shader Graph post)</p>
+<p>To handle that we&rsquo;d need to use the LOD sample in a <b class="node">Custom Function</b> node :</p>
+<ul>
+<li>Inputs :
+<ul>
+<li>&ldquo;ScreenPosition&rdquo; (Vector2)</li>
+</ul>
+</li>
+<li>Outputs
+<ul>
+<li>&ldquo;Out&rdquo; (Float)</li>
+</ul>
+</li>
+<li>Type : File</li>
+<li>Function Name : &ldquo;SceneDepthLOD&rdquo;</li>
+</ul>
+<p>.HLSL File :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifndef SCENEDEPTH_LOD
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define SCENEDEPTH_LOD
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#ifndef SHADERGRAPH_PREVIEW
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SceneDepthLOD_float</span>(float2 ScreenPosition, out <span style="color:#66d9ef">float</span> LinearDepth)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#ifdef SHADERGRAPH_PREVIEW
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>LinearDepth <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//EyeDepth = 0;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#else
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> RawDepth <span style="color:#f92672">=</span> SAMPLE_TEXTURE2D_X_LOD(_CameraDepthTexture, sampler_CameraDepthTexture, UnityStereoTransformScreenSpaceTex(ScreenPosition), <span style="color:#ae81ff">0</span>).r;
+</span></span><span style="display:flex;"><span>LinearDepth <span style="color:#f92672">=</span> Linear01Depth(RawDepth, _ZBufferParams);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//EyeDepth = LinearEyeDepth(RawDepth, _ZBufferParams);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif </span><span style="color:#75715e">// SCENEDEPTH_LOD
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Untested, but for Built-in RP, can try the same as the above function but without the <code>#include ...</code> line and define the texture yourself (i.e. <code>TEXTURE2D_X_FLOAT(_CameraDepthTexture); SAMPLER(sampler_CameraDepthTexture);</code>) or via the Blackboard as Texture2D property with Exposed unticked / Global scope.</p>
+<p>For HDRP, <code>SampleCameraDepth(float2 uv)</code> in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl">ShaderVariables.hlsl</a> actually already uses an LOD version, but the node might still be locked to the fragment stage so you may need to call that function via a <b class="node">Custom Function</b></p>
 
 </div>
 
