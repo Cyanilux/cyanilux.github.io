@@ -174,17 +174,6 @@
     
 	
     <item>
-      <title>Intro to Shader Graph</title>
-      <link>https://www.cyanilux.com/tutorials/intro-to-shader-graph/</link>
-      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.cyanilux.com/tutorials/intro-to-shader-graph/</guid>
-      <description>A detailed introduction on how to use Unity Shader Graph (updated for v12&#43;)! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!</description>
-    </item>
-	
-    
-	
-    <item>
       <title>Crystal Shader Breakdown</title>
       <link>https://www.cyanilux.com/tutorials/crystal-shader-breakdown/</link>
       <pubDate>Mon, 01 Feb 2021 00:00:00 +0000</pubDate>

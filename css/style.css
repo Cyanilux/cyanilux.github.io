@@ -85,26 +85,20 @@
 body {
 	font-family: 'Lato', sans-serif;
 	background-color: #08151f; /* #252830 */
-	
+	/*
 	background: repeating-linear-gradient(
 	0deg,
 	#05171d 0px,
 	#071f25 15px,
     #05171d 200px
 	);
-
-	/*
-	background: repeating-linear-gradient(
-	45deg,
-	#081924 0px,
-	#08151f 60px
-	);
 	*/
 
-	/*
-	background: repeating-conic-gradient(#08151f 0% 25%, #081924 5% 50%);
-	background-size: 60px 60px;
-	*/
+	background: linear-gradient(#00000000 50%, rgb(0,0,0) 100%),
+				repeating-conic-gradient(#07151a 0% 25%, #021a22 5% 50%) 0% / 50px 50px;
+
+	/*background: repeating-conic-gradient(#07151a 0% 25%, #021a22 5% 50%);*/
+	/*background-size: 60px 60px;*/
 
 	background-attachment: fixed;
 	color: #dddddd;
@@ -120,7 +114,7 @@ body {
 	padding: 0;
 	overflow: hidden;
 	background-color: #202020;
-	border-radius: 20px;
+	border-radius: 15px;
 	border: 3px solid #303030;
 	box-shadow: 5px 5px 10px 0px #000000;
 }
@@ -212,7 +206,7 @@ a:active {
 	border-radius : 10px;
 	background-color: #282828;
 	line-height: 120%;
-	border: 3px solid #303030;
+	/*border: 3px solid #303030;*/
 }
 
 .card-text {
@@ -222,7 +216,7 @@ a:active {
 
 .card:hover {
 	background-color: #303030;
-	border: 3px solid #404040;
+	/*border: 3px solid #404040;*/
 }
 
 .card:hover > .card-text > h2 > a {
@@ -231,7 +225,7 @@ a:active {
 
 .card-compact:hover {
 	background-color: #303030;
-	border: 3px solid #404040;
+	/*border: 3px solid #404040;*/
 }
 
 .card-compact:hover > .card-text > h2 > a {
@@ -262,9 +256,8 @@ a:active {
 @media screen and (min-width: 600px) {
 
 	.card-image-box-2 {
-		background-color: #101010;
+		background-color: #151515;
 		border-radius: 10px 10px 0px 0px;
-
 	}
 
 	.card-image {
@@ -285,7 +278,7 @@ a:active {
 		line-height: 120%;
 		display: flex;
 		align-content: flex-start;
-		border: 3px solid #303030;
+		/*border: 3px solid #303030;*/
 	}
 	
 	.card-compact:hover > .card-image-box > .card-image-small {
@@ -297,6 +290,7 @@ a:active {
 		border-radius: 10px 0px 0px 10px;
 		min-width : 200px;
 		overflow: hidden;
+		background-color: #151515;
 	}
 	
 	.card-image-small {
@@ -333,7 +327,7 @@ a:active {
 		background-color: #282828;
 		/* border: 3px solid #151515; */
 		line-height: 120%;
-		border: 3px solid #303030;
+		/*border: 3px solid #303030;*/
 	}
 	
 	.card-image, .card-image-small {
@@ -342,6 +336,7 @@ a:active {
 		border-radius: 10px 10px 0px 0px;
 		margin : auto;
 		object-fit: cover;
+		background-color: #151515;
 	}
 
 	.nav-links-div {
@@ -612,12 +607,12 @@ video {
 	display: flex;
 	margin-top: 5px;
 	line-height: 25px;
-	border: 3px solid #303030;
+	/*border: 3px solid #303030;*/
 }
 
 .foldout_active, .foldout_button:hover {
 	background-color: #303030;
-	border: 3px solid #404040;
+	/*border: 3px solid #404040;*/
 	color: #00ddff;
 }
 
@@ -629,7 +624,7 @@ video {
 	overflow: hidden;
 	background-color: #282828;
 	border-radius : 10px;
-	border: 3px solid #303030;
+	/*border: 3px solid #303030;*/
 }
 
 .foldout > ul {
@@ -638,8 +633,8 @@ video {
 
 .foldout img {
 	background-color: #202020;
-	border: 2px solid #161616;
-	border-radius : 10px;
+	/*border: 2px solid #161616;*/
+	/*border-radius : 10px;*/
 }
 
 .twitter-tweet {
@@ -719,8 +714,26 @@ h1:not(.title-no-margin) {
 	padding : 0px 0px 20px 0px;
 }
 
-h2:not(.title-no-margin), h3, h4 {
-	padding : 15px 0px 0px 0px;
+.title-undecorated  {
+	margin-top : 30px;
+}
+
+/*
+.title-no-margin -> used for titles on cards
+.title-undecorated -> used for footer title
+*/
+
+h2:not(.title-no-margin):not(.title-undecorated), h3, h4 {
+	margin-top : 30px;
+	padding : 7px 20px;
+	background-color: #282828;
+	/*border-bottom: 2px solid #505050;*/
+	border-left: 10px solid #00aabb;
+	border-radius: 7px;
+}
+
+.foldout > h2, .foldout > h3, .foldout > h4 {
+	background-color: #303030;
 }
 
 .post-metadata {

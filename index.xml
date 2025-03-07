@@ -8,6 +8,8 @@
     <language>en-gb</language>
     <lastBuildDate>Wed, 04 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/index.xml" rel="self" type="application/rss+xml" />
 	
+    
+	
     <item>
       <title>Shoreline Shader Breakdown</title>
       <link>https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/</link>
@@ -37,17 +39,6 @@
       
       <guid>https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/</guid>
       <description>A water shader intended for 2D, with pixelated highlights, distortion, reflections and simplified shoreline waves/ripples</description>
-    </item>
-	
-    
-	
-    <item>
-      <title>FAQ</title>
-      <link>https://www.cyanilux.com/faq/</link>
-      <pubDate>Wed, 13 Mar 2024 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.cyanilux.com/faq/</guid>
-      <description>List of frequent (or interesting) questions I&#39;ve answered</description>
     </item>
 	
     
@@ -223,7 +214,7 @@
       <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tutorials/intro-to-shader-graph/</guid>
-      <description>A detailed introduction on how to use Unity Shader Graph (updated for v12&#43;)! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!</description>
+      <description>A detailed introduction on how to use Unity Shader Graph! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!</description>
     </item>
 	
     

@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=6 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=7 ">
 
 
  
@@ -23,9 +23,9 @@
   "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/intro-to-shader-graph/",
   "headline": "Intro to Shader Graph",
   "name": "Intro to Shader Graph",
-  "description": "A detailed introduction on how to use Unity Shader Graph (updated for v12+)! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!",
+  "description": "A detailed introduction on how to use Unity Shader Graph! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!",
   "datePublished": "2021-03-05",
-  "dateModified": "2022-07-24",
+  "dateModified": "2025-03-05",
   "author": {
 	"@type": "Person",
 	"name": "Cyanilux",
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/intro-to-shader-graph/",
   "inLanguage": "en-gb",
-  "wordCount": "17339",
+  "wordCount": "17516",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -49,9 +49,7 @@
   "keywords": [
     "Unity", 
     "Tutorial", 
-    "Shader Graph", 
-    "URP", 
-    "HDRP"
+    "Shader Graph"
   ]
 }
 </script>
@@ -59,10 +57,10 @@
 <meta name="twitter:card" content="summary_large_image"/>
 	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/intro-to-shader-graph/Preview.png"/>
 <meta name="twitter:title" content="Intro to Shader Graph"/>
-<meta name="twitter:description" content="A detailed introduction on how to use Unity Shader Graph (updated for v12&#43;)! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!"/>
+<meta name="twitter:description" content="A detailed introduction on how to use Unity Shader Graph! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!"/>
 
 <meta property="og:title" content="Intro to Shader Graph" />
-<meta property="og:description" content="A detailed introduction on how to use Unity Shader Graph (updated for v12&#43;)! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!" />
+<meta property="og:description" content="A detailed introduction on how to use Unity Shader Graph! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.cyanilux.com/tutorials/intro-to-shader-graph/" />
 
@@ -73,9 +71,9 @@
         
     
 <meta property="article:published_time" content="2021-03-05T00:00:00+00:00" />
-<meta property="article:modified_time" content="2022-07-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2025-03-05T00:00:00+00:00" />
 <title>Intro to Shader Graph | Cyanilux</title>
-<meta name="description" content="A detailed introduction on how to use Unity Shader Graph (updated for v12&#43;)! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!. Shader Graph, URP, HDRP | Unity Shader Tutorials, @Cyanilux" />
+<meta name="description" content="A detailed introduction on how to use Unity Shader Graph! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!. Shader Graph | Unity Shader Tutorials, @Cyanilux" />
 <link rel="canonical" href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/" />
 <script>
 	var webStorageSupported = (typeof(Storage) !== undefined);
@@ -227,20 +225,6 @@
 	</a>
 	</div>
 
-	<div class="tag" style="background-color:#00aabb;">
-	
-	<a href="https://www.cyanilux.com/tags/urp" style="text-decoration: none; color:#eeeeee;">
-	URP
-	</a>
-	</div>
-
-	<div class="tag" style="background-color:#aa1100;">
-	
-	<a href="https://www.cyanilux.com/tags/hdrp" style="text-decoration: none; color:#eeeeee;">
-	HDRP
-	</a>
-	</div>
-
 
 
 
@@ -249,13 +233,13 @@
 
 
 <div style="width:5px"></div>
-<time datetime="2022-07-24"> (updated 24 Jul 2022)</time>
+<time datetime="2025-03-05"> (updated 5 Mar 2025)</time>
 
 </div>
-<p>Hey! This post is a detailed introduction to using <strong>Shader Graph</strong> - a node based shader editor for Unity that is provided for the <strong>Scriptable Render Pipelines</strong> (SRPs), including the <strong>Universal Render Pipeline</strong> (URP) and <strong>High Definition Render Pipeline</strong> (HDRP). We&rsquo;ll be going over how to use the tool and it&rsquo;s features, not necessarily how to create shaders using it. I have other tutorial breakdowns that go over creating specific shader effects if you&rsquo;re interested in that.</p>
-<p>Be aware that <strong>Shader Graph is also now supported in the Built-in Pipeline for Unity 2021.2+</strong>, though may be limited in some features. It is not supported for previous versions.</p>
-<p>You may also see the “Lightweight Render Pipeline (LWRP)” mentioned online, which was renamed to URP during development. You may still find LWRP listed in the package manager but the newer versions (e.g. v7 onwards) should actually be identical to URP as far as I am aware. If you are installing the package manually, I&rsquo;d suggest just using the Universal RP one instead.</p>
-<p>If you aren&rsquo;t familiar with what <strong>shaders</strong> and <strong>materials</strong> are, I&rsquo;d recommend looking at my <a href="https://www.cyanilux.com/tutorials/intro-to-shaders">Intro to Shaders</a> post before reading this one, or other similar resources online.</p>
+<p>Hey! This post is a detailed introduction to using <strong>Shader Graph</strong> - a node based shader editor for Unity that is provided for the <strong>Scriptable Render Pipelines</strong> (SRPs), including the <strong>Universal Render Pipeline</strong> (URP) and <strong>High Definition Render Pipeline</strong> (HDRP). The post goes over how to use the tool and it&rsquo;s features, not necessarily how to create shaders using it - I have other <a href="https://www.cyanilux.com/contents/#tutorial-breakdowns">tutorial breakdowns</a> that go over creating specific shader effects if you&rsquo;re interested in that.</p>
+<p>Shader Graph is also now supported in the <strong>Built-in Pipeline as of Unity 2021.2+</strong>, though may be limited in some features. It is not supported for previous versions.</p>
+<p>Also note, you may also see the “Lightweight Render Pipeline (LWRP)” mentioned online, which was renamed to Universal RP during development. You may still find LWRP listed in the package manager but the newer versions (e.g. v7 onwards) should be identical to URP. If you are installing the package manually, I&rsquo;d suggest just using the Universal RP one instead.</p>
+<p>If you aren&rsquo;t familiar with what <strong>shaders</strong> and <strong>materials</strong> are, I&rsquo;d recommend looking at my <a href="https://www.cyanilux.com/tutorials/intro-to-the-shader-pipeline">Intro to the Shader Pipeline</a> post before reading this one.</p>
 <p>(Also note, any keyboard shortcuts will be based on Windows)</p>
 <h3 id="sections-">Sections :</h3>
 <p class="">
@@ -266,7 +250,11 @@
 <li><strong><a href="#install">Installing Shader Graph / URP / HDRP</a></strong></li>
 <li><strong><a href="#graph-types">Graph Types</a></strong></li>
 <li><strong><a href="#graph-inspector">Graph Inspector</a></strong></li>
-<li><strong><a href="#master-stack">Master Stack</a></strong></li>
+<li><strong><a href="#master-stack">Master Stack</a></strong>
+<ul>
+<li><a href="#shader-stages">Vertex vs Fragment</a></li>
+</ul>
+</li>
 <li><strong><a href="#save-graph">Save Graph</a></strong></li>
 <li><strong><a href="#nodes">Nodes</a></strong>
 <ul>
@@ -288,11 +276,10 @@
 <li><a href="#boolean">Boolean</a></li>
 <li><a href="#textures">Textures</a>
 <ul>
-<li><a href="#filter-modes">Filter Modes</a>, <a href="#mip-maps">Mip Maps</a>, <a href="#wrap-modes">Wrap Modes</a>, <a href="#samplerstate">SamplerState</a>, <a href="#texture2D">Texture2D</a>, <a href="#texel-size">Texel Size</a>, <a href="#texture3D">Texture3D</a>, <a href="#texture2DArray">Texture2DArray</a>, <a href="#cubemap">Cubemap</a></li>
+<li><a href="#filter-modes">Filter Modes</a>, <a href="#mip-maps">Mip Maps</a>, <a href="#wrap-modes">Wrap Modes</a>, <a href="#samplerstate">SamplerState</a>, <a href="#texture2D">Texture2D</a>, <a href="#texel-size">Texel Size &amp; Texture Size</a>, <a href="#texture3D">Texture3D</a>, <a href="#texture2DArray">Texture2DArray</a>, <a href="#cubemap">Cubemap</a></li>
 </ul>
 </li>
 <li><a href="#gradient">Gradient</a></li>
-<li><a href="#arrays">Arrays</a></li>
 </ul>
 </li>
 <li><strong><a href="#coordinate-spaces">Coordinate Spaces</a></strong></li>
@@ -340,47 +327,19 @@
 <li><a href="#custom-interpolators-example-2">Example 2 - Vertex Based Distortion</a></li>
 </ul>
 </li>
-<li><a href="#custom-functions">Custom Functions</a></li>
-<li><a href="#better-texture-data-types">Better Texture Data Types</a></li>
+<li><a href="#custom-functions">Custom Functions</a>
+<ul>
+<li><a href="#ifdef-shadergraph-preview">Calling ShaderLibrary Functions</a></li>
+<li><a href="#better-texture-data-types">Sampling Textures</a></li>
+<li><a href="#arrays">Arrays &amp; Loops</a></li>
 <li><a href="#shader-pass-defines">Shader Pass Defines</a></li>
+</ul>
+</li>
 <li><a href="#generated-shader-code">Viewing/Editing Generated Shader Code</a></li>
 </ul>
 </li>
 </ul>
-<p>While not a part of this post, the following techniques are useful to know. I might do future posts on them, for now I&rsquo;ve linked some external resources/docs pages. Will update links to them when possible!</p>
-<ul>
-<li>Sampling Textures (e.g. <b class="node">Sample Texture 2D</b>)
-<ul>
-<li>PBR Textures (Albedo map, Metallic map, Occlusion map, etc.) (this <a href="https://blogs.unity3d.com/2015/02/18/working-with-physically-based-shading-a-practical-approach/">unity blog post</a> might help explain these)</li>
-<li>Normal Mapping (<b class="node">Sample Texture 2D</b> node with <strong>Normal</strong> mode)</li>
-<li>HDRP Mask &amp; Detail (<a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.3/manual/Mask-Map-and-Detail-Map.html">docs</a>)</li>
-<li>UV Manipulation
-<ul>
-<li>Scrolling (<b class="node">Time</b> node into Offset of <b class="node">Tiling And Offset</b>)</li>
-<li>Distortion (Briefly mentioned in the <a href="#preview-uv">Preview, UV</a> section)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Remapping &amp; Blending
-<ul>
-<li><b class="node">Lerp</b> (see this <a href="https://twitter.com/FreyaHolmer/status/1175925033002254338">tweet thread</a> by Freya Holmér)</li>
-<li><b class="node">Inverse Lerp</b> (see this <a href="https://twitter.com/FreyaHolmer/status/1184218791334612999">tweet thread</a> by Freya Holmér)</li>
-<li><b class="node">Remap</b> (same as Inverse Lerp into Lerp)</li>
-<li><b class="node">Blend</b> (<a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@10.3/manual/Blend-Node.html">docs</a>. Provides similar blending modes to image manipulation software like Photoshop/GIMP/etc. Override mode is same as Lerp)</li>
-</ul>
-</li>
-<li>Step &amp; Smoothstep (<a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@10.3/manual/Step-Node.html">step docs</a>, <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@10.3/manual/Smoothstep-Node.html">smoothstep docs</a>. Also see book of shaders pages, <a href="https://thebookofshaders.com/glossary/?search=step">step</a>, <a href="https://thebookofshaders.com/glossary/?search=smoothstep">smoothstep</a>)</li>
-<li>Fresnel Effect (Used for rim-lighting effects, I have an old post <a href="https://cyangamedev.wordpress.com/2019/09/04/fresnel-effect/">here</a> but it&rsquo;s not very good)</li>
-<li><a href="https://www.cyanilux.com/tutorials/vertex-displacement/">Vertex Displacement</a></li>
-<li>Parallax (see <a href="https://catlikecoding.com/unity/tutorials/rendering/part-20/">CatlikeCoding</a> and Harry Alisavakis&rsquo;s posts, <a href="https://halisavakis.com/my-take-on-shaders-parallax-effect-part-i/">1</a> and <a href="https://halisavakis.com/my-take-on-shaders-parallax-effect-part-ii/">2</a>)
-<ul>
-<li>Also related, Interior Mapping (see this <a href="https://twitter.com/Cyanilux/status/1117818466688540672">tweet thread</a>)</li>
-</ul>
-</li>
-<li><a href="https://www.cyanilux.com/tutorials/depth/">Depth</a></li>
-</ul>
-<p>Also check the site&rsquo;s <a href="https://www.cyanilux.com/contents">Contents</a> page for full list of Shader Breakdowns &amp; other tutorials!</p>
+
 <p class="">
 </font>
 </p>
@@ -401,26 +360,28 @@
 <p>Also be aware you can view your current <strong>Shader Graph version</strong> in the <strong>Package Manager</strong> window (accessed via <strong>Window</strong> on the top menu). You might also be able to update the version here though some aren&rsquo;t available unless you also update Unity itself. (e.g. v10 is only available for 2020.2 onwards)</p>
 <hr>
 <h2 id="graph-types">Graph Types</h2>
-<p>To create a Shader Graph Asset, right-click somewhere in your <strong>Assets</strong> in the <strong>Project</strong> window then select <strong>Create → Shader</strong>.</p>
+<p>To create a Shader Graph Asset, right-click somewhere in your <strong>Assets</strong> in the <strong>Project</strong> window then select <strong>Create → Shader Graph</strong>.</p>
+<p>Older versions may have them listed under <strong>Shader</strong> heading but that also includes writing shaders using code (CG/HLSL) such as the Surface Shader and Unlit Shader options. Those templates are intended for the Built-in Render Pipeline and may not function in other pipelines.</p>
 <div class="img-center">
 <a href="CreateShaderGraph.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="220" alt="Example : Create -&gt; Shader -&gt; Universal Render Pipeline -&gt; Unlit Shader Graph" src="CreateShaderGraph.png" />
 </a>
 <p class="img-text"></p>
 </div>
-<p>At the top there will be some options related to writing shaders using code (CG/HLSL), Surface Shader, Unlit Shader, etc. These templates are intended for the Built-in Render Pipeline and may not function in other pipelines. As the focus of this article is on Shader Graph, we want to ignore these. Under them, you should see a list of &ldquo;Graph&rdquo; options assuming Shader Graph has been installed correctly. If not, see the previous section.</p>
-<p>In v10+ (Unity 2020.2+) there is three graphs listed here :</p>
+<p>In v10+ (Unity 2020.2+) there is three graphs listed :</p>
 <ul>
 <li><strong>Blank Shader Graph</strong> : A shader graph with no predefined settings. All other graphs (except for Sub Graphs) are a version of this graph with settings already adjusted. It&rsquo;s possible to switch between them at any time through the use of the <strong>Graph Settings</strong> as discussed in the next section. While a Material can be created using a Blank Shader Graph, the resulting shader will be the magenta error shader unless configured into one of the other types. Using one of the other templates can provide quicker setup.</li>
 <li><strong>Sub Graph</strong> : A special type of graph that can be used as a node in other graphs. Useful for creating functions that you will want to reuse many times and for organising large graphs. Sub Graphs can also be nested in other Sub Graphs. A later section will go into these in more detail.</li>
-<li><strong>VFX Shader Graph</strong> : For creating a shader that is compatible with the <a href="https://docs.unity3d.com/Packages/com.unity.visualeffectgraph@latest">Visual Effect Graph</a>, used for creating particle effects. It cannot be applied to regular GameObjects/Renderers, only in the VFX Graph Output Particle blocks. (Note : VFX Graph is still in preview for URP so may need to be installed as a separate package). If you aren&rsquo;t using VFX Graph, ignore this graph type.</li>
+<li><strong>VFX Shader Graph</strong> : For creating a shader that is compatible with the <a href="https://docs.unity3d.com/Packages/com.unity.visualeffectgraph@latest">Visual Effect Graph</a>, used for creating particle effects. It cannot be applied to regular GameObjects/Renderers, only in the VFX Graph Output Particle blocks. (This graph type is deprecated in newer versions, in favour of checkboxes under the Graph Settings of other graph types to make them support VFX Graph without needing the VFX Graph &ldquo;target&rdquo;)</li>
 </ul>
-<p>If URP is installed, in v10+ a &ldquo;Universal Render Pipeline&rdquo; heading is shown with the following :</p>
+<p>If URP is installed, a &ldquo;Universal Render Pipeline&rdquo; heading is shown with the following :</p>
 <ul>
 <li><strong>Lit Shader Graph</strong> : Known as the &ldquo;PBR Graph&rdquo; prior to v10. Used for creating a graph that handles lighting for 3D mesh objects, using a <strong>Physically Based Rendering</strong> lighting model, similar to the URP/Lit Shader (or the built-in RP&rsquo;s Standard shader / surface shaders).</li>
 <li><strong>Sprite Lit Shader Graph</strong> : For use with Sprites and <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@11.0/manual/2d-index.html">URP&rsquo;s 2D Renderer &amp; 2D lighting system</a></li>
 <li><strong>Sprite Unlit Shader Graph</strong> : For use with Sprites. Always fully lit, is not affected by lights.</li>
 <li><strong>Unlit Shader Graph</strong> : Always fully lit, is not affected by lights. Can be used for 3D objects, but also in other places like UI (if set to transparent, though Shader Graph does not properly support UI really). Can also be used for custom full screen post processing effects (along with a Blit Renderer Feature, see example <a href="https://cyangamedev.wordpress.com/2020/06/22/urp-post-processing/#CustomEffects">here</a>).</li>
+<li><strong>Fullscreen Shader Graph</strong> (Unity 2022.2+) : For use with the Fullscreen Pass Renderer Feature, for creating custom post-processing effects - see <a href="https://docs.unity3d.com/6000.0/Documentation/Manual/urp/post-processing/post-processing-custom-effect-low-code.html">docs example</a>.</li>
+<li><a href="https://docs.unity3d.com/6000.0/Documentation/Manual/urp/canvas-shader.html"><strong>Canvas Graph</strong></a> (Unity 2023.2+ &amp; 6000+) : For use with UI (e.g. Image, Raw Image components)</li>
 </ul>
 <p>And if HDRP is installed, a &ldquo;HDRP&rdquo; heading is shown, with the following graph types. I&rsquo;m not familiar with HDRP so I&rsquo;ll be linking docs more than trying to explain them :</p>
 <ul>
@@ -459,7 +420,21 @@
 </ul>
 </li>
 <li><strong>Surface</strong> : Can be <strong>Opaque</strong> or <strong>Transparent</strong></li>
-<li><strong>Blend</strong> : If <strong>Transparent</strong> is selected, a <strong>Blend</strong> type option will appear which determines how the transparency is handled. The options here are :
+<li><strong>Blend</strong> : If <strong>Transparent</strong> is selected, a <strong>Blend</strong> type option will appear which determines how the transparency is handled. 
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Details about each Blend option</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Details about each Blend option</b>';
+
+    }
+"><b>⯈ Details about each Blend option</b></button>
+<div class="foldout">
+<p>The options here are :</p>
 <ul>
 <li><strong>Alpha</strong> : Regular alpha blending. Is equivalent to <code>Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha</code> in ShaderLab (Shader code), where the first term (<code>SrcAlpha</code>, referring to the <strong>Alpha</strong> port of the <strong>Master Stack</strong>) is multiplied by the <strong>Base Color</strong> output and the second term (<code>OneMinusSrcAlpha</code>) is multiplied by the colour already on screen. These two are added together which is then written to the screen. (The other two terms after the comma are used for the alpha channel only)
 <ul>
@@ -472,9 +447,15 @@
 <li><strong>Additive</strong> : Is equivalent to <code>Blend One One</code>. In other words, the colour on the screen is added with the colour output from the shader. e.g. Red and Green produces Yellow, because that&rsquo;s how <a href="https://en.wikipedia.org/wiki/RGB_color_model">RGB colours</a> add together. Outputting a <strong>Base Color</strong> of <strong>Black</strong> (0,0,0) means no change / invisible. The <strong>Alpha</strong> port is not used.</li>
 <li><strong>Multiply</strong> : Is equivalent to <code>Blend DstColor Zero</code>. In other words, the colour on the screen is multiplied with the colour output from the shader. Outputting <strong>White</strong> (1,1,1) means no change / invisible. The <strong>Alpha</strong> port is not used.</li>
 </ul>
+
+</div>
 </li>
 <li><strong>Alpha Clip</strong> : Toggles alpha clipping. If enabled, an <strong>Alpha Clip Threshold</strong> port will be added to the Master Stack. For each fragment/pixel, if the <strong>Alpha</strong> value is lower than the threshold the fragment is discarded, meaning it isn&rsquo;t rendered. This can be done with both surface modes. Using <strong>Opaque</strong> &amp; <strong>Alpha Clip</strong> is common for foliage effects to make sure they are sorted correctly.</li>
-<li><strong>Two Sided</strong> : If enabled, Back-faces will also be rendered, otherwise they are culled. Be aware that for URP you may need to flip the Tangent space Normal for these faces in order to get the correct lighting/shading. You can do this with the <b class="node">Is Front Face</b> node and a <b class="node">Branch</b> like so :</li>
+<li><strong>Render Face</strong> : Controls whether Front, Back or Both sides are rendered. In older versions, the option was only Front faces or <strong>Two Sided</strong>.
+<ul>
+<li>Be aware that for URP you may need to flip the Tangent space Normal for these faces in order to get the correct lighting/shading. You can do this with the <b class="node">Is Front Face</b> node and a <b class="node">Branch</b> like so :</li>
+</ul>
+</li>
 </ul>
 <div class="img-center">
 <a href="GraphTwoSidedLit.png" target="_blank" rel="noopener noreferrer">
@@ -482,8 +463,7 @@
 </a>
 <p class="img-text"></p>
 </div>
-<p><strong>Two Sided</strong> might also cause issues with shadows if the <strong>Normal Bias</strong> is used on the URP Asset, as this pushes the vertices in the normal direction and will lead to self-shadowing for back faces.</p>
-<p>Unlike the ShaderLab &ldquo;Cull&rdquo; option and HDRP&rsquo;s settings, it&rsquo;s currently not possible to cull <strong>Front</strong> faces only in URP. While you could use the <b class="node">Is Front Face</b> node and <strong>Alpha Clip</strong> them away, this is not very efficient. Alternatives would be to use a mesh with the faces already flipped, or generate shader code from the graph, save it in your assets, edit it to <code>Cull Front</code> and use that new shader instead of the graph. Editing the generated code is discussed more in a later section <a href="#generated-shader-code">here</a>.</p>
+<p>Rendering back or both faces in a Lit Graph might also cause issues with shadows if the <strong>Normal Bias</strong> is used on the URP Asset, as this pushes the vertices in the normal direction which might lead to self-shadowing for back faces.</p>
 <hr>
 <h2 id="master-stack">Master Stack</h2>
 <div class="img-right">
@@ -493,7 +473,8 @@
 <p class="img-text"></p>
 </div>
 <p>Prior to v10, You could switch between graph types by creating a new <strong>Master Node</strong> (e.g. <b class="node">Unlit</b>, <b class="node">PBR</b>), right-clicking it and setting it as the <strong>Active</strong> one.</p>
-<p>In v10, these Master nodes were removed and replaced by the <strong>Master Stack</strong>. Unlike Master nodes, there can only be one Master Stack in the graph. Each port in the stack is attached to a <strong>Block</strong>.</p>
+<p>In v10 and newer you can still switch types via the Material in the Graph Settings as explained in the previous section. But &ldquo;Master nodes&rdquo; were removed and replaced by the <strong>Master Stack</strong>.</p>
+<p>Unlike Master nodes, there can only be one Master Stack in the graph. Each port in the stack is attached to a <strong>Block</strong>.</p>
 <p>The blocks required by the graph type will automatically change when switching the type (explained in the section above), assuming the &ldquo;Automatically Add or Remove Blocks&rdquo; option is enabled in <strong>Edit → Preferences → Shader Graph</strong>.</p>
 <p>Any blocks that the previous type had (which are connected to or the default value edited), will remain in the stack but may become greyed out if the new graph type doesn&rsquo;t make use of them. For example, a <strong>Lit</strong> graph has a <strong>Smoothness</strong> block/port. If something is connected and the graph type changes to <strong>Unlit</strong>, the port will remain but become greyed out as it is no longer used.</p>
 <p>Blocks in the stack can be removed by right-clicking them and selecting &ldquo;Delete&rdquo; from the dropdown.
@@ -505,14 +486,16 @@
 <p class="img-text"></p>
 </div></p>
 <p>Blocks can also be added manually by hovering over gaps between two blocks, or at the end of the last block. Right-click and select <strong>Create Node</strong>, or press <strong>Space</strong>. While you can add blocks, they&rsquo;ll still be greyed out if the graph type doesn&rsquo;t use them.</p>
+<h3 id="shader-stages">Vertex vs Fragment</h3>
 <p>The stack also provides a clearer distinction between the <strong>Vertex</strong> and <strong>Fragment</strong> stages of the shader, and different blocks are available for each.</p>
-<p>If you are unfamiliar, the Vertex stage runs for each vertex in the mesh being rendered, transforming the vertex positions onto the screen. Then rasterisation occurs, which produces fragments (basically pixels) from the triangles in the mesh. The Fragment stage then runs for each fragment/pixel created and outputs the colour to the screen. This is discussed in slightly more detail in my <a href="https://www.cyanilux.com/tutorials/intro-to-shaders">Intro to Shaders</a> post.</p>
+<p>If you are unfamiliar, the Vertex stage runs for each vertex in the mesh being rendered, transforming the vertex positions onto the screen. Then rasterisation occurs, which produces fragments (basically pixels) from the triangles in the mesh. The Fragment stage then runs for each fragment/pixel created and outputs the colour to the screen. This is discussed in slightly more detail in my <a href="https://www.cyanilux.com/tutorials/intro-to-the-shader-pipeline">Intro to the Shader Pipeline</a> post.</p>
 <p>The Vertex stage is also responsible for passing through any data (e.g. from the mesh) that may be needed in Fragment stage calculations. This is known as <strong>interpolators</strong> (as this data for each vertex is interpolated across the triangle). It is mostly handled automatically by Shader Graph - e.g. For nodes requiring UVs, the <b class="node">Position</b> node, <b class="node">Normal Vector</b> and other nodes in the <strong>Input → Geometry</strong> heading under the Create Node menu.</p>
 <p>But in some cases (discussed later), we may also want to pass our own custom data between the two stages. In Shader Graph <strong>v12</strong> (Unity <strong>2021.2+</strong>), we can do this by adding <strong>Custom Interpolator</strong> blocks to the <strong>Vertex</strong> stage. I&rsquo;ll discuss this in more detail <a href="#custom-interpolators">near the end of the article</a>.</p>
 <hr>
 <h2 id="save-graph">Save Graph</h2>
-<p>While I haven&rsquo;t explained the other parts of a graph yet, this is something that is a common problem for beginners so I&rsquo;m mentioning it early. To save your Graph you <strong>must</strong> use the <strong>Save Asset</strong> button in the top left corner of the graph. Ctrl+S will not save the graph, it only saves the active scene you are working in.</p>
-<p>If you want to preview your graph in the <strong>Scene/Game View</strong>, it must first be saved or it won&rsquo;t be re-compiled and still use the version prior to saving.</p>
+<p>While I haven&rsquo;t explained the other parts of a graph yet, this is something that is a common problem for beginners so I&rsquo;m mentioning it early. Remember to save your graph or changes won&rsquo;t appear in <strong>Scene/Game View</strong>!</p>
+<p>In newer versions using Ctrl+S might now save the graph. You can tell if it works if the <code>*</code> on the window/tab disappears.</p>
+<p>Older versions did not have a shortcut and you had to use the <strong>Save Asset</strong> button in the top left corner of the graph.</p>
 <p>When attempting to close the graph, it will also prompt you to save if unsaved changes have been made.</p>
 <hr>
 <h2 id="nodes">Nodes</h2>
@@ -657,8 +640,9 @@
 <p>Internally the type is actually treated as a Float with a value of 0 or 1, so can be set from C# using <code>material.SetFloat</code> (or <code>SetInteger</code>).</p>
 <p>Don&rsquo;t confuse the <strong>Boolean</strong> type/property with a <strong>Boolean Keyword</strong> - these are not the same! I&rsquo;ll be explaining keywords in a later section.</p>
 <h3 id="textures">Textures</h3>
-<p><strong>Textures</strong> store a colour for each <strong>texel</strong> - basically the same as a pixel, but they are known as texels when referring to textures and aren&rsquo;t limited to just two dimensions. The fragment shader stage runs on a per-pixel basis, where we can access the colour of a texel with a given coordinate. Textures can have different sizes (widths/heights/depth), but the coordinate used to sample the texture is normalised to a <strong>0-1 range</strong>. These are known as <strong>Texture Coordinates</strong> or <strong>UVs</strong>. <strong>U</strong> corrosponds to the horizontal axis of the texture, while <strong>V</strong> is the vertical.</p>
-<p>(Also, though I mentioned texels have colours, the data doesn&rsquo;t necessary have to be output as a colour. It&rsquo;s a <strong>Vector4</strong> which could represent any arbitary data and used for any calculations. Depending on the texture&rsquo;s <a href="https://docs.unity3d.com/ScriptReference/Experimental.Rendering.GraphicsFormat.html">format</a> it might also result in values outside a 0-1 range)</p>
+<p><strong>Textures</strong> store a colour for each <strong>texel</strong> - which is basically the same as a &ldquo;pixel&rdquo;, but as that is used to refer to the screen (or current render target) we instead use the term &ldquo;texels&rdquo; when referring to textures. They also aren&rsquo;t limited to just two dimensions.</p>
+<p>The fragment shader stage runs on a per-pixel basis, where we can access the colour of a texel with a given coordinate. Textures can have different sizes (widths/heights/depth), but the coordinate used to sample the texture is normalised to a <strong>0-1 range</strong>. These are known as <strong>Texture Coordinates</strong> or <strong>UVs</strong> - <strong>U</strong> corrosponding to the horizontal axis of the texture, while <strong>V</strong> is the vertical.</p>
+<p>(Though I mentioned texels have colours, the data doesn&rsquo;t necessary have to be output as a colour. It&rsquo;s a <strong>Vector4</strong> which could represent any arbitary data and used for any calculations. Depending on the texture&rsquo;s <a href="https://docs.unity3d.com/ScriptReference/Experimental.Rendering.GraphicsFormat.html">format</a> it might also result in values outside a 0-1 range)</p>
 <h4 id="filter-modes">Filter Modes</h4>
 <p>To access a colour of a texel, we <strong>sample</strong> it with <strong>filtering</strong> applied. There are 3 different <strong>Filter Modes</strong> :</p>
 <ul>
@@ -691,9 +675,10 @@
 <h4 id="texture2D">Texture2D</h4>
 <p>There a few different texture types as I listed earlier.</p>
 <p>Texture2D is the more common one you&rsquo;ll be familiar with and is sampled with a 2D coordinate (UV). If the UV input on the <b class="node">Sample Texture 2D</b> is left blank, it automatically uses the UV0 channel from the mesh. If the <strong>SamplerState</strong> input is left blank, it&rsquo;ll automatically use the one from the texture.</p>
-<h4 id="texel-size">Texel Size</h4>
-<p>The <b class="node">Texel Size</b> node also allows us access to the <strong>width</strong> and <strong>height</strong> of a 2D texture. When using it you should always connect a Texture2D property/asset node rather than using the default input box. Specifically the node obtains the third (Z/B) and fourth (W/A) components of a special <b class="node">Vector4</b> that Unity sets, which matches the texture&rsquo;s reference with &ldquo;_TexelSize&rdquo; appended. While the node is limited only to Texture2Ds, you could always set up your own Vector property and pass in a different texture type&rsquo;s size manually or through C# if required. More information about setting up properties will be discussed in a later section.</p>
-<p>The true size of a texel would actually be given by the first (R/X) and second (G/Y) components of that Vector4 but the node does not return these so it&rsquo;s a slightly strange name for the node, &ldquo;Texture Size&rdquo; would likely fit better. The texel size could instead be obtained from the <b class="node">Reciprocal</b> of the width/height returned (or 1 divided by width/height) though this would be an additional calculation. You could also access the other components through a <b class="node">Custom Function</b> node, but this would require hard-coding the texture reference in the function code, which means it cannot be easily reused.</p>
+<h4 id="texel-size">Texel Size &amp; Texture Size</h4>
+<p>The <b class="node">Texture Size</b> node allows us access to the <strong>Width</strong> and <strong>Height</strong> of a 2D texture (in texels), as well as the size of one texel (in terms of the normalised UV coords - so equal to the reciprocal of the texture&rsquo;s width and height). In older versions of Shader Graph, the node was named <b class="node">Texel Size</b> despite only outputting the texture&rsquo;s size - hence it was renamed. You would have to use <b class="node">Reciprocal</b> to calculate the texel sizes. Later, ports for texel size was added.</p>
+<p>Specifically the node obtains components of a special Vector4 property that Unity passes into the shader alongside a Texture2D, which matches the texture&rsquo;s name with <code>_TexelSize</code> appended. The <code>.xy</code> components of that are the Width &amp; Height, while <code>.zw</code> is the Texel Width &amp; Texel Height.</p>
+<p>While the node is limited to Texture2D only, you could always set up your own Vector property and pass the size of a different texture type manually or through C# if required. More information about setting up properties will be discussed in a later section.</p>
 <h4 id="texture3D">Texture3D</h4>
 <p><strong>Texture3D</strong> is similar, but three dimensional, so has a <strong>depth</strong> to it as well as the width and height. It defines a volume of texels so must be sampled with a 3D coordinate in order to select which pixel is output. Shader Graph still labels this as a UV, though it&rsquo;s common to refer to this as a <strong>UVW</strong> coordinate too, where <strong>W</strong> refers to this depth-based axis similar to the <strong>Z</strong> axis in regular 3D space.</p>
 <h4 id="texture2DArray">Texture2DArray</h4>
@@ -733,19 +718,32 @@
 </div>
 </div>
 <p>The values are currently something that gets <strong>hardcoded into the generated shader code</strong>, so the Gradient type (created from the Blackboard at least) <strong>cannot be exposed</strong> or set by C# scripts.</p>
-<p>If you need to expose something similar to a gradient, here&rsquo;s a few alternatives :</p>
-<ul>
-<li>If you only need two colours, you can create a gradient quite easily from two <strong>Color properties</strong> and a <b class="node">Lerp</b> node. Same with three, perhaps four, but you&rsquo;ll need to link together multiple lerps and remap the <strong>T</strong> inputs. The below image provides an example for a 3-colour gradient.</li>
-</ul>
+<p>If you need to expose something similar to a gradient, the foldout below has a few alternatives :</p>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Alternatives</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Alternatives</b>';
+
+    }
+"><b>⯈ Alternatives</b></button>
+<div class="foldout">
+<h4 id="color-properties--lerp">Color properties &amp; Lerp</h4>
+<p>If you only need two colours, you can create a gradient quite easily from two <strong>Color properties</strong> and a <b class="node">Lerp</b> node. Same with three, perhaps four, but you&rsquo;ll need to link together multiple lerps and remap the <strong>T</strong> inputs. The below image provides an example for a 3-colour gradient.</p>
 <div class="img-center">
 <a href="Lerp3Colours.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="441" alt="(Image)" src="Lerp3Colours.png" />
 </a>
 <p class="img-text"></p>
 </div>
-<ul>
-<li>A common option to avoid the need to create many colour properties, is to use a <strong>Texture2D</strong> instead. We can sample it with the <b class="node">Sample Texture 2D</b> with the <strong>UV</strong> coordinate as the same &ldquo;<strong>Time</strong>&rdquo; value that would have been used in the <b class="node">Sample Gradient</b> node. This gives us the flexibity of more colours, but a texture sample might end up being be more expensive than a math-based method, and it might suffer from colour banding issues if the colours are remapped in the shader. (Might be able to try different texture formats to minimise that).</li>
-</ul>
+<p>While this can work for even more colours, adding that many properties can be tedious.</p>
+<h4 id="texture">Texture</h4>
+<p>Another option (especially when lots of colours are required) is to use a <strong>Texture2D</strong> instead. We sample it with the <b class="node">Sample Texture 2D</b> with the <strong>UV</strong> coordinate as the same &ldquo;<strong>Time</strong>&rdquo; value that would have been used in the <b class="node">Sample Gradient</b> node.</p>
+<p>This gives us the flexibity of more colours, and can be swapped out more easily, but a texture sample might end up being be more expensive than a math-based method, and potentially suffer from colour banding issues.</p>
 <p>For creating the gradient texture, it can either be done manually in your preferred image manipulation software (e.g. Photoshop, GIMP, etc), or baked from a C# Gradient object. For example, using a function like :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -799,9 +797,8 @@
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
-<ul>
-<li>It is also technically possible to create a Gradient object in a <b class="node">Custom Function</b> and pass it out. This is a node that allows us to write HLSL code, which is useful for accessing things that Shader Graph can&rsquo;t handle, like arrays and loops. This method still cannot be exposed to the material inspector, but can be set through C# - but only globally.</li>
-</ul>
+<h4 id="custom-function">Custom Function</h4>
+<p>It is also technically possible to create a Gradient object in a <b class="node">Custom Function</b> and pass it out. This is a node that allows us to write HLSL code, which is useful for accessing things that Shader Graph can&rsquo;t handle, like arrays and loops. This method still cannot be exposed to the material inspector, but can be set through C# - but only globally.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -830,6 +827,8 @@
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> _GradientType;
@@ -839,11 +838,12 @@
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> _GradientAlphas[<span style="color:#ae81ff">16</span>];
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> Gradient_float(<span style="color:#66d9ef">out</span> Gradient output){
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Converts the float array to float2, into format that Gradient struct expects</span>
 </span></span><span style="display:flex;"><span>	float2 Alphas[<span style="color:#ae81ff">8</span>];
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i=<span style="color:#ae81ff">0</span>;i&lt;<span style="color:#ae81ff">8</span>;i++){
 </span></span><span style="display:flex;"><span>		Alphas[i] = float2(_GradientAlphas[i*<span style="color:#ae81ff">2</span>], _GradientAlphas[i*<span style="color:#ae81ff">2</span>+<span style="color:#ae81ff">1</span>]);
 </span></span><span style="display:flex;"><span>	}
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	
 </span></span><span style="display:flex;"><span>	Gradient g = {
 </span></span><span style="display:flex;"><span>	_GradientType,
 </span></span><span style="display:flex;"><span>	_GradientColorsLength,
@@ -854,7 +854,8 @@
 </span></span><span style="display:flex;"><span>	output = g;
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Required to make Gradients work as inputs/outputs</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Required to make a Gradient work as an output</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// (I think something to do with how the preview is generated)</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">bool</span> isfinite(Gradient g) {
 </span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
@@ -863,43 +864,10 @@
 <p>The problem here is that these aren&rsquo;t defined as properties (and arrays can&rsquo;t be) so should be set through the <strong>Shader.SetGlobalX</strong> functions, not as per-material ones to avoid batching-related issues.</p>
 <p>While it might be possible to work around this using multiple <strong>Vector4</strong> properties&hellip; It would be annoying to set these up in every graph you need an exposed Gradient for. You&rsquo;d need 12 Vector4s to support all 8 colour/alpha options, (and another Vector4 / 3 Float properties for the ints), and then you have to deal with setting them through C#.</p>
 <p>Using <strong>Matrix4x4</strong> instead <em>might</em> work, that would only require 3 which is a lot better than 12. But matrices can&rsquo;t be serialised so would need to be set through C# at runtime.</p>
-<p>I&rsquo;d personally recommend the <b class="node">Lerp</b> or <b class="node">Sample Texture 2D</b> approaches instead, but thought I should still mention this too. Maybe it&rsquo;ll give someone else a better idea for a workaround.</p>
-<h3 id="arrays">Arrays</h3>
-<p>While not a type in Shader Graph, shaders also have array types and it is possible to define them in a <b class="node">Custom Function</b> node (allows us to use HLSL code, there&rsquo;s a <a href="#custom-functions">Custom Function</a> section near the end of the post that goes into more detail). This can be somewhat complicated so I don&rsquo;t expect beginners to understand it, but I felt it was important to include this too.</p>
-<p>Some of these arrays were briefly included in the code in the above Gradient section. Defining arrays can only be done with the <strong>File</strong> mode on the <b class="node">Custom Function</b>, as it needs to be outside the scope of the function itself. Arrays can also only be set from C# and won&rsquo;t appear in the material inspector. They can also only really be defined globally.</p>
-<p>For example :</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>float4 _VectorArray[<span style="color:#ae81ff">10</span>]; <span style="color:#75715e">// Vector array</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> _FloatArray[<span style="color:#ae81ff">10</span>]; <span style="color:#75715e">// Float array</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> ArrayExample_float(<span style="color:#66d9ef">out</span> <span style="color:#66d9ef">float</span> Out){
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">float</span> <span style="color:#66d9ef">add</span> = <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">	[unroll]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; <span style="color:#ae81ff">10</span>; i++){
-</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">add</span> += _FloatArray[i];
-</span></span><span style="display:flex;"><span>	}
-</span></span><span style="display:flex;"><span>	Out = <span style="color:#66d9ef">add</span>;
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+<p>I&rsquo;d personally recommend the <b class="node">Lerp</b> or <b class="node">Sample Texture 2D</b> approaches instead, but thought I should still mention this too&hellip; Maybe it&rsquo;ll give someone else a better idea for another workaround.</p>
+
 </div>
-</div>
-<p>In this example the values in the float array are added together and output. Typically you&rsquo;ll need a loop inside the function in order to handle the array, (unless you just need a single value at a given index or something). You might want to try something more exciting that just adding the values together though! I have a <a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/">Forcefield Shader Breakdown</a> that includes ripples using an array.</p>
-<p>It&rsquo;s technically also possible to have other types of arrays, however Unity can only set <strong>Vector</strong> (float4) and <strong>Float</strong> arrays from a C# script.</p>
-<p>As mentioned above, I also recommend to always set them globally, using <strong>Shader.SetGlobalVectorArray</strong> and/or <strong>Shader.SetGlobalFloatArray</strong> rather than using the material.SetVector/FloatArray versions. The reason for this is arrays cannot be properly set as per-material values, and due to batching will result in only one array being used, even if multiple materials are trying to use different ones. This leads to glitchy behaviour where the array being used will change for all objects depending on what is being rendered on screen. By setting them globally, there can only ever be one array used which avoids this.</p>
-<p>Note that these SetXArray methods are also limited to a maximum array size of 1023. If you need larger you might need to try alternative solutions instead, e.g. Compute Buffers (StructuredBuffer), assuming they are supported on the target platform, and even allowed in custom function code as I haven&rsquo;t tested them myself. (These are even more outside of Shader Graph&rsquo;s territory, so I won&rsquo;t be going over them).</p>
+
 <hr>
 <h2 id="coordinate-spaces">Coordinate Spaces</h2>
 <p>Some nodes that obtain positions/directions will have the option to switch between different <strong>Spaces</strong>, including :</p>
@@ -921,11 +889,11 @@
 </ul>
 </li>
 </ul>
-<p>While not a space that is included on nodes, it may still be useful to be aware that <strong>Clip space</strong> exists. Behind the scenes the Vertex stage converts the <strong>Object</strong> space <strong>Vertex Position</strong> (port on Master Stack) to <strong>Clip</strong> space, which is a position important for clipping triangles to what is visible by the camera - so we don&rsquo;t waste time trying to render fragments/pixels outside the screen.</p>
-<p>With a bit of remapping, this <strong>Clip</strong> position is then converted to the <b class="node">Screen Position</b>. That node also has a few modes, including :</p>
+<p>While not a space that is included on nodes, it may still be useful to be aware that <strong>Clip space</strong> exists. Behind the scenes the Vertex stage converts the <strong>Object</strong> space <strong>Vertex Position</strong> (port on Master Stack) to <strong>Clip</strong> space, which is important for clipping triangles to what is visible by the camera - so we don&rsquo;t waste time trying to render fragments/pixels outside the screen. It&rsquo;s a Vector4, where the XY components range from [-W, W], where W is the fourth component of that Vector4.</p>
+<p>With a bit of remapping and dividing by W, clip space is converted to <strong>Screen</strong> space, aka <b class="node">Screen Position</b> node (also known as &ldquo;Normalised Device Coordinates&rdquo; in SRP shader code). That node also has a few modes, including :</p>
 <ul>
-<li><strong>Default</strong> : (0,0) in the bottom left corner of the screen and (1,1) in the top right. Z/B and W/A components should always be 0.</li>
-<li><strong>Raw</strong> : (0,0) in the bottom left corner, (W, W) in the top right (where W is the fourth component of the Vector4). Accesses the position before the <strong>Perspective Divide</strong> step. For a Perspective Camera the W/A component gives you the <a href="https://www.cyanilux.com/tutorials/depth/#eye-depth">Eye Depth</a>. For Orthographic is always 1.
+<li><strong>Default</strong> : (0,0) in the bottom left corner of the screen and (1,1) in the top right. Z/B and W/A components are 0.</li>
+<li><strong>Raw</strong> : (0,0) in the bottom left corner, (W, W) in the top right. This is the position before the <strong>Perspective Divide</strong> step. For a Perspective Camera the W/A component gives you the <a href="https://www.cyanilux.com/tutorials/depth/#eye-depth">Eye Depth</a>. For Orthographic is always 1.
 <ul>
 <li><code>Default = Raw.xy / Raw.w</code></li>
 </ul>
@@ -936,6 +904,7 @@
 <li><code>Tiled = frac(Center * (ScreenWidth/ScreenHeight, 1))</code></li>
 </ul>
 </li>
+<li>newer versions also have <strong>Pixel</strong> : (0,0) in the bottom left corner of the screen. Other corner values depend on screen resolution. Z/B and W/A components are 0.</li>
 </ul>
 <hr>
 <h2 id="understanding-previews">Understanding Previews</h2>
@@ -1033,22 +1002,22 @@
 </div>
 <p>Prior to v10, an arrow was on the left of each property to expand extra settings for it. In v10+ these settings were moved to the <strong>Graph Inspector</strong> window in the <strong>Node Settings</strong> tab. While a property is selected in the <strong>Blackboard</strong> or in the graph, the settings will appear there. (I&rsquo;m personally not a fan of this change as it makes creating properties a bit awkward when having to go back and forth between two separate windows, so I&rsquo;m very much hoping it&rsquo;s reverted).</p>
 <p>The settings available for each property can vary slightly but most types will have <strong>Reference</strong>, <strong>Exposed</strong>, <strong>Default</strong> and <strong>Precision</strong> options. Some also have additional <strong>Modes</strong>. I&rsquo;ll discuss these in the sections below.</p>
-<p>Some may also include a &ldquo;<strong>Override Property Declaration</strong>&rdquo; (or &ldquo;Hybrid Instanced&rdquo; prior to v10). The <strong>Hybrid Per-Instance</strong> option on this is related to the <a href="https://docs.unity3d.com/Packages/com.unity.rendering.hybrid@latest">DOTS Hybrid Renderer</a>. I&rsquo;m not very familiar with DOTS, so if you want more information about it, see <a href="https://learn.unity.com/tutorial/what-is-dots-and-why-is-it-important">here</a> and <a href="https://unity.com/dots">here</a>. There&rsquo;s also <strong>Global</strong> and <strong>Per-Material</strong> options but I would avoid overriding the property declaration unless you are using the Hybrid Renderer as it can break the <a href="https://www.cyanilux.com/tutorials/intro-to-shaders/#srp-batcher">SRP Batcher</a> compatibility.</p>
+<p>Some may also include a &ldquo;<strong>Override Property Declaration</strong>&rdquo; (or &ldquo;Hybrid Instanced&rdquo; prior to v10). The <strong>Hybrid Per-Instance</strong> option on this is related to the <a href="https://docs.unity3d.com/Packages/com.unity.rendering.hybrid@latest">DOTS Hybrid Renderer</a>. I&rsquo;m not very familiar with DOTS, so if you want more information about it, see <a href="https://learn.unity.com/tutorial/what-is-dots-and-why-is-it-important">here</a> and <a href="https://unity.com/dots">here</a>. There&rsquo;s also <strong>Global</strong> and <strong>Per-Material</strong> options but I would avoid overriding the property declaration unless you are using the Hybrid Renderer as it can break the <a href="https://www.cyanilux.com/tutorials/intro-to-the-shader-pipeline/#srp-batcher">SRP Batcher</a> compatibility.</p>
 <h4 id="property-reference">Reference</h4>
 <p>The settings for each property can vary slightly, but all will have a <strong>Reference</strong> field.</p>
 <p>Prior to v12 (Unity 2021.2) this defaults to an auto-generated string, while v12+ attempts to use the same as the name, but with &ldquo;_&rdquo; appended to the front (and in place of any spaces/hyphens/other symbols). This reference field is important for setting the property from a C# script, which will be discussed in a later section.</p>
 <p>You can edit this reference if you&rsquo;d like. I&rsquo;d recommend making it begin with an underscore (&quot;_&quot;) as this helps avoid issues with certain words - specifically words that are used as important keywords in HLSL or the Shaderlab section of the generated shader code.</p>
 <p>For example, &ldquo;Cull&rdquo;, &ldquo;Offset&rdquo;, &ldquo;float&rdquo;, &ldquo;void&rdquo; will cause the graph to break. Might show a similar error to <code>syntax error: unexpected TOK_CULL, expecting TVAL_ID or TVAL_VARREF</code>. But &ldquo;_Cull&rdquo;, &ldquo;_Offset&rdquo;, etc would work fine (though have nothing to do with the actual Cull/Offset functions, it&rsquo;s just a string/name used to identify the property). Note that in v12+ Shader Graph automatically attempts fix references like this in order to prevent errors.</p>
 <p>Note that the SamplerState node generates it&rsquo;s reference based on the other settings so it cannot be edited. That data type also cannot be set through C# though.</p>
-<h4 id="property-exposed">Exposed</h4>
-<p>Most properties will also have an <strong>Exposed</strong> tickbox.</p>
-<p>If exposed, these properties will appear in the <strong>Inspector</strong> window when viewing a <strong>Material</strong> (Unity&rsquo;s regular Inspector that is, not the Graph Inspector). Materials allow you to have separate textures/values for each instance, while still sharing the same shader. These properties can also be set through C# as I&rsquo;ll explain later.</p>
-<p>If not exposed, the properties will not appear in the Material Inspector, but some properties can still be set from C# - but only as a <strong>Global Shader Property</strong> using the static methods in the <a href="https://docs.unity3d.com/ScriptReference/Shader.html">Shader</a> class. This means all instances of the material, and even materials sharing the same reference will use that value. This can be very useful for easily sending data into all shaders/materials that shouldn&rsquo;t change per-object.</p>
-<p>Not all properties in the Blackboard can be exposed however. <strong>Matrices</strong>, <strong>SamplerState</strong> and <strong>Gradient</strong> objects for example cannot and the tickbox will be greyed out. Matrices can be set through C#, but the SamplerState and Gradient objects cannot (even globally). As mentioned previously there are some workarounds for the <a href="#gradient">Gradient</a>.</p>
-<h4 id="property-default">Default</h4>
+<h4 id="property-exposed">Exposed / Scope</h4>
+<p>Most properties will also have an <strong>Exposed</strong> tickbox, or <strong>Scope</strong> dropdown in newer versions (with Local or Global options).</p>
+<p>If exposed/local, these properties will appear in the <strong>Inspector</strong> window when viewing a <strong>Material</strong> (Unity&rsquo;s regular Inspector that is, not the Graph Inspector). Materials allow you to have separate textures/values for each instance, while still sharing the same shader. These properties can also be set through C# as I&rsquo;ll explain later.</p>
+<p>If un-exposed/global, the properties will not appear on the Material, but can still be set from C# as a <strong>Global Shader Property</strong> - by using the static methods in the <a href="https://docs.unity3d.com/ScriptReference/Shader.html">Shader</a> class. This means all instances of the material, and even materials sharing the same reference will use that value. This can be very useful for easily sending data into all shaders/materials that shouldn&rsquo;t change per-object.</p>
+<p>Not all properties in the Blackboard can be exposed however. e.g. <strong>Matrices</strong>, <strong>SamplerState</strong> and <strong>Gradient</strong> objects. (Though matrices <em>can</em> actually be set locally (on material) through C#)</p>
+<h4 id="property-default">Default Value / Preview Value</h4>
 <p>The <strong>Default</strong> field is the value the property will default to when a <strong>Material</strong> is first created.</p>
 <p>If a <strong>Material</strong> is already created, changing the <strong>Default</strong> values for an exposed property won&rsquo;t affect them. You would have to adjust the value on the material manually through Unity&rsquo;s <strong>Inspector</strong>. Be aware of this as it&rsquo;s a common issue that you might encounter when trying to debug your shader. If your shader is producing different results in-graph than in-scene, the values on the <strong>Material</strong> would be the first place to check. (If the problem isn&rsquo;t there, it could also be related to the mesh, e.g. UV Mapping related, if your shader is using the UV channels that is).</p>
-<p>It is also the value that will be used in the node <strong>Previews</strong> so it can be important to set these.</p>
+<p>It is also the value that will be used in the node <strong>Previews</strong> so it can be important to set this field.</p>
 <h4 id="property-modes">Modes</h4>
 <div class="img-center">
 <a href="PropertyModeExamples.png" target="_blank" rel="noopener noreferrer">
@@ -1056,20 +1025,62 @@
 </a>
 <p class="img-text"></p>
 </div>
-<p>Some properties will have different &ldquo;modes&rdquo;, such as the <strong>Float</strong> property which has the following :</p>
+<p>Some properties will have different &ldquo;<strong>Modes</strong>&rdquo;, with options shown in these foldouts :</p>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Float</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Float</b>';
+
+    }
+"><b>⯈ Float</b></button>
+<div class="foldout">
 <ul>
 <li><strong>Default</strong> : Shows a regular float field in the Material Inspector.</li>
 <li><strong>Slider</strong> : Equivalent of the &ldquo;Range&rdquo; property in shader code. Can set a <strong>Minimum</strong> and <strong>Maximum</strong> value. The property will appear with a slider in the inspector. Setting from C# can still cause the value to go outside the slider&rsquo;s range. If this isn&rsquo;t intended you&rsquo;ll need to clamp the value manually. In 2019.3+ you can obtain the min/max from the property, see an example <a href="https://twitter.com/Cyanilux/status/1337181494729699328">here</a>.</li>
 <li><strong>Integer</strong> : Shows a field that can only be set to integer values. Still acts as a float behind the scenes though. If setting from C#, Unity provides a SetInteger / SetGlobalInteger method.</li>
 <li><strong>Enum</strong> : This should show as a dropdown of values, based on a C# enum or string of values (like &ldquo;A, 1, B, 2&rdquo;). But while this option is included there doesn&rsquo;t seem to be a way to set that C# enum or string&hellip; so it doesn&rsquo;t work.</li>
 </ul>
-<p>The <strong>Color</strong> property has the following modes :</p>
+
+</div>
+
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Color</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Color</b>';
+
+    }
+"><b>⯈ Color</b></button>
+<div class="foldout">
 <ul>
 <li><strong>Default</strong> : A regular colour. From the Material Inspector it can only be set to values between 0 and 1. From C# it can be set outside that range, though be aware that the final shader won&rsquo;t be able to output values outside the range unless HDR is enabled on the URP Asset.</li>
 <li><strong>HDR</strong> (High Dynamic Range) : A colour where values can be outside the 0-1 range. The inspector shows this by having an <strong>Intensity</strong> slider added to the Colour Picker UI. In terms of setting this from C#, you can multiply the Color with a float if you want a brighter result e.g. <code>material.SetColor(&quot;_Color&quot;, Color.red * 5f);</code>. If you care about keeping it using the same result as the UI, multiply by <code>2^Intensity</code> (aka <code>color * Mathf.Pow(2, intensity</code>) instead.</li>
 </ul>
-<p>As a note, prior to v10 Unity didn&rsquo;t correct HDR colours to the correct colorspace for the project. Graphs imported into v10+ will show the property as &ldquo;Deprecated&rdquo; but it can be upgraded in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong>, assuming you want the proper behaviour. If you&rsquo;re in v10+ and want the old behaviour, You can also use a <b class="node">Colorspace Conversion</b> node to convert from <strong>RGB</strong> to <strong>Linear</strong> to mimic it.</p>
-<p><strong>Texture2D</strong> properties have the following modes :</p>
+<p>As a note, prior to v10 Unity didn&rsquo;t correct HDR colours to the correct colorspace for the project. Graphs imported into v10+ will show the property as &ldquo;Deprecated&rdquo; but it can be upgraded in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong>, assuming you want the proper behaviour. If you&rsquo;re in v10+ and want the old behaviour, You can also use a <b class="node">Colorspace Conversion</b> node to convert from <strong>RGB</strong> to <strong>Linear</strong> to mimic it.
+</div>
+
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Texture2D</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Texture2D</b>';
+
+    }
+"><b>⯈ Texture2D</b></button>
+<div class="foldout">
 <ul>
 <li><strong>White</strong> : Defaults to white (1,1,1,1) when a texture isn&rsquo;t assigned.</li>
 <li><strong>Black</strong> : Defaults to black (0,0,0,0) when a texture isn&rsquo;t assigned.</li>
@@ -1077,15 +1088,16 @@
 <li><strong>Bump</strong> (renamed to <strong>Normal Map</strong> in v12+) : Defaults to (0.5,0.5,1,0.5) when a texture isn&rsquo;t assigned. This should always be used for tangent space bump/normals maps. The colour converts to a normal direction of (0,0,1).</li>
 <li><strong>Linear Grey (v12+)</strong> : Defaults to (0.5,0.5,0.5,0.5) in both <strong>Linear</strong> and <strong>Gamma</strong> colour spaces, when a texture isn&rsquo;t assigned. See the [LinearOrGammaWorkflow docs page] for more information on color spaces.</li>
 </ul>
-<p>Note that other texture types (Texture3D, Texture2DArray, Cubemap, etc) default to the <strong>Grey</strong> mode when a texture (despite the generated code trying to use <code>&quot;white&quot;</code>, which isn&rsquo;t a valid mode for those types)</p>
-<p>The SamplerState also has dropdowns for the <a href="#filter-modes">Filter</a> and <a href="#wrap-modes">Wrap</a> modes as listed earlier.</p>
+<p>Note that other texture types (Texture3D, Texture2DArray, Cubemap, etc) default to the <strong>Grey</strong> mode when a texture (despite the generated code trying to use <code>&quot;white&quot;</code>, which isn&rsquo;t a valid mode for those types)
+</div>
+
 <h4 id="property-precision">Precision</h4>
 <p>All properties will also have a <strong>Precision</strong> option, which can be changed between <strong>Inherit</strong>, <strong>Single</strong> (32-bit) and <strong>Half</strong> (16-bit). If set to <strong>Inherit</strong> the properties will default to the <strong>Precision</strong> in the <strong>Graph Settings</strong> tab of the <strong>Graph Inspector</strong>.</p>
 <p>I usually don&rsquo;t worry to much about the precision, but it may be important if you&rsquo;re targetting mobile platforms. It can help to make the shader more performant. You can learn more about precision in the <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@11.0/manual/Precision-Modes.html">shadergraph docs</a>.</p>
 <h4 id="setting-properties">Setting Properties from C#</h4>
 <p>Properties can also be set from a <strong>C# script</strong> through the <a href="https://docs.unity3d.com/ScriptReference/Material.html">Material</a> class (only if exposed), or set globally through the static methods in the <a href="https://docs.unity3d.com/ScriptReference/Shader.html">Shader</a> class. Follow those links to see a list of these methods. When setting a property using them, it&rsquo;s important to use the <a href="#property-reference">Reference</a> of the property, and not it&rsquo;s name in the <strong>Blackboard</strong>.</p>
 <p>Note, since a <strong>Matrix</strong> cannot be exposed, by default they are declared in the <strong>UnityPerMaterial</strong> cbuffer which allows the SRP Batcher to function and the matrix can be different for each material. This however leads to garbage results when setting the matrix globally. If you want a global matrix, you should use the <strong>Override Property Declaration</strong> in the Node Settings to force it to <strong>Global</strong>. Don&rsquo;t override it for other property types (unless you know what you are doing) as it can break SRP Batcher compatibility.</p>
-<p>For more information and example code on setting properties from C#, see the section in my <a href="https://www.cyanilux.com/tutorials/intro-to-shaders/#properties">Intro to Shaders post</a>. It&rsquo;s also important to understand the difference between using <code>Renderer.material</code> and <code>Renderer.sharedMaterial</code>, so see the section <a href="https://www.cyanilux.com/tutorials/intro-to-shaders/#material-instances">here</a> too.</p>
+<p>For more information and example code on setting properties from C#, see the section in my <a href="https://www.cyanilux.com/tutorials/intro-to-the-shader-pipeline/#properties">Intro to the Shader Pipeline post</a>. It&rsquo;s also important to understand the difference between using <code>Renderer.material</code> and <code>Renderer.sharedMaterial</code>, so see the section <a href="https://www.cyanilux.com/tutorials/intro-to-the-shader-pipeline/#material-instances">here</a> too.</p>
 <h3 id="keywords">Keywords &amp; Shader Variants</h3>
 <div class="img-center">
 <a href="Keywords.png" target="_blank" rel="noopener noreferrer">
@@ -1164,7 +1176,7 @@
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>Material material = GetComponent&lt;Renderer&gt;().sharedMaterial;
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// Or use material, if you want to create an instance.</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// This would be important if you only want to enable the keyword for this GameObject/Renderer</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// See https://www.cyanilux.com/tutorials/intro-to-shaders/#material-instances</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// See https://www.cyanilux.com/tutorials/intro-to-the-shader-pipeline/#material-instances</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// Enables EXAMPLE_KEYWORD on material</span>
 </span></span><span style="display:flex;"><span>material.EnableKeyword(<span style="color:#e6db74">&#34;EXAMPLE_KEYWORD&#34;</span>);
@@ -1467,9 +1479,20 @@
 <p>If somehow you manage to create a connection to a Vertex port including a Fragment-only node, it will result in a shader error similar to <code>cannot map expression to vs_5_0 instruction set</code>.</p>
 <hr>
 <h2 id="advanced">Advanced</h2>
-<p>This final section includes some additional features of Shader Graph that I&rsquo;d consider to be more advanced. Learning these might not be necessary to get started, but might be useful things to come back to! If you stop reading here, thanks for reading! Please consider sharing a link to others if you found this useful! &lt;3</p>
+<p>This final section includes some additional features of Shader Graph that I&rsquo;d consider to be more advanced.</p>
 <p>(I would have put some of the content in the <a href="#gradient">Gradient</a> &amp; <a href="#array">Array</a> sections here instead, as that was also more advanced than I wanted the post to be, but felt it fits better to keep that under the <a href="#data-types">Data Types</a> section/heading)</p>
-<hr>
+<p>Learning stuff below might not be necessary to get started, but may be useful to come back to! If you stop reading here, thanks for reading! Please consider sharing a link to others if you found this useful! &lt;3</p>
+
+<div class="footer-btns">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
+<a href="http://discord.gg/2V93q9w">
+<div class="btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+</div>
 <h3 id="custom-interpolators">Custom Interpolators</h3>
 <p>The Vertex stage is responsible for passing through any data (e.g. from the mesh) that may be needed in Fragment stage calculations. This is known as <strong>interpolators</strong> (as this data for each vertex is interpolated across the triangle). It is mostly handled automatically by Shader Graph - e.g. For nodes requiring UVs, the <b class="node">Position</b> node, <b class="node">Normal Vector</b> and other nodes in the <strong>Input → Geometry</strong> heading under the Create Node menu.</p>
 <p>But in some cases we may also want to pass our own custom data between the two stages. In Shader Graph <strong>v12</strong> (Unity <strong>2021.2+</strong>), we can do this by adding <strong>Custom Interpolator</strong> blocks to the <strong>Vertex</strong> stage (by right-clicking, then selecting <strong>Add Block Node</strong>). There is a <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@14.0/manual/Custom-Interpolators.html">docs page here</a> for this, but below also explains how to use it and some usage examples.</p>
@@ -1538,9 +1561,9 @@
 <p>As mentioned previously, this is likely cheaper than a per-pixel approach to distortion (which is essentially the same calculation but all in the Fragment stage), but it definitely doesn&rsquo;t look as accurate and would likely only fit in a old-PS1 style (or similar platforms around that time) or low-poly style (though this plane may need to be fairly high-poly still).</p>
 <hr>
 <h3 id="custom-functions">Custom Functions</h3>
-<p>Shader Graph is a powerful tool, but it can&rsquo;t do everything. Some things might require code snippets to be used instead, which is where the <b class="node">Custom Function</b> node would be used. It would also be useful for complex calculations as writing out math in code can be a lot easier than in node form.</p>
-<p>Back in Unity 2018.1, there was a method of creating custom nodes using the <code>CodeFunctionNode</code> class in the <code>UnityEditor.ShaderGraph</code> namespace. This method is <strong>no longer accessible</strong> and will error if you attempt to use CodeFunctionNode in Shader Graph/URP/HDRP versions for Unity 2019.1+. The replacement was the in-graph node :</p>
-<p>The <b class="node">Custom Function</b> node can be added to a graph, then in v10+ settings for it is found in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window, while the node is selected in the graph. Prior to v10 the settings could be accessed by the small cog/gear icon on the node itself.</p>
+<p>Shader Graph is a powerful tool, but the nodes can&rsquo;t do everything. Some things might require <em>code snippets</em> to be used instead, which is where the <b class="node">Custom Function</b> node would be used. For example for creating <strong>loops</strong>, <strong>dynamic branching</strong>, or complex math calculations (which may be possible through nodes, but can be easier/shorter in code form)</p>
+<p>Back in Unity 2018.1, there was a method of creating custom nodes using the <code>CodeFunctionNode</code> class in the <code>UnityEditor.ShaderGraph</code> namespace. This method is <strong>no longer accessible</strong> and will error if you attempt to use CodeFunctionNode in Shader Graph/URP/HDRP versions for Unity 2019.1+. The replacement was the in-graph node.</p>
+<p>The <b class="node">Custom Function</b> node can be added to a graph, and then configured under the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong> window, while the node is selected in the graph. (Prior to v10 the settings could be accessed by the small cog/gear icon on the node itself)</p>
 <div class="img-center">
 <a href="CustomFunctionExample.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="339" alt="(Image)" src="CustomFunctionExample.png" />
@@ -1560,9 +1583,11 @@
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Out <span style="color:#f92672">=</span> A <span style="color:#f92672">+</span> B;</span></span></code></pre></td></tr></table>
 </div>
 </div>
+<p>The <strong>Name</strong> of the function isn&rsquo;t too important if using the <strong>String</strong> mode but they must be unique or the function may override another.</p>
 <ul>
-<li><strong>File</strong> : We can use an external .hlsl (or .cginc) file and set the node to use it with the <strong>Source</strong> field that appears. The file should use a specific template. Some examples are below :</li>
+<li><strong>File</strong> : We can use an external .hlsl (or .cginc) file and set the node to use it with the <strong>Source</strong> field that appears. The file should use a specific template as explained in the <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Custom-Function-Node.html">shader graph docs</a> and example below.</li>
 </ul>
+<p>Typically the whole file contents are inside an <code>#ifndef KEYWORD</code> <code>#define KEYWORD</code> &hellip; <code>#endif</code> block, which ensures the functions are only defined <strong>once</strong> - even if the file is included multiple times, which may occur if two <b class="node">Custom Function</b> nodes reference the same HLSL File. The keyword used should be <em>unique</em> to that file. If two files have the same keyword, the contents of one won&rsquo;t be included (likely causing an undefined error)</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -1584,42 +1609,12 @@
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifndef MYHLSLINCLUDE_INCLUDED
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define MYHLSLINCLUDE_INCLUDED
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">// This define is important to prevent the file being included multiple
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// times if the file is used in multiple Custom Function nodes
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// You should change it to be unique for each file you create.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// The function name &#34;MyFunction&#34; will be the Name used in the Custom Function.
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// The function name &#34;MyFunction&#34; will be the Name used in the Custom Function node.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">// The _float suffix is used to support the Float/Single precision.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">MyFunction_float</span>(float3 A, <span style="color:#66d9ef">float</span> B, out float3 Out) {
 </span></span><span style="display:flex;"><span>	<span style="color:#75715e">// A is a Vector3 input, which in code is float3 (or half3 if using Half precision)
@@ -1634,39 +1629,130 @@
 </span></span><span style="display:flex;"><span>    Out <span style="color:#f92672">=</span> A <span style="color:#f92672">+</span> B;
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// We can also define multiple functions in the same file,
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// and even include other files to use functions from them.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Assets/OtherFile.hlsl&#34;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// This function doesn&#39;t use an output, instead returns float3.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// This can&#39;t really be used in the Custom Function node as that requires an out parameter
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// but it can still be used by other functions below.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>float3 <span style="color:#a6e22e">NonGraphFunction</span>(float3 In) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> In <span style="color:#f92672">*</span> In;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">AnotherFunction_float</span>(float3 A, out float3 Out) {
-</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#ifdef SHADERGRAPH_PREVIEW
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// Code in here will be used by previews
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Out <span style="color:#f92672">=</span> FunctionInThatOtherFile(A);
-</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#else
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// Code in here will be used by the actual shader
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Out <span style="color:#f92672">=</span> NonGraphFunction(A);
-</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#endif
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// Note that all Outputs must be set in all code paths, or it will error.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// Meaning, if we use #if or #ifdef, we should always use an #else
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// as well, or set the outputs at the start outside the conditional block.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
-</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">#endif </span><span style="color:#75715e">// ends the MYHLSLINCLUDE_INCLUDED check at the beginning of the file.
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div>
-<p>The <strong>Name</strong> of the function isn&rsquo;t too important if using the <strong>String</strong> mode but they must be unique or the function may override another. If using the <strong>File</strong> mode the <strong>Name</strong> must match the name of the function you want to use, without the precision prefix. A file can contain multiple functions, but the <b class="node">Custom Function</b> node will only use the one with the name you set.</p>
-<p>A common use for custom functions is for <strong>custom lighting models</strong> (e.g. Toon shaders). I have shared the functions and Sub Graphs that I use for this on my <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Github</a> (It&rsquo;s also a package so can be added to a project using the HTTPs link (ending with .git) in the Package Manager using the &ldquo;Add package from Git URL&rdquo; option)</p>
-<hr>
-<h3 id="better-texture-data-types">Better Texture Data Types</h3>
-<p>In Shader Graph v10.3+, Unity added the following data structures, four for Textures and one for the SamplerState data type :</p>
+<p>As shown above, the <strong>Name</strong> field must match the name of the function you want to use without the precision prefix (<code>MyFunction</code> in this case). A file can contain multiple functions - the <b class="node">Custom Function</b> node will only use the one with the name you set.</p>
+<h4 id="ifdef-shadergraph-preview">Calling ShaderLibrary Functions in a Custom Function</h4>
+<p>There may be cases where you need to access functions from the URP/HDRP ShaderLibrary in your code. Some common macros may be defined for pipelines. For example, sampling a texture :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifndef SAMPLE_TEXTURE_EXAMPLE_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define SAMPLE_TEXTURE_EXAMPLE_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">ExampleSampleTexture2D_float</span>(UnityTexture2D Texture, float2 UV, out float4 Out){
+</span></span><span style="display:flex;"><span>   Out <span style="color:#f92672">=</span> SAMPLE_TEXTURE2D(Texture, Texture.samplerstate, UV);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>But other more pipeline-specific macros/functions require special care. Previews within shader graph need to render in any render pipeline, so they use their own separate ShaderLibrary which won&rsquo;t have access to URP/HDRP specific functions.</p>
+<p>It&rsquo;s typical to use the <code>SHADERGRAPH_PREVIEW</code> keyword to output something different for previews, especially when they wouldn&rsquo;t be useful anyway. For example this function from my <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Custom Lighting Package</a>, obtains Directional Light info in URP :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">MainLight_float</span> (out float3 Direction, out float3 Color, out <span style="color:#66d9ef">float</span> DistanceAtten){
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#ifdef SHADERGRAPH_PREVIEW
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Direction <span style="color:#f92672">=</span> normalize(float3(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">0.4</span>));
+</span></span><span style="display:flex;"><span>		Color <span style="color:#f92672">=</span> float4(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>		DistanceAtten <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#else
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Light mainLight <span style="color:#f92672">=</span> GetMainLight();
+</span></span><span style="display:flex;"><span>		Direction <span style="color:#f92672">=</span> mainLight.direction;
+</span></span><span style="display:flex;"><span>		Color <span style="color:#f92672">=</span> mainLight.color;
+</span></span><span style="display:flex;"><span>		DistanceAtten <span style="color:#f92672">=</span> mainLight.distanceAttenuation;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p><code>GetMainLight()</code> here is a function that exists only in the URP ShaderLibrary. That is fine for the final generated shader, but as explained above, previews do not have access to it. You might think of adding <code>#include</code> lines for Lighting.hlsl or RealtimeLights.hlsl so the function can be used, but those files contain other includes such as URP&rsquo;s <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/UnityInput.hlsl">UnityInput.hlsl</a> which defines variables like <code>_Time</code>. That already exists under the ShaderGraphLibrary used by previews, hence redefiniton errors are caused and the <code>SHADERGRAPH_PREVIEW</code> block must be used instead.</p>
+<h4 id="better-texture-data-types">Sampling Textures in a Custom Function</h4>
+<p>In shader code online you might typically see <code>sampler2D</code> and <code>tex2D()</code> functions being used. This is the older DX9 syntax, but with Shader Graph we mostly use the newer DX11+ syntax which has <a href="https://docs.unity3d.com/Manual/SL-SamplerStates.html">separate objects for the texture and sampler</a>. This isn&rsquo;t supported in all platforms though (GLES2), so Unity provides a bunch of <strong>macros</strong> which can generate different code. These macros are defined in files found under <a href="https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/API">render-pipelines.core/ShaderLibrary/API</a>. The foldout below also lists some.</p>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Texture Sampling Macros</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Texture Sampling Macros</b>';
+
+    }
+"><b>⯈ Texture Sampling Macros</b></button>
+<div class="foldout">
+<p>Common macros for sampling textures :</p>
+<ul>
+<li>
+<p>Sample : Can be used in Fragment stage only</p>
+<ul>
+<li><code>SAMPLE_TEXTURE2D(textureName, samplerName, coord2)</code></li>
+<li><code>SAMPLE_TEXTURECUBE(textureName, samplerName, coord3)</code></li>
+<li><code>SAMPLE_TEXTURE3D(textureName, samplerName, coord3)</code></li>
+<li><code>SAMPLE_TEXTURE2D_ARRAY(textureName, samplerName, coord2, index)</code></li>
+<li><code>SAMPLE_TEXTURECUBE_ARRAY(textureName, samplerName, coord3, index)</code></li>
+<li>These macros would end up using <a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-to-sample">tex.Sample(&hellip;)</a> (on DX11+ type platforms)</li>
+</ul>
+</li>
+<li>
+<p>Sample Level (of Detail) : Provides lod input to specify the mip map level sampled. Can be used in both Vertex &amp; Fragment stages</p>
+<ul>
+<li><code>SAMPLE_TEXTURE2D_LOD(textureName, samplerName, coord2, lod)</code></li>
+<li><code>SAMPLE_TEXTURECUBE_LOD(textureName, samplerName, coord3, lod)</code></li>
+<li><code>SAMPLE_TEXTURE3D_LOD(textureName, samplerName, coord3, lod)</code></li>
+<li><code>SAMPLE_TEXTURE2D_ARRAY_LOD(textureName, samplerName, coord2, index, lod)</code></li>
+<li><code>SAMPLE_TEXTURECUBE_ARRAY_LOD(textureName, samplerName, coord3, index, lod)</code></li>
+<li>These macros would end up using <a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-to-samplelevel">tex.SampleLevel(&hellip;)</a> (on DX11+ type platforms)</li>
+</ul>
+</li>
+<li>
+<p>Sample Bias : Provides a bias to adjust the mip map level. Can be used in Fragment stage only.</p>
+<ul>
+<li><code>SAMPLE_TEXTURE2D_BIAS(textureName, samplerName, coord2, bias)</code></li>
+<li><code>SAMPLE_TEXTURECUBE_BIAS(textureName, samplerName, coord3, bias)</code></li>
+<li><code>SAMPLE_TEXTURE2D_ARRAY_BIAS(textureName, samplerName, coord2, index, bias)</code></li>
+<li><code>SAMPLE_TEXTURECUBE_ARRAY_BIAS(textureName, samplerName, coord3, index, bias)</code></li>
+<li>Doesn&rsquo;t seem to be BIAS macros for Texture3D. May be able to use <a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-to-samplebias">tex.SampleBias(&hellip;)</a> function still (or <a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-tex3dbias">tex3Dbias</a> for GLES2) ?</li>
+</ul>
+</li>
+<li>
+<p>Sample Gradient : Provides inputs for partial derivatives. Can be used in both Vertex &amp; Fragment stages. (Unless you use <code>ddx()</code>/<code>ddy()</code> functions to calculate those derivatives - as those are Fragment only). These are useful when the UV coords used for sampling aren&rsquo;t continuous, see <a href="#sg-pixellated-seams">Pixellation along seams question above</a>.</p>
+<ul>
+<li><code>SAMPLE_TEXTURE2D_GRAD(textureName, samplerName, coord2, dpdx, dpdy)</code></li>
+<li><code>SAMPLE_TEXTURE2D_ARRAY_GRAD(textureName, samplerName, coord2, index, dpdx, dpdy)</code></li>
+<li>Doesn&rsquo;t seem there is GRAD macros for other texture types. May be able to use <a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-to-samplegrad">tex.SampleGrad(&hellip;)</a> function still (or <a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-texcubegrad">texCUBEgrad</a>/<a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-tex3dgrad">tex3Dgrad</a> for GLES2) ?</li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+<p>In Shader Graph v10.3+ the following structs were added, mirroring the HLSL types :</p>
 <ul>
 <li><strong>UnityTexture2D</strong></li>
 <li><strong>UnityTexture2DArray</strong></li>
@@ -1674,24 +1760,146 @@
 <li><strong>UnityTextureCube</strong></li>
 <li><strong>UnitySamplerState</strong></li>
 </ul>
-<p>Defined in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl">pipelines.core/ShaderLibrary/Texture.hlsl</a>.</p>
-<p>These can be used as input/output arguments in a <b class="node">Custom Function</b> node as alternatives to the <strong>Texture2D</strong>, <strong>Texture2DArray</strong>, <strong>Texture3D</strong>, <strong>TextureCube</strong> and <strong>SamplerState</strong> objects (which are now referred to as &ldquo;bare&rdquo; types). The purpose of these new non-bare structs is to handle connections for the texture data types in a more consistent way.</p>
-<p>For example :</p>
+<p>These structs (defined in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl">pipelines.core/ShaderLibrary/Texture.hlsl</a>) wrap the HLSL texture objects (<code>Texture2D, Texture2DArray, Texture3D, TextureCube</code>) and their associated samplers (<code>SamplerState</code>) together, allowing them to both be passed into a <b class="node">Custom Function</b> node in a single parameter.</p>
+<p>Some examples :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">ExampleSampleTexture2D_float</span>(UnityTexture2D Texture, float2 UV, out float4 Out){
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SampleTexture2D_float</span>(UnityTexture2D Texture, float2 UV, out float4 Out){
 </span></span><span style="display:flex;"><span>   Out <span style="color:#f92672">=</span> SAMPLE_TEXTURE2D(Texture, Texture.samplerstate, UV);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SampleTexture2DLOD_float</span>(UnityTexture2D Texture, float2 UV, <span style="color:#66d9ef">float</span> LOD, out float4 Out){
+</span></span><span style="display:flex;"><span>   Out <span style="color:#f92672">=</span> SAMPLE_TEXTURE2D_LOD(Texture, Texture.samplerstate, UV, LOD);
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
-<p>It&rsquo;s possible now to access the <strong>SamplerState</strong> from a <strong>Texture</strong> through <code>unityTex.samplerstate</code> (as shown above), as well as the <strong>TexelSize</strong> through <code>unityTex.texelSize</code> (That one is UnityTexture2D only though). The texture is accessed via <code>unityTex.tex</code>, though the <code>SAMPLE_TEXTURE2D</code> macro can be used with new struct types too.</p>
+<p>Thanks to these types, it&rsquo;s possible to access the <strong>SamplerState</strong> used by the texture through <code>.samplerstate</code> (as shown above), as well as the <strong>TexelSize</strong> through <code>.texelSize</code> (That one is UnityTexture2D only though). The actual texture object is accessed via <code>.tex</code> but sampling macros can be used with new struct types too.</p>
 <p>Custom Function nodes created prior to this change will set their inputs/outputs as the &ldquo;Bare&rdquo; types when updated. This allows the function to still work as it was originally intended, but switching them to &ldquo;non-Bare&rdquo; allows you to use the new samplerstate/texelsize access.</p>
-<p>For more information/examples on how to use these types with the <b class="node">Custom Function</b> node, see <a href="https://www.cyanilux.com/faq/#sg-custom-function-textures">this answer on the FAQ page</a>.</p>
+<button id="sg-custom-function-textures-old" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Pre-v10 examples</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Pre-v10 examples</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#sg-custom-function-textures-old';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Pre-v10 examples</b></button>
+<div class="foldout">
+<p>In case you are still on older versions or using Bare types, the above functions would instead typically look like this. Where a <b class="node">Sampler State</b> node would have to be used.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">OldExample_float</span>(Texture2D Tex, SamplerState SS, float2 UV, out float4 Out){
+</span></span><span style="display:flex;"><span>   Out <span style="color:#f92672">=</span> SAMPLE_TEXTURE2D(Tex, SS, UV);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">OldLODExample_float</span>(Texture2D Tex, SamplerState SS, float3 UV, out float4 Out){
+</span></span><span style="display:flex;"><span>    Out <span style="color:#f92672">=</span> SAMPLE_TEXTURE2D_LOD(Tex, SS, UV, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+
+</div>
+
+<h4 id="arrays">Arrays &amp; Loops</h4>
+<p>While not a type exposed in Shader Graph, shaders also have array types and it is possible to define them in a <b class="node">Custom Function</b></p>
+<p>Defining arrays can only be done with the <strong>File</strong> mode, as it needs to be outside the scope of the function itself. Arrays can also only be set from C# and won&rsquo;t appear in the material inspector.</p>
+<p>For example :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>float4 _VectorArray[<span style="color:#ae81ff">10</span>]; <span style="color:#75715e">// Vector array</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> _FloatArray[<span style="color:#ae81ff">10</span>]; <span style="color:#75715e">// Float array</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> ArrayExample_float(<span style="color:#66d9ef">out</span> <span style="color:#66d9ef">float</span> Out){
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">float</span> <span style="color:#66d9ef">add</span> = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">	[unroll]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; <span style="color:#ae81ff">10</span>; i++){
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">add</span> += _FloatArray[i];
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	Out = <span style="color:#66d9ef">add</span>;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>In the above example, a loop has been used to sum the values. Typically you&rsquo;ll need a loop inside the function in order to handle the array (unless you just need a single value at a given index). Another example can be found in my <a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/">Forcefield Shader Breakdown</a> that uses an array to produce ripples on the forcefield surface.</p>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ What is \u003ccode\u003e[unroll]\u003c\/code\u003e ?</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ What is \u003ccode\u003e[unroll]\u003c\/code\u003e ?</b>';
+
+    }
+"><b>⯈ What is <code>[unroll]</code> ?</b></button>
+<div class="foldout">
+<p><code>[unroll]</code> is specified in the above code before the loop, which tells the compiler that we&rsquo;ve written the loop more out of <em>convienience</em> and it shouldn&rsquo;t actually be handled on the gpu as an actual loop. It would be equivalent to writing :</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">add</span> += _FloatArray[<span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">add</span> += _FloatArray[<span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">add</span> += _FloatArray[<span style="color:#ae81ff">2</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">add</span> += _FloatArray[<span style="color:#ae81ff">3</span>];
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ... (etc)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">add</span> += _FloatArray[<span style="color:#ae81ff">9</span>];</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Generally unrolling is faster, though you might instead use an actual <code>[loop]</code> if the body is expensive and exiting early may be more performant than the overhead of the loop itself. Perhaps when dealing with raymarching for example.</p>
+<p>For more info see <a href="https://discussions.unity.com/t/what-are-unroll-and-loop-when-to-use-them/881945/3">this forum answer</a>.</p>
+
+</div>
+
+<p>It&rsquo;s technically also possible to have other types of arrays, however Unity can only set <strong>Vector</strong> (float4) and <strong>Float</strong> arrays from a C# script.</p>
+<p>I also recommend to <strong>always set arrays globally</strong>, using <code>Shader.SetGlobalVectorArray</code> and/or <code>Shader.SetGlobalFloatArray</code> rather than using the <code>material.SetVectorArray / SetFloatArray</code> versions as that can lead to glitchy behaviour due to SRP Batching.</p>
+<p>Note that arrays are limited to a maximum array size of <strong>1023</strong>. If you need larger you might need to try alternative solutions instead, e.g. Compute Buffers (StructuredBuffer), though that is more something you&rsquo;d index rather than loop over.</p>
 <h4 id="shader-pass-defines">Shader Pass Defines</h4>
 <p>In URP, Prior to v10 it was possible to use a <strong>Predefined Boolean Keyword</strong> to switch between using code for different shader passes as a define would be added in each pass. These defines are still available in v10+ but how they were defined was changed which broke the ability to use a Keyword. It is still possible to handle it through a <b class="node">Custom Function</b> node however.</p>
 <p>These defines for URP are :</p>
@@ -1777,11 +1985,11 @@
 <p>This will generate the code into a temporary file, allowing you to view it.</p>
 <p>If you plan to edit the code, you must first save the shader file somewhere in your <strong>Assets</strong> folder. It can then be treated similarly to any other code-written shader (but still requires the Shader Graph package to be installed to function). It is separate from the graph asset now though, so you&rsquo;ll need to switch the shader on materials to use the code version. Changes to the code will also not update the graph, and vice versa.</p>
 <p>Sometimes Shader Graph can be a bit limited, so it can be useful to edit the generated code to extend what it is possible in graph form. For example, adding <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil</a> operations. (It&rsquo;s also possible to override this on the <strong>RenderObjects</strong> feature for the URP Forward Renderer. That is outside of the scope of this tutorial though, it&rsquo;s long enough already!)</p>
-<p>Be aware that the code might include multiple SubShaders depending on the targets under the Graph Settings. I&rsquo;ve also seen URP ones convert to two SubShaders, one intended for gles platforms (&amp; using shader model 2) and another for other platforms (using shader model 4.5). If you&rsquo;re editing the code make sure you edit the one being used by your target (or both). The gles one seems to not include the <code>DOTS_INSTANCING_ON</code> multi_compile/keyword, so I would assume the reason for separating it into two versions is related to that.</p>
+<p>Be aware that the code might include multiple SubShaders depending on the targets under the Graph Settings. I&rsquo;ve also seen URP ones convert to two SubShaders, one intended for gles platforms (&amp; using shader model 2) and another for other platforms (using shader model 4.5). If you&rsquo;re editing the code make sure you edit the one being used by your target (or both)
 <br><hr>
 
 <div style="display:block;text-align: center">
-<h2>Thanks for reading! 😊</h2>
+<h2 class="title-undecorated">Thanks for reading! 😊</h2>
 <p style="margin-bottom:0">If you find this post helpful, please consider sharing it with others / on socials<br>Donations are also <b>greatly</b> appreciated! 🙏✨</p>
 <p style="font-size:13px;margin-top:0;color:grey">(Keeps this site free from ads and allows me to focus more on tutorials)</p>
 
@@ -1796,7 +2004,7 @@ Join my discord! 💬
 </img>
 </div>
 </a>
-</div>
+</div></p>
 
 
         </div>
