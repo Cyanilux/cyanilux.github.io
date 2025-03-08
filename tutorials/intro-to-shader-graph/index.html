@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/intro-to-shader-graph/",
   "inLanguage": "en-gb",
-  "wordCount": "17516",
+  "wordCount": "17227",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -376,24 +376,14 @@
 </ul>
 <p>If URP is installed, a &ldquo;Universal Render Pipeline&rdquo; heading is shown with the following :</p>
 <ul>
-<li><strong>Lit Shader Graph</strong> : Known as the &ldquo;PBR Graph&rdquo; prior to v10. Used for creating a graph that handles lighting for 3D mesh objects, using a <strong>Physically Based Rendering</strong> lighting model, similar to the URP/Lit Shader (or the built-in RP&rsquo;s Standard shader / surface shaders).</li>
-<li><strong>Sprite Lit Shader Graph</strong> : For use with Sprites and <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@11.0/manual/2d-index.html">URP&rsquo;s 2D Renderer &amp; 2D lighting system</a></li>
-<li><strong>Sprite Unlit Shader Graph</strong> : For use with Sprites. Always fully lit, is not affected by lights.</li>
-<li><strong>Unlit Shader Graph</strong> : Always fully lit, is not affected by lights. Can be used for 3D objects, but also in other places like UI (if set to transparent, though Shader Graph does not properly support UI really). Can also be used for custom full screen post processing effects (along with a Blit Renderer Feature, see example <a href="https://cyangamedev.wordpress.com/2020/06/22/urp-post-processing/#CustomEffects">here</a>).</li>
-<li><strong>Fullscreen Shader Graph</strong> (Unity 2022.2+) : For use with the Fullscreen Pass Renderer Feature, for creating custom post-processing effects - see <a href="https://docs.unity3d.com/6000.0/Documentation/Manual/urp/post-processing/post-processing-custom-effect-low-code.html">docs example</a>.</li>
+<li><strong>Lit Shader Graph</strong> : Known as the &ldquo;PBR Graph&rdquo; prior to v10. Used for creating a graph that handles lighting for 3D mesh objects, using a <strong>Physically Based Rendering</strong> lighting model, similar to the URP/Lit Shader (or the built-in RP&rsquo;s Standard shader / surface shaders)</li>
+<li><strong>Unlit Shader Graph</strong> : Always fully lit, is not affected by lights &amp; shadows. Intended for use on 3D objects.</li>
+<li><strong>Sprite Lit Shader Graph</strong> : For use with Sprites with <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@11.0/manual/2d-index.html">URP&rsquo;s 2D Renderer &amp; 2D lighting system</a></li>
+<li><strong>Sprite Unlit Shader Graph</strong> : For use with Sprites. Always fully lit, is not affected by lights &amp; shadows.</li>
+<li><strong>Fullscreen Shader Graph</strong> (Unity 2022.2+) : For use with the Fullscreen Pass Renderer Feature, for creating custom post-processing effects - see <a href="https://docs.unity3d.com/6000.0/Documentation/Manual/urp/post-processing/post-processing-custom-effect-low-code.html">docs example</a></li>
 <li><a href="https://docs.unity3d.com/6000.0/Documentation/Manual/urp/canvas-shader.html"><strong>Canvas Graph</strong></a> (Unity 2023.2+ &amp; 6000+) : For use with UI (e.g. Image, Raw Image components)</li>
 </ul>
-<p>And if HDRP is installed, a &ldquo;HDRP&rdquo; heading is shown, with the following graph types. I&rsquo;m not familiar with HDRP so I&rsquo;ll be linking docs more than trying to explain them :</p>
-<ul>
-<li><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.3/manual/Master-Node-Decal.html"><strong>Decal Shader Graph</strong></a> : Used for creating decals which project the material onto (opaque) objects in the scene.</li>
-<li><strong>Eye Shader Graph</strong> : Used for rendering eyes. There isn&rsquo;t a proper docs page for the master node / graph type, but the Eye shader HDRP provides apparently is built upon it, so <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.2/manual/eye-shader.html">this page</a> might provide some information.</li>
-<li><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.3/manual/Master-Node-Fabric.html"><strong>Fabric Shader Graph</strong></a> : Uses either cotton wool or anisotropic silk as its base and supports various additional effects, such as Subsurface Scattering, to give you the ability to create realistic looking fabrics.</li>
-<li><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.3/manual/Master-Node-Hair.html"><strong>Hair Shader Graph</strong></a> : Used for rendering hair or fur.</li>
-<li><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.3/manual/Master-Node-Lit.html"><strong>Lit Shader Graph</strong></a> : Used for creating a graph that handles lighting for 3D mesh objects, using a <strong>Physically Based Rendering</strong> lighting model. Also see <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.3/manual/Material-Type.html">Material Type</a>.</li>
-<li><strong>StackLit Shader Graph</strong> : Similar to the Lit shader but favours quality over performance. It allows you to stack multiple high quality effects ontop of eachother, such as anisotropy, subsurface scattering, iridescence, and hazy parametrization. It is expensive, so I believe it is intended more for visualizations / renders, rather than in gameplay.</li>
-<li><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.3/manual/Master-Node-Unlit.html"><strong>Unlit Shader Graph</strong></a> : Similar to URP&rsquo;s Unlit Graph but with additional values. Always fully lit, is not affected by lights.</li>
-</ul>
-<p>You may also notice a few extra non-graph options. Again, these are for Shader Code / HLSL (High Level Shading Language) which isn&rsquo;t the focus of this tutorial.</p>
+<p>For HDRP graph types, <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/shader-graph-materials-reference.html">see docs</a>.</p>
 <hr>
 <h2 id="graph-inspector">Graph Inspector</h2>
 <p>In v10+, the <strong>Graph Inspector</strong> window was added, which can be toggled using the button in the top right of the graph. It has two tabs, <strong>Node Settings</strong> and <strong>Graph Settings</strong>.</p>
@@ -404,7 +394,7 @@
 <p class="img-text"></p>
 </div>
 <p>The <strong>Graph Settings</strong> tab is important to set up the graph correctly if you&rsquo;ve selected the <strong>Blank Shader Graph</strong> or want to switch to a different graph type. We need to select an <strong>Active Target</strong> (Universal, HDRP or Visual Effect, depending on which is installed in the project). It&rsquo;s also possible to add multiple active targets to the list, if you need it to be compiled for more than one that is.</p>
-<p>Once a target is selected, more settings are added below the list. I&rsquo;ll be going through the <strong>Universal</strong> ones below but HDRP has some similar ones too (listed on their graph type / master node pages, as linked above). HDRP also exposes it&rsquo;s settings in the Material Inspector but sadly URP doesn&rsquo;t do this currently.</p>
+<p>Once a target is selected, more settings are added below the list. I&rsquo;ll be going through the <strong>Universal</strong> ones below but HDRP has some similar ones too (listed on their graph type / master node pages, as linked in the docs above).</p>
 <div class="img-center">
 <a href="GraphSettingsUniversal.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="647" height="224" alt="(Image)" src="GraphSettingsUniversal.png" />
@@ -412,7 +402,7 @@
 <p class="img-text"></p>
 </div>
 <p>Prior to v10, these settings can instead be found on the <b class="node">Master</b> node. While hovering over it, a small cog/gear icon appears in the top right of the node which shows the settings when clicked.</p>
-<p>The settings for URP are :</p>
+<p>Common settings for URP include :</p>
 <ul>
 <li><strong>Material</strong> : Selects the graph type. Can be <strong>Unlit</strong>, <strong>Lit</strong>, or <strong>Sprite Unlit/Lit</strong>.
 <ul>
@@ -453,17 +443,18 @@
 <li><strong>Alpha Clip</strong> : Toggles alpha clipping. If enabled, an <strong>Alpha Clip Threshold</strong> port will be added to the Master Stack. For each fragment/pixel, if the <strong>Alpha</strong> value is lower than the threshold the fragment is discarded, meaning it isn&rsquo;t rendered. This can be done with both surface modes. Using <strong>Opaque</strong> &amp; <strong>Alpha Clip</strong> is common for foliage effects to make sure they are sorted correctly.</li>
 <li><strong>Render Face</strong> : Controls whether Front, Back or Both sides are rendered. In older versions, the option was only Front faces or <strong>Two Sided</strong>.
 <ul>
-<li>Be aware that for URP you may need to flip the Tangent space Normal for these faces in order to get the correct lighting/shading. You can do this with the <b class="node">Is Front Face</b> node and a <b class="node">Branch</b> like so :</li>
+<li>Be aware that for URP you may need to flip the Tangent space Normal for these faces in order to get the correct lighting/shading. You can do this with the <b class="node">Is Front Face</b> node and a <b class="node">Branch</b> like so :
+<div class="img-center">
+	<a href="GraphTwoSidedLit.png" target="_blank" rel="noopener noreferrer">
+	<img loading="lazy" width="883" height="306" alt="(Image)" src="GraphTwoSidedLit.png" />
+	</a>
+	<p class="img-text"></p>
+	</div></li>
+<li>Rendering back or both faces in a Lit Graph might also cause issues with shadows if the <strong>Normal Bias</strong> is used on the URP Asset, as this pushes the vertices in the normal direction which might lead to self-shadowing for back faces.</li>
 </ul>
 </li>
+<li><strong>Allow Material Override</strong> also gives you the option to expose these settings to the Material</li>
 </ul>
-<div class="img-center">
-<a href="GraphTwoSidedLit.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="883" height="306" alt="(Image)" src="GraphTwoSidedLit.png" />
-</a>
-<p class="img-text"></p>
-</div>
-<p>Rendering back or both faces in a Lit Graph might also cause issues with shadows if the <strong>Normal Bias</strong> is used on the URP Asset, as this pushes the vertices in the normal direction which might lead to self-shadowing for back faces.</p>
 <hr>
 <h2 id="master-stack">Master Stack</h2>
 <div class="img-right">
