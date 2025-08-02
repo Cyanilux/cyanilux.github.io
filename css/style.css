@@ -382,6 +382,14 @@ time {
 
 /* Post Elements */
 
+.post-metadata {
+	margin : 10px 0px 10px 0px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
 .tag {
 	line-height: 100%;
 	display: inline-block;
@@ -407,6 +415,10 @@ time {
 
 .highlight {
 	line-height: 120%;
+}
+
+.twitter-tweet {
+	margin : auto;
 }
 
 img {
@@ -457,6 +469,7 @@ video {
 }
 
 /* Code Snippets */
+
 /* {{< highlight c "linenos=table,linenostart=1" >}} */
 .highlight div {
 	overflow : auto;
@@ -592,7 +605,7 @@ video {
 	background: #06d3e6;
 }
 
-/* foldout */
+/* Foldout */
 
 .foldout_button {
 	background-color: #282828;
@@ -637,9 +650,57 @@ video {
 	/*border-radius : 10px;*/
 }
 
-.twitter-tweet {
-	margin : auto;
+/* Tab Panel */
+
+.tabs {
+	display : flex;
+	gap: 10px;
 }
+
+.tab, .tab-grey {
+	padding: 5px 15px;
+	text-align: left;
+	font-size: 15px;
+	border-radius : 10px 10px 0px 0px;
+	display: flex;
+	line-height: 25px;
+	border : none;
+}
+
+.tab {
+	background-color: #282828;
+	color: #00aabb;
+}
+
+.tab-grey {
+	background-color: #191919;
+	color: #999999;
+}
+
+.tab-grey:hover {
+	background-color: #303030;
+}
+
+.tabpanel {
+	margin-left : -10px;
+	margin-right : -10px;
+	margin-bottom : 10px;
+	padding: 0px 10px;
+	overflow: hidden;
+	background-color: #282828;
+	border-radius : 10px 10px 10px 10px;
+	/*border: 3px solid #303030;*/
+}
+
+.tabpanel > div {
+	display : none;
+}
+
+.tabpanel > div:first-child {
+	display : block;
+}
+
+/* Footer Content */
 
 hr {
 	border: 2px dashed #505050;
@@ -685,6 +746,8 @@ hr {
 	background-color:#6479c7;
 }
 
+/* Notice Box */
+
 .notice {
 	margin: 5px 0px;
 	display:flex;
@@ -693,10 +756,23 @@ hr {
 	border: 3px solid #303030;
 }
 
+.notice-left {
+	/*background-color: #303030;*/
+	margin-right: 10px;
+	background: repeating-linear-gradient(
+		45deg,
+		#262626,
+		#262626 12px,
+		#202020 12px,
+		#202020 24px
+	);
+	border-radius : 6px 0px 0px 6px;
+}
+
 .notice-exclamation {
 	margin: 15px 10px;
 	background-color: #00aabb;
-	color:#303030;
+	color:#202020;
 	min-width : 28px;
 	height : 28px;
 	border-radius : 100%;
@@ -709,6 +785,12 @@ hr {
 	margin : 5px 0px;
 }
 
+/* Title Adjustments */
+/*
+.title-no-margin -> used for titles on cards
+.title-undecorated -> used for footer title
+*/
+
 h1:not(.title-no-margin) {
 	text-align: center;
 	padding : 0px 0px 20px 0px;
@@ -717,11 +799,6 @@ h1:not(.title-no-margin) {
 .title-undecorated  {
 	margin-top : 30px;
 }
-
-/*
-.title-no-margin -> used for titles on cards
-.title-undecorated -> used for footer title
-*/
 
 h2:not(.title-no-margin):not(.title-undecorated), h3, h4 {
 	margin-top : 30px;
@@ -736,10 +813,6 @@ h2:not(.title-no-margin):not(.title-undecorated), h3, h4 {
 	background-color: #303030;
 }
 
-.post-metadata {
-	margin : 10px 0px 10px 0px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-wrap: wrap;
+.tabpanel > div > h2, .tabpanel > div > h3, .tabpanel > div > h4 {
+	background-color: #303030;
 }

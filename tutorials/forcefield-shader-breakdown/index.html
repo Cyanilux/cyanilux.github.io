@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=7 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=8 ">
 
 
  
@@ -277,7 +277,7 @@
 <p>Next we’ll handle the intersection effect with scene objects. To do this, we’ll create a <b class="node">Screen Position</b> node with the mode set to <strong>Raw</strong> and put it into a <b class="node">Split</b>. This gives us the <strong>depth</strong> of the pixel/fragment on the surface of the object in the <strong>W/A</strong> component. We will also need to create a <b class="node">Scene Depth</b> node set to the <strong>Eye</strong> sampling mode.</p>
 <p>Because we want this shader to support distortion later, this will be different from the intersection effect made in the simple version of this shader – as we cannot use the <strong>Two Sided</strong> mode but still want the intersection to show for both front and back faces. The method I’m using for this is similar to what was done in the <a href="https://www.cyanilux.com/tutorials/water-shader-breakdown">Water Shader Breakdown</a> for the caustics effect. By knowing the position, object depth and the scene depth we can reconstruct the world position in the scene for that fragment, which we can then use to test if the fragment is on the edge of a hemisphere.</p>
 <div class="notice">
-<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-left">
 <div class="notice-exclamation">
 !
 </div>
@@ -566,7 +566,7 @@ Join my discord! 💬
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2024 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux </a></p>
 
 <p class="small-text" style="text-align:center;">
 

@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=7 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=8 ">
 
 
  
@@ -278,7 +278,7 @@
 <p>In order to convert to this &ldquo;local UV&rdquo; (0-1 coordinates across the sprite), we need to know the location and size of the sprite in the sheet/atlas texture.</p>
 <p>We&rsquo;ll need to pass that into the shader/material by using the following C# script (applied to GameObject containing the SpriteRenderer).</p>
 <div class="notice">
-<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-left">
 <div class="notice-exclamation">
 !
 </div>
@@ -451,7 +451,7 @@
 <h2 id="object-pos">Object Position</h2>
 <p>As of Unity 2023.1, sprites seem to use the SRP Batcher in URP (during play mode at least), so an easy method to obtain relative coordinates is by using the <b class="node">Position</b> node, set to <strong>Object</strong> space. You may also want to <b class="node">Swizzle</b> this down to a Vector2 (using &ldquo;xy&rdquo; in the text field).</p>
 <div class="notice">
-<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-left">
 <div class="notice-exclamation">
 !
 </div>
@@ -475,7 +475,7 @@
 <p>As of Unity 2022.2, bounding box info from the renderer is now automatically passed to the shader (in URP and HDRP at least). It passes this into <code>unity_RendererBounds_Min</code> and <code>unity_RendererBounds_Max</code> - part of the UnityPerDraw cbuffer in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/UnityInput.hlsl">UnityInput.hlsl</a>)</p>
 <p>This won&rsquo;t work for Built-in or older versions, (unless you were to manually pass <code>Renderer.bounds.min and .max</code> into your own shader properties via a C# script)</p>
 <div class="notice">
-<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-left">
 <div class="notice-exclamation">
 !
 </div>
@@ -543,7 +543,7 @@ Join my discord! 💬
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2024 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux </a></p>
 
 <p class="small-text" style="text-align:center;">
 

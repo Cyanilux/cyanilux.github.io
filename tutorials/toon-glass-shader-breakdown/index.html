@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=7 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=8 ">
 
 
  
@@ -284,7 +284,7 @@
 <p>First we create a <b class="node">Position</b> node set to <strong>Absolute World</strong> space, and <b class="node">Subtract</b> the camera’s position (in world space, via the <strong>Position</strong> output on the <b class="node">Camera</b> node) to obtain the position relative to the camera. The origin of the effect will now be at the camera’s position so it will move as the camera moves (in terms of translation, not rotation).</p>
 <p>We can then <b class="node">Transform</b> to <strong>Tangent</strong> space, which appears to make the position relative to the meshes’ surface – kind of? Well, at least for our purposes the <strong>R/X</strong> component of the position is horizontal across the surface, and <strong>G/Y</strong> is vertical, but there may be better ways of handling this.</p>
 <div class="notice">
-<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-left">
 <div class="notice-exclamation">
 !
 </div>
@@ -301,7 +301,7 @@
 <p>We can <b class="node">Split</b> to obtain values for each axis individually, and <b class="node">Add</b> them together to make a diagonal gradient. An <b class="node">Absolute</b> function will then convert any negative values to positive. Any changes made will now be mirrored across the diagonal line as both sides share the same values.</p>
 <p>The preview on our <b class="node">Absolute</b> node looks like a sphere which can make things a bit harder to visualise here.</p>
 <div class="notice">
-<div style="background-color: #303030; margin-right: 10px;">
+<div class="notice-left">
 <div class="notice-exclamation">
 !
 </div>
@@ -386,7 +386,7 @@ Join my discord! 💬
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2024 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux </a></p>
 
 <p class="small-text" style="text-align:center;">
 

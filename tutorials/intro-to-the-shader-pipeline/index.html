@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=7 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=8 ">
 
 
  
@@ -25,7 +25,7 @@
   "name": "Intro to the Shader Pipeline",
   "description": "An introduction to what a Mesh, Shader and Material is in Unity, how to set Shader Properties from C#, various types of Batching, and a brief look at Forward, Forward+ and Deferred rendering paths",
   "datePublished": "2021-01-10",
-  "dateModified": "2023-10-13",
+  "dateModified": "2025-08-01",
   "author": {
 	"@type": "Person",
 	"name": "Cyanilux",
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/intro-to-the-shader-pipeline/",
   "inLanguage": "en-gb",
-  "wordCount": "4586",
+  "wordCount": "4611",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -71,7 +71,7 @@
         
     
 <meta property="article:published_time" content="2021-01-10T00:00:00+00:00" />
-<meta property="article:modified_time" content="2023-10-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2025-08-01T00:00:00+00:00" />
 <title>Intro to the Shader Pipeline | Cyanilux</title>
 <meta name="description" content="An introduction to what a Mesh, Shader and Material is in Unity, how to set Shader Properties from C#, various types of Batching, and a brief look at Forward, Forward&#43; and Deferred rendering paths. HLSL | Unity Shader Tutorials, @Cyanilux" />
 <link rel="canonical" href="https://www.cyanilux.com/tutorials/intro-to-the-shader-pipeline/" />
@@ -233,11 +233,10 @@
 
 
 <div style="width:5px"></div>
-<time datetime="2023-10-13"> (updated 13 Oct 2023)</time>
+<time datetime="2025-08-01"> (updated 1 Aug 2025)</time>
 
 </div>
-<p>Hello! This is a small introduction to shader related concepts and how they are used to render graphics in Unity.</p>
-<p>(Updated October 2023)</p>
+<p>Hello! This post acts as a brief introduction to shader related concepts and how they are used to render graphics in Unity.</p>
 <h3 id="sections-">Sections :</h3>
 <ul>
 <li><a href="#mesh">What is a Mesh?</a></li>
@@ -380,10 +379,20 @@
 <h3 id="forward">Forward</h3>
 <p>Forward rendering can be considered the &ldquo;regular&rdquo; way of rendering things, where the shader calculates the pixel colour that is directly drawn to the screen.</p>
 <p>Every fragment produced by the mesh has to do light calculations, even if it gets covered by another fragment in the same mesh or another object (though opaque objects closer to the camera tend to be drawn first to minimise this). Because of this there is typically a limit to the number of realtime lights that can affect each GameObject. In URP this is 1 Main Directional + 8 Additional Lights. Built-in has a similar limit but I think it can be increased in the graphics/quality settings (though with a performance penalty).</p>
+<p>In URP there is also a light limit per camera :</p>
+<ul>
+<li>Desktop and console platforms: 256 Lights</li>
+<li>Mobile platforms: 32 Lights. OpenGL ES 3.0 and earlier: 16 Lights.</li>
+</ul>
+<h3 id="forward-1">Forward+</h3>
+<p>As of Unity 2022.2+, URP also provides a Forward+ path which acts similar to Forward but clusters additional lights together based on screenspace-tiles, to be able to render more of them in a performant way.</p>
+<p>This removes the limit for lights per-GameObject, but the limit per-camera still applies.</p>
+<p>To support this, shaders should include the <code>_FORWARD_PLUS</code> keyword (renamed to <code>_CLUSTER_LIGHT_LOOP</code> in Unity6+) and the additional lights loop should be written in a particular way using macros from URP&rsquo;s ShaderLibrary. As examples, see the <code>AdditionalLights_float</code> function in my <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting/blob/main/CustomLighting.hlsl">Shader Graph Custom Lighting repo</a> or the <code>UniversalFragmentPBR</code>/<code>UniversalFragmentBlinnPhong</code> functions in the URP Shader Library - <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl">Lighting.hlsl</a>.</p>
+<p><a href="https://docs.unity3d.com/6000.1/Documentation/Manual/urp/rendering/forward-rendering-paths.html">https://docs.unity3d.com/6000.1/Documentation/Manual/urp/rendering/forward-rendering-paths.html</a></p>
 <h3 id="deferred">Deferred</h3>
-<p><a href="https://docs.unity3d.com/Manual/RenderTech-DeferredShading.html">Deferred Rendering</a> (or Deferred Shading) instead has the advantage of having no limit to the number of lights per GameObject because the lighting is handled later in the pipeline on <strong>each screen pixel inside the volume of the light</strong>. Having more lights will still effect performance, but only if their ranges are very large on the screen. Though this only works with opaque geometry - Transparents are still be rendered in Forward.</p>
-<p>However in order for this to work, there needs to be a bunch of additional buffers (known as geometry buffers / G-buffers) - storing per-pixel data like Albedo (aka Base Color) &amp; Occlusion, Specular &amp; Smoothness, Normals, and Emission &amp; GI. A disadvantage is this takes up more memory.</p>
-<p>Instead of using the forward pass which outputs straight to the camera colour buffer, the deferred pass renders to these buffers using <strong>Multiple Render Targets (MRT)</strong>. This isn&rsquo;t supported on all platforms - so some may be limited to using Forward instead.</p>
+<p><a href="https://docs.unity3d.com/Manual/RenderTech-DeferredShading.html">Deferred Rendering</a> (or Deferred Shading) also has the advantage of having no limit to the number of lights per GameObject because the lighting is handled later in the pipeline on <strong>each screen pixel inside the volume of the light</strong>. Having more lights will still effect performance, but only if their ranges are very large on the screen. Though this only works with opaque geometry - Transparents are still be rendered in Forward.</p>
+<p>However in order for this to work, there needs to be a bunch of additional buffers (known as geometry buffers / g-buffers) - storing per-pixel data like Albedo (aka Base Color) &amp; Occlusion, Specular &amp; Smoothness, Normals, and Emission &amp; GI, taking up more memory compared to Forward paths.</p>
+<p>The deferred pass renders to these buffers at the same time by using <strong>Multiple Render Targets (MRT)</strong>. This isn&rsquo;t supported on all platforms - so some may be limited to using Forward instead.</p>
 <p>These g-buffers are then sampled later during a <strong>full-screen pass</strong> which handles the lighting/shading calculations and outputs the final colour for each pixel. It&rsquo;s sometimes possible to override this with a custom shader - though isn&rsquo;t documented and tends to be quite complicated. But useful if you want custom lighting such as toon/cel shaded for the entire scene.</p>
 <ul>
 <li>For Built-in RP there&rsquo;s some tutorials of this, such as this <a href="https://www.patreon.com/posts/shaders-for-who-34008552">Deferred article by Xibanya / Team Dogpit</a>.</li>
@@ -395,10 +404,8 @@
 <li><a href="https://catlikecoding.com/unity/tutorials/rendering/part-13/">https://catlikecoding.com/unity/tutorials/rendering/part-13/</a></li>
 <li><a href="https://gamedevelopment.tutsplus.com/articles/forward-rendering-vs-deferred-rendering--gamedev-12342">https://gamedevelopment.tutsplus.com/articles/forward-rendering-vs-deferred-rendering--gamedev-12342</a></li>
 </ul>
-<h3 id="forward-plus">Forward+</h3>
-<p>URP also has a path called <strong>Forward+</strong>, which as the name suggests is similar to Forward, but it treats additional lights differently. Again, in order to remove the light limits per GameObject - without needing G-Buffers / MRT. (Though there are still <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@16.0/manual/urp-universal-renderer.html#real-time-lights-limitations">light limits per camera</a>)</p>
-<p>To support this, the shader should include the <code>_FORWARD_PLUS</code> keyword and the additional lights loop should be written in a particular way using macros from URP&rsquo;s ShaderLibrary. As examples, see the <code>AdditionalLights_float</code> function in my <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting/blob/main/CustomLighting.hlsl">Shader Graph Custom Lighting repo</a> or the <code>UniversalFragmentPBR</code>/<code>UniversalFragmentBlinnPhong</code> functions in the URP Shader Library - <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl">Lighting.hlsl</a>.</p>
-<p>Here&rsquo;s some docs pages related to these Rendering Paths which may provide more information :</p>
+<hr>
+<p>Here&rsquo;s some docs pages related to these Rendering Paths which may provide more info/comparisons :</p>
 <ul>
 <li>BiRP : <a href="https://docs.unity3d.com/Manual/RenderingPaths.html">https://docs.unity3d.com/Manual/RenderingPaths.html</a></li>
 <li>URP : <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@16.0/manual/urp-universal-renderer.html">https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@16.0/manual/urp-universal-renderer.html</a></li>
@@ -641,7 +648,7 @@ Join my discord! 💬
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2024 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux </a></p>
 
 <p class="small-text" style="text-align:center;">
 

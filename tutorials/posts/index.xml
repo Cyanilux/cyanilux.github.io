@@ -25,7 +25,7 @@
       <pubDate>Sat, 22 Apr 2023 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tutorials/custom-renderer-features/</guid>
-      <description>Goes through examples of Renderer Features and explains how to write Custom Renderer Features and Scriptable Render Passes for Universal RP</description>
+      <description>Goes through examples of Renderer Features and explains how to write Custom Renderer Features and Scriptable Render Passes for Universal RP. Mostly focuses on Unity 2022, but now also provides some snippets for newer versions!</description>
     </item>
 	
     
