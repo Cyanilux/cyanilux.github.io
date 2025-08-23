@@ -25,7 +25,7 @@
   "name": "Sun Beams / God Rays Shader Breakdown",
   "description": "Using billboarded quads (or particles) to produce a god rays effect",
   "datePublished": "2024-05-22",
-  "dateModified": "2024-05-22",
+  "dateModified": "2025-08-23",
   "author": {
 	"@type": "Person",
 	"name": "Cyanilux",
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "2817",
+  "wordCount": "2897",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -72,7 +72,7 @@
         
     
 <meta property="article:published_time" content="2024-05-22T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-05-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2025-08-23T00:00:00+00:00" />
 <title>Sun Beams / God Rays Shader Breakdown | Cyanilux</title>
 <meta name="description" content="Using billboarded quads (or particles) to produce a god rays effect. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
 <link rel="canonical" href="https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/" />
@@ -240,6 +240,9 @@
 <time datetime="2024-05-22">&#128337 22 May 2024</time>
 
 
+<div style="width:5px"></div>
+<time datetime="2025-08-23"> (updated 23 Aug 2025)</time>
+
 </div>
 <script>
 	if (cookiesAccepted){
@@ -286,6 +289,7 @@
 <ul>
 <li>Would want Start Speed set to 0, and likely a Circle for Shape module, rotated 90 deg on X axis. For a system that follows the player/camera, could simulate in World Space and emit based on time/distance, fading particles in/out with Color Over Lifetime module. Or set the Start Lifetime to Infinity and under Emission have a single burst to produce a specific number of particles fixed at a location.</li>
 <li>Somewhat optional, but may want to use a 3D Start Size, with Y set to 0</li>
+<li>If the system moves with the player, may also be able to make particles wrap with something like this : <a href="https://gist.github.com/Andicraft/a80796f8542979e88b98bed352e883ec">https://gist.github.com/Andicraft/a80796f8542979e88b98bed352e883ec</a></li>
 </ul>
 </li>
 <li><strong>VFX Graph</strong> (URP/HDRP only), under the <strong>Particle Output Unlit Quad</strong> context, can add the <strong>Orient: Fixed Axis</strong> block with an Up axis of (0, 1, 0)
@@ -295,7 +299,7 @@
 </ul>
 </li>
 </ul>
-<p>I won&rsquo;t go over further details of how to set these systems up as I didn&rsquo;t use them - I&rsquo;m focusing more on the Shader Graph itself. But if you can figure it out and want to use particles, you can add a <b class="node">Position</b> node set to <strong>World</strong> space to the Shader Graph and <a href="#stretch-towards-light">skip to next section</a>, otherwise click the foldout below.</p>
+<p>I won&rsquo;t go over further details of how to set these systems up as I didn&rsquo;t use them - I&rsquo;m focusing more on the Shader Graph itself. But if you can figure it out and want to use particles, you can add a <b class="node">Position</b> node set to <strong>World</strong> space to the Shader Graph and go to the next section, otherwise click the foldout below.</p>
 <button  type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
@@ -347,7 +351,7 @@
 <p class="img-text"></p>
 </div>
 <h3 id="scene-and-camera-fade">Scene &amp; Camera Fades</h3>
-<p>For the fragment stage, we&rsquo;ll be putting together a bunch of groups to mask the alpha. These will all be multiplied together and are mostly optional, depending on what you want the shader to do.</p>
+<p>For the fragment stage, we&rsquo;ll be putting together a bunch of groups to mask the alpha. Most of these will be multiplied together and are mostly optional, depending on what you want the shader to do.</p>
 <p>Ideally we don&rsquo;t want to see the rays intersecting with objects or the camera near plane, so we&rsquo;ll use depth values to fade the alpha.</p>
 <p>To obtain the depth of the fragments/pixels being drawn, use the <b class="node">Position</b> node set to <strong>View</strong> space, <b class="node">Split</b> or <b class="node">Swizzle</b> to obtain the B/Z axis and <b class="node">Absolute</b> (or <b class="node">Negate</b>). You&rsquo;ll want to group this under a &ldquo;Fragment Depth&rdquo; to help keep track of it, as we&rsquo;ll need the output twice.</p>
 <p>To fade when the camera gets close, we just need to remap this a bit. <b class="node">Subtract</b> the distance you want it to start fading (e.g. 5), and <b class="node">Multiply</b> to control the falloff (e.g. 0.5). (Alternatively could use an <b class="node">Inverse Lerp</b> or <b class="node">Smoothstep</b> and specify the start and end points of the fade in the A/B or Edge ports). We should then <b class="node">Saturate</b> to clamp the value between 0 and 1 (as values outside this range don&rsquo;t make sense for alpha values, and would mess with the other masks)</p>
@@ -385,10 +389,10 @@
 </div>
 <p>I chose to show them separately above, but we can even do both axis at the same time without duplicating nodes, by using &ldquo;xy&rdquo; in the <b class="node">Swizzle</b>, and using a <b class="node">Split</b> node to obtain the R and G channels after the <b class="node">Smoothstep</b>.</p>
 <h3 id="shadows">Shadows</h3>
-<p>Ideally we wouldn&rsquo;t want rays appearing in areas completely in shadow. You could maybe hand-place them to prevent this, but that also assumes the light direction won&rsquo;t change as areas of shadow would shift. If generating quads procedurally / using particles, it is likely we&rsquo;d want to mask based on the shadowmap. If using URP, we can use the <strong>Main Light Shadows</strong> subgraph from my <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Custom Lighting package</a>. I&rsquo;m not sure on methods for other pipelines, sorry~!</p>
+<p>Ideally we wouldn&rsquo;t want rays appearing in areas completely in shadow. You could hand-place them to prevent this, but that also assumes the light direction won&rsquo;t change as areas of shadow would shift. If generating quads procedurally / using particles, it is likely we&rsquo;d want to mask based on the shadowmap. If using URP, we can use the <strong>Main Light Shadows</strong> subgraph from my <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Custom Lighting package</a>. (I&rsquo;m not sure on methods for other pipelines, sorry~!)</p>
 <p>This likely won&rsquo;t apply to others, but in my case I also had to replicate some things from the toon shaders used in the scene, as shadows are put through a <b class="node">Step</b> node for a harsh transition and I use the <strong>Main Light Cookie</strong> subgraph to fake additional shadows for clouds.</p>
 <h3 id="dust">Dust/Sparkles</h3>
-<p>You may be able to handle dust/sparkles as additional particles, but I chose to use some good ol&rsquo; <em>scrolling textures~</em></p>
+<p>You may be able to handle dust/sparkles as additional particles, but so that they only appear in the light rays, I chose to use some good ol&rsquo; <em>scrolling textures~</em></p>
 <div class="img-center">
 <a href="Voronoi.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="300" alt="(Image)" src="Voronoi.png" />
@@ -397,16 +401,18 @@
 </div>
 <p>Voronoi/Worley Noise like the texture above, can produce a good distribution of dots (though as these are black in the above, we&rsquo;ll also need to <b class="node">One Minus</b>). While there is a <b class="node">Voronoi</b> node, handling it procedurally is likely more costly than sampling a texture (using <b class="node">Sample Texture 2D</b>), especially as I&rsquo;d like to sample <em>twice</em> with different amounts/directions of scrolling, by using <b class="node">Time</b> as an <strong>Offset</strong> to <b class="node">Tiling And Offset</b> node. The Y axis of the <strong>Tiling</strong> should also higher since our quads are stretched vertically.</p>
 <p>We can combine the two scrolling textures by using a <b class="node">Multiply</b>, then <b class="node">Multiply</b> again by 2 to increase the brightness a bit.</p>
-<p>Currently the dots/texture in the preview is always visible, though some parts are brighter when the textures overlap. We can <b class="node">Smoothstep</b> to remap and only obtain a few dots when the value falls into a given range (the Edge1 and Edge2 inputs). Higher values means less of the texture is visible - so with values of 0.9 and 1 it produces &ldquo;occassional dots/sparkles&rdquo;, which we can then <b class="node">Multiply</b> by a high value like 500 to make them very bright. For some &ldquo;ambient dust&rdquo;, you can use another <b class="node">Smoothstep</b> with slightly lower values like 0.6 and 0.8, which makes the dots more common (but not always visible).</p>
+<p>Currently the dots/texture in the preview is always visible, though some parts are brighter when the textures overlap. We can <b class="node">Smoothstep</b> to remap and only obtain a few dots when the value falls into a given range (the Edge1 and Edge2 inputs). A smaller range means less dots - so with values of 0.9 and 1 it produces &ldquo;occassional dots/sparkles&rdquo;, which we can then <b class="node">Multiply</b> by a high value (e.g. 200) to make them brighter - (can make that value a <strong>Float property</strong> if you want to control it from the material)</p>
+<p>Could also use another <b class="node">Smoothstep</b> with a lower Edge1 value, <b class="node">Multiply</b> by a lower value and <b class="node">Add</b> to the other, to produce a more common/ambient dust. (Though could be a bit excessive for an outside scene - probably better for interiors)</p>
 <div class="img-center">
 <a href="Graph5.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="313" alt="(Image)" src="Graph5.png" />
+<img loading="lazy" width="750" height="345" alt="(Image)" src="Graph5.png" />
 </a>
 <p class="img-text">(Click image to view fullscreen)</p>
 </div>
-<p>We also <b class="node">Add</b> a value of 1 at the end so the result can be multiplied with the other masks without hiding the rays. Note we don&rsquo;t clamp the value anywhere after this - I want to keep the high intensity values for the final colour output so it&rsquo;ll glow when using <strong>Bloom Post Processing</strong> (and assuming HDR is enabled on the URP asset)</p>
+<p>Unlike the other groups we set up, the result here has values above 1. If using the result to control the Alpha we&rsquo;d want to clamp/saturate (and add 1 so it can be multiplied like the other masks). But in this case I&rsquo;m only using it for the Base Color (shown below) - and don&rsquo;t want to clamp, as by keeping high intensity values in the final colour output it&rsquo;ll cause the dust/sparkles the glow when using <strong>Bloom Post Processing</strong> (and assuming HDR is enabled on the URP asset).</p>
 <h3 id="colour--alpha">Colour &amp; Alpha</h3>
-<p>Finally we can add a colour to tint and adjust the intensity of the god rays. If applying the shader to a <strong>Shuriken Particle System</strong>, can use the <b class="node">Vertex Color</b> node - otherwise for VFX Graph or regular GameObjects &amp; MeshRenderers, create a <strong>Color property</strong> in the Blackboard window. Connect that to the <strong>Base Color</strong> port in the <strong>Master Stack</strong>.</p>
+<p>Finally, we can add a colour to tint and adjust the intensity of the god rays. If applying the shader to a <strong>Shuriken Particle System</strong>, can use the <b class="node">Vertex Color</b> node - otherwise for VFX Graph or regular GameObjects &amp; MeshRenderers, create a <strong>Color property</strong> in the Blackboard window. We can <b class="node">Add</b> this to our dust/sparkles result (if using that group) and connect to the <strong>Base Color</strong> port in the <strong>Master Stack</strong>.</p>
+<p>For the <strong>Alpha</strong> port, <b class="node">Split</b> that colour, take the A component and <b class="node">Multiply</b> with the result of all the masks (created in the above sections) multiplied together.</p>
 <div class="notice">
 <div class="notice-left">
 <div class="notice-exclamation">
@@ -414,23 +420,18 @@
 </div>
 </div>
 <div style="margin: 5px;">
-If using a property, can change the Default value under the Node Settings. Be sure to set the alpha component! Shader Graph defaults this to 0 which means the god rays will be invisible! (unless overidden on material)
+If using a <strong>Color property</strong>, Under the <strong>Node Settings</strong> tab while the property is selected, you can change the &ldquo;Default Value&rdquo; (used for node previews and when materials are created). Shader Graph defaults this to <code>(0,0,0,0)</code> while we want something like <code>(255,255,255,10)</code> here. Be sure to change the alpha component or the god rays will be invisible!
 </div>
 </div>
-<p>For the <strong>Alpha</strong> port, <b class="node">Split</b> that colour, take the A component and <b class="node">Multiply</b> with the result of all the masks (created in the above sections) multiplied together.</p>
 <div class="img-center">
 <a href="Graph6.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="119" alt="(Image)" src="Graph6.png" />
+<img loading="lazy" width="750" height="232" alt="(Image)" src="Graph6.png" />
 </a>
 <p class="img-text"></p>
 </div>
 <h3 id="final-notes">Final Notes</h3>
 <p>The shader should now be complete. We can assign it to a material on our objects / particle systems and manually place these in areas of the scene we want to draw attention to - maybe chests, level entrance/exits, etc.</p>
-<p>We can also have these spawn around the player/camera for general ambient rays - assuming that&rsquo;s appropriate for the scenery (e.g. forest, maybe dungeons or cavern close to surface)</p>
-<ul>
-<li>To handle this with particle systems you could maybe have them simulating in World Space and use some alpha changes over lifetime to hide them popping in and out</li>
-<li>For GameObjects, you might want a script to generate &amp; randomise the positions of the light ray quads. In my case, I also teleport the rays to the opposite side as the player moves, to keep them inside a bounding box roughly the size of the screen. I&rsquo;ve shared the script I wrote in the foldout below if interested in that kind of setup.</li>
-</ul>
+<p>We can also have these spawn around the player/camera for general ambient rays - assuming that&rsquo;s appropriate for the scenery. In my case I used a script to generate &amp; randomise the positions of the light ray quads, and teleport the rays to the opposite side as the player moves, to keep them inside a bounding box roughly the size of the screen. I&rsquo;ve shared the script I wrote in the foldout below if interested in that kind of setup (but not compatible with particle system based spawning)</p>
 <button  type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
     var content = this.nextElementSibling;
