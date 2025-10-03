@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.cyanilux.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.cyanilux.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.cyanilux.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.cyanilux.com/site.webmanifest">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="theme-color" content="#ffffff">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+
+
+ 
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/",
+  "headline": "GPU Instanced Grass Breakdown",
+  "name": "GPU Instanced Grass Breakdown",
+  "description": "A post showing how Shader Graph can be used with DrawMeshInstancedProcedural / RenderMeshPrimitives and DrawMeshInstancedIndirect / RenderMeshIndirect to draw grass using GPU Instancing.",
+  "datePublished": "2025-10-03",
+  "dateModified": "2025-10-03",
+  "author": {
+	"@type": "Person",
+	"name": "Cyanilux",
+	"url": "https://www.cyanilux.com"
+  },
+  "image": {
+    "@type": "ImageObject",
+    "@id": "https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/Preview_huf4ff6732ccdd4405581c142ced9e41b2_477476_300x0_resize_box_3.png",
+    "url": "https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/Preview_huf4ff6732ccdd4405581c142ced9e41b2_477476_300x0_resize_box_3.png",
+    "height": "169",
+    "width": "300"
+  },
+  "url": "https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/",
+  "inLanguage": "en-gb",
+  "wordCount": "8203",
+  "isPartOf": {
+    "@type" : "Blog",
+    "@id": "https://www.cyanilux.com",
+    "name": "Cyanilux Shader Tutorials - Game Dev Blog & Tutorials"
+  },
+  "keywords": [
+    "Unity", 
+    "Tutorial", 
+    "URP", 
+    "Shader Graph"
+  ]
+}
+</script>
+
+<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/Preview.png"/>
+<meta name="twitter:title" content="GPU Instanced Grass Breakdown"/>
+<meta name="twitter:description" content="A post showing how Shader Graph can be used with DrawMeshInstancedProcedural / RenderMeshPrimitives and DrawMeshInstancedIndirect / RenderMeshIndirect to draw grass using GPU Instancing."/>
+
+<meta property="og:title" content="GPU Instanced Grass Breakdown" />
+<meta property="og:description" content="A post showing how Shader Graph can be used with DrawMeshInstancedProcedural / RenderMeshPrimitives and DrawMeshInstancedIndirect / RenderMeshIndirect to draw grass using GPU Instancing." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/" />
+
+	
+        
+        
+            <meta name="og:image" content="https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/Preview.png"/>
+        
+    
+<meta property="article:published_time" content="2025-10-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2025-10-03T00:00:00+00:00" />
+<title>GPU Instanced Grass Breakdown | Cyanilux Shader Tutorials</title>
+<meta name="description" content="A post showing how Shader Graph can be used with DrawMeshInstancedProcedural / RenderMeshPrimitives and DrawMeshInstancedIndirect / RenderMeshIndirect to draw grass using GPU Instancing.. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+<link rel="canonical" href="https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/" />
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	var cookie;
+	if (webStorageSupported){
+		cookie = localStorage.getItem("cookiesAccepted");
+	}else{
+		cookie = getCookie("cookiesAccepted");
+	}
+	
+	var showBanner = false;
+	var cookiesAccepted = false;
+	if (cookie == "true"){
+		cookiesAccepted = true;
+		showBanner = false;
+	}else if (cookie === null || cookie == ""){
+		showBanner = true;
+	}
+</script>
+
+
+
+<script>
+	if (cookiesAccepted){
+		
+		document.write("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-11MK1LK6C3\"><\/script>" +
+		"<script>\n"+
+		"window.dataLayer = window.dataLayer || [];\n" +
+		"function gtag(){dataLayer.push(arguments);}\n" +
+		"gtag('js', new Date());\n" +
+		"gtag('config', 'G-11MK1LK6C3', { 'anonymize_ip': true });\n" + 
+		"<\/script>");
+	}
+</script>
+
+
+</head>
+    <body>
+        
+<div class="header">
+	<div class="logo-header-div"> 
+	<a class="link-plain" href="https://www.cyanilux.com">
+		<img class="logo" alt="Logo" width="128" height="128" src="https://www.cyanilux.com/logo-small.png"/>
+	</a>
+	<div class="logo-text-div">
+		<h1 class="title-no-margin">
+			<a class="logo-text" href="https://www.cyanilux.com">Cyanilux</a>
+		</h1>
+		<b class="logo-subtext">Game Dev Blog &amp; Tutorials</b>
+	</div>
+	</div>
+	
+	<div class="nav-links-div">
+	<nav id="nav-links" class="nav-links">
+		<ul>
+			
+			<li><a class="nav-link" href="https://bsky.app/profile/cyanilux.bsky.social">
+			<img width="35" height="35" alt="Bluesky" src="https://www.cyanilux.com/logo-bsky.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://mastodon.gamedev.place/@Cyanilux">
+			<img width="35" height="35" alt="Mastodon" src="https://www.cyanilux.com/logo-mastodon.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="http://discord.gg/2V93q9w">
+			<img width="35" height="35" alt="Discord" src="https://www.cyanilux.com/logo-discord.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://github.com/Cyanilux">
+			<img width="35" height="35" alt="Github" src="https://www.cyanilux.com/logo-github.png" ></img>
+			</a>
+			</li>
+			
+			<li><a class="nav-link" href="https://ko-fi.com/cyanilux">
+			<img width="35" height="35" alt="Ko-Fi" src="https://www.cyanilux.com/logo-kofi.png" ></img>
+			</a>
+			</li>
+			
+		</ul>
+	</nav>
+	</div>
+	
+	<nav id="nav" class="nav">
+	<ul>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/contents/">
+		Contents
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/recent/">
+		Recent Posts
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/resources/">
+		Resources
+		</a></b>
+		</li>
+		
+		<li><b><a class="nav-link" href="https://www.cyanilux.com/faq/">
+		FAQ
+		</a></b>
+		</li>
+		
+	</ul>
+	</nav>
+</div>
+        <div class="content">
+        
+
+<h1>GPU Instanced Grass Breakdown</h1>
+<div class="post-metadata">
+
+
+<div class="tag" style="background-color:#505050;">
+	<a href="https://www.cyanilux.com/tutorials/breakdowns/" style="text-decoration: none; color:#eeeeee;">
+	Breakdowns
+	</a>
+</div>
+
+
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	
+	<a href="https://www.cyanilux.com/tags/urp" style="text-decoration: none; color:#eeeeee;">
+	URP
+	</a>
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	
+	<a href="https://www.cyanilux.com/tags/shader-graph" style="text-decoration: none; color:#eeeeee;">
+	Shader Graph
+	</a>
+	</div>
+
+
+
+
+<div style="width:10px"></div>
+<time datetime="2025-10-03">&#128337 3 Oct 2025</time>
+
+
+</div>
+<script>
+	if (cookiesAccepted){
+		document.write("\u003cblockquote class=\"twitter-tweet\" data-conversation=\"none\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eSome improvements ~ \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e\u003cbr\u003eColour tweaks, using a texture with 4 grass shapes and it randomly selects one from it. Quads follow the terrain normals so are shaded better.\u003cbr\u003e\u003cbr\u003eNext I guess is trying to tackle culling in a compute shader to improve the performance 😬 \u003ca href=\"https://t.co/wILQboB1E8\"\u003epic.twitter.com/wILQboB1E8\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1397550762226507780?ref_src=twsrc%5Etfw\"\u003eMay 26, 2021\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n\n");
+	}else{
+		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1397550762226507780\">https://twitter.com/Cyanilux/status/1397550762226507780</a><p>"+
+		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
+		"<b style=\"color:#00aabb\" onclick=\""+
+		"const cookieContainer = document.querySelector('.cookie-container');" +
+		"cookieContainer.classList.add('active');" +
+		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>\r\n\u003cdiv class=\u0022img-center\u0022\u003e\r\n\u003ca href=\u0022Preview.png\u0022 target=\u0022_blank\u0022 rel=\u0022noopener noreferrer\u0022\u003e\r\n\u003cimg  width=\u0022750\u0022 height=\u0022422\u0022 alt=\u0022(Image)\u0022 src=\u0022Preview.png\u0022 \/\u003e\r\n\u003c\/a\u003e\r\n\u003cp class=\u0022img-text\u0022\u003e\u003c\/p\u003e\r\n\u003c\/div\u003e\r\n");
+	}
+</script>
+<h2 id="intro">Intro</h2>
+<p>Way back in 2021, I experimented with grass rendering in URP &amp; Shader Graph using GPU Instancing, which can allow us to efficiently render millions of grass blades/quads. At the time that was using <code>Graphics.DrawMeshInstancedProcedural</code> (or <code>DrawMeshInstancedIndirect</code> if instance count needs to be set/adjusted on the GPU)</p>
+<p>For a while I&rsquo;ve had some info/files linked under my <a href="https://www.cyanilux.com/faq/#sg-drawmeshinstancedindirect">FAQ</a> showing a brief example of that setup. But I thought I&rsquo;d revisit/rewrite those experiments and write up a proper breakdown, which should be easier to find and lets me update some things :</p>
+<ul>
+<li><strong>Unity 2021.2</strong> introduced <code>Graphics.RenderX</code> functions to replace the older <code>Graphics.DrawX</code> functions (and renames &ldquo;Procedural&rdquo; to &ldquo;Primitives&rdquo;)</li>
+<li><strong>Unity 2022</strong> onwards considers the older functions to be obsolete. For the functions mentioned above, the equivalents would be <code>Graphics.RenderMeshPrimitives</code> and <code>Graphics.RenderMeshIndirect</code> respectively.</li>
+<li><strong>Unity 6</strong> onwards changed the functionality of the <b class="node">Instance ID</b> node, meaning we can support these GPU instancing functions in a less hacky way.</li>
+</ul>
+<p>Note that grass rendering is a fairly complex topic and this post only goes through one(ish) setup. There may be grass tools which extend this concept to painting/placing instances by hand, but in my case the grass is spawned automatically. There may also be other rendering techniques (e.g. shell texturing) that could be more suitable depending on the desired artstyle. For more grass tutorials or ready-made tools from others, may be some links on my <a href="https://www.cyanilux.com/resources/?filter=grass">resources</a> page.</p>
+<button id="gpu-instancing" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ What is GPU Instancing?</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ What is GPU Instancing?</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#gpu-instancing';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ What is GPU Instancing?</b></button>
+<div class="foldout">
+<h3 id="instancing">Instancing</h3>
+<p>The main advantage of GPU Instancing is that you can render many objects in a single draw call. And by calling these functions under the <a href="https://docs.unity3d.com/ScriptReference/Graphics.html">Graphics API</a>, we can avoid the overhead of many <strong>GameObjects</strong>.</p>
+<p>The mesh and material/shader needs to stay the same, but we can have different per-instance properties (e.g. positions/matrices, different colours, etc) by passing that data as arrays or buffers, which then are indexed in the shader using a variable/input with the <code>SV_InstanceID</code> semantic.</p>
+<p>Generally when creating scenes, we tend to render lots of <em>different models</em> with the same shader, so in URP/HDRP it is likely more performant to rely on the <a href="https://docs.unity3d.com/Manual/SRPBatcher.html">SRP Batcher</a> for optimising the majority of the scene&rsquo;s draw calls. However in some cases GPU Instancing could be better, and I think rendering grass blades/quads is a good example - though I haven&rsquo;t tested that extensively tbh. (<a href="https://docs.unity3d.com/ScriptReference/Rendering.BatchRendererGroup.html">BatchRendererGroup</a> might also be more performant, but the setup looks far more complicated)</p>
+<p>Also note that with these GPU Instancing functions you only get frustum culling as a whole based on the bounds passed in. You would typically need to handle your own culling per-instance via Compute Shader (a later section provides an example of this) or perhaps in C# but probably split into chunks/cells/quad-tree (maybe also multithreaded via Jobs?)</p>
+<h3 id="instancing-in-shadergraph">Instancing in ShaderGraph</h3>
+<p>Shader Graph used to have very limited support for instancing. Unity 2021.2 exposed an <b class="node">Instance ID</b> node, but back then it returned <code>unity_InstanceID</code> which would always be 0 unless the shader takes one of the &ldquo;instancing paths&rdquo; :</p>
+<ul>
+<li>For &ldquo;regular&rdquo; instancing (<code>DrawMeshInstanced</code> / <code>RenderMeshInstanced</code>), that mostly required the GPU Instancing tickbox to be enabled on the material (though per-instance properties <a href="https://www.cyanilux.com/faq/#sg-gpu-instancing">needed more setup</a>). But that is limited to 1023 instances (due to using arrays) and uploads matrices every frame, so that function is somewhat inefficient compared to the others.</li>
+<li>For the functions listed in the intro above, they will try to use the &ldquo;procedural instancing path&rdquo; if the shader supports it. By default Shader Graph doesn&rsquo;t include support, but we can add it using a couple <b class="node">Custom Function</b> nodes (as shown in breakdown below in tabs prior to Unity 6)</li>
+</ul>
+<p>As of Unity 6, the functionality of the <b class="node">Instance ID</b> node changed slightly, to instead hook directly into declaring <code>SV_InstanceID</code>. Therefore, while custom code is still required for declaring and indexing the buffer, the workaround to force the procedural instancing path is no longer required. (But now means &ldquo;Object&rdquo; space in the graph is relative to the bounds, not per-instance)</p>
+<p>You may also need <em>additional code</em> to support some instancing functions properly. <a href="https://discussions.unity.com/t/indirect-procedural-rendering-with-shader-graph/1664601">This discussions thread</a> shows how Shader Graphs can support the newer instancing functions. (Though I will mention that <code>Graphics.RenderMeshIndirect</code> does still seem to work without the <code>UnityIndirect.cginc</code> and <code>InitIndirectDrawArgs / GetCommandID</code> setup - provided you don&rsquo;t use more than one command and leave <code>startInstance</code> at 0. More details are provided in a later section when relevant)</p>
+
+</div>
+
+<p>The breakdown below is structured like so :</p>
+<ul>
+<li><a href="#setup">Basic Instancing Setup</a>
+<ul>
+<li>C# Script</li>
+<li>Shader Graph</li>
+</ul>
+</li>
+<li><a href="#optional">Optional Additions</a>
+<ul>
+<li>Make grass visible in editor</li>
+<li>Adapt instance spawning for Terrain</li>
+<li>Split instances into cells/chunks</li>
+<li>Simulate wind / swaying</li>
+</ul>
+</li>
+<li><a href="#indirect">Adapting Setup for Indirect</a>
+<ul>
+<li>C# Side</li>
+<li>Shader Graph</li>
+</ul>
+</li>
+<li><a href="#frustum-culling">Adding GPU Frustum Culling</a>
+<ul>
+<li>Compute Shader</li>
+<li>C# Changes</li>
+<li>Shader Graph Include File Changes</li>
+</ul>
+</li>
+</ul>
+<p>Each section here builds on the previous. The idea behind this order being, you could stop after each main section and still have grass rendering. (There&rsquo;s also tabs, which makes sure the page content is correct for that Unity version)</p>
+<div class="notice">
+<div class="notice-left">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+Note : This tutorial requires the target platform to support <a href="https://docs.unity3d.com/Manual/class-ComputeShader-introduction.html">compute buffers/shaders</a>.
+</div>
+</div>
+<h2 id="setup">Basic Instancing Setup</h2>
+<h3 id="script">C# Script</h3>
+<p>We first need some setup on the CPU side to tell Unity to draw our grass. Create a C# script and attach it to a new GameObject in the scene.</p>
+<p>We&rsquo;ll begin the script by exposing some fields to the inspector :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DrawGrass</span> : MonoBehaviour {
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> instanceCount = <span style="color:#ae81ff">1000</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">public</span> Mesh mesh;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">public</span> Material material;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>For this example I&rsquo;m using the default quad for the grass <code>mesh</code>, which&rsquo;ll be scattered randomly by the script. Later we&rsquo;ll set up the shader (used by the assigned <code>material</code>) which will sample a grass texture with alpha clipping.</p>
+<p>(You could alternatively use a grass blade mesh. Though if you&rsquo;re drawing millions of instances you probably don&rsquo;t want that too high-poly)</p>
+
+<script>
+  function Test(textContent){
+    return textContent.replace("+","").replace(" ","");
+  }
+
+  function ProcessTabGroup(tabGroup, textContent){
+    for (let j = 0; j < tabGroup.children.length; j++) {
+        var tab = tabGroup.children[j];
+        
+        var tabContent = Test(tab.textContent);
+        if (j == 0 && (textContent == null || textContent == "")){
+          
+          textContent = tabContent;
+        }
+
+        if (tabContent == textContent){
+          
+          tab.className = 'tab';
+          
+          
+          for (let k = 0; k < tabGroup.children.length; k++) {
+            var tab = tabGroup.children[k];
+            if (j == k) continue;
+            tab.className = 'tab-grey';
+          }
+          
+          
+          var tabpanel = tab.parentElement.nextElementSibling;
+          for (let l = 0; l < tabpanel.children.length; l++) {
+            var child = tabpanel.children[l];
+            if (child.className == "All" || (child.className == "" && l == j) || child.className.includes(textContent)) { 
+              child.style.display = 'block';
+            } else {
+              child.style.display = 'none';
+            }
+          }
+
+          break;
+        }
+      }
+  }
+
+  function OnTabClick(element) {
+    var textContent = Test(element.textContent);
+    var tabGroups = document.getElementsByClassName("tabs");
+    
+    if (history.pushState) {
+      var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+      newurl = newurl + '?tab=' + textContent;
+      newurl += window.location.hash;
+      window.history.pushState({path:newurl}, '', newurl);
+    }
+
+    var tabGroupThatElementBelongsTo = element.parentElement;
+    var tabGroupFound = false;
+    for (let i = 0; i < tabGroups.length; i++) {
+      var tabGroup = tabGroups[i];
+      if (tabGroup == tabGroupThatElementBelongsTo){
+        tabGroupFound = true;
+      }
+      if (!tabGroupFound) continue;
+      
+      
+      ProcessTabGroup(tabGroup, textContent);
+    }
+  }
+
+  function OnPageLoad(textContent) {
+    var tabGroups = document.getElementsByClassName("tabs");
+    
+
+
+    for (let i = 0; i < tabGroups.length; i++) {
+      ProcessTabGroup(tabGroups[i], textContent);
+    }
+  }
+
+  window.onload = function (){
+    setTimeout(() => {
+      var search = new URLSearchParams(document.location.search);
+      OnPageLoad(search.get("tab"));
+    }, 100);
+  }
+</script>
+
+
+
+<div class="tabs">
+<button type="button" class="tab" onclick="OnTabClick(this);"><b>Unity 6&#43;</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Unity 2022</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Unity 2021.2&#43;</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Older</b></button></div>
+
+<div class="tabpanel">
+<div class="Older">
+<p>If the instance count is known/set from the CPU / C# Script we can use the simpler <code>Graphics.DrawMeshInstancedProcedural</code> to draw our grass. If you need to be able to set the instance count from the GPU (i.e. in Compute Shaders for generating the instances on the GPU and/or frustum culling) you would instead use <code>Graphics.DrawMeshInstancedIndirect</code>. Both functions follow the same inital setup - later sections will show the Indirect setup further if needed.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> UnityEngine.Rendering.ShadowCastingMode castShadows = UnityEngine.Rendering.ShadowCastingMode.Off;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">bool</span> receiveShadows = <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Could also make these shadow settings public / [SerializeField] if you want to expose them to inspector</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> MaterialPropertyBlock MPB;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Bounds bounds;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> OnEnable() {
+</span></span><span style="display:flex;"><span>	MPB = <span style="color:#66d9ef">new</span> MaterialPropertyBlock();
+</span></span><span style="display:flex;"><span>	Vector3 boundsSize = <span style="color:#66d9ef">new</span> Vector3(<span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">20</span>);
+</span></span><span style="display:flex;"><span>	bounds = <span style="color:#66d9ef">new</span> Bounds(transform.position + boundsSize * <span style="color:#ae81ff">0.5f</span>, boundsSize);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> Update() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (instanceCount &lt;= <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	Graphics.DrawMeshInstancedProcedural(mesh, <span style="color:#ae81ff">0</span>, material, bounds, instanceCount, MPB, castShadows, receiveShadows);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+</div>
+<div class="Unity2021.2">
+<p>In this version, <code>Graphics.RenderX</code> functions were introduced. According to the docs, the older <code>Graphics.DrawX</code> ones technically aren&rsquo;t marked as obsolete until Unity 2022, but since the new functions exist it probably makes sense to use them&hellip;</p>
+</div>
+<div class="Unity2022 Unity6">
+<p>In this version, the older <code>Graphics.DrawX</code> functions are obsolete and should be replaced with <code>Graphics.RenderX</code>.</p>
+</div>
+<div class="Unity2021.2 Unity2022 Unity6">
+<p>If the instance count is known/set from the CPU / C# Script we can use the simpler <code>Graphics.RenderMeshPrimitives</code> to draw our grass. If you need to be able to set the instance count from the GPU (i.e. in Compute Shaders for generating the instances on the GPU and/or frustum culling) you would instead use <code>Graphics.RenderMeshIndirect</code>. Both functions follow the same inital setup - later sections will show the Indirect setup further if needed.</p>
+<p>Unity also introduces the <a href="https://docs.unity3d.com/ScriptReference/RenderParams.html">RenderParams</a> struct which is passed as the first parameter to the above functions. This structure collects together a bunch of data related to rendering that would have been passed as separate parameters in the older <code>DrawX</code> functions.</p>
+<p>In this breakdown we&rsquo;ll only be setting the <code>material</code>, <code>matProps</code>, <code>shadowCastingMode</code> and <code>worldBounds</code>. See docs page linked above for the other properties.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> UnityEngine.Rendering.ShadowCastingMode castShadows = UnityEngine.Rendering.ShadowCastingMode.Off;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">bool</span> receiveShadows = <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Could also make these shadow settings public / [SerializeField] if you want to expose them to inspector</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> RenderParams rParams;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> MaterialPropertyBlock MPB =&gt; rParams.matProps;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Bounds bounds =&gt; rParams.worldBounds;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">(These properties are used in SetupInstances() function defined later.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">Just allows me to use that snippet in multiple Unity versions...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">You can just reference rParams in the function instead if you prefer)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> OnEnable() {
+</span></span><span style="display:flex;"><span>	Vector3 boundsSize = <span style="color:#66d9ef">new</span> Vector3(<span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">20</span>);
+</span></span><span style="display:flex;"><span>    rParams = <span style="color:#66d9ef">new</span> RenderParams(material) {
+</span></span><span style="display:flex;"><span>        worldBounds = <span style="color:#66d9ef">new</span> Bounds(transform.position + boundsSize * <span style="color:#ae81ff">0.5f</span>, boundsSize),
+</span></span><span style="display:flex;"><span>        shadowCastingMode = castShadows,
+</span></span><span style="display:flex;"><span>		receiveShadows = receiveShadows,
+</span></span><span style="display:flex;"><span>        matProps = <span style="color:#66d9ef">new</span> MaterialPropertyBlock()
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>	bounds = rParams.worldBounds;
+</span></span><span style="display:flex;"><span>	MPB = rParams.matProps;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> Update() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (instanceCount &lt;= <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	Graphics.RenderMeshPrimitives(rParams, mesh, <span style="color:#ae81ff">0</span>, instanceCount);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+</div>
+
+</div>
+<h4 id="instance-data">Instance Data</h4>
+<p>That triggers the rendering, but to actually control the position of the instances (and optionally colour, etc), we also need to set/pass a <strong>ComputeBuffer</strong> with that data, which I&rsquo;ve named <code>instancesBuffer</code>. In this case I&rsquo;m spawning instances randomly in some <code>bounds</code>.</p>
+<p>If you only need Matrix4x4 you could just use that type, or pass multiple buffers with different data types. But to be more flexible I&rsquo;m using a struct type which allows us to pack multiple types together. We need to be a bit careful to match the memory layout on the shader side though or it can cause crashes. To avoid issues with how different graphics APIs structure the data, always order fields from largest to smallest and use Vector4/float4 instead of Vector3/float3.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">#region Instances</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">	[LayoutKind.Sequential]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">InstanceData</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">public</span> Matrix4x4 matrix;
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">//public Color color;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> Size() {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">float</span>) * <span style="color:#ae81ff">4</span> * <span style="color:#ae81ff">4</span> 	<span style="color:#75715e">// matrix</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">//+ sizeof(float) * 4 		// color</span>
+</span></span><span style="display:flex;"><span>			;
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Alternatively one of these might work to calculate the size automatically?</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// return System.Runtime.InteropServices.Marshal.SizeOf(typeof(InstanceData));</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// return Unity.Collections.LowLevel.Unsafe.UnsafeUtility.SizeOf&lt;InstanceData&gt;();</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			Must match the layout/size of the struct in shader
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			See https://docs.unity3d.com/ScriptReference/ComputeBufferType.Structured.html
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			To avoid issues with how different graphics APIs structure data :
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			- Order by largest to smallest 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			- Use Vector4/Color/float4 &amp; Matrix4x4/float4x4 instead of float3 &amp; float3x3
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		*/</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">private</span> ComputeBuffer instancesBuffer;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> SetupInstances(){
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> (instanceCount &lt;= <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Avoid negative or 0 instances, as that will crash Unity</span>
+</span></span><span style="display:flex;"><span>            instanceCount = <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>		InstanceData[] instances = <span style="color:#66d9ef">new</span> InstanceData[instanceCount];
+</span></span><span style="display:flex;"><span>		Vector3 boundsSize = bounds.size;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; instanceCount; i++) {
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Random Position</span>
+</span></span><span style="display:flex;"><span>			Vector3 position = <span style="color:#66d9ef">new</span>(
+</span></span><span style="display:flex;"><span>                Random.Range(<span style="color:#ae81ff">0</span>, boundsSize.x),
+</span></span><span style="display:flex;"><span>                <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>                Random.Range(<span style="color:#ae81ff">0</span>, boundsSize.z)
+</span></span><span style="display:flex;"><span>            );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Random Rotation around Y axis</span>
+</span></span><span style="display:flex;"><span>			Quaternion rotation = Quaternion.Euler(<span style="color:#ae81ff">0</span>, Random.Range(<span style="color:#ae81ff">0f</span>, <span style="color:#ae81ff">360f</span>), <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Random Height</span>
+</span></span><span style="display:flex;"><span>			Vector3 scale = <span style="color:#66d9ef">new</span> Vector3(<span style="color:#ae81ff">1</span>, Random.Range(<span style="color:#ae81ff">0.4f</span>, <span style="color:#ae81ff">0.9f</span>), <span style="color:#ae81ff">1</span>); 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Position Offsets</span>
+</span></span><span style="display:flex;"><span>			position.y += scale.y * <span style="color:#ae81ff">0.5f</span>; <span style="color:#75715e">// (assuming origin of mesh is in center, like Quad primitive)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			position -= boundsSize * <span style="color:#ae81ff">0.5f</span>; <span style="color:#75715e">// Makes position relative to bounds center</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Or if you&#39;d prefer to store the matrix positions in world space, instead use :</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">//position += transform.position;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">/*	Though this also requires some changes on the shader side.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">				e.g. an additional Transform node converting from World to Object space
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			instances[i] = <span style="color:#66d9ef">new</span>(
+</span></span><span style="display:flex;"><span>				matrix = Matrix4x4.TRS(position, rotation, scale)
+</span></span><span style="display:flex;"><span>			);
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		instancesBuffer = <span style="color:#66d9ef">new</span> ComputeBuffer(instanceCount, InstanceData.Size());
+</span></span><span style="display:flex;"><span>		instancesBuffer.SetData(instances);
+</span></span><span style="display:flex;"><span>		MPB.SetBuffer(<span style="color:#e6db74">&#34;_PerInstanceData&#34;</span>, instancesBuffer);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endregion </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> OnEnable() {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// ... (function body from previous snippet)</span>
+</span></span><span style="display:flex;"><span>	SetupInstances();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> OnDisable() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (instancesBuffer != <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>		instancesBuffer.Release();
+</span></span><span style="display:flex;"><span>		instancesBuffer = <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<h3 id="graph">Shader Graph</h3>
+<p>For the graph, I&rsquo;m using a <strong>Lit Graph</strong> since I want the grass to be affected by lighting.</p>
+<div class="notice">
+<div class="notice-left">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>If you are unfamiliar with the <b class="node">Custom Function</b> node, see the <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@17.4/manual/Custom-Function-Node.html">docs page</a>. Below shows HLSL snippets but may assume you know how to set that up in Shader Graph. i.e. for File mode :</p>
+<ul>
+<li>Inputs/Outputs should match the types and order defined in the function parameters.</li>
+<li>Name field should match the function name without <code>_float</code>.</li>
+<li>(May also want to set node precision to Single/Float. Or add <code>_half</code> function versions if you need support for that)</li>
+</ul>
+
+</div>
+</div>
+<h4 id="graph-vertex">Vertex Stage</h4>
+
+
+<div class="tabs">
+<button type="button" class="tab" onclick="OnTabClick(this);"><b>Unity 6&#43;</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Unity 2022</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Unity 2021.2&#43;</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Older</b></button></div>
+
+<div class="tabpanel">
+<div class="Unity2022 Unity2021.2 Older">
+<p>To support instancing we need to use the <code>SV_InstanceID</code> shader input <a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-semantics">semantic</a>. But for versions prior to Unity 6, there isn&rsquo;t an easy way to do that as it needs to be included in the struct passed to the vertex shader (usually named &ldquo;Attributes&rdquo;), or passed as an additional parameter to the vertex function. Both of which are part of the generated code and not accessible in the graph or even through a <b class="node">Custom Function</b>.</p>
+<p>But Shader Graph can declare it for us if an &ldquo;instancing path&rdquo; is taken. I discovered we could force that by using a <b class="node">Custom Function</b> with a Vector3 input (named <code>In</code> - caps important) and output (named <code>Out</code>) :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Out <span style="color:#f92672">=</span> In;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#pragma multi_compile _ PROCEDURAL_INSTANCING_ON
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#pragma instancing_options procedural:InstancingSetup</span></span></span></code></pre></div>
+<p>That must use <strong>String</strong> mode as unlike other pragmas, <code>instancing_options</code> must be defined in the main shader and won&rsquo;t work inside include files. I&rsquo;ve named this node/function &ldquo;Procedural&rdquo; as this code tells the shader to compile the &ldquo;procedural instancing&rdquo; variants of the shader.</p>
+<p>(In the past I&rsquo;ve defined the <code>multi_compile</code> in the <strong>Blackboard</strong> as a <strong>Boolean Keyword</strong> instead - but afaik declaring it directly in the code here also works)</p>
+<p>We then need another <b class="node">Custom Function</b> to attach a HLSL file containing that <code>InstancingSetup</code> function, which can also declare &amp; index the compute buffer (aka <code>StructuredBuffer</code> on this side) used to pass per-instance data in. It must use <strong>File</strong> mode to allow us to define all that outside the function body. I&rsquo;ve named this node &ldquo;Instancing&rdquo; (matching <code>Instancing_float</code> as defined below)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// Instancing.hlsl
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#ifndef GRASS_INSTANCED_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define GRASS_INSTANCED_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Declare structure &amp; buffer for passing per-instance data
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// This must match the C# side
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> InstanceData {
+</span></span><span style="display:flex;"><span>	float4x4 m;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//float4 color;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span><span style="display:flex;"><span>StructuredBuffer<span style="color:#f92672">&lt;</span>InstanceData<span style="color:#f92672">&gt;</span> _PerInstanceData;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#if UNITY_ANY_INSTANCING_ENABLED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Based on ParticlesInstancing
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.shadergraph/Editor/Generation/Targets/BuiltIn/ShaderLibrary/ParticlesInstancing.hlsl
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// and/or
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// https://github.com/TwoTailsGames/Unity-Built-in-Shaders/blob/master/CGIncludes/UnityStandardParticleInstancing.cginc
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">InstancingMatrices</span>(inout float4x4 objectToWorld, out float4x4 worldToObject) {
+</span></span><span style="display:flex;"><span>		InstanceData data <span style="color:#f92672">=</span> _PerInstanceData[unity_InstanceID];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// If matrix is relative to Bounds :
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		objectToWorld <span style="color:#f92672">=</span> mul(objectToWorld, data.m);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Alternatively, if instanced matrices are stored in world space we can override matrix :
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">//objectToWorld = data.m;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// This would avoid needing an additional World-&gt;Object conversion in the graph
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// ----------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// If World-&gt;Object transforms are required :
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//worldToObject = transpose(objectToWorld);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			Assuming an orthogonal matrix (no scaling), 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			the above would be a cheap way to calculate an inverse matrix
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        	Otherwise, use the below :
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		*/</span>
+</span></span><span style="display:flex;"><span>			
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Calculate Inverse transform matrix :
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		float3x3 w2oRotation;
+</span></span><span style="display:flex;"><span>		w2oRotation[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> objectToWorld[<span style="color:#ae81ff">1</span>].yzx <span style="color:#f92672">*</span> objectToWorld[<span style="color:#ae81ff">2</span>].zxy <span style="color:#f92672">-</span> objectToWorld[<span style="color:#ae81ff">1</span>].zxy <span style="color:#f92672">*</span> objectToWorld[<span style="color:#ae81ff">2</span>].yzx;
+</span></span><span style="display:flex;"><span>		w2oRotation[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> objectToWorld[<span style="color:#ae81ff">0</span>].zxy <span style="color:#f92672">*</span> objectToWorld[<span style="color:#ae81ff">2</span>].yzx <span style="color:#f92672">-</span> objectToWorld[<span style="color:#ae81ff">0</span>].yzx <span style="color:#f92672">*</span> objectToWorld[<span style="color:#ae81ff">2</span>].zxy;
+</span></span><span style="display:flex;"><span>		w2oRotation[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> objectToWorld[<span style="color:#ae81ff">0</span>].yzx <span style="color:#f92672">*</span> objectToWorld[<span style="color:#ae81ff">1</span>].zxy <span style="color:#f92672">-</span> objectToWorld[<span style="color:#ae81ff">0</span>].zxy <span style="color:#f92672">*</span> objectToWorld[<span style="color:#ae81ff">1</span>].yzx;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">float</span> det <span style="color:#f92672">=</span> dot(objectToWorld[<span style="color:#ae81ff">0</span>].xyz, w2oRotation[<span style="color:#ae81ff">0</span>]);
+</span></span><span style="display:flex;"><span>		w2oRotation <span style="color:#f92672">=</span> transpose(w2oRotation);
+</span></span><span style="display:flex;"><span>		w2oRotation <span style="color:#f92672">*=</span> rcp(det);
+</span></span><span style="display:flex;"><span>		float3 w2oPosition <span style="color:#f92672">=</span> mul(w2oRotation, <span style="color:#f92672">-</span>objectToWorld._14_24_34);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		worldToObject._11_21_31_41 <span style="color:#f92672">=</span> float4(w2oRotation._11_21_31, <span style="color:#ae81ff">0.0f</span>);
+</span></span><span style="display:flex;"><span>		worldToObject._12_22_32_42 <span style="color:#f92672">=</span> float4(w2oRotation._12_22_32, <span style="color:#ae81ff">0.0f</span>);
+</span></span><span style="display:flex;"><span>		worldToObject._13_23_33_43 <span style="color:#f92672">=</span> float4(w2oRotation._13_23_33, <span style="color:#ae81ff">0.0f</span>);
+</span></span><span style="display:flex;"><span>		worldToObject._14_24_34_44 <span style="color:#f92672">=</span> float4(w2oPosition, <span style="color:#ae81ff">1.0f</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			This may be quite expensive and this function runs in both vertex and fragment shader
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			(Though if the matrix is unused the compiler might remove? Unsure)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			Could instead calculate inverse matrices on the CPU side and pass them in too
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			(Though would mean double the GPU memory is needed)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		*/</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">InstancingSetup</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/* // For HDRP may also need to remove/override these macros. Untested.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		#undef unity_ObjectToWorld
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		#undef unity_WorldToObject
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		*/</span>
+</span></span><span style="display:flex;"><span>		InstancingMatrices(unity_ObjectToWorld, unity_WorldToObject);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Shader Graph Functions
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Just passes the position through, allows us to actually attach this file to the graph.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Should be placed somewhere in the vertex stage, e.g. right before connecting the object space position.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Instancing_float</span>(float3 Position, out float3 Out){
+</span></span><span style="display:flex;"><span>	Out <span style="color:#f92672">=</span> Position;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif</span></span></span></code></pre></div>
+<p>In both custom functions, <code>Out = In;</code>/<code>Out = Position;</code> is just so we can hook the node up to the <strong>Master Stack</strong> - which is required for the code to be included in the final generated shader. We should make all these ports <strong>Vector3</strong> so we can pass the <b class="node">Position</b> node (Object space) through, and connect to the <strong>Position</strong> port in the <strong>Vertex</strong> stage.</p>
+<div class="img-center">
+<a href="GraphVertexProcedural.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="180" alt="(Image)" src="GraphVertexProcedural.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>While the functions don&rsquo;t alter the value passed through, the procedural instancing setup overrides the matrices used by the graph behind the scenes when converting between Object &amp; World space - automatically applying to the Position, Normal (and Tangent) Vector ports/blocks/nodes.</p>
+<p>Due to this and the C# side which sets the matrix rotation to match the terrain normal, we can make the grass normal match the terrain&rsquo;s normal (to make it shaded/lit the same) by simply attaching a <b class="node">Vector3</b> node set to <strong>(0, 1, 0)</strong> to the <strong>Normal</strong> port as shown above.</p>
+</div>
+<div class="Older">
+<p>For versions prior to 2021.2, we may also want a function to return the Instance ID if needed in the graph. e.g. could be used as the <strong>Seed</strong> to a <b class="node">Random Range</b> node to generate a random value for each instance. This can be placed in the same file and used by multiple <b class="node">Custom Function</b> nodes - thanks to the <code>#ifndef GRASS_INSTANCED_INCLUDED</code> at the top which prevents the file being included multiple times.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">GetInstanceID_float</span>(out <span style="color:#66d9ef">float</span> Out){
+</span></span><span style="display:flex;"><span>	Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#ifndef SHADERGRAPH_PREVIEW
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">#if UNITY_ANY_INSTANCING_ENABLED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	Out <span style="color:#f92672">=</span> unity_InstanceID;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}</span></span></code></pre></div>
+<p>For 2021.2+, this is already exposed through the <b class="node">Instance ID</b> node.</p>
+</div>
+<div class="Unity6">
+<p>As mentioned in the intro, Unity 6 changed the functionality of the <b class="node">Instance ID</b> node so that it hooks directly into defining the <code>SV_InstanceID</code> semantic. We can pass this into a <b class="node">Custom Function</b> to define and index our per-instance data compute buffer (which defaults to a <code>StructuredBuffer</code> object on the shader side)</p>
+<p>Note the <b class="node">Custom Function</b> must use <strong>File</strong> mode to allow us to define the buffer outside the function body.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// Instancing.hlsl
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#ifndef GRASS_INSTANCED_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define GRASS_INSTANCED_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Declare structure &amp; buffer for passing per-instance data
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// This must match the C# side
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> InstanceData {
+</span></span><span style="display:flex;"><span>	float4x4 m;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//float4 color;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span><span style="display:flex;"><span>StructuredBuffer<span style="color:#f92672">&lt;</span>InstanceData<span style="color:#f92672">&gt;</span> _PerInstanceData;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Shader Graph function(s)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Instancing_float</span>(float3 Position, <span style="color:#66d9ef">float</span> InstanceID, out float3 OutPosition, out float3 OutNormal){
+</span></span><span style="display:flex;"><span>    InstanceData data <span style="color:#f92672">=</span> _PerInstanceData[InstanceID];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    OutPosition <span style="color:#f92672">=</span> mul(data.m, float4(Position, <span style="color:#ae81ff">1</span>)).xyz;
+</span></span><span style="display:flex;"><span>    OutNormal <span style="color:#f92672">=</span> mul(data.m, float4(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>)).xyz;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		Shader Graph assumes Object space for the Vertex stage ports in the Master Stack
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		  so will apply the Object-&gt;World transform behind the scenes.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		If matrices are in world space rather than relative to bounds, undo that by
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		  using an additional Transform node in graph,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		  or Subtract Position output from the Object node.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		(Should only be important for Position, as model matrix
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		  won&#39;t include rotation for instanced rendering afaik)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	*/</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif</span></span></span></code></pre></div>
+<p>The <b class="node">Position</b> node (Object) space is connected to the first port, and <b class="node">Instance ID</b> to the second. The outputs are used in the <strong>Position</strong> and <strong>Normal</strong> ports in the <strong>Vertex</strong> stage of the <strong>Master Stack</strong>.</p>
+<div class="img-center">
+<a href="GraphVertex.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="216" alt="(Image)" src="GraphVertex.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>In previous Unity versions we instead had to rely on the &ldquo;procedural instancing path&rdquo; to force the Instance ID to be generated. (Can switch the tab above temporarily to see what that looks like). A somewhat important difference is that allowed us to override the matrices used for converting between Object &amp; World space - which automatically would apply to these ports. Since we aren&rsquo;t using that setup, we need to handle the matrix transformations manually, hence <code>mul()</code> in the code shown above. And as commented above, you may need some additional nodes if matrices store world space positions.</p>
+<p>If you have more per-instance data you could add another <code>out</code> param &amp; output to the node. Though, Shader Graph doesn&rsquo;t usually allow connecting a node to both stages. For values that need to connect to the <strong>Fragment</strong> stage, we&rsquo;ll create a separate function - see below.</p>
+</div>
+
+</div>
+<p>After saving the graph we should now see our instances, though they don&rsquo;t have a texture yet.</p>
+<div class="img-center">
+<a href="Instances.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="387" alt="(Image)" src="Instances.png" />
+</a>
+<p class="img-text">1024 instances rendering in bounds of 20x20 units. A darker grey plane (with x2 scale) is placed below.</p>
+</div>
+<h4 id="graph-fragment">Fragment Stage</h4>
+<p>For the fragment side things are much simpler. We can apply a simple colour gradient using the <code>UV0.y</code> and input into the <strong>Base Color</strong> :</p>
+<div class="img-center">
+<a href="GraphFragment1.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="305" alt="(Image)" src="GraphFragment1.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>If you have per-Instance data for the fragment stage you can add another <b class="node">Custom Function</b> node and function to the file to output those. For example for an instanced colour (as commented in the InstanceData) :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">InstancingFragment_float</span>(<span style="color:#66d9ef">float</span> InstanceID, out float4 Out){
+</span></span><span style="display:flex;"><span>    InstanceData data <span style="color:#f92672">=</span> _PerInstanceData[InstanceID];
+</span></span><span style="display:flex;"><span>    Out <span style="color:#f92672">=</span> data.color;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Or for versions older than 2021.2 :
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">void InstancingFragment_float(out float4 Out){
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    InstanceData data = _PerInstanceData[unity_InstanceID];
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    Out = data.color;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span></span></span></code></pre></div>
+<p>Which could replace one of the Color properties, or <b class="node">Multiply</b> after to tint both.</p>
+<p>Under the <strong>Graph Settings</strong> (tab of Graph Inspector window), we can enable <strong>Alpha Clipping</strong> which adds some blocks to the Master Stack. I&rsquo;ve left the <strong>Alpha Clip Threshold</strong> at <strong>0.5</strong>. To control the <strong>Alpha</strong>, I&rsquo;m applying a grass texture.</p>
+<p>For added variation this texture contains multiple grass blade shapes (and somewhat thick/blocky for a more stylised look - I much prefer this over pointy grass, but up to you) :</p>
+<div class="img-center">
+<a href="GrassTexture.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="256" height="256" alt="(Image)" src="GrassTexture.png" />
+</a>
+<p class="img-text">Very quickly drawn&hellip; but does the job.</p>
+</div>
+<p>To randomly select a portion of the texture I&rsquo;m using the <b class="node">Flipbook</b> node with <strong>Width</strong> and <strong>Height</strong> set to 2 (since the texture contains 2x2 grass tiles), with the <strong>Tile</strong> port set to the <b class="node">Instance ID</b> node (or output <code>unity_InstanceID</code> for older versions) into a <b class="node">Random Range</b> node (Min of 0 to Max of 4)</p>
+<div class="img-center">
+<a href="GraphFragment2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="279" alt="(Image)" src="GraphFragment2.png" />
+</a>
+<p class="img-text"></p>
+</div>
+<p>As shown above I&rsquo;ve also used a <b class="node">Tiling And Offset</b> node with a Y tiling of 0.9, connected to the UV port on the <b class="node">Flipbook</b>. This stretches the texture slightly to avoid previous tiles leaking through at the top of the texture.</p>
+<p>Note that using the Instance ID here assumes the instances are consistent. If the buffer is updated you&rsquo;d likely need to store a random value in the InstanceData instead. (In the past I used the <code>color.a</code> for that, as transparency isn&rsquo;t used)</p>
+<p>Looking better!</p>
+<div class="img-center">
+<a href="Instances2.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="387" alt="(Image)" src="Instances2.png" />
+</a>
+<p class="img-text">3200 instances (20x20 bounds). Also recoloured plane to same colour used by Color2 property.</p>
+</div>
+<hr>
+<h2 id="optional">Optional Additions</h2>
+<p>With all the above you should at least be able to see the grass during play mode.</p>
+<p>Below are some optional things we can add/adjust. May not be full examples but starting points at least :</p>
+<button id="execute-always" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Make grass visible in editor</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Make grass visible in editor</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#execute-always';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Make grass visible in editor</b></button>
+<div class="foldout">
+<p>By adding the <code>[ExecuteAlways]</code> attribute (or <code>[ExecuteInEditMode]</code> for much older Unity versions) before the class definition we can allow the script to run even when not in play mode.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#a6e22e">[ExecuteAlways]</span> <span style="color:#75715e">// Allow grass rendering while not in play mode</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DrawGrass</span> : MonoBehaviour {</span></span></code></pre></div>
+<p>Though increasing <code>instanceCount</code> won&rsquo;t update the grass unless we <strong>disable &amp; re-enable the component</strong>. (Potentially also means we index outside of the buffer size on the GPU which <em>might</em> cause crashes on some Graphics APIs? Seems fine for DX11 though. Caching <code>instanceCount</code> could avoid that if required)</p>
+<p>We could use <code>OnValidate()</code> to detect any inspector changes. But that function is also triggered with reloads / script compiles, and forcing the buffers to be reinitalised here seems to leak resources (likely as Unity can call the function from other threads). It might be better to use a CustomEditor. e.g. to add a &ldquo;Refresh&rdquo; button :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// in DrawGrass.cs :</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Refresh() {
+</span></span><span style="display:flex;"><span>    OnDisable();
+</span></span><span style="display:flex;"><span>    OnEnable();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// in DrawGrassEditor.cs (must be placed in a folder named &#34;Editor&#34;) :</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEditor;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">[CustomEditor(typeof(DrawGrass))]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DrawGrassEditor</span> : Editor {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> OnInspectorGUI() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">base</span>.OnInspectorGUI();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">bool</span> clicked = GUILayout.Button(<span style="color:#e6db74">&#34;Refresh&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (clicked) {
+</span></span><span style="display:flex;"><span>            DrawGrass grass = target <span style="color:#66d9ef">as</span> DrawGrass;
+</span></span><span style="display:flex;"><span>            grass.Refresh();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+
+</div>
+
+<button id="terrain" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Adapt instance spawning for Terrain</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Adapt instance spawning for Terrain</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#terrain';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Adapt instance spawning for Terrain</b></button>
+<div class="foldout">
+<p>If using a <strong>Terrain</strong> component in the scene we could also adapt the C# Script to use that to spawn the grass.</p>
+<p>With <code>terrain.SampleHeight</code> we can move the grass upwards to match the terrain height and by creating the rotation with <code>terrainData.GetInterpolatedNormal</code> we can optionally make the grass match the slope of the terrain. That normal can also be extracted from the matrix in the shader later, to make the shading match the terrain - so the grass blends in better/softly, as if it&rsquo;s part of the terrain rather than just placed ontop.</p>
+<p>(If you use the &ldquo;Random Rotation around Y axis&rdquo; rotation above instead, you may still want to keep the normal calculation and pass that into shader by adding a <strong>Vector4/float4</strong> to the <strong>InstanceData</strong>. Be sure to update the Size method as well)</p>
+<p>For example, might be something like :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Terrain terrain;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// expose terrain object to inspector,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// or set private &amp; uncomment line in OnEnable() if script is attached to same GameObject</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> SetupInstances() {
+</span></span><span style="display:flex;"><span>	TerrainData terrainData = terrain.terrainData;
+</span></span><span style="display:flex;"><span>	Vector3 terrainSize = terrainData.size;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	InstanceData[] instances = <span style="color:#66d9ef">new</span> InstanceData[instanceCount];
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; instanceCount; i++) {
+</span></span><span style="display:flex;"><span>		Vector3 position = <span style="color:#66d9ef">new</span>(
+</span></span><span style="display:flex;"><span>			Random.Range(<span style="color:#ae81ff">0</span>, terrainSize.x),
+</span></span><span style="display:flex;"><span>			<span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>			Random.Range(<span style="color:#ae81ff">0</span>, terrainSize.z)
+</span></span><span style="display:flex;"><span>		);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Align rotation to terrain normal</span>
+</span></span><span style="display:flex;"><span>		Vector3 normal = terrainData.GetInterpolatedNormal(position.x / terrainSize.x, position.z / terrainSize.z);
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">float</span> dot = Mathf.Abs(Vector3.Dot(normal, Vector3.forward));
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">float</span> dot2 = Mathf.Abs(Vector3.Dot(normal, Vector3.right));
+</span></span><span style="display:flex;"><span>		Vector3 perp = Vector3.Cross(normal, (dot2 &gt; dot) ? Vector3.right : Vector3.forward);
+</span></span><span style="display:flex;"><span>		Vector3 forward = Quaternion.AngleAxis(Random.Range(<span style="color:#ae81ff">0f</span>, <span style="color:#ae81ff">360f</span>), normal) * perp; <span style="color:#75715e">// Random rotation around normal</span>
+</span></span><span style="display:flex;"><span>		Quaternion rotation = Quaternion.LookRotation(forward, normal);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		Vector3 scale = <span style="color:#66d9ef">new</span> Vector3(<span style="color:#ae81ff">1</span>, Random.Range(<span style="color:#ae81ff">0.4f</span>, <span style="color:#ae81ff">0.9f</span>), <span style="color:#ae81ff">1</span>); <span style="color:#75715e">// Random Height</span>
+</span></span><span style="display:flex;"><span>		position.y += scale.y * <span style="color:#ae81ff">0.5f</span>; <span style="color:#75715e">// assuming origin of mesh is in center, like the unity primitive Quad</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// If you want positions stored in world space,</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		position += transform.position;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		position.y += terrain.SampleHeight(position);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		*/</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// else :</span>
+</span></span><span style="display:flex;"><span>		position.y += terrain.SampleHeight(transform.position + position);
+</span></span><span style="display:flex;"><span>		position -= bounds.size * <span style="color:#ae81ff">0.5f</span>; <span style="color:#75715e">// make position relative to bounds center</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// (SampleHeight still expects world space, hence the &#34;transform.position +&#34;)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		instances[i] = <span style="color:#66d9ef">new</span>() {
+</span></span><span style="display:flex;"><span>			matrix = Matrix4x4.TRS(position, rotation, scale)
+</span></span><span style="display:flex;"><span>		};
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (instancesBuffer == <span style="color:#66d9ef">null</span>)
+</span></span><span style="display:flex;"><span>		instancesBuffer = <span style="color:#66d9ef">new</span> ComputeBuffer(instanceCount, InstanceData.Size());
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	instancesBuffer.SetData(instances);
+</span></span><span style="display:flex;"><span>	MPB.SetBuffer(<span style="color:#e6db74">&#34;_PerInstanceData&#34;</span>, instancesBuffer);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> OnEnable() {
+</span></span><span style="display:flex;"><span>	...
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//terrain = GetComponent&lt;Terrain&gt;();</span>
+</span></span><span style="display:flex;"><span>	Vector3 boundsSize = terrain.terrainData.size;
+</span></span><span style="display:flex;"><span>	...
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Of note, this example spawns grass across the <em>entire terrain</em> which could be costly, both in terms of rendering those instances and their storage in memory/VRAM. For large terrains it&rsquo;s likely that you&rsquo;d want to adjust/optimise this - Maybe by only spawning grass within some bounds around the player/camera.</p>
+<div class="img-center">
+<a href="Instances3.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="387" alt="(Image)" src="Instances3.png" />
+</a>
+<p class="img-text">3200 instances rendering on a (very small) 20x20 width/height terrain</p>
+</div>
+<p>May also want to extend this further too. i.e. Obtain the alpha/splat maps from <code>TerrainData</code> to prevent grass spawning on some terrain textures. And/or to adjust grass colours (via the <code>float4 color</code> in <code>InstanceData</code>)</p>
+
+</div>
+
+<button id="cells" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Split instances into cells\/chunks</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Split instances into cells\/chunks</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#cells';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Split instances into cells/chunks</b></button>
+<div class="foldout">
+<p>If only spawning grass around the player, or doing frustum culling on the CPU side, it&rsquo;s likely you&rsquo;d want to adjust the instances data to be arranged in cells/chunks rather than be completely random. This could reduce how often that needs to be triggered and/or buffers to be reuploaded (via <code>buffer.SetData</code>)</p>
+<p>Not a full example, but this would involve adjusting the loop in <code>SetupInstances()</code>. Perhaps something like :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">float</span> cellSize = <span style="color:#ae81ff">5</span>; <span style="color:#75715e">// Desired cell size, changes to fit into bounds/terrainSize</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> SetupInstances() {
+</span></span><span style="display:flex;"><span>	InstanceData[] instances = <span style="color:#66d9ef">new</span> InstanceData[instanceCount];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">float</span> terrainSize = <span style="color:#ae81ff">20</span>; <span style="color:#75715e">// Assuming square area</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Or if using terrain,</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//terrainSize = terrain.terrainData.size.x; // Assuming square terrain</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> rowCount = (<span style="color:#66d9ef">int</span>)(terrainSize / cellSize);
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> cellCount = rowCount * rowCount;
+</span></span><span style="display:flex;"><span>	cellSize = terrainSize / rowCount;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> instanceCountPerCell = instanceCount / cellCount;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> y = <span style="color:#ae81ff">0</span>; y &lt; rowCount; y++) {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> x = <span style="color:#ae81ff">0</span>; x &lt; rowCount; x++) {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; instanceCountPerCell; i++) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				Vector3 position = <span style="color:#66d9ef">new</span>(
+</span></span><span style="display:flex;"><span>					x * cellSize + Random.Range(<span style="color:#ae81ff">0</span>, cellSize),
+</span></span><span style="display:flex;"><span>					<span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>					y * cellSize + Random.Range(<span style="color:#ae81ff">0</span>, cellSize)
+</span></span><span style="display:flex;"><span>				);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				instances[(y * rowCount + x) * instanceCountPerCell + i] = <span style="color:#66d9ef">new</span>() {
+</span></span><span style="display:flex;"><span>					matrix = Matrix4x4.TRS(position, rotation, scale)
+</span></span><span style="display:flex;"><span>				};
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (instancesBuffer == <span style="color:#66d9ef">null</span>){
+</span></span><span style="display:flex;"><span>		instancesBuffer = <span style="color:#66d9ef">new</span> ComputeBuffer(instanceCount, InstanceData.Size());
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	instancesBuffer.SetData(instances);
+</span></span><span style="display:flex;"><span>	MPB.SetBuffer(<span style="color:#e6db74">&#34;_PerInstanceData&#34;</span>, instancesBuffer);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+
+</div>
+
+<button id="wind" type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Simulate wind \/ swaying</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Simulate wind \/ swaying</b>';
+
+      if (history.pushState) {
+        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        newurl = newurl + '#wind';
+        window.history.pushState({path:newurl}, '', newurl);
+      }
+
+    }
+"><b>⯈ Simulate wind / swaying</b></button>
+<div class="foldout">
+<p>We can also add <strong>Vertex Displacement</strong> to make the grass less static.</p>
+<p>For Unity6+ versions this should be done on the <em>output</em> from the <b class="node">Custom Function</b> node. If applied to the input, the displacement would instead be relative to each instance, but in this case we want the wind applied in the same direction for all instances.</p>
+<p>Using <b class="node">Time</b> into a <b class="node">Sine</b> node setup as shown below produces a light wind/swaying effect :</p>
+<div class="img-center">
+<a href="GraphVertexSway.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="248" alt="(Image)" src="GraphVertexSway.png" />
+</a>
+<p class="img-text">Unity6+ graph shown, but same idea in older versions. (Click image to view larger version)</p>
+</div>
+<p>Can adjust the values here for a stronger wind, but the motion may look unrealistic. You&rsquo;d probably want to look into a more accurate method for that. But this is as far as I&rsquo;m going for this tutorial.</p>
+
+</div>
+
+<hr>
+<h2 id="indirect">Adapting Setup for Indirect</h2>
+<h3 id="indirect-script">C# Side</h3>
+<p>There may be optimisations we can do to our instancing rendering to make it perform better, such as <strong>Frustum Culling</strong> on the GPU via a <strong>Compute Shader</strong> (which the next section provides an example of). But for that to be able to adjust the number of instances that get drawn, we first need to switch to using the <strong>Indirect</strong> version of the instancing function.</p>
+<p>That also requires an additional buffer known as the &ldquo;indirect arguments&rdquo;, which stores :</p>
+<ul>
+<li><strong>Index Count</strong></li>
+<li><strong>Instances Count</strong></li>
+<li><strong>Start Index</strong>
+<ul>
+<li>(Mostly only important if you are drawing a submesh other than the first)</li>
+</ul>
+</li>
+<li><strong>Base Vertex Index</strong>
+<ul>
+<li>(Set if submeshes have an offset, see <a href="https://docs.unity3d.com/ScriptReference/Mesh.GetBaseVertex.html">Mesh.GetBaseVertex</a>)</li>
+</ul>
+</li>
+<li><strong>Start Instance</strong>
+<ul>
+<li>(We&rsquo;ll leave this at 0 to draw all instances. You might set this to a different value if the instances buffer holds data for other instanced calls. This in combination with the Instances Count would let you draw a section of that buffer. But supporting this requires additional setup on the shader side&hellip; which isn&rsquo;t documented)</li>
+</ul>
+</li>
+</ul>
+
+
+<div class="tabs">
+<button type="button" class="tab" onclick="OnTabClick(this);"><b>Unity 6&#43;</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Unity 2022</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Unity 2021.2&#43;</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Older</b></button></div>
+
+<div class="tabpanel">
+<div class="Older">
+<p>For older versions the function is <code>Graphics.DrawMeshInstancedIndirect</code>. The indirect arguments should still be initalised in the below script, but we also dispatch a Compute Shader later to alter values.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#region IndirectArgs</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> ComputeBuffer argsBuffer;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> SetupIndirectArgs(){
+</span></span><span style="display:flex;"><span>	argsBuffer = <span style="color:#66d9ef">new</span> ComputeBuffer(<span style="color:#ae81ff">1</span>, args.Length * <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">uint</span>), ComputeBufferType.IndirectArguments);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Init</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">uint</span>[] args = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">uint</span>[<span style="color:#ae81ff">5</span>] { <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span> };
+</span></span><span style="display:flex;"><span>	args[<span style="color:#ae81ff">0</span>] = (<span style="color:#66d9ef">uint</span>)mesh.GetIndexCount(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>	args[<span style="color:#ae81ff">1</span>] = (<span style="color:#66d9ef">uint</span>)instanceCount;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// and optionally,</span>
+</span></span><span style="display:flex;"><span>	args[<span style="color:#ae81ff">2</span>] = (<span style="color:#66d9ef">uint</span>)mesh.GetIndexStart(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>	args[<span style="color:#ae81ff">3</span>] = (<span style="color:#66d9ef">uint</span>)mesh.GetBaseVertex(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>	args[<span style="color:#ae81ff">4</span>] = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	argsBuffer.SetData(args);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endregion </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> OnEnable() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (instancesBuffer != <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	SetupInstances();
+</span></span><span style="display:flex;"><span>	SetupIndirectArgs();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//... (etc, see previous setup)</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> OnDisable() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (instancesBuffer != <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>		instancesBuffer.Release();
+</span></span><span style="display:flex;"><span>		instancesBuffer = <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (argsBuffer != <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>		argsBuffer.Release();
+</span></span><span style="display:flex;"><span>		argsBuffer = <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> Update() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (instanceCount &lt;= <span style="color:#ae81ff">0</span> || instancesBuffer == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (argsBuffer == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	Graphics.DrawMeshInstancedIndirect(mesh, <span style="color:#ae81ff">0</span>, material, bounds, argsBuffer, <span style="color:#ae81ff">0</span>, MPB, castShadows, receiveShadows);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+</div>
+<div class="Unity6 Unity2022 Unity2021.2">
+<p>As of Unity 2021.2 we use <code>Graphics.RenderMeshIndirect</code>.</p>
+<p>Compared to the older <code>DrawMeshInstancedIndirect</code>, the newer function seemingly allows for multiple draw commands from the same function call. (Though currently these still apparently end up as separate draw calls - <a href="https://issuetracker.unity3d.com/issues/graphics-dot-rendermeshindirect-does-not-issue-multi-draw-rendering-commands-when-using-a-graphics-api-capable-of-multi-draw-commands">related issue</a>)</p>
+<p>Unity also provides the <a href="https://docs.unity3d.com/ScriptReference/GraphicsBuffer.IndirectDrawIndexedArgs.html">GraphicsBuffer.IndirectDrawIndexedArgs</a> struct to hold the indirect arguments (with proper field/property names rather than needing to use a <code>uint[5]</code> and remember what they correspond to! Though note the order is as mentioned above, not alphabetical as they are in the documentation&hellip; which will be somewhat important later). These should still be initalised in the script, but we can also dispatch a Compute Shader later to alter values.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">#region IndirectArgs</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> GraphicsBuffer indirectBuffer;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> GraphicsBuffer.IndirectDrawIndexedArgs[] commandData;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> commandCount;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> SetupIndirectArgs() {
+</span></span><span style="display:flex;"><span>        commandCount = <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        commandData = <span style="color:#66d9ef">new</span> GraphicsBuffer.IndirectDrawIndexedArgs[commandCount];
+</span></span><span style="display:flex;"><span>        commandData[<span style="color:#ae81ff">0</span>].indexCountPerInstance = mesh.GetIndexCount(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>        commandData[<span style="color:#ae81ff">0</span>].instanceCount = (<span style="color:#66d9ef">uint</span>)instanceCount;
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// and optionally,</span>
+</span></span><span style="display:flex;"><span>		commandData[<span style="color:#ae81ff">0</span>].startIndex = mesh.GetIndexStart(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>		commandData[<span style="color:#ae81ff">0</span>].baseVertexIndex = mesh.GetBaseVertex(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>		commandData[<span style="color:#ae81ff">0</span>].startInstance = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        indirectBuffer = <span style="color:#66d9ef">new</span> GraphicsBuffer(GraphicsBuffer.Target.IndirectArguments, commandCount, GraphicsBuffer.IndirectDrawIndexedArgs.size);
+</span></span><span style="display:flex;"><span>        indirectBuffer.SetData(commandData);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endregion </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> OnEnable() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (instancesBuffer != <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	SetupInstances();
+</span></span><span style="display:flex;"><span>	SetupIndirectArgs();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//... (etc, see previous setup)</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> OnDisable() {
+</span></span><span style="display:flex;"><span>	instancesBuffer?.Release();
+</span></span><span style="display:flex;"><span>	instancesBuffer = <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>	indirectBuffer?.Release();
+</span></span><span style="display:flex;"><span>	indirectBuffer = <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> Update() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (instanceCount &lt;= <span style="color:#ae81ff">0</span> || instancesBuffer == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (indirectBuffer == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	Graphics.RenderMeshIndirect(rParams, mesh, indirectBuffer, commandCount);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+</div>
+
+</div>
+<h3 id="indirect-graph">Shader Graph</h3>
+<p>At least for this tutorial, we don&rsquo;t really <em>need</em> changes on the shader side to support the <code>Indirect</code> instancing functions, provided you leave the <code>startInstance</code> in the indirect arguments Buffer at 0, and only have a single command.</p>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ What if we have a different startInstance?</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ What if we have a different startInstance?</b>';
+
+    }
+"><b>⯈ What if we have a different startInstance?</b></button>
+<div class="foldout">
+<p>When setting <code>startInstance</code>, you need to offset the Instance ID in the shader to take that into account. But that doesn&rsquo;t need to be done on <em>all</em> Graphics APIs - Vulkan and WebGPU seem to bake it into <code>SV_InstanceID</code> so it renders the correct instances without an offset. To handle these platform differences, Unity 2021.2+ added functions in an <code>UnityIndirect.cginc</code> include file in the built-in shaders (can be used by all render pipelines). If you want to view the file, download the shaders source from <a href="https://unity.com/releases/editor/archive">Unity&rsquo;s download archive</a> (click &ldquo;See All&rdquo; of an appropriate version → &ldquo;Other installs&rdquo; → Shaders. Will be under CGIncludes folder)</p>
+<p>(For older versions&hellip; I haven&rsquo;t tested, but you&rsquo;d probably need to pass the <code>startInstance</code> in a separate float property, or if set on GPU maybe try passing the 5 uint <code>argsBuffer</code> manually and index it (<code>[4]</code> would be the <code>startInstance</code>). Apply the offset (<code>unity_InstanceID + offset</code>) inside an <code>#if !defined(SHADER_API_VULKAN) &amp;&amp; !defined(SHADER_API_WEBGPU)</code> block to avoid it on those platforms)</p>
+<p>For Unity 2021.2+ we can do :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#define UNITY_INDIRECT_DRAW_ARGS IndirectDrawIndexedArgs
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;UnityIndirect.cginc&#34;</span></span></span></code></pre></div>
+<p>This adds functions that return uints, accessing the CommandID and Indirect Arguments :</p>
+<ul>
+<li><code>GetCommandID(svDrawID)</code></li>
+<li><code>GetIndirectVertexCount()</code> : (Actually index count for indexed/mesh calls)</li>
+<li><code>GetIndirectInstanceCount()</code> : (Number of instances drawn)</li>
+<li><code>GetIndirectInstanceID(svInstanceID)</code> : (Returns 0 to InstanceCount, where 0 is first instance actually being drawn)</li>
+<li><code>GetIndirectVertexID(svVertexID)</code> : (Returns 0 to VertexCount, presumably. More important for RenderPrimitivesX calls)</li>
+</ul>
+<p>The example in the <a href="https://docs.unity3d.com/6000.3/Documentation/ScriptReference/Graphics.RenderMeshIndirect.html">RenderMeshIndirect docs page</a> uses some of these to set positions and colours (though that&rsquo;s mostly only a test setup)</p>
+<p>But a few of these functions have <em>two</em> versions, which aren&rsquo;t mentioned by the docs :</p>
+<ul>
+<li><code>GetIndirectInstanceID_Base(svInstanceID)</code></li>
+<li><code>GetIndirectVertexID_Base(svVertexID)</code></li>
+</ul>
+<p>I haven&rsquo;t seen <em>any</em> examples that actually use these <code>_Base</code> versions, but afaik they are what you should <strong>use to correctly index a buffer</strong>, assuming it contains the full data set.</p>
+<p>In the case of <code>GetIndirectInstanceID</code> / <code>GetIndirectInstanceID_Base</code>, these are defined as :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#if defined(SHADER_API_VULKAN) || defined(SHADER_API_WEBGPU)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>uint <span style="color:#a6e22e">GetIndirectInstanceID</span>(IndirectDrawIndexedArgs args, uint svInstanceID) {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> svInstanceID <span style="color:#f92672">-</span> args.startInstance;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>uint <span style="color:#a6e22e">GetIndirectInstanceID_Base</span>(IndirectDrawIndexedArgs args, uint svInstanceID) {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> svInstanceID;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#else
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>uint <span style="color:#a6e22e">GetIndirectInstanceID</span>(IndirectDrawIndexedArgs args, uint svInstanceID) { 
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> svInstanceID;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>uint <span style="color:#a6e22e">GetIndirectInstanceID_Base</span>(IndirectDrawIndexedArgs args, uint svInstanceID) {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> svInstanceID <span style="color:#f92672">+</span> args.startInstance;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">// (Later also defines functions without the first input, which is what 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// &#34;#define UNITY_INDIRECT_DRAW_ARGS IndirectDrawIndexedArgs&#34; before the #include is for.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// For non-indexed draw functions you would use IndirectDrawArgs instead on both C#/shader sides.
+</span></span></span></code></pre></div>
+<p>I haven&rsquo;t really checked/tested the VertexID versions as those are typically used for <code>DrawProceduralIndirect/RenderPrimitivesIndirect</code> rather than mesh based functions so aren&rsquo;t as relevant here. I think the examples on <a href="https://docs.unity3d.com/ScriptReference/Graphics.RenderPrimitivesIndirect.html">RenderPrimitivesIndirect</a> and <a href="https://docs.unity3d.com/ScriptReference/Graphics.RenderPrimitivesIndexedIndirect.html">RenderPrimitivesIndexedIndirect</a> actually incorrectly uses <code>GetIndirectVertexID</code> instead of <code>GetIndirectVertexID_Base</code>, which only works because it doesn&rsquo;t set <code>startIndex</code> or uses submesh 0&hellip; Whoops? 🙃)</p>
+
+</div>
+
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ Example using UnityIndirect.cginc (Unity 2021.2\u002b)</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ Example using UnityIndirect.cginc (Unity 2021.2\u002b)</b>';
+
+    }
+"><b>⯈ Example using UnityIndirect.cginc (Unity 2021.2+)</b></button>
+<div class="foldout">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifndef GRASS_INSTANCED_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define GRASS_INSTANCED_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define UNITY_INDIRECT_DRAW_ARGS IndirectDrawIndexedArgs
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;UnityIndirect.cginc&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Declare structure &amp; buffer for passing per-instance data
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// This must match the C# side
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> InstanceData {
+</span></span><span style="display:flex;"><span>	float4x4 m;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//float4 color;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span><span style="display:flex;"><span>StructuredBuffer<span style="color:#f92672">&lt;</span>InstanceData<span style="color:#f92672">&gt;</span> _PerInstanceData;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Shader Graph function(s)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Instancing_float</span>(float3 Position, <span style="color:#66d9ef">float</span> InstanceID, out float3 OutPosition, out float3 OutNormal){
+</span></span><span style="display:flex;"><span>	InitIndirectDrawArgs(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    uint index <span style="color:#f92672">=</span> GetIndirectInstanceID_Base(InstanceID);
+</span></span><span style="display:flex;"><span>    InstanceData data <span style="color:#f92672">=</span> _PerInstanceData[index];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    OutPosition <span style="color:#f92672">=</span> mul(data.m, float4(Position, <span style="color:#ae81ff">1</span>)).xyz;
+</span></span><span style="display:flex;"><span>    OutNormal <span style="color:#f92672">=</span> mul(data.m, float4(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>)).xyz;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// (and same GetIndirectInstanceID_Base usage in other functions where buffers are indexed using InstanceID)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif</span></span></span></code></pre></div>
+<p>If you set multiple commands in the <code>indirectBuffer</code> for the <code>RenderMeshIndirect</code> call, you may also need to access the <code>uint commandID = GetCommandID(0);</code> and use that to offset the buffer index further. But how likely depends how the <code>instancesBuffer</code> data is formatted.</p>
+
+</div>
+
+<hr>
+<h2 id="frustum-culling">Adding GPU Frustum Culling</h2>
+<p>Now that we&rsquo;ve switched to <code>Indirect</code> we can add <strong>Frustum Culling</strong> to prevent instances being drawn outside of the camera view, as well as optionally limit the distance we render at (if you want that different from the camera&rsquo;s far plane value)</p>
+<div class="img-center">
+<a href="FrustumCulling.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="358" alt="(Image)" src="FrustumCulling.png" />
+</a>
+<p class="img-text">500K instances in an 256x256 area.<br>
+Rendering ~89K instances due to frustum culling (FOV = 60 &amp; Far Plane = 100).<br>
+In my case performs 500FPS+ regardless of frustum culling (but it does help), but scene is empty and measured based on a (few years old) high-end PC GPU. Probably better to profile for yourself.</p>
+</div>
+<p>The implementation will include :</p>
+<ul>
+<li>Provide an additional <code>uint</code> buffer using the &ldquo;Append&rdquo; type, which will hold indices of which instances to draw.</li>
+<li>Use a Compute Shader to check which instance positions are within the camera frustum and append them to that buffer. I&rsquo;ll be transforming the positions into clip space to handle that.</li>
+<li>The instanceCount in the indirect args buffer will be updated to match the count of this buffer. Can handle this by using <a href="https://docs.unity3d.com/ScriptReference/GraphicsBuffer.CopyCount.html">GraphicsBuffer.CopyCount</a> to copy a &ldquo;hidden counter&rdquo; associated with the Append buffer to the Indirect Args buffer.</li>
+<li>In the shader graph include file, we index this ViewIndices buffer using the InstanceID and use that result to index the PerInstance buffer, (rather than using the InstanceID directly)</li>
+</ul>
+<h3 id="frustum-culling-compute">Compute Shader</h3>
+<p>Firstly let&rsquo;s set up the compute shader. This should be a file with the <code>.compute</code> file extension.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#pragma kernel FrustumCullInstances 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Instancing.hlsl&#34; // ShaderGraph include file (assumes this is in the same folder)</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">// Alternatively, copy structure &amp; buffers. But as we must keep them in sync, it&#39;s easier to use an #include
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">struct InstanceData {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	float4x4 m;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    // Layout must match C# side
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">};
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">StructuredBuffer&lt;InstanceData&gt; _PerInstanceData;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>AppendStructuredBuffer<span style="color:#f92672">&lt;</span>uint<span style="color:#f92672">&gt;</span> _VisibleIDsAppend; <span style="color:#75715e">// Buffer that holds the indices of visible instances
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>float4x4 _Matrix; <span style="color:#75715e">// (matrix passed in should convert to Clip Space e.g. projection * view * model)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> _MaxDrawDistance;
+</span></span><span style="display:flex;"><span>uint _StartOffset;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[numthreads(<span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> FrustumCullInstances (uint3 id : SV_DispatchThreadID) {
+</span></span><span style="display:flex;"><span>	InstanceData data <span style="color:#f92672">=</span> _PerInstanceData[_StartOffset <span style="color:#f92672">+</span> id.x];
+</span></span><span style="display:flex;"><span>	float4 absPosCS <span style="color:#f92672">=</span> abs(mul(_Matrix, float4(data.m._m03_m13_m23, <span style="color:#ae81ff">1.0</span>)));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (   absPosCS.x <span style="color:#f92672">&lt;=</span> absPosCS.w <span style="color:#f92672">*</span> <span style="color:#ae81ff">1.1</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.5</span> 
+</span></span><span style="display:flex;"><span>	    <span style="color:#f92672">&amp;&amp;</span> absPosCS.y <span style="color:#f92672">&lt;=</span> absPosCS.w <span style="color:#f92672">*</span> <span style="color:#ae81ff">1.1</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.5</span>	<span style="color:#75715e">// (scaling/padding hides pop-in/out at screen edges)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	    <span style="color:#f92672">&amp;&amp;</span> absPosCS.z <span style="color:#f92672">&lt;=</span> absPosCS.w
+</span></span><span style="display:flex;"><span>	    <span style="color:#f92672">&amp;&amp;</span> absPosCS.w <span style="color:#f92672">&lt;=</span> _MaxDrawDistance		<span style="color:#75715e">// optional max draw distance
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Is inside camera frustum
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		_VisibleIDsAppend.Append(_StartOffset <span style="color:#f92672">+</span> id.x);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<button  type="button" class="foldout_button" onclick="
+    this.classList.toggle('active');
+    var content = this.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      this.innerHTML = '<b>⯈ What is [numthreads(64, 1, 1)] ?</b>';
+    } else {
+      content.style.display = 'block';
+      this.innerHTML = '<b>⯆ What is [numthreads(64, 1, 1)] ?</b>';
+
+    }
+"><b>⯈ What is [numthreads(64, 1, 1)] ?</b></button>
+<div class="foldout">
+<p>The values here specify the number of threads in each thread-group that will be dispatched, since GPUs are all about executing things in parallel. Our buffer data is one dimensional so it makes sense to only use the X workgroup size (defined by <code>[numthreads()]</code>), leaving Y and Z at 1. (But if instances were split into cells would probably use a 2D thread count)</p>
+<p>I don&rsquo;t want to go too deep into the GPU hardware/architecture, (I&rsquo;m sure there&rsquo;s better tutorials for that), but typically these values should multiply together to a minimum of 64 (e.g. <code>(64, 1, 1)</code>, <code>(8, 8, 1)</code>, etc.) - as most AMD GPUs execute in groups of 64 threads and lower sizes would just cause some to be idle. Some newer AMD GPUs (<a href="https://en.wikipedia.org/wiki/RDNA_(microarchitecture)">RDNA</a>) and NVIDIA GPUs use groups of 32 instead, but specifying a size of 64 is still easier to support all cases without wasted threads.</p>
+<p>When googling around you might see the terms &ldquo;wavefront&rdquo; and &ldquo;warp&rdquo; which traditionally correspond to these 64/32 sized groups of threads, though are also often used interchangeablely.</p>
+
+</div>
+
+<p>To handle the culling, the compute shader transforms the instance positions (extracted from the matrices using <code>_m03_m13_m23</code>) into <strong>Clip Space</strong>. This is the same space that vertex shaders typically output to, though in this case the projection matrix used will be passed from the C# script without using <code>GL.GetGPUProjectionMatrix</code>, so follows the <strong>OpenGL</strong> conventions that Unity uses by default. This is useful as we don&rsquo;t need to worry about <a href="https://docs.unity3d.com/Manual/SL-PlatformDifferences.html#:~:text=%E2%80%931.0%20at%20the%20near%20plane%20to%20%2B1.0">how the clip space Z would differ in other graphics APIs</a>.</p>
+<p>To test whether this point is within the camera frustum, we simply take the <code>abs()</code>, and use <code>&lt;=</code> to compare against the W component. When this passes we add the index to the <code>AppendStructuredBuffer</code>.</p>
+<p>This works because while the camera culls in a <em>frustum</em> in terms of <strong>View space</strong>. After the projection matrix, that area is a <strong>cube</strong> in <strong>Clip space</strong> (in OpenGL convention at least), with XYZ components ranging from <strong>-W to W</strong> (where W is the fourth component of that position). For the XY axis, (0,0) is the screen center. For the Z axis, <strong>-W is at the near plane and W is at the far plane</strong>. (Meaning the camera would typically be at some Z distance smaller than -W. We don&rsquo;t normally need the camera&rsquo;s position in clipspace but might be good to have that kind of reference point to help you visualise the space)</p>
+<p>Also note that <code>Z=0</code> wouldn&rsquo;t be half-way between as depth is <em>non-linear</em> - as explained further in my post on <a href="https://www.cyanilux.com/tutorials/depth/">Depth</a>.</p>
+<h3 id="frustum-culling-script-changes">C# Changes</h3>
+<p>On the C# side we need to set up that additional buffer and pass it to the instanced rendering &amp; compute shader (which is exposed to and assigned in the inspector). Note that the property names are different to avoid conflicts (when using the <code>#include</code> line in the compute shader), because the buffer needs to be defined as an <strong>AppendStructuredBuffer</strong> in the compute shader but a <strong>StructuredBuffer</strong> in the regular shader to be able to index it. (Hence <code>_VisibleIDsAppend</code> and <code>_VisibleIDs</code>)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> ComputeShader computeFrustumCulling;
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> SetupInstances(){
+</span></span><span style="display:flex;"><span>	...
+</span></span><span style="display:flex;"><span>	visibleBuffer = <span style="color:#66d9ef">new</span> ComputeBuffer(instanceCount, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">uint</span>), ComputeBufferType.Append);
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// may also want to initalise to showing all instances, not sure how important that is though.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	uint[] ids = new uint[instanceCount];
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	ids[i] = i;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	visibleBuffer.SetData(ids);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	*/</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> OnEnable() {
+</span></span><span style="display:flex;"><span>	...
+</span></span><span style="display:flex;"><span>	rParams.matProps.SetBuffer(<span style="color:#e6db74">&#34;_VisibleIDs&#34;</span>, visibleBuffer);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> kernel = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	0 to reference first kernel in compute file
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	Could alternatively use computeFrustumCulling.FindKernel(&#34;FrustumCullInstances&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	and cache that in a private variable for use in Update too
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    computeFrustumCulling.SetBuffer(kernel, <span style="color:#e6db74">&#34;_PerInstanceData&#34;</span>, instancesBuffer);
+</span></span><span style="display:flex;"><span>    computeFrustumCulling.SetBuffer(kernel, <span style="color:#e6db74">&#34;_VisibleIDsAppend&#34;</span>, visibleBuffer);
+</span></span><span style="display:flex;"><span>    computeFrustumCulling.SetFloat(<span style="color:#e6db74">&#34;_MaxDrawDistance&#34;</span>, <span style="color:#ae81ff">100</span>);
+</span></span><span style="display:flex;"><span>	computeFrustumCulling.SetInt(<span style="color:#e6db74">&#34;_StartOffset&#34;</span>, <span style="color:#ae81ff">0</span>); <span style="color:#75715e">// set to &#34;Start Instance&#34; in indirect args if used</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> OnDisable() {
+</span></span><span style="display:flex;"><span>	...
+</span></span><span style="display:flex;"><span>	visibleBuffer?.Release();
+</span></span><span style="display:flex;"><span>    visibleBuffer = <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>For <code>Update()</code> we reset a &ldquo;hidden counter&rdquo; on the append buffer which keeps track of how many elements are in the buffer. Then pass the view projection matrix to the compute shader and <code>Dispatch</code> to execute it. To update the instance count used by the instancing call, we copy the counter to the Indirect Args Buffer by using <code>GraphicsBuffer.CopyCount</code>. The third parameter of that needs to be <code>1 * sizeof(uint)</code> (equivalent to a value of 4) as the instance count is the second uint in the buffer. This occurs on the GPU without copying to / stalling the CPU.</p>
+<p>(Of note, the actual append buffer size/length is fixed when the ComputeBuffer is created. The counter just allows <code>Append()</code> calls in the shader to override existing data. Without the reset, appending would continue to increment the hidden counter every frame. It wouldn&rsquo;t write to the buffer out of bounds, but it would cause the instanced rendering to draw many overlapping instances (indexing the first _PerInstanceData entry) before crashing)</p>
+
+
+<div class="tabs">
+<button type="button" class="tab" onclick="OnTabClick(this);"><b>Unity 6&#43;</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Unity 2022</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Unity 2021.2&#43;</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Older</b></button></div>
+
+<div class="tabpanel">
+<div class="Older">
+private readonly int prop_Matrix = Shader.PropertyToID("_Matrix");
+<p>void Update() {
+if (instanceCount &lt;= 0 || instancesBuffer == null) return;
+if (argsBuffer == null) return;</p>
+<pre><code>// Frustum Culling
+if (computeFrustumCulling != null) {
+	// Reset Visible Buffer
+    visibleBuffer?.SetCounterValue(0);
+
+	// Set Matrix &amp; Dispatch Compute Shader
+    Camera cam = Camera.main;
+	Matrix4x4 m = Matrix4x4.Translate(bounds.center);
+    Matrix4x4 v = cam.worldToCameraMatrix;
+    Matrix4x4 p = cam.projectionMatrix;
+    // With regular shaders you'd normally use GL.GetGPUProjectionMatrix to convert this matrix to graphics API being used
+    // but in this case the compute shader expects the OpenGL convention that Unity uses by default
+
+	Matrix4x4 mvp = p * v * m;
+	// (If instanced matrices are stored in world space can remove the m matrix here)
+	computeFrustumCulling.SetMatrix(prop_Matrix, mvp);
+	
+	/* 
+		Note : If you have multiple objects creating grass, 
+	   	either need to make sure the buffers are set here.
+	   	Or create &amp; use an instance of the compute shader, e.g.
+	   	Instantiate(computeFrustumCulling) in Start() &amp; Destroy that in OnDestroy()
+	*/
+
+	int kernel = 0; // or cache computeFrustumCulling.FindKernel(&quot;FrustumCullInstances&quot;);
+    uint numthreads = 64;
+    // keep in sync with compute shader, or set automatically with :
+    //computeFrustumCulling.GetKernelThreadGroupSizes(kernel, out numthreads, out _, out _);
+	// (probably in OnEnable &amp; cache in private variable for usage here)
+
+    computeFrustumCulling.Dispatch(kernel, Mathf.CeilToInt((float)instanceCount / numthreads), 1, 1);
+
+	// Copy Counter to Instance Count in Indirect Args
+    ComputeBuffer.CopyCount(visibleBuffer, argsBuffer, 1 * sizeof(uint));
+}
+
+Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer, 0, MPB, castShadows, receiveShadows);
+</code></pre>
+<p>}</p>
+</div>
+<div class="Unity2021.2 Unity2022 Unity6">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#66d9ef">int</span> prop_Matrix = Shader.PropertyToID(<span style="color:#e6db74">&#34;_Matrix&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> Update() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (instanceCount &lt;= <span style="color:#ae81ff">0</span> || instancesBuffer == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (indirectBuffer == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Frustum Culling</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (computeFrustumCulling != <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Reset Visible Buffer</span>
+</span></span><span style="display:flex;"><span>        visibleBuffer?.SetCounterValue(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Set Matrix &amp; Dispatch Compute Shader</span>
+</span></span><span style="display:flex;"><span>        Camera cam = Camera.main;
+</span></span><span style="display:flex;"><span>        Matrix4x4 m = Matrix4x4.Translate(bounds.center);
+</span></span><span style="display:flex;"><span>        Matrix4x4 v = cam.worldToCameraMatrix;
+</span></span><span style="display:flex;"><span>        Matrix4x4 p = cam.projectionMatrix;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// With regular shaders you&#39;d normally use GL.GetGPUProjectionMatrix to convert this matrix to graphics API being used</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// but in this case the compute shader expects the OpenGL convention that Unity uses by default</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		Matrix4x4 mvp = p * v * m;
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// (If instanced matrices are stored in world space can remove the m matrix here)</span>
+</span></span><span style="display:flex;"><span>		computeFrustumCulling.SetMatrix(prop_Matrix, mvp);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/* 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			Note : If you have multiple objects creating grass, 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		   	either need to make sure the buffers are set here.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		   	Or create &amp; use an instance of the compute shader, e.g.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		   	Instantiate(computeFrustumCulling) in Start() &amp; Destroy that in OnDestroy()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">uint</span> numthreads = <span style="color:#ae81ff">64</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// keep in sync with compute shader, or set automatically with :</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//computeFrustumCulling.GetKernelThreadGroupSizes(kernel, out numthreads, out _, out _);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// (probably in OnEnable &amp; cache in private variable for usage here)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> kernel = <span style="color:#ae81ff">0</span>; <span style="color:#75715e">// or cache computeFrustumCulling.FindKernel(&#34;FrustumCullInstances&#34;);</span>
+</span></span><span style="display:flex;"><span>        computeFrustumCulling.Dispatch(kernel, Mathf.CeilToInt(instanceCount / numthreads), <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Copy Counter to Instance Count in Indirect Args</span>
+</span></span><span style="display:flex;"><span>        GraphicsBuffer.CopyCount(visibleBuffer, indirectBuffer, <span style="color:#ae81ff">1</span> * <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">uint</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Graphics.RenderMeshIndirect(rParams, mesh, indirectBuffer, commandCount);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+</div>
+
+</div>
+<p>The values in the <code>Dispatch</code> call are how many thread-groups to launch, so to run the compute shader on <code>instanceCount</code>, we need to divide by the thread-group sizes we set in the compute shader. Can either hardcode this and be sure to keep them in sync, or call <a href="https://docs.unity3d.com/Documentation/ScriptReference/ComputeShader.GetKernelThreadGroupSizes.html">ComputeShader.GetKernelThreadGroupSizes.html</a>.</p>
+<p>Note that we also cast the count to float and round up (using <code>Mathf.CeilToInt</code>) to ensure we dispatch enough thread-groups to cover all the instances. Though this sometimes means threads are wasted - though unlikely to make much difference on performance. Could make <code>instanceCount</code> a multiple of the <code>numthreads</code> (64) to avoid that.</p>
+<div class="notice">
+<div class="notice-left">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<p>Note that the implementation above uses <code>Camera.main</code> so always culls based on the Main Camera, even for Scene View. Can use the following to change that (but doesn&rsquo;t seem to update instantly - only on focus changes)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span>Camera cam = Camera.main;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#if UNITY_EDITOR</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (Camera.current != <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>    	cam = Camera.current;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif </span></span></span></code></pre></div>
+
+</div>
+</div>
+<h3 id="frustum-culling-shader-changes">Shader Graph Include File Changes</h3>
+<p>Finally, we need to adjust the file used by our <b class="node">Custom Function</b> node(s) to define the VisibleIDs Buffer (<code>_VisibleIDs</code>), index it using the <strong>InstanceID</strong> and use the result to index <code>_PerInstanceData</code> :</p>
+
+
+<div class="tabs">
+<button type="button" class="tab" onclick="OnTabClick(this);"><b>Unity 6&#43;</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Unity 2022</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Unity 2021.2&#43;</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Older</b></button></div>
+
+<div class="tabpanel">
+<div class="Unity6">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifndef GRASS_INSTANCED_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define GRASS_INSTANCED_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Declare structure &amp; buffer for passing per-instance data
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> InstanceData {
+</span></span><span style="display:flex;"><span>	float4x4 m;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//float4 color;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// Layout must match C# side
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span><span style="display:flex;"><span>StructuredBuffer<span style="color:#f92672">&lt;</span>InstanceData<span style="color:#f92672">&gt;</span> _PerInstanceData;
+</span></span><span style="display:flex;"><span>StructuredBuffer<span style="color:#f92672">&lt;</span>uint<span style="color:#f92672">&gt;</span> _VisibleIDs;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Instancing_float</span>(float3 Position, uint InstanceID, out float3 OutPosition, out float3 OutNormal){
+</span></span><span style="display:flex;"><span>	uint index <span style="color:#f92672">=</span> _VisibleIDs[InstanceID];
+</span></span><span style="display:flex;"><span>	InstanceData data <span style="color:#f92672">=</span> _PerInstanceData[index];
+</span></span><span style="display:flex;"><span>	OutPosition <span style="color:#f92672">=</span> mul(data.m, float4(Position, <span style="color:#ae81ff">1</span>)).xyz;
+</span></span><span style="display:flex;"><span>    OutNormal <span style="color:#f92672">=</span> mul(data.m, float4(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>)).xyz;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// If using other per-instance data for fragment stage, update this too
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">InstancingFragment_float</span>(<span style="color:#66d9ef">float</span> InstanceID, out float4 Out){
+</span></span><span style="display:flex;"><span>    uint index <span style="color:#f92672">=</span> _VisibleIDs[InstanceID];
+</span></span><span style="display:flex;"><span>	InstanceData data <span style="color:#f92672">=</span> _PerInstanceData[index];
+</span></span><span style="display:flex;"><span>    Out <span style="color:#f92672">=</span> data.color;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif</span></span></span></code></pre></div>
+</div>
+<div class="Unity2022 Unity2021.2 Older">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifndef GRASS_INSTANCED_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define GRASS_INSTANCED_INCLUDED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Declare structure &amp; buffer for passing per-instance data
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// This must match the C# side
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> InstanceData {
+</span></span><span style="display:flex;"><span>	float4x4 m;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//float4 color;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span><span style="display:flex;"><span>StructuredBuffer<span style="color:#f92672">&lt;</span>InstanceData<span style="color:#f92672">&gt;</span> _PerInstanceData;
+</span></span><span style="display:flex;"><span>StructuredBuffer<span style="color:#f92672">&lt;</span>uint<span style="color:#f92672">&gt;</span> _VisibleIDs;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#if UNITY_ANY_INSTANCING_ENABLED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">InstancingMatrices</span>(inout float4x4 objectToWorld, out float4x4 worldToObject) {
+</span></span><span style="display:flex;"><span>		uint index <span style="color:#f92672">=</span> _VisibleIDs[unity_InstanceID];
+</span></span><span style="display:flex;"><span>		InstanceData data <span style="color:#f92672">=</span> _PerInstanceData[index];
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// ... (rest is same as before)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// If using functions that access other per-instance data, update those too. e.g.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> InstancingFragment_float(out float4 Out){
+</span></span><span style="display:flex;"><span>    uint index <span style="color:#f92672">=</span> _VisibleIDs[unity_InstanceID];
+</span></span><span style="display:flex;"><span>	InstanceData data <span style="color:#f92672">=</span> _PerInstanceData[index];
+</span></span><span style="display:flex;"><span>    Out <span style="color:#f92672">=</span> data.color;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+</div>
+<div class="Unity2021.2 Unity2022 Unity6">
+<p>Note that the <b class="node">Instance ID</b> will also no longer be consistent. If using that in the graph for other calculations (e.g. I use it with <b class="node">Random Range</b> to select a random tile from the texture, which flickers with the culling), we&rsquo;d need to add an additional <b class="node">Custom Function</b> to obtain the new index :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">VisibleID_float</span>(uint InstanceID, out <span style="color:#66d9ef">float</span> Out){
+</span></span><span style="display:flex;"><span>	Out <span style="color:#f92672">=</span> _VisibleIDs[InstanceID];
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Though this also assumes the instances buffer is consistent. If that changes you&rsquo;d likely need to store a random value in the InstanceData struct instead. (In the past I used the <code>color.a</code> for that, as transparency isn&rsquo;t used)</p>
+</div>
+<div class="Older">
+<p>If also using the <code>GetInstanceID_float</code> snippet from earlier (e.g. with <b class="node">Random Range</b> to select a random tile from the texture), we need to alter that function to return the updated ID, as <code>unity_InstanceID</code> will no longer be consistent (so flicker between tiles) with the frustum culling :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">GetInstanceID_float</span>(out <span style="color:#66d9ef">float</span> Out){
+</span></span><span style="display:flex;"><span>	Out <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#ifndef SHADERGRAPH_PREVIEW
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">#if UNITY_ANY_INSTANCING_ENABLED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	Out <span style="color:#f92672">=</span> _VisibleIDs[unity_InstanceID];
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}</span></span></code></pre></div>
+<p>Though this also assumes the instances buffer is consistent. If that changes you&rsquo;d likely need to store a random value in the InstanceData struct instead. (In the past I used the <code>color.a</code> for that, as transparency isn&rsquo;t used)</p>
+</div>
+
+</div>
+<hr>
+<h2 id="wrap-up">Wrap up</h2>
+<p>For further optimisations, it could also make sense to try implementing <strong>Occlussion Culling</strong>, to stop rendering grass that is behind other objects. Probably more important for scenes that contain many objects/walls/hills that could actually block large amounts of grass. If you want to look into that, I&rsquo;ve seen examples from others that uses a <strong>Hierarchical Depth (Hi-Z) Buffer</strong> to do this I think. But not something I&rsquo;ve looked into, and this post is already long enough&hellip;</p>
+<p>Compared to my old FAQ example, this took much longer than expected to write, (the tabs to change page content for different Unity versions probably didn&rsquo;t help that). Hopefully I didn&rsquo;t ramble on too much, but I&rsquo;m sure it&rsquo;ll be useful regardless!~
+<br><hr>
+
+<div style="display:block;text-align: center">
+<h2 class="title-undecorated">Thanks for reading! 😊</h2>
+<p style="margin-bottom:0">If you find this post helpful, please consider sharing it with others / on socials<br>Donations are also <b>greatly</b> appreciated! 🙏✨</p>
+<p style="font-size:13px;margin-top:0;color:grey">(Keeps this site free from ads and allows me to focus more on tutorials)</p>
+
+</div>
+
+<div class="footer-btns">
+
+<a href="https://ko-fi.com/cyanilux" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+<div class="footer-btn btn-kofi">
+<img class="img" src="https://www.cyanilux.com/logo-kofi.png" alt="Ko-fi" style="width:22px; padding-right:5px">
+Support me on Ko-fi! ✨
+</img>
+</div>
+</a>
+
+<a href="http://discord.gg/2V93q9w" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+<div class="footer-btn btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px; padding-right:5px">
+Join my discord! 💬
+</img>
+</div>
+</a>
+
+</div></p>
+
+
+        <script>
+                var h1s = document.querySelectorAll("h2, h3, h4");
+                for (let i = 0; i < h1s.length; i++){
+                    var id = h1s[i].getAttribute("id");
+                    if (id == null || id == "") continue;
+
+                    var e = document.createElement("div");
+                    e.textContent = "🔗";
+                    e.className = "hLink";
+                    e.addEventListener("mousedown", (event) => {
+                        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                        newurl += window.location.search;
+                        newurl += "#" + event.target.parentElement.getAttribute("id");
+                        window.history.pushState({path:newurl}, '', newurl);
+                        navigator.clipboard.writeText(newurl);
+                    })
+
+                    h1s[i].appendChild(e);
+                }
+            </script>
+        </div>
+        </br>
+
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux</a></p>
+
+<p class="small-text" style="text-align:center;">
+
+
+
+	<a href="https://www.cyanilux.com/#license">
+	
+	License / Usage
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/cookies">
+	
+	Cookies & Privacy
+	</a>
+	 &#8212; 
+
+	<a href="https://www.cyanilux.com/index.xml">
+	
+	RSS Feed
+	</a>
+	
+
+</p>
+</br>
+
+<div class="cookie-container">
+<p>Hello! This site uses cookies related to Twitter (for showing embedded tweets) &amp; Google Analytics (to provide anonymous stats about which web pages are visited, links clicked, etc). These help with improving the website and letting me know what content is popular. 
+See the <a href="https://www.cyanilux.com/cookies">Cookies & Privacy</a> page for more info.</p>
+<button class="cookie-accept-btn"><b>Accept</b></button>
+<button class="cookie-refuse-btn"><b>Refuse</b></button>
+</div>
+
+<script>
+	var webStorageSupported = (typeof(Storage) !== undefined);
+	
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	const cookieContainer = document.querySelector(".cookie-container");
+	const cookieAcceptButton = document.querySelector(".cookie-accept-btn");
+	const cookieRefuseButton = document.querySelector(".cookie-refuse-btn");
+	
+	cookieAcceptButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "true");
+		}else{
+			
+			setCookie("cookiesAccepted", "true", 365);
+		}
+		
+		location.reload();
+	});
+	
+	cookieRefuseButton.addEventListener("click", () => {
+		cookieContainer.classList.remove("active");
+	
+		
+		
+		document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		
+		if (webStorageSupported){
+			localStorage.setItem("cookiesAccepted", "false");
+		}else{
+			
+			setCookie("cookiesAccepted", "false", 14);
+		}
+	});
+	
+	setTimeout(() => {
+		if (showBanner) {
+			cookieContainer.classList.add("active");
+		}
+	}, 1000);
+</script>
+    </body>
+</html>

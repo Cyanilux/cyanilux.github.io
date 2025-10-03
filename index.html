@@ -11,7 +11,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=8 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
 
 
  
@@ -25,8 +25,8 @@
   "headline": "Home",
   "name": "Home",
   "description": "Tutorials for Unity Shader Graph and Universal Render Pipeline",
-  "datePublished": "2024-12-04",
-  "dateModified": "2025-08-23",
+  "datePublished": "2025-10-03",
+  "dateModified": "2025-10-03",
   "author": {
 	"@type": "Person",
 	"name": "Cyanilux",
@@ -38,7 +38,7 @@
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog & Tutorials"
+    "name": "Cyanilux Shader Tutorials - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -57,8 +57,8 @@
 <meta property="og:url" content="https://www.cyanilux.com/" />
 
 	
-<meta property="og:updated_time" content="2025-08-23T00:00:00+00:00" />
-<title>Cyanilux</title>
+<meta property="og:updated_time" content="2025-10-03T00:00:00+00:00" />
+<title>Cyanilux Shader Tutorials</title>
 <meta name="description" content="Tutorials for Unity Shader Graph and Universal Render Pipeline. | Unity Shader Tutorials, @Cyanilux"/>
 <link rel="canonical" href="https://www.cyanilux.com/" />
 <script>
@@ -210,10 +210,30 @@
 
 	</div>
 
+        <script>
+                var h1s = document.querySelectorAll("h2, h3, h4");
+                for (let i = 0; i < h1s.length; i++){
+                    var id = h1s[i].getAttribute("id");
+                    if (id == null || id == "") continue;
+
+                    var e = document.createElement("div");
+                    e.textContent = "🔗";
+                    e.className = "hLink";
+                    e.addEventListener("mousedown", (event) => {
+                        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                        newurl += window.location.search;
+                        newurl += "#" + event.target.parentElement.getAttribute("id");
+                        window.history.pushState({path:newurl}, '', newurl);
+                        navigator.clipboard.writeText(newurl);
+                    })
+
+                    h1s[i].appendChild(e);
+                }
+            </script>
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux</a></p>
 
 <p class="small-text" style="text-align:center;">
 

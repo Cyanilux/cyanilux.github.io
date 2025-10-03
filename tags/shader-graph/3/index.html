@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=8 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
 
 
  
@@ -24,8 +24,8 @@
   "headline": "Shader Graph",
   "name": "Shader Graph",
   "description": "",
-  "datePublished": "2024-12-04",
-  "dateModified": "2025-08-23",
+  "datePublished": "2025-10-03",
+  "dateModified": "2025-10-03",
   "author": {
 	"@type": "Person",
 	"name": "Cyanilux",
@@ -37,7 +37,7 @@
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog & Tutorials"
+    "name": "Cyanilux Shader Tutorials - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -56,8 +56,8 @@
 <meta property="og:url" content="https://www.cyanilux.com/tags/shader-graph/" />
 
 	
-<meta property="og:updated_time" content="2025-08-23T00:00:00+00:00" />
-<title>Shader Graph | Cyanilux</title>
+<meta property="og:updated_time" content="2025-10-03T00:00:00+00:00" />
+<title>Shader Graph | Cyanilux Shader Tutorials</title>
 <meta name="description" content=". | Unity Shader Tutorials, @Cyanilux" />
 <link rel="canonical" href="https://www.cyanilux.com/tags/shader-graph/" />
 <script>
@@ -194,6 +194,34 @@
 	
 	
 	
+	
+	<div class="card" onclick="location.href=&#34;/tutorials/fire-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box-2">
+					<img class="card-image" width="700" height="300" alt="" src="https://www.cyanilux.com/tutorials/fire-shader-breakdown/Preview.png"/>
+					</div><div class="card-text">
+			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/fire-shader-breakdown/">Fire/Flame Shader Breakdown</a></h2>
+			<p>A shader which distorts the UVs with noise for sampling a fire texture or shape generated using ellipse nodes</p>
+			<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2020-08-04">&#128337 4 Aug 2020</time>
+
+
+<time datetime="2023-10-12"> (updated 12 Oct 2023)</time>
+
+</div>
+		</div>
+	</div>
 	
 	<div class="card" onclick="location.href=&#34;/tutorials/sprite-outline-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box-2">
 					<img class="card-image" width="700" height="300" alt="" src="https://www.cyanilux.com/tutorials/sprite-outline-shader-breakdown/Preview.png"/>
@@ -445,30 +473,6 @@
 		</div>
 	</div>
 	
-	<div class="card" onclick="location.href=&#34;/tutorials/vertex-displacement/&#34;;" style="cursor: pointer;"><div class="card-image-box-2">
-					<img class="card-image" width="700" height="300" alt="" src="https://www.cyanilux.com/tutorials/vertex-displacement/Preview.png"/>
-					</div><div class="card-text">
-			<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/vertex-displacement/">Vertex Displacement</a></h2>
-			<p>A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies. Also includes info about recalculating normal vectors.</p>
-			<div style="text-align: left;">
-
-
-	<div class="tag" style="background-color:#101010;">
-	Shader Graph
-	</div>
-
-
-
-
-<time datetime="2019-06-14">&#128337 14 Jun 2019</time>
-
-
-<time datetime="2023-01-31"> (updated 31 Jan 2023)</time>
-
-</div>
-		</div>
-	</div>
-	
 	
 <ul class="pagination">
 <li class="page-item" onclick="location.href=&#34;/tags/shader-graph/2/&#34;;" style="cursor: pointer;">
@@ -487,10 +491,30 @@
 </br>
 
 
+        <script>
+                var h1s = document.querySelectorAll("h2, h3, h4");
+                for (let i = 0; i < h1s.length; i++){
+                    var id = h1s[i].getAttribute("id");
+                    if (id == null || id == "") continue;
+
+                    var e = document.createElement("div");
+                    e.textContent = "🔗";
+                    e.className = "hLink";
+                    e.addEventListener("mousedown", (event) => {
+                        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                        newurl += window.location.search;
+                        newurl += "#" + event.target.parentElement.getAttribute("id");
+                        window.history.pushState({path:newurl}, '', newurl);
+                        navigator.clipboard.writeText(newurl);
+                    })
+
+                    h1s[i].appendChild(e);
+                }
+            </script>
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux</a></p>
 
 <p class="small-text" style="text-align:center;">
 

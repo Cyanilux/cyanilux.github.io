@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=8 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
 
 
  
@@ -25,7 +25,7 @@
   "name": "Depth",
   "description": "A big post explaining everything about Depth : Depth Buffer, Depth Texture / Scene Depth node, SV_Depth, Reconstructing World Position from Depth, etc.",
   "datePublished": "2020-11-25",
-  "dateModified": "2023-04-22",
+  "dateModified": "2025-09-29",
   "author": {
 	"@type": "Person",
 	"name": "Cyanilux",
@@ -40,11 +40,11 @@
   },
   "url": "https://www.cyanilux.com/tutorials/depth/",
   "inLanguage": "en-gb",
-  "wordCount": "5663",
+  "wordCount": "5619",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog & Tutorials"
+    "name": "Cyanilux Shader Tutorials - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -72,8 +72,8 @@
         
     
 <meta property="article:published_time" content="2020-11-25T00:00:00+00:00" />
-<meta property="article:modified_time" content="2023-04-22T00:00:00+00:00" />
-<title>Depth | Cyanilux</title>
+<meta property="article:modified_time" content="2025-09-29T00:00:00+00:00" />
+<title>Depth | Cyanilux Shader Tutorials</title>
 <meta name="description" content="A big post explaining everything about Depth : Depth Buffer, Depth Texture / Scene Depth node, SV_Depth, Reconstructing World Position from Depth, etc.. Shader Graph, HLSL | Unity Shader Tutorials, @Cyanilux" />
 <link rel="canonical" href="https://www.cyanilux.com/tutorials/depth/" />
 <script>
@@ -241,7 +241,7 @@
 
 
 <div style="width:5px"></div>
-<time datetime="2023-04-22"> (updated 22 Apr 2023)</time>
+<time datetime="2025-09-29"> (updated 29 Sep 2025)</time>
 
 </div>
 <p><strong>Depth</strong> is a term used in computer graphics to refer to how far a fragment (a potential pixel) is from the camera. But it can be a bit complicated - as depth can come in different spaces/ranges, vary between platform, and vary between perspective and orthographic camera projections.</p>
@@ -344,8 +344,15 @@
 <p>You will also commonly see <strong>Linear01</strong> depth be used, which is just a remapped version of Eye (by dividing by the far plane value). It is still 0 at the camera position, but 1 at the far plane.</p>
 <hr>
 <h3 id="z-buffer-depth">Clip space, Normalised Device Coordinates (NDC) &amp; Z Buffer Depth</h3>
-<p>View space positions also get converted to <strong>Clip space</strong> via the <strong>Projection Matrix</strong>. Usually transformations like this can&rsquo;t warp the space in a non-uniform way - which we need for a perspective projection, but the matrix is set up in a way that outputs the <strong>Eye Depth</strong> in the <strong>W component</strong> of the result. The vertex shader then outputs this Clip space position. For orthographic projections, the W component just ends up as 1.</p>
-<p>Between the vertex and fragment stages the clip space XYZ is <strong>remapped</strong> a bit and then <strong>divided</strong> by it&rsquo;s <strong>W component</strong> (known as the <strong>perspective divide</strong>). The remapping that occurs is the same as the <strong>ComputeScreenPos</strong> function, or positionNDC calculated in the VertexPositionInputs struct. In URP these are both found in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.hlsl">ShaderVariablesFunctions.hlsl</a> :</p>
+<p>View space positions also get converted to <strong>Clip space</strong> via the <strong>Projection Matrix</strong>. The vertex shader then outputs this position.</p>
+<p>Unlike in other spaces, Clip space positions have <strong>four components</strong> (XYZW) (so are known as &ldquo;homogeneous coordinates&rdquo;). In an orthographic projection, the W component is always 1. For perspective projections, it is equivalent to the <strong>Eye Depth</strong> we discussed in the previous section.</p>
+<p>For the XY components, (0,0) would be at the screen center and edges at -W to W. While the <strong>Z</strong> range depends on the platform / Graphics API :</p>
+<ul>
+<li>Direct3D-like : <strong>W</strong> at near plane, <strong>0</strong> at far plane</li>
+<li>OpenGL-like : <strong>-W</strong> at near plane, <strong>W</strong> plane distance at far plane</li>
+</ul>
+<p>These ranges produce the camera&rsquo;s frustum, which in clip space is shaped as a cuboid (or cube in Open-GL land).</p>
+<p>Matrix transformations can&rsquo;t warp the space in a non-uniform way which is why this fourth component exists. Between the vertex and fragment stages the clip space XYZ is <strong>divided by this W component</strong> (known as the &ldquo;perspective divide&rdquo;) after a bit of additional remapping to convert to 0-1 coordinates across the screen. (Same as the <strong>ComputeScreenPos</strong> function does, or positionNDC calculated in the VertexPositionInputs struct. In URP these are both found in <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.hlsl">ShaderVariablesFunctions.hlsl</a>)</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#75715e">// Clip Space Position (calculated for vertex shader SV_POSITION output)</span>
 </span></span><span style="display:flex;"><span>float4 positionCS 	= TransformWorldToHClip(input.positionOS.xyz);
 </span></span><span style="display:flex;"><span>OUT.positionCS 		= positionCS;
@@ -363,26 +370,15 @@
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// Perspective Divide (handled in Fragment shader)</span>
 </span></span><span style="display:flex;"><span>float3 pd 			= IN.positionNDC.xyz / IN.positionNDC.w;
 </span></span><span style="display:flex;"><span>float2 screenUV 	= pd.xy;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> depth 		= pd.z; <span style="color:#75715e">// for OpenGL, also need * 0.5 + 0.5;</span></span></span></code></pre></div>
-<p>This gives us <strong>Normalised Device Coordinates</strong> (NDC), aka a screen position where the <strong>XY</strong> axis ranges from <strong>(0,0)</strong> in the <strong>bottom left corner</strong> and <strong>(1,1)</strong> in the <strong>top right</strong> - at least in Unity / URP. This is the same as the <b class="node">Screen Position</b> node in Shader Graph, using it&rsquo;s <strong>Default</strong> mode&hellip; but awkwardly the Z axis doesn&rsquo;t seem to be passed in when that mode? The Z axis can instead be obtained by using the <strong>Raw</strong> mode - but that is the Clip space Z/Depth. We then need to handle the <b class="node">Divide</b> <strong>Z</strong> by <strong>W</strong> to get the NDC Z/Depth.</p>
-<p>Note this depth is <strong>not linear in view space</strong> anymore due to changes made by the projection matrix, at least in a perspective projection. This is the value that ends up in the <strong>Depth Buffer</strong> and it is also the same value that would end up in the <strong>Depth Texture</strong>, or <strong>Raw</strong> <b class="node">Scene Depth</b> node.</p>
-<p>The ranges of this <strong>NDC.z / Z Buffer Depth</strong> is the same for both projections, but varies depending on the platform :</p>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> depth 		= pd.z;</span></span></code></pre></div>
+<p>This now gives us <strong>Normalised Device Coordinates</strong> (NDC), aka a screen position where the <strong>XY</strong> axis ranges from <strong>(0,0)</strong> in the <strong>bottom left corner</strong> and <strong>(1,1)</strong> in the <strong>top right</strong> - at least in Unity / URP. This is the same as the <b class="node">Screen Position</b> node in Shader Graph, using it&rsquo;s <strong>Default</strong> mode&hellip; (though the Z axis doesn&rsquo;t seem to be passed in when that mode and instead can be obtained by using the <strong>Raw</strong> mode, <b class="node">Split</b> and handling the <b class="node">Divide</b> <strong>Z</strong> by <strong>W</strong> to get the NDC Z/Depth)</p>
+<p>Note this depth is <strong>non-linear</strong> due to changes made by the projection matrix, at least in a perspective projection. This is the value that ends up in the Depth Buffer.</p>
+<p>The ranges of this <strong>NDC.z / Z Buffer Depth</strong> varies depending on the platform :</p>
 <ul>
 <li>Direct3D-like, Reversed Z Buffer : <strong>1</strong> at the near plane, <strong>0</strong> at the far plane</li>
-<li>OpenGL-like, Z Buffer : <strong>0</strong> at the near plane, <strong>1</strong> at the far plane</li>
+<li>OpenGL-like, Z Buffer : <strong>-1</strong> at the near plane, <strong>1</strong> at the far plane</li>
 </ul>
-<p>In case it is of interest, the ranges of the <strong>Clip space Z</strong> (<strong>Raw</strong> <b class="node">Screen Position</b> <strong>Z</strong>) value are also as follows, though I&rsquo;m unsure if there&rsquo;s really any case where you&rsquo;d use this over the other depth values.</p>
-<p><strong>Perspective Projection</strong></p>
-<ul>
-<li>Direct3D-like : <strong>near</strong> plane value at near plane, <strong>0</strong> at far plane.</li>
-<li>OpenGL-like : <strong>-near</strong> plane distance at near plane, <strong>far</strong> plane distance at far plane.</li>
-</ul>
-<p><strong>Orthographic Projection</strong></p>
-<ul>
-<li>Direct3D-like	: <strong>1</strong> at near plane, <strong>0</strong> at far plane</li>
-<li>OpenGL-like : <strong>-1</strong> at near plane, <strong>1</strong> at far plane</li>
-</ul>
-<p>Note, I believe we could remap these for orthographic using the <code>UNITY_NEAR_CLIP_VALUE</code> and <code>UNITY_RAW_FAR_CLIP_VALUE</code> (from <a href="https://github.com/Unity-Technologies/Graphics/tree/master/com.unity.render-pipelines.core/ShaderLibrary/API">com.unity.render-pipelines.core/ShaderLibrary/API</a>) to convert the Direct3D-like or OpenGL-like ranges into the same range 0-1 range.</p>
+<p>Can also use the <code>UNITY_NEAR_CLIP_VALUE</code> and <code>UNITY_RAW_FAR_CLIP_VALUE</code> (from <a href="https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/API">com.unity.render-pipelines.core/ShaderLibrary/API</a>) to obtain these near/far plane depth values. If doing calculations on the depth value, these macros may also be useful for remapping to produce a value that is the same across different platforms.</p>
 <hr>
 <h3 id="non-linear">Why Non-Linear?</h3>
 <p>The reason for making the depth buffer value non-linear (in view space), as well as the Reversed Z Buffer for Direct3D-like platforms, is for better precision. More information about how this works can be found in this <a href="https://developer.nvidia.com/content/depth-precision-visualized">NVIDIA article</a> and it can explain it a lot better than I can.</p>
@@ -844,21 +840,50 @@ Note if using <strong>Fullscreen Shader Graph</strong> type in URP 2022+ may wan
 </div>
 
 <div class="footer-btns">
-<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
-<a href="http://discord.gg/2V93q9w">
-<div class="btn-discord">
-<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
+
+<a href="https://ko-fi.com/cyanilux" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+<div class="footer-btn btn-kofi">
+<img class="img" src="https://www.cyanilux.com/logo-kofi.png" alt="Ko-fi" style="width:22px; padding-right:5px">
+Support me on Ko-fi! ✨
+</img>
+</div>
+</a>
+
+<a href="http://discord.gg/2V93q9w" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+<div class="footer-btn btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px; padding-right:5px">
 Join my discord! 💬
 </img>
 </div>
 </a>
+
 </div>
 
 
+        <script>
+                var h1s = document.querySelectorAll("h2, h3, h4");
+                for (let i = 0; i < h1s.length; i++){
+                    var id = h1s[i].getAttribute("id");
+                    if (id == null || id == "") continue;
+
+                    var e = document.createElement("div");
+                    e.textContent = "🔗";
+                    e.className = "hLink";
+                    e.addEventListener("mousedown", (event) => {
+                        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                        newurl += window.location.search;
+                        newurl += "#" + event.target.parentElement.getAttribute("id");
+                        window.history.pushState({path:newurl}, '', newurl);
+                        navigator.clipboard.writeText(newurl);
+                    })
+
+                    h1s[i].appendChild(e);
+                }
+            </script>
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux</a></p>
 
 <p class="small-text" style="text-align:center;">
 

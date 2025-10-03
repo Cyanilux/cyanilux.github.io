@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=8 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
 
 
  
@@ -31,11 +31,11 @@
   },
   "url": "https://www.cyanilux.com/resources/",
   "inLanguage": "en-gb",
-  "wordCount": "252",
+  "wordCount": "1609",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog & Tutorials"
+    "name": "Cyanilux Shader Tutorials - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -55,7 +55,7 @@
 
 	
 
-<title>Resources | Cyanilux</title>
+<title>Resources | Cyanilux Shader Tutorials</title>
 <meta name="description" content="Useful Links to Resources/Tutorials/Docs related to Unity or Gamedev. | Unity Shader Tutorials, @Cyanilux"/>
 <link rel="canonical" href="https://www.cyanilux.com/resources/" />
 <script>
@@ -200,10 +200,10 @@
 
 
 </div>
-<p>The list below links external resources, mostly related to <strong>Shaders</strong> and <strong>Unity</strong> (various pipelines). It contains mostly articles &amp; written tutorials. If you have suggestions of links to add, you can put them in the <code>#resources</code> section of my <a href="http://discord.gg/2V93q9w">discord</a>.</p>
+<p>The list below links resources mostly related to <strong>Shaders</strong> and <strong>Unity</strong> (various pipelines), including both external &amp; most of my tutorials (the ones with images). Some entries may be for other engines or graph editors but the general idea/method could still be useful, especially if graph/node-based as those tend to have the same nodes just named differently.</p>
 <ul>
 <li>The list is loaded from a <a href="https://gist.github.com/Cyanilux/69e4f228206b1a70c3f8a0ab4f22ef75">Github gist</a> (so I don&rsquo;t have to update the entire site to add entries). If it fails to load for some reason can optionally view that instead.</li>
-<li>Entries are grouped under various headings. You can also use the filter below to locate things easier, but bear in mind that some entries may be for other engines (e.g. Unreal) but could still translate to Unity. Same for HLSL vs Shader Graph vs Amplify Shader Editor (etc.)</li>
+<li>Entries are grouped under various headings. You can also use the filter below to locate things easier.</li>
 </ul>
 <button  type="button" class="foldout_button" onclick="
     this.classList.toggle('active');
@@ -219,20 +219,1026 @@
 "><b>⯈ Filter Usage</b></button>
 <div class="foldout">
 <ul>
-<li>The filter below searches for the <strong>exact string/keyword</strong> (not case sensitive) anywhere in text (including tags at side).</li>
+<li>The filter below searches for the <strong>exact string/keyword</strong> (not case sensitive) anywhere in text (including tags at side), so I&rsquo;d recommend sticking to a single short keyword, like &ldquo;water&rdquo;</li>
 <li>If you want to use multiple keywords, separate each with <code>&quot;,&quot;</code> or <code>&quot;&amp;&quot;</code> (for AND), <code>&quot;|&quot;</code> (for OR), and use <code>&quot;(&quot;</code> and <code>&quot;)&quot;</code> for grouping.
 <ul>
 <li>Example : <code>&quot;(BiRP | URP) &amp; HLSL&quot;</code>.</li>
 <li>AND takes precedence, so <code>&quot;a | b &amp; c | d&quot;</code> is the same as <code>&quot;a | (b &amp; c) | d&quot;</code></li>
 </ul>
 </li>
-<li>Starting a keyword with &ldquo;!&rdquo; (e.g. <code>&quot;!HDRP&quot;</code>) will instead hide entries, but this can only be done per-keyword, not on groups (sorry). If you want something like <code>&quot;!(a &amp; b)&quot;</code>, use the opposite form instead : <code>&quot;!a | !b&quot;</code> (swap AND/OR and invert each keyword)</li>
 </ul>
 
 </div>
 
+<div class="notice">
+<div class="notice-left">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+<div>
+<p>If you have suggestions of links to add, please put them in the <code>#resources</code> section of my <a href="http://discord.gg/2V93q9w">discord</a>!~</p>
+</div>
+
+</div>
+</div>
 
 <br>
+
+
+<div id="myTutorials" style="display: none"><div id="/tutorials/gpu-instanced-grass-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/gpu-instanced-grass-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/Preview_huf4ff6732ccdd4405581c142ced9e41b2_477476_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/">GPU Instanced Grass Breakdown</a></h2>
+				<p>A post showing how Shader Graph can be used with DrawMeshInstancedProcedural / RenderMeshPrimitives and DrawMeshInstancedIndirect / RenderMeshIndirect to draw grass using GPU Instancing.</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2025-10-03">&#128337 3 Oct 2025</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/shoreline-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/shoreline-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/Preview_hu875f3f3fe5ec9a38524e8a87df31408a_221062_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/">Shoreline Shader Breakdown</a></h2>
+				<p>A few shader techniques I&#39;ve used in the past for mapping waves crashing into the shore/beach &amp; leaving behind wet sand</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2024-12-04">&#128337 4 Dec 2024</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/god-rays-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/god-rays-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/Preview_hud76d21e6b1f9373264af9c0bd2196c48_243281_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/">Sun Beams / God Rays Shader Breakdown</a></h2>
+				<p>Using billboarded quads (or particles) to produce a god rays effect</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2024-05-22">&#128337 22 May 2024</time>
+
+
+<time datetime="2025-08-23"> (updated 23 Aug 2025)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/2d-water-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/2d-water-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/Preview_hu94b8da0cfb1df137edae63f8a0e74a4b_335784_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/">2D Water Shader Breakdown</a></h2>
+				<p>A water shader intended for 2D, with pixelated highlights, distortion, reflections and simplified shoreline waves/ripples</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+	<div class="tag" style="background-color:#2d88ff;">
+	2D
+	</div>
+
+
+
+
+<time datetime="2024-03-28">&#128337 28 Mar 2024</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/ultraviolet-lights-invisible-ink/" class="card-compact" onclick="location.href=&#34;/tutorials/ultraviolet-lights-invisible-ink/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/ultraviolet-lights-invisible-ink/Preview_hu9a2cdedc6586823e944e42cdae757437_463208_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/ultraviolet-lights-invisible-ink/">Ultraviolet Lights &amp; Invisible Ink</a></h2>
+				<p>Examples for revealing invisible objects (especially decals, such as fingerprints or hidden messages) based on lights, stencils and other masking methods</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2023-12-05">&#128337 5 Dec 2023</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/spellbook-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/spellbook-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/spellbook-breakdown/Preview_hu9e2fb22c4d0237a5477a2821bb8c3ceb_521106_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/spellbook-breakdown/">Book (w/ Turnable Pages) Breakdown</a></h2>
+				<p>A book with pages that flip/turn via vertex displacement, and selects a portion of a texture containing all pages.</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2023-10-21">&#128337 21 Oct 2023</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/rain-effects-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/rain-effects-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/rain-effects-breakdown/Preview_hu67013238d2d3a8c2b68e43f1a4ca724b_549011_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/rain-effects-breakdown/">Rain Effects Breakdown</a></h2>
+				<p>A few rain effects, including particles setup, and shaders for ripples in water/puddles and rain interacting with surfaces</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2023-07-04">&#128337 4 Jul 2023</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/waterfall-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/waterfall-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/waterfall-shader-breakdown/Preview_hue4f14989ecf254ac710f75ec672f332e_72887_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/waterfall-shader-breakdown/">Waterfall Shader Breakdown</a></h2>
+				<p>A waterfall shader that interacts with a sphere to part the flowing water. Uses a signed distance field and alpha clipping.</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2023-05-29">&#128337 29 May 2023</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/fractured-cube-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/fractured-cube-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/fractured-cube-breakdown/Preview_hu0cf47f4cd72859bd0676cc90197770bb_164118_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/fractured-cube-breakdown/">Fractured Cube Breakdown</a></h2>
+				<p>Uses a shader which displaces (scales/rotates) vertices of a prefractured mesh with pivots baked into UV maps</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+	<div class="tag" style="background-color:#e67d0d;">
+	Blender
+	</div>
+
+
+
+
+<time datetime="2023-03-07">&#128337 7 Mar 2023</time>
+
+
+<time datetime="2023-04-05"> (updated 5 Apr 2023)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/snowglobe-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/snowglobe-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/snowglobe-breakdown/Preview_hu3c2189b3c027b12428a5e910deef6385_200790_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/snowglobe-breakdown/">Snowglobe Breakdown</a></h2>
+				<p>Glass globe shader with background refraction &amp; reflection. Particles are contained inside which inherit Rigidbody movements.</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+	<div class="tag" style="background-color:#5020bb;">
+	VFX Graph
+	</div>
+
+
+
+
+<time datetime="2023-01-04">&#128337 4 Jan 2023</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/tentacle-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/tentacle-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/tentacle-shader-breakdown/Preview_hu724dab928c9a01313f563d67280c7640_317681_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/tentacle-shader-breakdown/">Tentacle Shader Breakdown</a></h2>
+				<p>A shader that uses vertex displacement to simulate a tentacle grabbing / wrapping around an object</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2022-05-19">&#128337 19 May 2022</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/tornado-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/tornado-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/tornado-shader-breakdown/Preview_hu2960217c1cf46b80e884264097cd9ad0_263137_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/tornado-shader-breakdown/">Tornado Shader Breakdown</a></h2>
+				<p>A shader applied to a few layers of alpha-clipped scrolling noise, with vertex displacement to make it wobble</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2022-01-26">&#128337 26 Jan 2022</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/sword-slash-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/sword-slash-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/sword-slash-shader-breakdown/Preview_hu774a6d8246c0de32d91523ef9ba0e5b6_237877_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/sword-slash-shader-breakdown/">Sword Slash Shader Breakdown</a></h2>
+				<p>A shader applied to a ring mesh that pans a texture along it to create a swipe/slash effect</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2021-12-08">&#128337 8 Dec 2021</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/holofoil-card-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/holofoil-card-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/holofoil-card-shader-breakdown/Preview_hucdc41c84fa0f17bad570de9093e9a8b7_196401_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/holofoil-card-shader-breakdown/">Holofoil Card Shader Breakdown</a></h2>
+				<p>A shader that replicates the Holographic Foil effects on Trading Cards. Also explains the stencil shader effect on the card window.</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2021-04-21">&#128337 21 Apr 2021</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/soft-foliage-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/soft-foliage-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/soft-foliage-shader-breakdown/Preview_hu18032c3297852f66341a81fd768fde31_108778_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/soft-foliage-shader-breakdown/">Soft Foliage Shader Breakdown</a></h2>
+				<p>Soft shaded foliage shader that uses alpha clipping with foliage texture and a small amount of vertex displacement to simulate wind. Applied to a mesh consisting of intersecting quads generated from a particle system</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2021-03-16">&#128337 16 Mar 2021</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/crystal-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/crystal-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/crystal-shader-breakdown/Preview_hud2d565c32b14ae366eab68ee015868c7_204774_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/crystal-shader-breakdown/">Crystal Shader Breakdown</a></h2>
+				<p>An unlit/glowing crystal shader with a colour gradient based on object space Y position, and refraction via Scene Color node</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2021-02-01">&#128337 1 Feb 2021</time>
+
+
+<time datetime="2025-09-25"> (updated 25 Sep 2025)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/fire-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/fire-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/fire-shader-breakdown/Preview_hu79cf0036c8cc0d3bceef818ad34db93b_250371_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/fire-shader-breakdown/">Fire/Flame Shader Breakdown</a></h2>
+				<p>A shader which distorts the UVs with noise for sampling a fire texture or shape generated using ellipse nodes</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2020-08-04">&#128337 4 Aug 2020</time>
+
+
+<time datetime="2023-10-12"> (updated 12 Oct 2023)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/sprite-outline-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/sprite-outline-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/sprite-outline-shader-breakdown/Preview_hu95333c5808caa79130e03d349e1e0b55_154026_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/sprite-outline-shader-breakdown/">Sprite Glow/Outline Shader Breakdown</a></h2>
+				<p>A shader which uses a signed distance field stored in the sprite texture&#39;s alpha channel to create an outline/glow (and inner-glow) effect, with control over the colour and thickness</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+	<div class="tag" style="background-color:#2d88ff;">
+	2D
+	</div>
+
+
+
+
+<time datetime="2020-03-13">&#128337 13 Mar 2020</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/sprite-stencil-overlay-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/sprite-stencil-overlay-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/Preview_hue1787a2a9d10bfbd9baf906b3d3276da_24683_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/">Sprite Stencil Overlay Breakdown</a></h2>
+				<p>An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer)</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+	<div class="tag" style="background-color:#2d88ff;">
+	2D
+	</div>
+
+
+
+
+<time datetime="2020-02-24">&#128337 24 Feb 2020</time>
+
+
+<time datetime="2024-03-28"> (updated 28 Mar 2024)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/dissolve-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/dissolve-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/dissolve-shader-breakdown/Preview_hubdc8d572a34ebff6ad8f9a2626780dd4_87954_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/dissolve-shader-breakdown/">Dissolve Shader Breakdown</a></h2>
+				<p>A shader which uses noise and step functions to discard pixels to create a dissolving effect. Also provides examples for dissolving based on height / Y and using view space position as UVs to avoid seams</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2020-02-04">&#128337 4 Feb 2020</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/toon-glass-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/toon-glass-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/toon-glass-shader-breakdown/Preview_hu13fdcc92cc8054528d2b72c8ee63f693_65821_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/toon-glass-shader-breakdown/">Toon Glass Shader Breakdown</a></h2>
+				<p>A shader which produces solid diagonal lines across a quad&#39;s surface that moves with the camera position to simulate toon-like glass reflections</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2020-01-03">&#128337 3 Jan 2020</time>
+
+
+<time datetime="2023-10-31"> (updated 31 Oct 2023)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/fog-plane-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/fog-plane-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/Preview_hu4186ede643289d7e4280576ff06d315e_148888_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/">Fog Plane Shader Breakdown</a></h2>
+				<p>Two examples of vertical fog effects produced using the depth texture (scene depth)</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2019-12-05">&#128337 5 Dec 2019</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/cloud-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/cloud-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/cloud-shader-breakdown/Preview_huff08291ea9b5d6f575503c6af16bbb4c_186481_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/cloud-shader-breakdown/">Cloud Shader Breakdown</a></h2>
+				<p>A shader applied to a flat subdivided plane where vertices are offset vertically based on layered noise, moving at different rates, to create a cloud effect. Also uses scene depth to produce a softer transition with intersecting game objects</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2019-09-25">&#128337 25 Sep 2019</time>
+
+
+<time datetime="2023-03-31"> (updated 31 Mar 2023)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/forcefield-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/forcefield-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/Preview_hu9518f429c5b34d578ded09b3a10a63fe_199944_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/">Forcefield Shader Breakdown</a></h2>
+				<p>A forcefield shader using fresnel effect for glowing edges, scene depth for object intersections and scene colour to produce ripples/distortion</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2019-09-04">&#128337 4 Sep 2019</time>
+
+
+<time datetime="2023-03-31"> (updated 31 Mar 2023)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/forcefield-shader-breakdown-simple/" class="card-compact" onclick="location.href=&#34;/tutorials/forcefield-shader-breakdown-simple/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown-simple/Preview_hue925580fa0486493eb7feb2c652e1a63_202155_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown-simple/">Forcefield Shader Breakdown (Simple)</a></h2>
+				<p>A simple version of a forcefield shader, using fresnel effect for glowing edges and scene depth for intersections with objects in the scene</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2019-09-03">&#128337 3 Sep 2019</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/jellyfish-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/jellyfish-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/jellyfish-shader-breakdown/Preview_hudb89e9dc505963020eed54a7e459b979_216044_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/jellyfish-shader-breakdown/">Jellyfish Shader Breakdown</a></h2>
+				<p>A shader that displaces vertices based on sine waves in order to animate a Jellyfish mesh</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2019-06-17">&#128337 17 Jun 2019</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/water-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/water-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/water-shader-breakdown/Preview_hu9856ae9046ef1bb676aff9b2eba81a99_131651_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/water-shader-breakdown/">Water Shader Breakdown</a></h2>
+				<p>A water shader that uses the scene color to produce distortion/refractions and reconstructs a position from the scene depth to project caustics on underwater objects</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2019-06-10">&#128337 10 Jun 2019</time>
+
+
+<time datetime="2023-03-31"> (updated 31 Mar 2023)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/whirlpool-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/whirlpool-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/whirlpool-shader-breakdown/Preview_huf06986e5fa32608ff5e4893f291e47d4_156941_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/whirlpool-shader-breakdown/">Whirlpool Shader Breakdown</a></h2>
+				<p>A shader that uses polar coordinates to offset vertices as well as sample a seamless noise texture to create a swirling effect</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2019-05-27">&#128337 27 May 2019</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/hologram-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/hologram-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/hologram-shader-breakdown/Preview_hu6222fbf406f8a82dd2f5c1c0bdec303f_162287_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/hologram-shader-breakdown/">Hologram Shader Breakdown</a></h2>
+				<p>A hologram shader based on sine/fraction nodes to produce repeating horizontal lines and fresnel effect, with optional distortion and glitching effects</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2019-05-20">&#128337 20 May 2019</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/portal-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/portal-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/portal-shader-breakdown/Preview_hu0600fd952bf589e134ca9a2261981909_189277_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/portal-shader-breakdown/">Portal Shader Breakdown</a></h2>
+				<p>A portal/wormhole shader on manipulating polar coordinates to create a spiralling effect</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2019-05-13">&#128337 13 May 2019</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/liquid-shader-breakdown/" class="card-compact" onclick="location.href=&#34;/tutorials/liquid-shader-breakdown/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/liquid-shader-breakdown/Preview_hu13d9d02e21b7a40bd76d314fd636cedb_109286_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/liquid-shader-breakdown/">Liquid Shader Breakdown</a></h2>
+				<p>A shader that discards pixels above a certain Y position and renders back faces to fake the top surface of the liquid</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2019-05-06">&#128337 6 May 2019</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/sprite-local-uv/" class="card-compact" onclick="location.href=&#34;/tutorials/sprite-local-uv/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/sprite-local-uv/Preview_hu39cc76331a748b918baa07a3fe2371e6_39863_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/sprite-local-uv/">Local UVs for Sprites in Sprite Sheet/Atlas</a></h2>
+				<p>A small post explaining how to convert the UVs of a sprite sheet (or sprites packed in an atlas) into local 0-1 coordinates across each sprite in the shader</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+	<div class="tag" style="background-color:#108010;">
+	HLSL
+	</div>
+
+	<div class="tag" style="background-color:#2d88ff;">
+	2D
+	</div>
+
+
+
+
+<time datetime="2024-03-13">&#128337 13 Mar 2024</time>
+
+
+<time datetime="2024-03-31"> (updated 31 Mar 2024)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/custom-renderer-features/" class="card-compact" onclick="location.href=&#34;/tutorials/custom-renderer-features/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/custom-renderer-features/Result_hu5d22c555f98936f9a7ff664e30b14015_345972_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/custom-renderer-features/">Custom Renderer Features</a></h2>
+				<p>Goes through examples of Renderer Features and explains how to write Custom Renderer Features and Scriptable Render Passes for Universal RP. Mostly focuses on Unity 2022, but now also provides some snippets for newer versions!</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+
+
+
+<time datetime="2023-04-22">&#128337 22 Apr 2023</time>
+
+
+<time datetime="2025-08-02"> (updated 2 Aug 2025)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/color-swap/" class="card-compact" onclick="location.href=&#34;/tutorials/color-swap/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/color-swap/Preview_hu1294acda1f56678385207bade40ea2f4_18274_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/color-swap/">Swapping Colours</a></h2>
+				<p>Examples of how to adjust/swap colours or colour palettes for a given texture/procedural input.</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2023-02-17">&#128337 17 Feb 2023</time>
+
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/urp-shader-code/" class="card-compact" onclick="location.href=&#34;/tutorials/urp-shader-code/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/urp-shader-code/Preview_hu5e35f8800096e364f4ce3e9fb8d2297c_29129_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/urp-shader-code/">Writing Shader Code in Universal RP (v2)</a></h2>
+				<p>Explains how shader code (ShaderLab &amp; HLSL) is written to support the Universal RP</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#108010;">
+	HLSL
+	</div>
+
+	<div class="tag" style="background-color:#00aabb;">
+	URP
+	</div>
+
+
+
+
+<time datetime="2021-05-17">&#128337 17 May 2021</time>
+
+
+<time datetime="2022-04-24"> (updated 24 Apr 2022)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/intro-to-shader-graph/" class="card-compact" onclick="location.href=&#34;/tutorials/intro-to-shader-graph/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/intro-to-shader-graph/Preview_hu6158d2a19df6cd50af6e8f16e2aae2eb_10301_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/">Intro to Shader Graph</a></h2>
+				<p>A detailed introduction on how to use Unity Shader Graph! Graph setup, Data types, Understanding Previews, Properties, Keywords, Sub Graphs and more!</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2021-03-05">&#128337 5 Mar 2021</time>
+
+
+<time datetime="2025-03-05"> (updated 5 Mar 2025)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/intro-to-the-shader-pipeline/" class="card-compact" onclick="location.href=&#34;/tutorials/intro-to-the-shader-pipeline/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/intro-to-the-shader-pipeline/Preview_hu497034e703d475b0e8f89da654da8183_24877_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/intro-to-the-shader-pipeline/">Intro to the Shader Pipeline</a></h2>
+				<p>An introduction to what a Mesh, Shader and Material is in Unity, how to set Shader Properties from C#, various types of Batching, and a brief look at Forward, Forward&#43; and Deferred rendering paths</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#108010;">
+	HLSL
+	</div>
+
+
+
+
+<time datetime="2021-01-10">&#128337 10 Jan 2021</time>
+
+
+<time datetime="2025-08-01"> (updated 1 Aug 2025)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/depth/" class="card-compact" onclick="location.href=&#34;/tutorials/depth/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/depth/Preview_hud47a7f3e5e2e6c6780a9bff76eee0048_50649_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/depth/">Depth</a></h2>
+				<p>A big post explaining everything about Depth : Depth Buffer, Depth Texture / Scene Depth node, SV_Depth, Reconstructing World Position from Depth, etc.</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+	<div class="tag" style="background-color:#108010;">
+	HLSL
+	</div>
+
+
+
+
+<time datetime="2020-11-25">&#128337 25 Nov 2020</time>
+
+
+<time datetime="2025-09-29"> (updated 29 Sep 2025)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/vertex-displacement/" class="card-compact" onclick="location.href=&#34;/tutorials/vertex-displacement/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/vertex-displacement/Preview_huc4a57f06cc4ee23de1042cb45a921f7b_102034_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/vertex-displacement/">Vertex Displacement</a></h2>
+				<p>A post explaining how to move vertices in Shader Graph, providing examples such as swaying grass and animated fish and butterflies. Also includes info about recalculating normal vectors.</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2019-06-14">&#128337 14 Jun 2019</time>
+
+
+<time datetime="2023-01-31"> (updated 31 Jan 2023)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div><div id="/tutorials/polar-coordinates/" class="card-compact" onclick="location.href=&#34;/tutorials/polar-coordinates/&#34;;" style="cursor: pointer;"><div class="card-image-box">
+						<img class="card-image-small" width="200" height="146" alt="" src="https://www.cyanilux.com/tutorials/polar-coordinates/Preview_hucc39c6d5d28be0799fc7e87aa318cb78_32861_300x0_resize_box_3.png"/></div><div class="card-text">
+				<h2 class="title-no-margin"><a class="link-plain" href="https://www.cyanilux.com/tutorials/polar-coordinates/">Polar Coordinates</a></h2>
+				<p>A post explaining the Polar Coordinates node</p>
+				<div style="text-align: left;">
+
+
+	<div class="tag" style="background-color:#101010;">
+	Shader Graph
+	</div>
+
+
+
+
+<time datetime="2019-05-13">&#128337 13 May 2019</time>
+
+
+<time datetime="2023-12-07"> (updated 7 Dec 2023)</time>
+
+</div>
+				<p style="display:none">(Cyanilux)</p>
+			</div>
+		</div></div>
+
 <hr>
 <p style="font-size: 20px;">
 <label style="padding-right:20px;" for="searchBox">Filters : </label>
@@ -336,6 +1342,16 @@ function loadEntries(contents) {
 			}
 			
 			
+			if (m[2].startsWith("https://www.cyanilux.com/tutorials/")){
+				var page = m[2].substr(24);
+				var element = document.getElementById(page);
+				if (element != null){
+					results.appendChild(element);
+					endIndex = -1;
+					continue;
+				}
+			}
+
 			var a = document.createElement("a");
 			a.setAttribute("href", m[2]);
 			a.setAttribute("target", "_blank"); 
@@ -346,11 +1362,13 @@ function loadEntries(contents) {
 			
 			endIndex = m.index + m[0].length;
 		}
+
+		if (endIndex == -1) continue;
 		
 		var text = document.createTextNode(line.substring(endIndex));
 		p.appendChild(text);
-		
 		div.appendChild(p);
+		results.appendChild(div);
 		
 		
 		if (tags != null){
@@ -394,8 +1412,6 @@ function loadEntries(contents) {
 				tagsDiv.appendChild(tagDiv);
 			}
 		}
-		
-		results.appendChild(div);
 	}
 
 	
@@ -663,10 +1679,30 @@ if (webStorageSupported){
 </script>
 
 
+        <script>
+                var h1s = document.querySelectorAll("h2, h3, h4");
+                for (let i = 0; i < h1s.length; i++){
+                    var id = h1s[i].getAttribute("id");
+                    if (id == null || id == "") continue;
+
+                    var e = document.createElement("div");
+                    e.textContent = "🔗";
+                    e.className = "hLink";
+                    e.addEventListener("mousedown", (event) => {
+                        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                        newurl += window.location.search;
+                        newurl += "#" + event.target.parentElement.getAttribute("id");
+                        window.history.pushState({path:newurl}, '', newurl);
+                        navigator.clipboard.writeText(newurl);
+                    })
+
+                    h1s[i].appendChild(e);
+                }
+            </script>
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux</a></p>
 
 <p class="small-text" style="text-align:center;">
 

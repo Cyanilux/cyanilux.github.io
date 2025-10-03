@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=8 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
 
 
  
@@ -40,11 +40,11 @@
   },
   "url": "https://www.cyanilux.com/tutorials/rain-effects-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "4123",
+  "wordCount": "4128",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog & Tutorials"
+    "name": "Cyanilux Shader Tutorials - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -72,7 +72,7 @@
     
 <meta property="article:published_time" content="2023-07-04T00:00:00+00:00" />
 <meta property="article:modified_time" content="2023-07-04T00:00:00+00:00" />
-<title>Rain Effects Breakdown | Cyanilux</title>
+<title>Rain Effects Breakdown | Cyanilux Shader Tutorials</title>
 <meta name="description" content="A few rain effects, including particles setup, and shaders for ripples in water/puddles and rain interacting with surfaces. Shader Graph | Unity Shader Tutorials, @Cyanilux" />
 <link rel="canonical" href="https://www.cyanilux.com/tutorials/rain-effects-breakdown/" />
 <script>
@@ -659,21 +659,50 @@ With this, each line always has the same droplet size. If you want them even mor
 </div>
 
 <div class="footer-btns">
-<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi! ✨', '#e664fa', 'X8X0J5MD6');kofiwidget2.draw();</script>
-<a href="http://discord.gg/2V93q9w">
-<div class="btn-discord">
-<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px">
+
+<a href="https://ko-fi.com/cyanilux" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+<div class="footer-btn btn-kofi">
+<img class="img" src="https://www.cyanilux.com/logo-kofi.png" alt="Ko-fi" style="width:22px; padding-right:5px">
+Support me on Ko-fi! ✨
+</img>
+</div>
+</a>
+
+<a href="http://discord.gg/2V93q9w" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+<div class="footer-btn btn-discord">
+<img class="img" src="https://www.cyanilux.com/logo-discord-2.png" alt="Discord" style="width:22px; padding-right:5px">
 Join my discord! 💬
 </img>
 </div>
 </a>
+
 </div></p>
 
 
+        <script>
+                var h1s = document.querySelectorAll("h2, h3, h4");
+                for (let i = 0; i < h1s.length; i++){
+                    var id = h1s[i].getAttribute("id");
+                    if (id == null || id == "") continue;
+
+                    var e = document.createElement("div");
+                    e.textContent = "🔗";
+                    e.className = "hLink";
+                    e.addEventListener("mousedown", (event) => {
+                        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                        newurl += window.location.search;
+                        newurl += "#" + event.target.parentElement.getAttribute("id");
+                        window.history.pushState({path:newurl}, '', newurl);
+                        navigator.clipboard.writeText(newurl);
+                    })
+
+                    h1s[i].appendChild(e);
+                }
+            </script>
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux</a></p>
 
 <p class="small-text" style="text-align:center;">
 

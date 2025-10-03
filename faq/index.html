@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=8 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
 
 
  
@@ -33,11 +33,11 @@
   },
   "url": "https://www.cyanilux.com/faq/",
   "inLanguage": "en-gb",
-  "wordCount": "9946",
+  "wordCount": "9945",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
-    "name": "Cyanilux - Game Dev Blog & Tutorials"
+    "name": "Cyanilux Shader Tutorials - Game Dev Blog & Tutorials"
   },
   "keywords": [
     "Unity", 
@@ -198,10 +198,10 @@
 	},
 	{
 		"@type": "Question",
-		"name": "Using DrawMeshInstancedIndirect with Shader Graph",
+		"name": "Using DrawMeshInstancedIndirect/Procedural with Shader Graph",
 		"acceptedAnswer": { 
 			"@type": "Answer", 
-			"text": "<p>For supporting <code>DrawMeshInstancedIndirect</code>, (possibly also <code>DrawProcedural</code>), add a <strong>Boolean Keyword</strong> to the <strong>Blackboard</strong>, with reference set to <code>PROCEDURAL_INSTANCING_ON</code>. Should also be Global and using Multi-Compile.</p><br><div class=\"img-center\"><br><a href=\"sg-drawmeshinstancedindirect-1.png\" target=\"_blank\" rel=\"noopener noreferrer\"><br><img loading=\"lazy\" width=\"493\" height=\"189\" alt=\"(Image)\" src=\"sg-drawmeshinstancedindirect-1.png\" /><br></a><br><p class=\"img-text\"></p><br></div><br><p>Use two <b class=\"node\">Custom Function</b> nodes. Both with a Vector3 input named “In” and a Vector3 output named “Out”.</p><br><ul><br><li>The first uses <strong>File</strong> mode with the Function Name “Instancing”, to attach the include file (see Shader Graph gist below as an example).</li><br><li>The second must use <strong>String</strong> mode with the following :</li><br></ul><br><div class=\"highlight\"><div style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;\"><br><table style=\"border-spacing:0;padding:0;margin:0;border:0;\"><tr><td style=\"vertical-align:top;padding:0;margin:0;border:0;\"><br><pre tabindex=\"0\" style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;\"><code><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">1<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">2<br></span></code></pre></td><br><td style=\"vertical-align:top;padding:0;margin:0;border:0;;width:100%\"><br><pre tabindex=\"0\" style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;\"><code class=\"language-c\" data-lang=\"c\"><span style=\"display:flex;\"><span>Out <span style=\"color:#f92672\">=</span> In;<br></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\">#pragma instancing_options procedural:vertInstancingSetup</span></span></span></code></pre></td></tr></table><br></div><br></div><br><p>(<code>vertInstancingSetup</code> being a function in the include file)</p><br><p>Both functions here don’t alter the input passed in, but it is required to be able to connect the node to the <strong>Master Stack</strong>. We should connect it somewhere in the Vertex stage - likely easiest using the <strong>Position</strong> port with the <b class=\"node\">Position</b> node set to Object space (or swap this out for a displaced vertex position if you require that)</p><br><div class=\"img-center\"><br><a href=\"sg-drawmeshinstancedindirect-2.png\" target=\"_blank\" rel=\"noopener noreferrer\"><br><img loading=\"lazy\" width=\"750\" height=\"135\" alt=\"(Image)\" src=\"sg-drawmeshinstancedindirect-2.png\" /><br></a><br><p class=\"img-text\"></p><br></div><br><p>See instanced grass example here :</p><br><ul><br><li>Twitter Thread : <a href=\"https://twitter.com/Cyanilux/status/1396848736022802435\">https://twitter.com/Cyanilux/status/1396848736022802435</a></li><br><li>Shader Graph Include : <a href=\"https://gist.github.com/Cyanilux/4046e7bf3725b8f64761bf6cf54a16eb\">https://gist.github.com/Cyanilux/4046e7bf3725b8f64761bf6cf54a16eb</a></li><br><li>C# Script : <a href=\"https://gist.github.com/Cyanilux/e7afdc5c65094bfd0827467f8e4c3c54\">https://gist.github.com/Cyanilux/e7afdc5c65094bfd0827467f8e4c3c54</a></li><br></ul><br>"
+			"text": "<p>For supporting <code>DrawMeshInstancedIndirect</code> or <code>DrawMeshInstancedProcedural</code>, add a <strong>Boolean Keyword</strong> to the <strong>Blackboard</strong>, with reference set to <code>PROCEDURAL_INSTANCING_ON</code>. Should also be Global and using Multi-Compile.</p><br><div class=\"img-center\"><br><a href=\"sg-drawmeshinstancedindirect-1.png\" target=\"_blank\" rel=\"noopener noreferrer\"><br><img loading=\"lazy\" width=\"493\" height=\"189\" alt=\"(Image)\" src=\"sg-drawmeshinstancedindirect-1.png\" /><br></a><br><p class=\"img-text\"></p><br></div><br><p>Use two <b class=\"node\">Custom Function</b> nodes. Both with a Vector3 input named “In” and a Vector3 output named “Out”.</p><br><ul><br><li>The first uses <strong>File</strong> mode with the Function Name “Instancing”, to attach the include file (see Shader Graph gist below as an example).</li><br><li>The second must use <strong>String</strong> mode with the following :</li><br></ul><br><div class=\"highlight\"><div style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;\"><br><table style=\"border-spacing:0;padding:0;margin:0;border:0;\"><tr><td style=\"vertical-align:top;padding:0;margin:0;border:0;\"><br><pre tabindex=\"0\" style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;\"><code><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">1<br></span><span style=\"white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f\">2<br></span></code></pre></td><br><td style=\"vertical-align:top;padding:0;margin:0;border:0;;width:100%\"><br><pre tabindex=\"0\" style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;\"><code class=\"language-c\" data-lang=\"c\"><span style=\"display:flex;\"><span>Out <span style=\"color:#f92672\">=</span> In;<br></span></span><span style=\"display:flex;\"><span><span style=\"color:#75715e\">#pragma instancing_options procedural:vertInstancingSetup</span></span></span></code></pre></td></tr></table><br></div><br></div><br><p>(<code>vertInstancingSetup</code> being a function in the include file)</p><br><p>Both functions here don’t alter the input passed in, but it is required to be able to connect the node to the <strong>Master Stack</strong>. We should connect it somewhere in the Vertex stage - likely easiest using the <strong>Position</strong> port with the <b class=\"node\">Position</b> node set to Object space (or swap this out for a displaced vertex position if you require that)</p><br><div class=\"img-center\"><br><a href=\"sg-drawmeshinstancedindirect-2.png\" target=\"_blank\" rel=\"noopener noreferrer\"><br><img loading=\"lazy\" width=\"750\" height=\"135\" alt=\"(Image)\" src=\"sg-drawmeshinstancedindirect-2.png\" /><br></a><br><p class=\"img-text\"></p><br></div><br><p>See instanced grass example here :</p><br><ul><br><li>Twitter Thread : <a href=\"https://twitter.com/Cyanilux/status/1396848736022802435\">https://twitter.com/Cyanilux/status/1396848736022802435</a></li><br><li>Shader Graph Include : <a href=\"https://gist.github.com/Cyanilux/4046e7bf3725b8f64761bf6cf54a16eb\">https://gist.github.com/Cyanilux/4046e7bf3725b8f64761bf6cf54a16eb</a></li><br><li>C# Script : <a href=\"https://gist.github.com/Cyanilux/e7afdc5c65094bfd0827467f8e4c3c54\">https://gist.github.com/Cyanilux/e7afdc5c65094bfd0827467f8e4c3c54</a></li><br></ul><br>"
 		}
 	},
 	{
@@ -396,7 +396,7 @@
 	
 <meta property="article:published_time" content="2025-03-05T00:00:00+00:00" />
 <meta property="article:modified_time" content="2025-03-05T00:00:00+00:00" />
-<title>FAQ | Cyanilux</title>
+<title>FAQ | Cyanilux Shader Tutorials</title>
 <meta name="description" content="List of frequent (or interesting) questions I&#39;ve answered. | Unity Shader Tutorials, @Cyanilux"/>
 <link rel="canonical" href="https://www.cyanilux.com/faq/" />
 <script>
@@ -1468,10 +1468,10 @@ Right : Render with Prepass<br>
     var content = this.nextElementSibling;
     if (content.style.display === 'block') {
       content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Using DrawMeshInstancedIndirect with Shader Graph</b>';
+      this.innerHTML = '<b>⯈ Using DrawMeshInstancedIndirect\/Procedural with Shader Graph</b>';
     } else {
       content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Using DrawMeshInstancedIndirect with Shader Graph</b>';
+      this.innerHTML = '<b>⯆ Using DrawMeshInstancedIndirect\/Procedural with Shader Graph</b>';
 
       if (history.pushState) {
         var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
@@ -1480,9 +1480,9 @@ Right : Render with Prepass<br>
       }
 
     }
-"><b>⯈ Using DrawMeshInstancedIndirect with Shader Graph</b></button>
+"><b>⯈ Using DrawMeshInstancedIndirect/Procedural with Shader Graph</b></button>
 <div class="foldout">
-<p>For supporting <code>DrawMeshInstancedIndirect</code>, (possibly also <code>DrawProcedural</code>), add a <strong>Boolean Keyword</strong> to the <strong>Blackboard</strong>, with reference set to <code>PROCEDURAL_INSTANCING_ON</code>. Should also be Global and using Multi-Compile.</p>
+<p>For supporting <code>DrawMeshInstancedIndirect</code> or <code>DrawMeshInstancedProcedural</code>, add a <strong>Boolean Keyword</strong> to the <strong>Blackboard</strong>, with reference set to <code>PROCEDURAL_INSTANCING_ON</code>. Should also be Global and using Multi-Compile.</p>
 <div class="img-center">
 <a href="sg-drawmeshinstancedindirect-1.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="493" height="189" alt="(Image)" src="sg-drawmeshinstancedindirect-1.png" />
@@ -2446,10 +2446,30 @@ See <a href="https://www.cyanilux.com/tutorials/sprite-local-uv/">Local UVs for 
 
 
 
+        <script>
+                var h1s = document.querySelectorAll("h2, h3, h4");
+                for (let i = 0; i < h1s.length; i++){
+                    var id = h1s[i].getAttribute("id");
+                    if (id == null || id == "") continue;
+
+                    var e = document.createElement("div");
+                    e.textContent = "🔗";
+                    e.className = "hLink";
+                    e.addEventListener("mousedown", (event) => {
+                        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                        newurl += window.location.search;
+                        newurl += "#" + event.target.parentElement.getAttribute("id");
+                        window.history.pushState({path:newurl}, '', newurl);
+                        navigator.clipboard.writeText(newurl);
+                    })
+
+                    h1s[i].appendChild(e);
+                }
+            </script>
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux </a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux</a></p>
 
 <p class="small-text" style="text-align:center;">
 

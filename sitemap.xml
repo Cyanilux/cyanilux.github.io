@@ -2,43 +2,48 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://www.cyanilux.com/tutorials/breakdowns/</loc>
+    <lastmod>2025-10-03T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/</loc>
+    <lastmod>2025-10-03T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/</loc>
+    <lastmod>2025-10-03T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tags/shader-graph/</loc>
+    <lastmod>2025-10-03T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tags/</loc>
+    <lastmod>2025-10-03T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tutorials/</loc>
+    <lastmod>2025-10-03T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://www.cyanilux.com/tags/urp/</loc>
+    <lastmod>2025-10-03T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
     <loc>https://www.cyanilux.com/faq/</loc>
     <lastmod>2025-03-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>https://www.cyanilux.com/tutorials/breakdowns/</loc>
-    <lastmod>2025-08-23T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/</loc>
-    <lastmod>2025-08-23T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tags/shader-graph/</loc>
-    <lastmod>2025-08-23T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
     <loc>https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/</loc>
     <lastmod>2024-12-04T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tags/</loc>
-    <lastmod>2025-08-23T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tutorials/</loc>
-    <lastmod>2025-08-23T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://www.cyanilux.com/tags/urp/</loc>
-    <lastmod>2025-08-23T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -58,7 +63,7 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tags/hlsl/</loc>
-    <lastmod>2025-08-01T00:00:00+00:00</lastmod>
+    <lastmod>2025-09-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -68,7 +73,7 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/posts/</loc>
-    <lastmod>2025-08-02T00:00:00+00:00</lastmod>
+    <lastmod>2025-09-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -158,7 +163,7 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/crystal-shader-breakdown/</loc>
-    <lastmod>2021-02-01T00:00:00+00:00</lastmod>
+    <lastmod>2025-09-25T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -168,7 +173,7 @@
     <priority>0.5</priority>
   </url><url>
     <loc>https://www.cyanilux.com/tutorials/depth/</loc>
-    <lastmod>2023-04-22T00:00:00+00:00</lastmod>
+    <lastmod>2025-09-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>

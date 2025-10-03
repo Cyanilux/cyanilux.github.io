@@ -692,11 +692,14 @@ video {
 	/*border: 3px solid #303030;*/
 }
 
+/* tabpanel contents are hidden by default */
 .tabpanel > div {
 	display : none;
 }
 
-.tabpanel > div:first-child {
+/* first child <div> (with no class) can be visible by default */
+/* though javascript overrides this anyway */
+.tabpanel > div:not([class]):first-child {
 	display : block;
 }
 
@@ -712,38 +715,41 @@ hr {
 	text-align: center;
 }
 
-.footer-btns > * {
-	margin : 5px 10px;
-}
-
-.btn-discord {
-	background-color:#7289DA;
-
-	box-shadow: 1px 1px 0px rgb(0 0 0 / 20%);
-    line-height: 36px!important;
+.footer-btn {
+	margin: 2px 10px;
+	background-color:#3d3d3d;
+	/*box-shadow: 2px 2px 0px rgb(0 0 0 / 20%);*/
+    line-height: 36px;
     min-width: 150px;
-    display: inline-block!important;
-    padding: 2px 12px !important;
-    text-align: center !important;
+    display: inline-flex;
+	text-align: center;
+	align-items: center;
+    padding: 2px 12px;
     border-radius: 7px;
     color: #fff;
     cursor: pointer;
     overflow-wrap: break-word;
     vertical-align: middle;
-    border: 0 none #fff !important;
-    font-family: 'Quicksand',Helvetica,Century Gothic,sans-serif !important;
     text-decoration: none;
     text-shadow: none;
-    font-weight: 700!important;
-    font-size: 14px !important;
+    font-weight: 600;
+    font-size: 15px;
 }
 
-.btn-discord img {
-	vertical-align:middle;
+.btn-discord {
+	background-color:#7289DA;
+}
+
+.btn-kofi {
+	background-color:#e664fa;
 }
 
 .btn-discord:hover{
 	background-color:#6479c7;
+}
+
+.btn-kofi:hover{
+	background-color:#d25ce4;
 }
 
 /* Notice Box */
@@ -815,4 +821,21 @@ h2:not(.title-no-margin):not(.title-undecorated), h3, h4 {
 
 .tabpanel > div > h2, .tabpanel > div > h3, .tabpanel > div > h4 {
 	background-color: #303030;
+}
+
+/* title link button */
+.hLink {
+	float:right;
+	font-size: large;
+	opacity: 0.1;
+	transition: 0.2s;
+}
+
+h2:hover > .hLink, h3:hover > .hLink, h4:hover > .hLink {
+	opacity: 0.7;
+	transition: 0.2s;
+}
+
+.hLink:hover {
+	cursor:pointer;
 }
