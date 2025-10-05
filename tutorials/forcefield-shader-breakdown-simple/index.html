@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/forcefield-shader-breakdown-simple/",
   "inLanguage": "en-gb",
-  "wordCount": "606",
+  "wordCount": "608",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -263,7 +263,7 @@
 </a>
 <p class="img-text"></p>
 </div>
-<p>Next, create a <b class="node">Fresnel Effect</b> node. This will output a value based on the normal and view direction. This produces what looks like a “glow” around the edge of the object. We can increase the <strong>Power</strong> input to make this glow closer to the edges – I’m using a value of <strong>8</strong>. For more info about this node see : <a href="https://www.cyanilux.com/tutorials/fresnel-effect">Fresnel Effect Post</a>.</p>
+<p>Next, create a <b class="node">Fresnel Effect</b> node. This will output a value based on the normal and view direction. This produces what looks like a “glow” around the edge of the object. We can increase the <strong>Power</strong> input to make this glow closer to the edges – I’m using a value of <strong>8</strong>. For more info about this node see the <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@17.4/manual/Fresnel-Effect-Node.html">Fresnel Effect node docs page</a>.</p>
 <p>We’ll be using this as the <strong>Alpha</strong> input on the <b class="node">Master</b> node, to have areas on the edges of our object appear, but have areas in the middle (where the Fresnel returns 0) to be transparent. However, for our back faces this node will output 1 as the normals of those vertices are facing away from the view direction. To prevent this, we can first put the <b class="node">Fresnel Effect</b> output into the <strong>True</strong> input on a <b class="node">Branch</b> node, with the <strong>Predicate</strong> set to the <b class="node">Is Front Face</b> node. We can then leave the <strong>False</strong> input as <strong>0</strong>, so we are only using the fresnel result for the front faces.</p>
 <p>We’ll take the output of the <b class="node">Branch</b> node and <b class="node">Multiply</b> it by <strong>2</strong> and then put it into an <b class="node">Add</b> node with a value of <strong>0.02</strong>. This allows us to tint the forcefield alpha, so it is slightly less transparent.</p>
 <div class="img-center">

@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/toon-glass-shader-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "1422",
+  "wordCount": "1421",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -325,20 +325,10 @@ Nowadays in Shader Graph (v10.3+) the Preview style can be toggled under the <st
 <p class="img-text"></p>
 </div>
 <p>To handle creating multiple lines, I’m using this setup as shown above. By using a <b class="node">Power</b> in our calculations, we can allow the values to be more exponential / less linear, which affects the width of each line based on the distance from the diagonal (as shown in the <b class="node">Fraction</b> node preview).</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ How does this work?</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ How does this work?</b>';
-
-    }
-"><b>⯈ How does this work?</b></button>
-<div class="foldout">
-<p>To possibly better show how this works, I’ve plotted the functions of <b class="node">Power</b> (^x) and <b class="node">Fraction</b> (frac) here :</p>
+<details >
+  <summary  class="foldout_button">How does this work?</summary>
+  <div class="foldout">
+    <p>To possibly better show how this works, I’ve plotted the functions of <b class="node">Power</b> (^x) and <b class="node">Fraction</b> (frac) here :</p>
 <div class="img-center">
 <a href="Plots.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="202" alt="(Image)" src="Plots.png" />
@@ -350,7 +340,9 @@ Nowadays in Shader Graph (v10.3+) the Preview style can be toggled under the <st
 <p>Looking at the plot on the left, When A is higher, the plot results in a more curved line. This should make sense if you&rsquo;re familiar with powers/exponentials, but the important thing is what happens when putting this through the other function.</p>
 <p>The <b class="node">Fraction</b> node returns the fractional (decimal) part of the number (without the integer component). This results in values only between 0 and 1, shown on the right plot. The line jumps from 1 back to 0 on the Y axis. The more curved lines from the previous plot produce more line sections.</p>
 
-</div>
+  </div>
+</details>
+
 
 <p>We use a <b class="node">One Minus</b> node on our second input on the <b class="node">Power</b>, so that we input values near 1 on diagonal line rather than 0, resulting in smaller width gradients rather than larger.</p>
 <p>There’s also a <b class="node">Saturate</b> in place which clamps values between 0 and 1. The extra .01 on the <b class="node">Add</b> node is in place to prevent the <b class="node">Fraction</b> node outputting 1 in the center (the spacing created by the <strong>Offset</strong>) for certain integer values of A, although it can still occur if B or A*B isn’t an integer, hence the mention of setting these to integers at the start of the breakdown. We could instead mask that area to always be black, but it felt a bit unnecessary.</p>

@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/spellbook-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "4108",
+  "wordCount": "4105",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -268,20 +268,10 @@
 <p>First up, we&rsquo;ll need models for the book and a page. As I want the tutorial to focus more on the shader, I&rsquo;m not going through the modelling process here in any detail - (I&rsquo;m certainly no expert at that anyway).</p>
 <p>If interested you can download a <a href="BookModel.fbx">Book Model</a> I made (CC0 License). It&rsquo;s similar to the one shown in the tweet at the start of the post, but without the pentagram decoration on the front cover. It is rigged &amp; animated - (but if you don&rsquo;t want that can disable those in the import settings). To handle the animation you&rsquo;ll probably want to create an <a href="https://docs.unity3d.com/Manual/class-AnimatorController.html">Animator Controller</a> but that&rsquo;s somewhat outside the scope of the tutorial.</p>
 <p>Alternatively you can make your own - the foldout below will go through some tips &amp; things important for the shader to work correctly, (or can look at the models I made as examples).</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Model setup tips\/info</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Model setup tips\/info</b>';
-
-    }
-"><b>⯈ Model setup tips/info</b></button>
-<div class="foldout">
-<ul>
+<details >
+  <summary  class="foldout_button">Model setup tips/info</summary>
+  <div class="foldout">
+    <ul>
 <li>The origin of the book (and page model) should be in the center - though it&rsquo;s only important for the X axis iirc. In my case I have it at the center along it&rsquo;s spine.</li>
 <li>Modelling the book in it&rsquo;s open state may help keep normals consistent.</li>
 <li>Fairly important the book is symmetrical. If using Blender, I&rsquo;d recommend using the Mirror modifier. Can use the mirror on both the X and Y axis. (I did this as two separate modifiers to also flip the UVs correctly)</li>
@@ -297,7 +287,9 @@
 <li>Once modelled and unwrapped, you&rsquo;ll want to duplicate the <strong>right page</strong>. Can do this in Blender by highlighting faces, Shift+D to duplicate, P to separate (by selection). Go into object mode, select new object and remove the second mirror modifier. (If the model is already rigged/animated, may need to first duplicate the whole model and apply the armature modifier while the book is open)</li>
 </ul>
 
-</div>
+  </div>
+</details>
+
 
 <p>Import the model into Unity and place it in scene. While Shader Graph itself gives previews (including Main Preview which can have custom meshes), I&rsquo;ve always found it much easier to save the graph asset and visualise in scene. You may want to do this at various times during the tutorial to see how nodes affect the result.</p>
 <p>We&rsquo;ll need to create two Lit Graphs. In my case I&rsquo;ve named them &ldquo;BookPages&rdquo; and &ldquo;PageTurn&rdquo;. Create materials using these shaders and apply them to the book&rsquo;s pages and separate page objects respectively.</p>
@@ -367,20 +359,10 @@
 </a>
 <p class="img-text"></p>
 </div>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Why are we avoiding \u003cb class=\u0022node\u0022\u003eSample Texture 2D\u003c\/b\u003e here?</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Why are we avoiding \u003cb class=\u0022node\u0022\u003eSample Texture 2D\u003c\/b\u003e here?</b>';
-
-    }
-"><b>⯈ Why are we avoiding <b class="node">Sample Texture 2D</b> here?</b></button>
-<div class="foldout">
-<p>Technically, you could use that node instead. But as our <b class="node">Flipbook</b> node can select different Tiles for the left and right pages, it can cause a jump/seam in the UVs down the center of the book. This leads to a larger derivative (difference in values) across the 2x2 pixel blocks that fragment shaders run in.</p>
+<details >
+  <summary  class="foldout_button">Why are we avoiding <b class="node">Sample Texture 2D</b> here?</summary>
+  <div class="foldout">
+    <p>Technically, you could use that node instead. But as our <b class="node">Flipbook</b> node can select different Tiles for the left and right pages, it can cause a jump/seam in the UVs down the center of the book. This leads to a larger derivative (difference in values) across the 2x2 pixel blocks that fragment shaders run in.</p>
 <p>This is interpreted as <em>needing to fit more of the texture inbetween those pixels</em>, so the gpu samples a higher mipmap level (more blurry / smaller resolution). It only does this for those pixels along the seam so isn&rsquo;t a <em>huge</em> issue, but it can be noticeable and I wanted to avoid it.</p>
 <p>To fix this, there are some options:</p>
 <ul>
@@ -389,7 +371,9 @@
 <li>Instead, we can use <strong>different UV coordinates</strong> for calculating derivatives across the 2x2 pixel block. There isn&rsquo;t a node in ShaderGraph that handles this, but we can use the <code>SAMPLE_TEXTURE2D_GRAD</code> macro in a <b class="node">Custom Function</b>. We&rsquo;d want to scale the other UVs in the same way (as shown by the UV_Grad input used below), but avoid creating seams.</li>
 </ul>
 
-</div>
+  </div>
+</details>
+
 
 <p>My book pages mesh also includes the sides of the pages which currently may be textured a bit strangely.</p>
 <p>To apply a different textures/colour to the side we first need some way to distinguish between these faces. I (somewhat lazily) used the <b class="node">Normal Vector</b> as only the top faces have normals pointing roughly upwards, so can <b class="node">Split</b> to take the Y/G axis and do a <b class="node">Comparison</b> with a value of 0.6-ish. (Could alternatively use <b class="node">Vertex Color</b>)</p>
@@ -487,20 +471,10 @@ To ensure shading is correct, we&rsquo;ll also need to <a href="https://www.cyan
 <h3 id="script">C# Script</h3>
 <p>These two shaders should all be set up now, but currently the only way to test if they&rsquo;re working correctly is by manually adjusting properties on the materials. To handle spawning of page objects and turning them on mouse presses (left and right), I use the following C# Script. It&rsquo;s a bit long, so I&rsquo;ve put it under a foldout.</p>
 <p>Hopefully it&rsquo;s clear how it works based on the comments.</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ View Code</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ View Code</b>';
-
-    }
-"><b>⯈ View Code</b></button>
-<div class="foldout">
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<details >
+  <summary  class="foldout_button">View Code</summary>
+  <div class="foldout">
+    <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  2
@@ -791,7 +765,9 @@ To ensure shading is correct, we&rsquo;ll also need to <a href="https://www.cyan
 </div>
 </div>
 
-</div>
+  </div>
+</details>
+
 
 <p>That&rsquo;s mostly it for the tutorial, though I will quickly mention how I made the pages for my Grimoire/Spellbook scene (tweet at beginning of post) :</p>
 <h3 id="runes">Pages Texture</h3>

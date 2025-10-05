@@ -608,19 +608,19 @@ video {
 /* Foldout */
 
 .foldout_button {
+	width: fit-content;
 	background-color: #282828;
 	color: #00aabb;
-	/*cursor: pointer;*/
 	margin-bottom: 5px;
 	padding: 5px 35px 5px 15px;
 	border: none;
+	border-radius : 10px;
 	text-align: left;
 	font-size: 15px;
-	border-radius : 10px;
-	display: flex;
 	margin-top: 5px;
 	line-height: 25px;
-	/*border: 3px solid #303030;*/
+	font-weight: bold;
+	cursor: pointer;
 }
 
 .foldout_active, .foldout_button:hover {
@@ -633,15 +633,13 @@ video {
 	margin-top: 5px;
 	margin-bottom: 10px;
 	padding: 0px 15px 0px 10px;
-	display: none;
 	overflow: hidden;
 	background-color: #282828;
 	border-radius : 10px;
-	/*border: 3px solid #303030;*/
 }
 
 .foldout > ul {
-	padding-left: 20px;
+	padding-left: 30px;
 }
 
 .foldout img {

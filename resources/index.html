@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -31,7 +31,7 @@
   },
   "url": "https://www.cyanilux.com/resources/",
   "inLanguage": "en-gb",
-  "wordCount": "1609",
+  "wordCount": "1612",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -205,20 +205,10 @@
 <li>The list is loaded from a <a href="https://gist.github.com/Cyanilux/69e4f228206b1a70c3f8a0ab4f22ef75">Github gist</a> (so I don&rsquo;t have to update the entire site to add entries). If it fails to load for some reason can optionally view that instead.</li>
 <li>Entries are grouped under various headings. You can also use the filter below to locate things easier.</li>
 </ul>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Filter Usage</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Filter Usage</b>';
-
-    }
-"><b>⯈ Filter Usage</b></button>
-<div class="foldout">
-<ul>
+<details >
+  <summary  class="foldout_button">Filter Usage</summary>
+  <div class="foldout">
+    <ul>
 <li>The filter below searches for the <strong>exact string/keyword</strong> (not case sensitive) anywhere in text (including tags at side), so I&rsquo;d recommend sticking to a single short keyword, like &ldquo;water&rdquo;</li>
 <li>If you want to use multiple keywords, separate each with <code>&quot;,&quot;</code> or <code>&quot;&amp;&quot;</code> (for AND), <code>&quot;|&quot;</code> (for OR), and use <code>&quot;(&quot;</code> and <code>&quot;)&quot;</code> for grouping.
 <ul>
@@ -228,7 +218,9 @@
 </li>
 </ul>
 
-</div>
+  </div>
+</details>
+
 
 <div class="notice">
 <div class="notice-left">
@@ -267,6 +259,8 @@
 
 <time datetime="2025-10-03">&#128337 3 Oct 2025</time>
 
+
+<time datetime="2025-10-05"> (updated 5 Oct 2025)</time>
 
 </div>
 				<p style="display:none">(Cyanilux)</p>

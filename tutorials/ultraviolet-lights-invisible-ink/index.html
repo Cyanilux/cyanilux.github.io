@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/ultraviolet-lights-invisible-ink/",
   "inLanguage": "en-gb",
-  "wordCount": "3118",
+  "wordCount": "3117",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -339,20 +339,10 @@
 
 </div>
 </div>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Can this work in DBuffer mode?</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Can this work in DBuffer mode?</b>';
-
-    }
-"><b>⯈ Can this work in DBuffer mode?</b></button>
-<div class="foldout">
-<p>In this mode the decal itself does not typically handle shading. They instead are rendered as unlit into separate buffer(s), then sampled by opaque surfaces later which applies the shading. The decal shader pass that is used isn&rsquo;t set up to properly handle lighting.</p>
+<details >
+  <summary  class="foldout_button">Can this work in DBuffer mode?</summary>
+  <div class="foldout">
+    <p>In this mode the decal itself does not typically handle shading. They instead are rendered as unlit into separate buffer(s), then sampled by opaque surfaces later which applies the shading. The decal shader pass that is used isn&rsquo;t set up to properly handle lighting.</p>
 <p>But during testing, I did find a workaround for the Forward+ path (untested in builds though), which involves manually adding keywords to the graph (though this does cause some warnings about duplicate keywords). Can do this either through the Blackboard or by adding these lines to the hlsl include file that we&rsquo;ll set up below (this also creates warnings about unknown pragmas, but still works - a bit odd)</p>
 <pre tabindex="0"><code>#pragma multi_compile _ _ADDITIONAL_LIGHTS
 #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
@@ -360,7 +350,9 @@
 </code></pre><p>If you want to avoid any warnings, you&rsquo;d probably have to convert the graph to code and add the keywords to the correct Pass instead. (Frame Debugger should tell you which pass is being used. Otherwise just make sure all passes have those keywords once)</p>
 <p>Adding these keywords is enough in the Forward+ path, but for the regular Forward path it appears that <code>unity_LightData</code> and <code>unity_LightIndices</code> are not being set during decal rendering in DBuffer mode, so afaik not possible to get working for that rendering path. If you require Forward, use Screenspace decals instead.</p>
 
-</div>
+  </div>
+</details>
+
 
 <p>The aim here is to make our decals appear only when spot or point lights shine on them -</p>
 <div class="img-center">

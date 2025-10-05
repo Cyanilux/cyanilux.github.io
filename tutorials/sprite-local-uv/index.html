@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/sprite-local-uv/",
   "inLanguage": "en-gb",
-  "wordCount": "1300",
+  "wordCount": "1299",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -406,20 +406,10 @@
 <p class="img-text"></p>
 </div>
 <div style="height: 30px;"></div>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Small optimisation (optional)</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Small optimisation (optional)</b>';
-
-    }
-"><b>⯈ Small optimisation (optional)</b></button>
-<div class="foldout">
-<p>You could also change the script to set <code>uvRemap</code> to this instead :</p>
+<details >
+  <summary  class="foldout_button">Small optimisation (optional)</summary>
+  <div class="foldout">
+    <p>You could also change the script to set <code>uvRemap</code> to this instead :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
@@ -445,7 +435,9 @@
 </ul>
 <p>In the compiled shader I think this would end up a single instruction (MAD)</p>
 
-</div>
+  </div>
+</details>
+
 
 <hr>
 <h2 id="object-pos">Object Position</h2>

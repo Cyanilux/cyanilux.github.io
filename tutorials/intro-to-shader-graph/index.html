@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/intro-to-shader-graph/",
   "inLanguage": "en-gb",
-  "wordCount": "17237",
+  "wordCount": "17228",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -411,20 +411,10 @@
 </li>
 <li><strong>Surface</strong> : Can be <strong>Opaque</strong> or <strong>Transparent</strong></li>
 <li><strong>Blend</strong> : If <strong>Transparent</strong> is selected, a <strong>Blend</strong> type option will appear which determines how the transparency is handled. 
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Details about each Blend option</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Details about each Blend option</b>';
-
-    }
-"><b>⯈ Details about each Blend option</b></button>
-<div class="foldout">
-<p>The options here are :</p>
+<details >
+  <summary  class="foldout_button">Details about each Blend option</summary>
+  <div class="foldout">
+    <p>The options here are :</p>
 <ul>
 <li><strong>Alpha</strong> : Regular alpha blending. Is equivalent to <code>Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha</code> in ShaderLab (Shader code), where the first term (<code>SrcAlpha</code>, referring to the <strong>Alpha</strong> port of the <strong>Master Stack</strong>) is multiplied by the <strong>Base Color</strong> output and the second term (<code>OneMinusSrcAlpha</code>) is multiplied by the colour already on screen. These two are added together which is then written to the screen. (The other two terms after the comma are used for the alpha channel only)
 <ul>
@@ -438,7 +428,9 @@
 <li><strong>Multiply</strong> : Is equivalent to <code>Blend DstColor Zero</code>. In other words, the colour on the screen is multiplied with the colour output from the shader. Outputting <strong>White</strong> (1,1,1) means no change / invisible. The <strong>Alpha</strong> port is not used.</li>
 </ul>
 
-</div>
+  </div>
+</details>
+
 </li>
 <li><strong>Alpha Clip</strong> : Toggles alpha clipping. If enabled, an <strong>Alpha Clip Threshold</strong> port will be added to the Master Stack. For each fragment/pixel, if the <strong>Alpha</strong> value is lower than the threshold the fragment is discarded, meaning it isn&rsquo;t rendered. This can be done with both surface modes. Using <strong>Opaque</strong> &amp; <strong>Alpha Clip</strong> is common for foliage effects to make sure they are sorted correctly.</li>
 <li><strong>Render Face</strong> : Controls whether Front, Back or Both sides are rendered. In older versions, the option was only Front faces or <strong>Two Sided</strong>.
@@ -710,20 +702,10 @@
 </div>
 <p>The values are currently something that gets <strong>hardcoded into the generated shader code</strong>, so the Gradient type (created from the Blackboard at least) <strong>cannot be exposed</strong> or set by C# scripts.</p>
 <p>If you need to expose something similar to a gradient, the foldout below has a few alternatives :</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Alternatives</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Alternatives</b>';
-
-    }
-"><b>⯈ Alternatives</b></button>
-<div class="foldout">
-<h4 id="color-properties--lerp">Color properties &amp; Lerp</h4>
+<details >
+  <summary  class="foldout_button">Alternatives</summary>
+  <div class="foldout">
+    <h4 id="color-properties--lerp">Color properties &amp; Lerp</h4>
 <p>If you only need two colours, you can create a gradient quite easily from two <strong>Color properties</strong> and a <b class="node">Lerp</b> node. Same with three, perhaps four, but you&rsquo;ll need to link together multiple lerps and remap the <strong>T</strong> inputs. The below image provides an example for a 3-colour gradient.</p>
 <div class="img-center">
 <a href="Lerp3Colours.png" target="_blank" rel="noopener noreferrer">
@@ -857,7 +839,9 @@
 <p>Using <strong>Matrix4x4</strong> instead <em>might</em> work, that would only require 3 which is a lot better than 12. But matrices can&rsquo;t be serialised so would need to be set through C# at runtime.</p>
 <p>I&rsquo;d personally recommend the <b class="node">Lerp</b> or <b class="node">Sample Texture 2D</b> approaches instead, but thought I should still mention this too&hellip; Maybe it&rsquo;ll give someone else a better idea for another workaround.</p>
 
-</div>
+  </div>
+</details>
+
 
 <hr>
 <h2 id="coordinate-spaces">Coordinate Spaces</h2>
@@ -1017,62 +1001,36 @@
 <p class="img-text"></p>
 </div>
 <p>Some properties will have different &ldquo;<strong>Modes</strong>&rdquo;, with options shown in these foldouts :</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Float</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Float</b>';
-
-    }
-"><b>⯈ Float</b></button>
-<div class="foldout">
-<ul>
+<details >
+  <summary  class="foldout_button">Float</summary>
+  <div class="foldout">
+    <ul>
 <li><strong>Default</strong> : Shows a regular float field in the Material Inspector.</li>
 <li><strong>Slider</strong> : Equivalent of the &ldquo;Range&rdquo; property in shader code. Can set a <strong>Minimum</strong> and <strong>Maximum</strong> value. The property will appear with a slider in the inspector. Setting from C# can still cause the value to go outside the slider&rsquo;s range. If this isn&rsquo;t intended you&rsquo;ll need to clamp the value manually. In 2019.3+ you can obtain the min/max from the property, see an example <a href="https://twitter.com/Cyanilux/status/1337181494729699328">here</a>.</li>
 <li><strong>Integer</strong> : Shows a field that can only be set to integer values. Still acts as a float behind the scenes though. If setting from C#, Unity provides a SetInteger / SetGlobalInteger method.</li>
 <li><strong>Enum</strong> : This should show as a dropdown of values, based on a C# enum or string of values (like &ldquo;A, 1, B, 2&rdquo;). But while this option is included there doesn&rsquo;t seem to be a way to set that C# enum or string&hellip; so it doesn&rsquo;t work.</li>
 </ul>
 
-</div>
+  </div>
+</details>
 
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Color</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Color</b>';
 
-    }
-"><b>⯈ Color</b></button>
-<div class="foldout">
-<ul>
+<details >
+  <summary  class="foldout_button">Color</summary>
+  <div class="foldout">
+    <ul>
 <li><strong>Default</strong> : A regular colour. From the Material Inspector it can only be set to values between 0 and 1. From C# it can be set outside that range, though be aware that the final shader won&rsquo;t be able to output values outside the range unless HDR is enabled on the URP Asset.</li>
 <li><strong>HDR</strong> (High Dynamic Range) : A colour where values can be outside the 0-1 range. The inspector shows this by having an <strong>Intensity</strong> slider added to the Colour Picker UI. In terms of setting this from C#, you can multiply the Color with a float if you want a brighter result e.g. <code>material.SetColor(&quot;_Color&quot;, Color.red * 5f);</code>. If you care about keeping it using the same result as the UI, multiply by <code>2^Intensity</code> (aka <code>color * Mathf.Pow(2, intensity</code>) instead.</li>
 </ul>
 <p>As a note, prior to v10 Unity didn&rsquo;t correct HDR colours to the correct colorspace for the project. Graphs imported into v10+ will show the property as &ldquo;Deprecated&rdquo; but it can be upgraded in the <strong>Node Settings</strong> tab of the <strong>Graph Inspector</strong>, assuming you want the proper behaviour. If you&rsquo;re in v10+ and want the old behaviour, You can also use a <b class="node">Colorspace Conversion</b> node to convert from <strong>RGB</strong> to <strong>Linear</strong> to mimic it.
-</div>
+  </div>
+</details>
 
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Texture2D</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Texture2D</b>';
 
-    }
-"><b>⯈ Texture2D</b></button>
-<div class="foldout">
-<ul>
+<details >
+  <summary  class="foldout_button">Texture2D</summary>
+  <div class="foldout">
+    <ul>
 <li><strong>White</strong> : Defaults to white (1,1,1,1) when a texture isn&rsquo;t assigned.</li>
 <li><strong>Black</strong> : Defaults to black (0,0,0,0) when a texture isn&rsquo;t assigned.</li>
 <li><strong>Grey</strong> : Defaults to grey (0.5,0.5,0.5) in <strong>Gamma</strong> colour space only, when a texture isn&rsquo;t assigned. Alpha of 0.5 in both colour spaces.</li>
@@ -1080,7 +1038,9 @@
 <li><strong>Linear Grey (v12+)</strong> : Defaults to (0.5,0.5,0.5,0.5) in both <strong>Linear</strong> and <strong>Gamma</strong> colour spaces, when a texture isn&rsquo;t assigned. See the [LinearOrGammaWorkflow docs page] for more information on color spaces.</li>
 </ul>
 <p>Note that other texture types (Texture3D, Texture2DArray, Cubemap, etc) default to the <strong>Grey</strong> mode when a texture (despite the generated code trying to use <code>&quot;white&quot;</code>, which isn&rsquo;t a valid mode for those types)
-</div>
+  </div>
+</details>
+
 
 <h4 id="property-precision">Precision</h4>
 <p>All properties will also have a <strong>Precision</strong> option, which can be changed between <strong>Inherit</strong>, <strong>Single</strong> (32-bit) and <strong>Half</strong> (16-bit). If set to <strong>Inherit</strong> the properties will default to the <strong>Precision</strong> in the <strong>Graph Settings</strong> tab of the <strong>Graph Inspector</strong>.</p>
@@ -1371,26 +1331,16 @@
 <ul>
 <li>For URP, see <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl">here</a>. It uses regular texture sampling while vertex stage would need to use a LOD version :</li>
 </ul>
-<button id="scene-depth-lod" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Scene Depth LOD Custom Function (URP)</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Scene Depth LOD Custom Function (URP)</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#scene-depth-lod';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Scene Depth LOD Custom Function (URP)</b></button>
-<div class="foldout">
-<ul>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#scene-depth-lod';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="scene-depth-lod" class="foldout_button">Scene Depth LOD Custom Function (URP)</summary>
+  <div class="foldout">
+    <ul>
 <li>Inputs :
 <ul>
 <li>&ldquo;ScreenPosition&rdquo; (Vector2)</li>
@@ -1452,7 +1402,9 @@
 </div>
 </div>
 
-</div>
+  </div>
+</details>
+
 
 <ul>
 <li>Untested but for Built-in RP, I&rsquo;d maybe try the same as the above function but without the <code>#include</code> and define the texture yourself (i.e. <code>TEXTURE2D_X_FLOAT(_CameraDepthTexture); SAMPLER(sampler_CameraDepthTexture);</code>) or via the Blackboard as Texture2D property with Exposed unticked / Global scope.</li>
@@ -1693,20 +1645,10 @@ Join my discord! 💬
 <p><code>GetMainLight()</code> here is a function that exists only in the URP ShaderLibrary. That is fine for the final generated shader, but as explained above, previews do not have access to it. You might think of adding <code>#include</code> lines for Lighting.hlsl or RealtimeLights.hlsl so the function can be used, but those files contain other includes such as URP&rsquo;s <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/UnityInput.hlsl">UnityInput.hlsl</a> which defines variables like <code>_Time</code>. That already exists under the ShaderGraphLibrary used by previews, hence redefiniton errors are caused and the <code>SHADERGRAPH_PREVIEW</code> block must be used instead.</p>
 <h4 id="better-texture-data-types">Sampling Textures in a Custom Function</h4>
 <p>In shader code online you might typically see <code>sampler2D</code> and <code>tex2D()</code> functions being used. This is the older DX9 syntax, but with Shader Graph we mostly use the newer DX11+ syntax which has <a href="https://docs.unity3d.com/Manual/SL-SamplerStates.html">separate objects for the texture and sampler</a>. This isn&rsquo;t supported in all platforms though (GLES2), so Unity provides a bunch of <strong>macros</strong> which can generate different code. These macros are defined in files found under <a href="https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/API">render-pipelines.core/ShaderLibrary/API</a>. The foldout below also lists some.</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Texture Sampling Macros</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Texture Sampling Macros</b>';
-
-    }
-"><b>⯈ Texture Sampling Macros</b></button>
-<div class="foldout">
-<p>Common macros for sampling textures :</p>
+<details >
+  <summary  class="foldout_button">Texture Sampling Macros</summary>
+  <div class="foldout">
+    <p>Common macros for sampling textures :</p>
 <ul>
 <li>
 <p>Sample : Can be used in Fragment stage only</p>
@@ -1750,7 +1692,9 @@ Join my discord! 💬
 </li>
 </ul>
 
-</div>
+  </div>
+</details>
+
 
 <p>In Shader Graph v10.3+ the following structs were added, mirroring the HLSL types :</p>
 <ul>
@@ -1784,26 +1728,16 @@ Join my discord! 💬
 </div>
 <p>Thanks to these types, it&rsquo;s possible to access the <strong>SamplerState</strong> used by the texture through <code>.samplerstate</code> (as shown above), as well as the <strong>TexelSize</strong> through <code>.texelSize</code> (That one is UnityTexture2D only though). The actual texture object is accessed via <code>.tex</code> but sampling macros can be used with new struct types too.</p>
 <p>Custom Function nodes created prior to this change will set their inputs/outputs as the &ldquo;Bare&rdquo; types when updated. This allows the function to still work as it was originally intended, but switching them to &ldquo;non-Bare&rdquo; allows you to use the new samplerstate/texelsize access.</p>
-<button id="sg-custom-function-textures-old" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Pre-v10 examples</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Pre-v10 examples</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#sg-custom-function-textures-old';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Pre-v10 examples</b></button>
-<div class="foldout">
-<p>In case you are still on older versions or using Bare types, the above functions would instead typically look like this. Where a <b class="node">Sampler State</b> node would have to be used.</p>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#sg-custom-function-textures-old';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="sg-custom-function-textures-old" class="foldout_button">Pre-v10 examples</summary>
+  <div class="foldout">
+    <p>In case you are still on older versions or using Bare types, the above functions would instead typically look like this. Where a <b class="node">Sampler State</b> node would have to be used.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -1825,7 +1759,9 @@ Join my discord! 💬
 </div>
 </div>
 
-</div>
+  </div>
+</details>
+
 
 <h4 id="arrays">Arrays &amp; Loops</h4>
 <p>While not a type exposed in Shader Graph, shaders also have array types and it is possible to define them in a <b class="node">Custom Function</b></p>
@@ -1860,20 +1796,10 @@ Join my discord! 💬
 </div>
 </div>
 <p>In the above example, a loop has been used to sum the values. Typically you&rsquo;ll need a loop inside the function in order to handle the array (unless you just need a single value at a given index). Another example can be found in my <a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/">Forcefield Shader Breakdown</a> that uses an array to produce ripples on the forcefield surface.</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ What is \u003ccode\u003e[unroll]\u003c\/code\u003e ?</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ What is \u003ccode\u003e[unroll]\u003c\/code\u003e ?</b>';
-
-    }
-"><b>⯈ What is <code>[unroll]</code> ?</b></button>
-<div class="foldout">
-<p><code>[unroll]</code> is specified in the above code before the loop, which tells the compiler that we&rsquo;ve written the loop more out of <em>convienience</em> and it shouldn&rsquo;t actually be handled on the gpu as an actual loop. It would be equivalent to writing :</p>
+<details >
+  <summary  class="foldout_button">What is <code>[unroll]</code> ?</summary>
+  <div class="foldout">
+    <p><code>[unroll]</code> is specified in the above code before the loop, which tells the compiler that we&rsquo;ve written the loop more out of <em>convienience</em> and it shouldn&rsquo;t actually be handled on the gpu as an actual loop. It would be equivalent to writing :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -1895,7 +1821,9 @@ Join my discord! 💬
 <p>Generally unrolling is faster, though you might instead use an actual <code>[loop]</code> if the body is expensive and exiting early may be more performant than the overhead of the loop itself. Perhaps when dealing with raymarching for example.</p>
 <p>For more info see <a href="https://discussions.unity.com/t/what-are-unroll-and-loop-when-to-use-them/881945/3">this forum answer</a>.</p>
 
-</div>
+  </div>
+</details>
+
 
 <p>It&rsquo;s technically also possible to have other types of arrays, however Unity can only set <strong>Vector</strong> (float4) and <strong>Float</strong> arrays from a C# script.</p>
 <p>I also recommend to <strong>always set arrays globally</strong>, using <code>Shader.SetGlobalVectorArray</code> and/or <code>Shader.SetGlobalFloatArray</code> rather than using the <code>material.SetVectorArray / SetFloatArray</code> versions as that can lead to glitchy behaviour due to SRP Batching.</p>

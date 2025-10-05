@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "2692",
+  "wordCount": "2690",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -249,20 +249,10 @@
 </div>
 <h2 id="intro">Intro</h2>
 <p>Heya! I&rsquo;ve had a couple mini-breakdown threads related to shoreline/coastline water shaders on twitter/X for while, but since that site might implode at any minute&hellip; it&rsquo;s probably best to convert them into a post here. I could just copy those threads, but wanted to go into a bit more detail. And as both shaders have some similarities/overlap, I decided to merge them and basically rewrite everything&hellip; (whoops? 😅)</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Original Twitter\/X Threads</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Original Twitter\/X Threads</b>';
-
-    }
-"><b>⯈ Original Twitter/X Threads</b></button>
-<div class="foldout">
-<div style="display:flex">
+<details >
+  <summary  class="foldout_button">Original Twitter/X Threads</summary>
+  <div class="foldout">
+    <div style="display:flex">
 <div style="width: 50%; margin: 0px 5px">
 <script>
 	if (cookiesAccepted){
@@ -293,7 +283,9 @@
 </div>
 </div>
 
-</div>
+  </div>
+</details>
+
 
 <p>As with most of my work, I lean more on the stylised side, though it&rsquo;s possible it could be adapted to work in a realistic/PBR style. And to be clear, I&rsquo;m focusing on shoreline-specific parts of the water shader in this post, not sand material(s) or other details in the water which you might want - such as refraction or caustics (for that see the <a href="https://www.cyanilux.com/tutorials/water-shader-breakdown/">Water Shader Breakdown</a> or other links under the Water section of the <a href="https://www.cyanilux.com/resources/#water">Resources page</a>). The shader does use some transparency / alpha blending to darken the material below though, to simulate the sand being wet.</p>
 <p>There&rsquo;s two main ways I&rsquo;m discussing that can be used to map the waves to the scene - using the <strong>Depth Texture</strong> or <strong>Manual UVs</strong>. Below I&rsquo;ve listed some notes/pros/cons of each method. The later sections work for either of those setups.</p>
@@ -370,20 +362,10 @@ This output may be used multiple times, so if you want to avoid long messy conne
 </a>
 <p class="img-text"></p>
 </div>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Further modelling\/adjustments</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Further modelling\/adjustments</b>';
-
-    }
-"><b>⯈ Further modelling/adjustments</b></button>
-<div class="foldout">
-<p>After this, I used a duplicate of this mesh to model the section of beach, where the top set of vertices matches up to avoid any seams.</p>
+<details >
+  <summary  class="foldout_button">Further modelling/adjustments</summary>
+  <div class="foldout">
+    <p>After this, I used a duplicate of this mesh to model the section of beach, where the top set of vertices matches up to avoid any seams.</p>
 <p>Also optional and may not be important right now, but in the water mesh I also added a loop cut (near the top / beach-side of the quads) and moved the lower quads (water-side) down slightly, matching that loop with the slope of the beach (but slightly above to avoid any z-fighting). This creates a sloped section in the shoreline mesh will be where the waves move back and forth.</p>
 <div class="img-center">
 <a href="BlenderShorelineSlope.png" target="_blank" rel="noopener noreferrer">
@@ -392,7 +374,9 @@ This output may be used multiple times, so if you want to avoid long messy conne
 <p class="img-text"></p>
 </div>
 
-</div>
+  </div>
+</details>
+
 
 <p>In Shader Graph, start by using the <b class="node">UV</b> node then <b class="node">Swizzle</b> - in my case using the &ldquo;Y&rdquo; axis. (Alternatively <b class="node">Split</b> and use <strong>G</strong> port). This obtains a <em>gradient towards the shore/beach</em>, which is important if we want to map waves and have them scroll in that direction.</p>
 <div class="img-center">

@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -25,7 +25,7 @@
   "name": "GPU Instanced Grass Breakdown",
   "description": "A post showing how Shader Graph can be used with DrawMeshInstancedProcedural / RenderMeshPrimitives and DrawMeshInstancedIndirect / RenderMeshIndirect to draw grass using GPU Instancing.",
   "datePublished": "2025-10-03",
-  "dateModified": "2025-10-03",
+  "dateModified": "2025-10-05",
   "author": {
 	"@type": "Person",
 	"name": "Cyanilux",
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "8203",
+  "wordCount": "8800",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -72,7 +72,7 @@
         
     
 <meta property="article:published_time" content="2025-10-03T00:00:00+00:00" />
-<meta property="article:modified_time" content="2025-10-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2025-10-05T00:00:00+00:00" />
 <title>GPU Instanced Grass Breakdown | Cyanilux Shader Tutorials</title>
 <meta name="description" content="A post showing how Shader Graph can be used with DrawMeshInstancedProcedural / RenderMeshPrimitives and DrawMeshInstancedIndirect / RenderMeshIndirect to draw grass using GPU Instancing.. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
 <link rel="canonical" href="https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/" />
@@ -240,6 +240,9 @@
 <time datetime="2025-10-03">&#128337 3 Oct 2025</time>
 
 
+<div style="width:5px"></div>
+<time datetime="2025-10-05"> (updated 5 Oct 2025)</time>
+
 </div>
 <script>
 	if (cookiesAccepted){
@@ -262,26 +265,16 @@
 <li><strong>Unity 6</strong> onwards changed the functionality of the <b class="node">Instance ID</b> node, meaning we can support these GPU instancing functions in a less hacky way.</li>
 </ul>
 <p>Note that grass rendering is a fairly complex topic and this post only goes through one(ish) setup. There may be grass tools which extend this concept to painting/placing instances by hand, but in my case the grass is spawned automatically. There may also be other rendering techniques (e.g. shell texturing) that could be more suitable depending on the desired artstyle. For more grass tutorials or ready-made tools from others, may be some links on my <a href="https://www.cyanilux.com/resources/?filter=grass">resources</a> page.</p>
-<button id="gpu-instancing" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ What is GPU Instancing?</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ What is GPU Instancing?</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#gpu-instancing';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ What is GPU Instancing?</b></button>
-<div class="foldout">
-<h3 id="instancing">Instancing</h3>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#gpu-instancing';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="gpu-instancing" class="foldout_button">What is GPU Instancing?</summary>
+  <div class="foldout">
+    <h3 id="instancing">Instancing</h3>
 <p>The main advantage of GPU Instancing is that you can render many objects in a single draw call. And by calling these functions under the <a href="https://docs.unity3d.com/ScriptReference/Graphics.html">Graphics API</a>, we can avoid the overhead of many <strong>GameObjects</strong>.</p>
 <p>The mesh and material/shader needs to stay the same, but we can have different per-instance properties (e.g. positions/matrices, different colours, etc) by passing that data as arrays or buffers, which then are indexed in the shader using a variable/input with the <code>SV_InstanceID</code> semantic.</p>
 <p>Generally when creating scenes, we tend to render lots of <em>different models</em> with the same shader, so in URP/HDRP it is likely more performant to rely on the <a href="https://docs.unity3d.com/Manual/SRPBatcher.html">SRP Batcher</a> for optimising the majority of the scene&rsquo;s draw calls. However in some cases GPU Instancing could be better, and I think rendering grass blades/quads is a good example - though I haven&rsquo;t tested that extensively tbh. (<a href="https://docs.unity3d.com/ScriptReference/Rendering.BatchRendererGroup.html">BatchRendererGroup</a> might also be more performant, but the setup looks far more complicated)</p>
@@ -295,7 +288,9 @@
 <p>As of Unity 6, the functionality of the <b class="node">Instance ID</b> node changed slightly, to instead hook directly into declaring <code>SV_InstanceID</code>. Therefore, while custom code is still required for declaring and indexing the buffer, the workaround to force the procedural instancing path is no longer required. (But now means &ldquo;Object&rdquo; space in the graph is relative to the bounds, not per-instance)</p>
 <p>You may also need <em>additional code</em> to support some instancing functions properly. <a href="https://discussions.unity.com/t/indirect-procedural-rendering-with-shader-graph/1664601">This discussions thread</a> shows how Shader Graphs can support the newer instancing functions. (Though I will mention that <code>Graphics.RenderMeshIndirect</code> does still seem to work without the <code>UnityIndirect.cginc</code> and <code>InitIndirectDrawArgs / GetCommandID</code> setup - provided you don&rsquo;t use more than one command and leave <code>startInstance</code> at 0. More details are provided in a later section when relevant)</p>
 
-</div>
+  </div>
+</details>
+
 
 <p>The breakdown below is structured like so :</p>
 <ul>
@@ -310,6 +305,7 @@
 <li>Make grass visible in editor</li>
 <li>Adapt instance spawning for Terrain</li>
 <li>Split instances into cells/chunks</li>
+<li>Remove/Hide instances on non-grass TerrainLayer</li>
 <li>Simulate wind / swaying</li>
 </ul>
 </li>
@@ -835,26 +831,16 @@ Note : This tutorial requires the target platform to support <a href="https://do
 <h2 id="optional">Optional Additions</h2>
 <p>With all the above you should at least be able to see the grass during play mode.</p>
 <p>Below are some optional things we can add/adjust. May not be full examples but starting points at least :</p>
-<button id="execute-always" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Make grass visible in editor</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Make grass visible in editor</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#execute-always';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Make grass visible in editor</b></button>
-<div class="foldout">
-<p>By adding the <code>[ExecuteAlways]</code> attribute (or <code>[ExecuteInEditMode]</code> for much older Unity versions) before the class definition we can allow the script to run even when not in play mode.</p>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#execute-always';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="execute-always" class="foldout_button">Make grass visible in editor</summary>
+  <div class="foldout">
+    <p>By adding the <code>[ExecuteAlways]</code> attribute (or <code>[ExecuteInEditMode]</code> for much older Unity versions) before the class definition we can allow the script to run even when not in play mode.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#a6e22e">[ExecuteAlways]</span> <span style="color:#75715e">// Allow grass rendering while not in play mode</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DrawGrass</span> : MonoBehaviour {</span></span></code></pre></div>
 <p>Though increasing <code>instanceCount</code> won&rsquo;t update the grass unless we <strong>disable &amp; re-enable the component</strong>. (Potentially also means we index outside of the buffer size on the GPU which <em>might</em> cause crashes on some Graphics APIs? Seems fine for DX11 though. Caching <code>instanceCount</code> could avoid that if required)</p>
@@ -885,28 +871,20 @@ Note : This tutorial requires the target platform to support <a href="https://do
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 
-</div>
+  </div>
+</details>
 
-<button id="terrain" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Adapt instance spawning for Terrain</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Adapt instance spawning for Terrain</b>';
 
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#terrain';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Adapt instance spawning for Terrain</b></button>
-<div class="foldout">
-<p>If using a <strong>Terrain</strong> component in the scene we could also adapt the C# Script to use that to spawn the grass.</p>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#terrain';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="terrain" class="foldout_button">Adapt instance spawning for Terrain</summary>
+  <div class="foldout">
+    <p>If using a <strong>Terrain</strong> component in the scene we could adapt the C# Script to use that to spawn the grass.</p>
 <p>With <code>terrain.SampleHeight</code> we can move the grass upwards to match the terrain height and by creating the rotation with <code>terrainData.GetInterpolatedNormal</code> we can optionally make the grass match the slope of the terrain. That normal can also be extracted from the matrix in the shader later, to make the shading match the terrain - so the grass blends in better/softly, as if it&rsquo;s part of the terrain rather than just placed ontop.</p>
 <p>(If you use the &ldquo;Random Rotation around Y axis&rdquo; rotation above instead, you may still want to keep the normal calculation and pass that into shader by adding a <strong>Vector4/float4</strong> to the <strong>InstanceData</strong>. Be sure to update the Size method as well)</p>
 <p>For example, might be something like :</p>
@@ -969,38 +947,30 @@ Note : This tutorial requires the target platform to support <a href="https://do
 </span></span><span style="display:flex;"><span>	Vector3 boundsSize = terrain.terrainData.size;
 </span></span><span style="display:flex;"><span>	...
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
-<p>Of note, this example spawns grass across the <em>entire terrain</em> which could be costly, both in terms of rendering those instances and their storage in memory/VRAM. For large terrains it&rsquo;s likely that you&rsquo;d want to adjust/optimise this - Maybe by only spawning grass within some bounds around the player/camera.</p>
+<p>Of note, this example spawns grass across the <em>entire terrain</em> which could be costly, both in terms of rendering those instances and their storage in memory/VRAM. For large terrains it&rsquo;s likely that you&rsquo;d want to adjust this - Maybe by only spawning grass within some bounds around the player/camera. I haven&rsquo;t attempted that yet but for that to be optimised it may be a good idea to first split the grass into cells/chunks, as the next foldout explains.</p>
 <div class="img-center">
 <a href="Instances3.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="387" alt="(Image)" src="Instances3.png" />
 </a>
 <p class="img-text">3200 instances rendering on a (very small) 20x20 width/height terrain</p>
 </div>
-<p>May also want to extend this further too. i.e. Obtain the alpha/splat maps from <code>TerrainData</code> to prevent grass spawning on some terrain textures. And/or to adjust grass colours (via the <code>float4 color</code> in <code>InstanceData</code>)</p>
+<p>The foldout after the next also shows how to better control where grass appears by accessing TerrainLayer data.</p>
 
-</div>
+  </div>
+</details>
 
-<button id="cells" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Split instances into cells\/chunks</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Split instances into cells\/chunks</b>';
 
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#cells';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Split instances into cells/chunks</b></button>
-<div class="foldout">
-<p>If only spawning grass around the player, or doing frustum culling on the CPU side, it&rsquo;s likely you&rsquo;d want to adjust the instances data to be arranged in cells/chunks rather than be completely random. This could reduce how often that needs to be triggered and/or buffers to be reuploaded (via <code>buffer.SetData</code>)</p>
-<p>Not a full example, but this would involve adjusting the loop in <code>SetupInstances()</code>. Perhaps something like :</p>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#cells';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="cells" class="foldout_button">Split instances into cells/chunks</summary>
+  <div class="foldout">
+    <p>We may want to adjust the instances data to be arranged in cells/chunks rather than be completely random. If only spawning grass around the player, or doing frustum culling on the CPU side, this could reduce how often those calculations needs to be triggered and/or buffers to be reuploaded (via <code>buffer.SetData</code>) for optimisation purposes. May also help distribute the instances more uniformly.</p>
+<p>Not a full example, but it would involve adjusting the loop in <code>SetupInstances()</code>. Perhaps something like :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">float</span> cellSize = <span style="color:#ae81ff">5</span>; <span style="color:#75715e">// Desired cell size, changes to fit into bounds/terrainSize</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>...
@@ -1042,28 +1012,110 @@ Note : This tutorial requires the target platform to support <a href="https://do
 </span></span><span style="display:flex;"><span>	MPB.SetBuffer(<span style="color:#e6db74">&#34;_PerInstanceData&#34;</span>, instancesBuffer);
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 
+  </div>
+</details>
+
+
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#terrainlayer';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="terrainlayer" class="foldout_button">Remove/Hide instances on non-grass TerrainLayer</summary>
+  <div class="foldout">
+    <p>If using a <strong>Terrain</strong> component, we could also only spawn grass on specific <strong>TerrainLayer</strong>(s). To handle that we can use <a href="https://docs.unity3d.com/ScriptReference/TerrainData.GetAlphamaps.html">TerrainData.GetAlphamaps</a>. The docs page isn&rsquo;t that clear, so to explain :</p>
+<ul>
+<li>Each TerrainLayer you assign to the Terrain generates an &ldquo;alphamap&rdquo; which contains the weights for that layer, which are used to blend the terrain textures together. Before these are passed to the shader, multiple alphamaps are packed into different colour channels, often called <em>splatmaps</em>. (Which is passed into <code>_Control</code> texture reference. Don&rsquo;t confuse the splatmap with the <code>_Splat0</code>, <code>_Splat1</code>, etc texture references that Unity uses to pass the layer &ldquo;Diffuse&rdquo; textures)</li>
+<li><code>GetAlphamaps(0, 0, width, height)</code> returns a multi-dimensional array, where the first and second indices control the <code>y</code> and <code>x</code> to sample at (in terms of texels, aka texture pixels), and third index is what TerrainLayer. e.g. <code>[y, x, 0]</code> would access the first layer.</li>
+</ul>
+<p>So to limit where grass spawns, we can access <code>[y, x, grassLayerIndex]</code> and only spawn if above a certain threshold (i.e. <code>&gt; 0.5</code>)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> grassLayerIndex = <span style="color:#ae81ff">0</span>; <span style="color:#75715e">// TerrainLayer index for grass</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	If you have multiple layers can duplicate this &amp; grassWeight below,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	Or set this to an array and loop over it (combining weights with max())
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> cachedInstanceCount;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> SetupInstances() {
+</span></span><span style="display:flex;"><span>	TerrainData terrainData = terrain.terrainData;
+</span></span><span style="display:flex;"><span>	Vector3 terrainSize = terrainData.size;
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> alphamapWidth = terrainData.alphamapWidth;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> alphamapHeight = terrainData.alphamapHeight;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">float</span>[,,] maps = terrainData.GetAlphamaps(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, alphamapWidth, alphamapHeight);
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		Contains weights for painted terrain layers
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        Index with [ Y, X, LayerIndex ]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	InstanceData[] instances = <span style="color:#66d9ef">new</span> InstanceData[instanceCount];
+</span></span><span style="display:flex;"><span>	cachedInstanceCount = instanceCount;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; cachedInstanceCount; i++) {
+</span></span><span style="display:flex;"><span>		...
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">float</span> uvX = position.x / terrainSize.x; <span style="color:#75715e">// 0 to 1 across terrain width</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">float</span> uvY = position.z / terrainSize.z; <span style="color:#75715e">// 0 to 1 across terrain height</span>
+</span></span><span style="display:flex;"><span>		...
+</span></span><span style="display:flex;"><span>		Vector3 normal = terrainData.GetInterpolatedNormal(uvX, uvY);
+</span></span><span style="display:flex;"><span>		...
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">int</span> texelX = (<span style="color:#66d9ef">int</span>)(uvX * alphamapWidth);
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">int</span> texelY = (<span style="color:#66d9ef">int</span>)(uvY * alphamapHeight);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Remove grass from areas not painted with grass layer</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">float</span> grassWeight = maps[texelY, texelX, grassLayerIndex];
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> (grassWeight &lt;= <span style="color:#ae81ff">0.5f</span>) {
+</span></span><span style="display:flex;"><span>			scale = Vector3.zero;
+</span></span><span style="display:flex;"><span>			position = Vector3.one * <span style="color:#66d9ef">float</span>.NaN;
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">/* 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">				If looping over full instanceCount,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">				can also discard / not store the instance :
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			*/</span>
+</span></span><span style="display:flex;"><span>			i--; cachedInstanceCount--; <span style="color:#75715e">// (or convert instances to a List&lt;&gt;)</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">				And use cachedInstanceCount when creating buffers 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">				and in Graphics.Draw/Render call (or indirect args).
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">				If looping over instanceCountPerCell, must comment this out.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			*/</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		instances[i] = <span style="color:#66d9ef">new</span>() {
+</span></span><span style="display:flex;"><span>			matrix = Matrix4x4.TRS(position, rotation, scale)
+</span></span><span style="display:flex;"><span>		};
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// or instances.Add() (if List&lt;&gt;)</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//cachedInstanceCount = instances.Count; // (if List&lt;&gt;)</span>
+</span></span><span style="display:flex;"><span>	...
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>As commented above, when looping over the full <code>instanceCount</code> we can discard the data for that instance. But if using the setup in the previous foldout, where instances are split into cells/chunks, the <code>instanceCountPerCell</code> needs to remain constant so we cannot discard data - only override the scale/position to <em>hide</em> it.</p>
+<p>That would still take space in memory, but a scale of 0 and/or setting positions to NaN prevents fragments from being generated. Overriding the position also means that the instance can be culled by the frustum culling compute shader later (when using indirect instancing)</p>
+<p>The result is :</p>
+<div class="img-center">
+<a href="Instances4.png" target="_blank" rel="noopener noreferrer">
+<img loading="lazy" width="750" height="416" alt="(Image)" src="Instances4.png" />
+</a>
+<p class="img-text">A bald spot!</p>
 </div>
+<p>Could perhaps also look into obtaining the actual terrain grass texture (<code>terrainData.terrainLayers[grassLayerIndex].diffuseTexture</code> and/or tint <code>.diffuseRemapMin</code>/<code>.diffuseRemapMax</code> if used), to set the grass colour (via the <code>float4 color</code> in <code>InstanceData</code>). That might be more important if you have <em>multiple textures</em> that grass can spawn on and want it to match the ground colour.</p>
 
-<button id="wind" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Simulate wind \/ swaying</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Simulate wind \/ swaying</b>';
+  </div>
+</details>
 
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#wind';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
 
-    }
-"><b>⯈ Simulate wind / swaying</b></button>
-<div class="foldout">
-<p>We can also add <strong>Vertex Displacement</strong> to make the grass less static.</p>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#wind';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="wind" class="foldout_button">Simulate wind / swaying</summary>
+  <div class="foldout">
+    <p>We can also add <strong>Vertex Displacement</strong> to make the grass less static.</p>
 <p>For Unity6+ versions this should be done on the <em>output</em> from the <b class="node">Custom Function</b> node. If applied to the input, the displacement would instead be relative to each instance, but in this case we want the wind applied in the same direction for all instances.</p>
 <p>Using <b class="node">Time</b> into a <b class="node">Sine</b> node setup as shown below produces a light wind/swaying effect :</p>
 <div class="img-center">
@@ -1074,7 +1126,9 @@ Note : This tutorial requires the target platform to support <a href="https://do
 </div>
 <p>Can adjust the values here for a stronger wind, but the motion may look unrealistic. You&rsquo;d probably want to look into a more accurate method for that. But this is as far as I&rsquo;m going for this tutorial.</p>
 
-</div>
+  </div>
+</details>
+
 
 <hr>
 <h2 id="indirect">Adapting Setup for Indirect</h2>
@@ -1207,20 +1261,10 @@ Note : This tutorial requires the target platform to support <a href="https://do
 </div>
 <h3 id="indirect-graph">Shader Graph</h3>
 <p>At least for this tutorial, we don&rsquo;t really <em>need</em> changes on the shader side to support the <code>Indirect</code> instancing functions, provided you leave the <code>startInstance</code> in the indirect arguments Buffer at 0, and only have a single command.</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ What if we have a different startInstance?</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ What if we have a different startInstance?</b>';
-
-    }
-"><b>⯈ What if we have a different startInstance?</b></button>
-<div class="foldout">
-<p>When setting <code>startInstance</code>, you need to offset the Instance ID in the shader to take that into account. But that doesn&rsquo;t need to be done on <em>all</em> Graphics APIs - Vulkan and WebGPU seem to bake it into <code>SV_InstanceID</code> so it renders the correct instances without an offset. To handle these platform differences, Unity 2021.2+ added functions in an <code>UnityIndirect.cginc</code> include file in the built-in shaders (can be used by all render pipelines). If you want to view the file, download the shaders source from <a href="https://unity.com/releases/editor/archive">Unity&rsquo;s download archive</a> (click &ldquo;See All&rdquo; of an appropriate version → &ldquo;Other installs&rdquo; → Shaders. Will be under CGIncludes folder)</p>
+<details >
+  <summary  class="foldout_button">What if we have a different startInstance?</summary>
+  <div class="foldout">
+    <p>When setting <code>startInstance</code>, you need to offset the Instance ID in the shader to take that into account. But that doesn&rsquo;t need to be done on <em>all</em> Graphics APIs - Vulkan and WebGPU seem to bake it into <code>SV_InstanceID</code> so it renders the correct instances without an offset. To handle these platform differences, Unity 2021.2+ added functions in an <code>UnityIndirect.cginc</code> include file in the built-in shaders (can be used by all render pipelines). If you want to view the file, download the shaders source from <a href="https://unity.com/releases/editor/archive">Unity&rsquo;s download archive</a> (click &ldquo;See All&rdquo; of an appropriate version → &ldquo;Other installs&rdquo; → Shaders. Will be under CGIncludes folder)</p>
 <p>(For older versions&hellip; I haven&rsquo;t tested, but you&rsquo;d probably need to pass the <code>startInstance</code> in a separate float property, or if set on GPU maybe try passing the 5 uint <code>argsBuffer</code> manually and index it (<code>[4]</code> would be the <code>startInstance</code>). Apply the offset (<code>unity_InstanceID + offset</code>) inside an <code>#if !defined(SHADER_API_VULKAN) &amp;&amp; !defined(SHADER_API_WEBGPU)</code> block to avoid it on those platforms)</p>
 <p>For Unity 2021.2+ we can do :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#define UNITY_INDIRECT_DRAW_ARGS IndirectDrawIndexedArgs
@@ -1262,22 +1306,14 @@ Note : This tutorial requires the target platform to support <a href="https://do
 </span></span></span></code></pre></div>
 <p>I haven&rsquo;t really checked/tested the VertexID versions as those are typically used for <code>DrawProceduralIndirect/RenderPrimitivesIndirect</code> rather than mesh based functions so aren&rsquo;t as relevant here. I think the examples on <a href="https://docs.unity3d.com/ScriptReference/Graphics.RenderPrimitivesIndirect.html">RenderPrimitivesIndirect</a> and <a href="https://docs.unity3d.com/ScriptReference/Graphics.RenderPrimitivesIndexedIndirect.html">RenderPrimitivesIndexedIndirect</a> actually incorrectly uses <code>GetIndirectVertexID</code> instead of <code>GetIndirectVertexID_Base</code>, which only works because it doesn&rsquo;t set <code>startIndex</code> or uses submesh 0&hellip; Whoops? 🙃)</p>
 
-</div>
+  </div>
+</details>
 
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Example using UnityIndirect.cginc (Unity 2021.2\u002b)</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Example using UnityIndirect.cginc (Unity 2021.2\u002b)</b>';
 
-    }
-"><b>⯈ Example using UnityIndirect.cginc (Unity 2021.2+)</b></button>
-<div class="foldout">
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifndef GRASS_INSTANCED_INCLUDED
+<details >
+  <summary  class="foldout_button">Example using UnityIndirect.cginc (Unity 2021.2+)</summary>
+  <div class="foldout">
+    <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifndef GRASS_INSTANCED_INCLUDED
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define GRASS_INSTANCED_INCLUDED
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">#define UNITY_INDIRECT_DRAW_ARGS IndirectDrawIndexedArgs
@@ -1307,7 +1343,9 @@ Note : This tutorial requires the target platform to support <a href="https://do
 </span></span><span style="display:flex;"><span><span style="color:#75715e">#endif</span></span></span></code></pre></div>
 <p>If you set multiple commands in the <code>indirectBuffer</code> for the <code>RenderMeshIndirect</code> call, you may also need to access the <code>uint commandID = GetCommandID(0);</code> and use that to offset the buffer index further. But how likely depends how the <code>instancesBuffer</code> data is formatted.</p>
 
-</div>
+  </div>
+</details>
+
 
 <hr>
 <h2 id="frustum-culling">Adding GPU Frustum Culling</h2>
@@ -1361,24 +1399,16 @@ In my case performs 500FPS+ regardless of frustum culling (but it does help), bu
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		_VisibleIDsAppend.Append(_StartOffset <span style="color:#f92672">+</span> id.x);
 </span></span><span style="display:flex;"><span>	}
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ What is [numthreads(64, 1, 1)] ?</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ What is [numthreads(64, 1, 1)] ?</b>';
-
-    }
-"><b>⯈ What is [numthreads(64, 1, 1)] ?</b></button>
-<div class="foldout">
-<p>The values here specify the number of threads in each thread-group that will be dispatched, since GPUs are all about executing things in parallel. Our buffer data is one dimensional so it makes sense to only use the X workgroup size (defined by <code>[numthreads()]</code>), leaving Y and Z at 1. (But if instances were split into cells would probably use a 2D thread count)</p>
+<details >
+  <summary  class="foldout_button">What is [numthreads(64, 1, 1)] ?</summary>
+  <div class="foldout">
+    <p>The values here specify the number of threads in each thread-group that will be dispatched, since GPUs are all about executing things in parallel. Our buffer data is one dimensional so it makes sense to only use the X workgroup size (defined by <code>[numthreads()]</code>), leaving Y and Z at 1. (But if instances were split into cells would probably use a 2D thread count)</p>
 <p>I don&rsquo;t want to go too deep into the GPU hardware/architecture, (I&rsquo;m sure there&rsquo;s better tutorials for that), but typically these values should multiply together to a minimum of 64 (e.g. <code>(64, 1, 1)</code>, <code>(8, 8, 1)</code>, etc.) - as most AMD GPUs execute in groups of 64 threads and lower sizes would just cause some to be idle. Some newer AMD GPUs (<a href="https://en.wikipedia.org/wiki/RDNA_(microarchitecture)">RDNA</a>) and NVIDIA GPUs use groups of 32 instead, but specifying a size of 64 is still easier to support all cases without wasted threads.</p>
 <p>When googling around you might see the terms &ldquo;wavefront&rdquo; and &ldquo;warp&rdquo; which traditionally correspond to these 64/32 sized groups of threads, though are also often used interchangeablely.</p>
 
-</div>
+  </div>
+</details>
+
 
 <p>To handle the culling, the compute shader transforms the instance positions (extracted from the matrices using <code>_m03_m13_m23</code>) into <strong>Clip Space</strong>. This is the same space that vertex shaders typically output to, though in this case the projection matrix used will be passed from the C# script without using <code>GL.GetGPUProjectionMatrix</code>, so follows the <strong>OpenGL</strong> conventions that Unity uses by default. This is useful as we don&rsquo;t need to worry about <a href="https://docs.unity3d.com/Manual/SL-PlatformDifferences.html#:~:text=%E2%80%931.0%20at%20the%20near%20plane%20to%20%2B1.0">how the clip space Z would differ in other graphics APIs</a>.</p>
 <p>To test whether this point is within the camera frustum, we simply take the <code>abs()</code>, and use <code>&lt;=</code> to compare against the W component. When this passes we add the index to the <code>AppendStructuredBuffer</code>.</p>

@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/color-swap/",
   "inLanguage": "en-gb",
-  "wordCount": "2895",
+  "wordCount": "2891",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -287,26 +287,16 @@
 </div>
 <p>The &ldquo;background&rdquo; of the preview here looks cyan as the RGB data originally contained black pixels, but we don&rsquo;t need to worry as the texture also contains an alpha channel (<strong>A</strong> output, connected to <strong>Alpha</strong> port on the <strong>Master Stack</strong>). This makes those pixels transparent in the final result - shown in Main Preview, as well as in scene/game. (Assuming the graph is set to <strong>Transparent</strong> surface mode, or using <strong>Opaque</strong> &amp; <strong>Alpha Clipping</strong>)</p>
 <p>As a quick side note, the <b class="node">Lerp</b> node is also useful for layering multiple textures / masking areas too. In this case we&rsquo;d use RGBA outputs from textures rather than <b class="node">Color</b> node/properties. For more info/examples see : <a href="https://www.cyanilux.com/faq/#sg-layering">FAQ - Layering textures/colours</a></p>
-<button id="lerp-color-space" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Additional notes about colour spaces</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Additional notes about colour spaces</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#lerp-color-space';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Additional notes about colour spaces</b></button>
-<div class="foldout">
-<p>The above examples are interpolating through sRGB/linear color space (depending on the colour space set under project settings, see the docs page : <a href="https://docs.unity3d.com/Manual/LinearRendering-LinearOrGammaWorkflow.html">Linear or gamma workflow</a>). But there are other colour spaces we could interpolate through for different results. There&rsquo;s no &ldquo;correct&rdquo; space to use here really, it depends on the result you want. These conversions between different colour spaces would make the shader slightly more expensive though.</p>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#lerp-color-space';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="lerp-color-space" class="foldout_button">Additional notes about colour spaces</summary>
+  <div class="foldout">
+    <p>The above examples are interpolating through sRGB/linear color space (depending on the colour space set under project settings, see the docs page : <a href="https://docs.unity3d.com/Manual/LinearRendering-LinearOrGammaWorkflow.html">Linear or gamma workflow</a>). But there are other colour spaces we could interpolate through for different results. There&rsquo;s no &ldquo;correct&rdquo; space to use here really, it depends on the result you want. These conversions between different colour spaces would make the shader slightly more expensive though.</p>
 <p>For example, we could interpolate in HSV space. In shader graph, this could be handled with the <b class="node">Colorspace Conversion</b> node. For example compare the following results :</p>
 <div class="img-center">
 <a href="ColorspaceConversion.png" target="_blank" rel="noopener noreferrer">
@@ -317,7 +307,9 @@
 <p>Can see the HLSL code each conversion uses in the <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@14.0/manual/Colorspace-Conversion-Node.html">Node Library - Colorspace Conversion</a> or use/see functions under <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl">render-pipelines.core/ShaderLibrary/Color.hlsl</a>.</p>
 <p>For a much more in-depth look at this, also see this article by Alan Zucconi : <a href="https://www.alanzucconi.com/2016/01/06/colour-interpolation/">The Secrets of Colour Interpolation</a></p>
 
-</div>
+  </div>
+</details>
+
 
 <hr>
 <h3 id="tint-color-channels">Tint Color Channels</h3>
@@ -363,54 +355,36 @@ Note the white edges around the shirt in the final preview :(</p>
 <p class="img-text">Better method of masking the tint - no white edges!</p>
 </div>
 <p>The mask is only using the red channel here - we could use the other channels to mask other areas. Or if only the red channel is required, the texture could be imported as a &ldquo;Single Channel&rdquo; type (set to &ldquo;Red&rdquo;) to save memory. Though then you may also need a <b class="node">Colorspace Conversion</b> (RGB to Linear) on the texture output, if in Linear colour space (rather than Gamma).</p>
-<button id="mask-texture-transparent" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Additional notes about sprites \/ transparent textures</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Additional notes about sprites \/ transparent textures</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#mask-texture-transparent';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Additional notes about sprites / transparent textures</b></button>
-<div class="foldout">
-<p>When importing Sprites (or Default textures where &ldquo;Alpha Is Transparency&rdquo;) colours in fully transparent areas can stretch out in previews in Shader Graph. Don&rsquo;t be worried - this is intentional as it helps to avoid artifacts, <a href="https://www.cyanilux.com/faq/#sg-stretched-texture-preview">as explained here in faq</a>.</p>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#mask-texture-transparent';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="mask-texture-transparent" class="foldout_button">Additional notes about sprites / transparent textures</summary>
+  <div class="foldout">
+    <p>When importing Sprites (or Default textures where &ldquo;Alpha Is Transparency&rdquo;) colours in fully transparent areas can stretch out in previews in Shader Graph. Don&rsquo;t be worried - this is intentional as it helps to avoid artifacts, <a href="https://www.cyanilux.com/faq/#sg-stretched-texture-preview">as explained here in faq</a>.</p>
 <p>If you&rsquo;re wondering why this hasn&rsquo;t occurred in these examples, I imported the main texture without an alpha channel as I wanted the example to be clearer. But even with an alpha channel and this colour stretching, the final result should look correct provided the <strong>A</strong> output from the <b class="node">Sample Texture 2D</b> is connected to the <strong>Alpha</strong> port on the <strong>Master Stack</strong>.</p>
 <p>However, the <em>mask texture</em> should still stay with a <strong>black background</strong> to avoid the colours stretching out. Though if it did have an alpha channel we could instead <b class="node">Multiply</b> the <strong>R</strong> and <strong>A</strong> outputs before applying the tint.</p>
 
-</div>
+  </div>
+</details>
+
 
 <hr>
 <h3 id="replace-color-node">Replace Color Node</h3>
 <p>Let&rsquo;s also go over the <b class="node">Replace Color</b> node that Shader Graph includes&hellip; (also <b class="node">Color Mask</b>, which is essentially the same thing but without providing a colour to lerp to).</p>
-<button id="replace-color-hlsl" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ HLSL</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ HLSL</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#replace-color-hlsl';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ HLSL</b></button>
-<div class="foldout">
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#replace-color-hlsl';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="replace-color-hlsl" class="foldout_button">HLSL</summary>
+  <div class="foldout">
+    <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
@@ -435,7 +409,9 @@ Note the white edges around the shirt in the final preview :(</p>
 </div>
 </div>
 
-</div>
+  </div>
+</details>
+
 
 <p>As the name suggests, the node can be used to replace an existing colour with another. It can also select similar shades using the <strong>Range</strong> and <strong>Fuzziness</strong> inputs, but it can still pretty difficult to get it to do what you want. In practice, I&rsquo;ve found it only really works well with pixel art.</p>
 <div class="img-center">
@@ -496,26 +472,16 @@ Note the white edges around the shirt in the final preview :(</p>
 <li>loop through the palette texture/array to locate which colour matches, with it&rsquo;s index,</li>
 <li>set pixel in generated texture to <code>new Color(index / (paletteSize-1), 0, 0, inputPixel.a)</code></li>
 </ul>
-<button id="palette-array" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Additional notes if storing the palette as an array</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Additional notes if storing the palette as an array</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#palette-array';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Additional notes if storing the palette as an array</b></button>
-<div class="foldout">
-<p>If storing the palette as an array :</p>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#palette-array';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="palette-array" class="foldout_button">Additional notes if storing the palette as an array</summary>
+  <div class="foldout">
+    <p>If storing the palette as an array :</p>
 <ul>
 <li>Would need to convert the 0-1 greyscale value to an index.
 <ul>
@@ -532,7 +498,9 @@ Note the white edges around the shirt in the final preview :(</p>
 <li>If the project is using Linear colourspace, May also experience issues with gamma/linear colourspace differences as the functions mentioned above don&rsquo;t deal with this. This can be fixed by using <a href="https://docs.unity3d.com/ScriptReference/Color-linear.html">.linear</a> on the Color object before putting it into the array. When setting globally you&rsquo;ll also need to manually cast your colours to fill a Vector4[] array as there&rsquo;s no &ldquo;SetGlobalColorArray&rdquo; function.</li>
 </ul>
 
-</div>
+  </div>
+</details>
+
 
 <br><hr>
 

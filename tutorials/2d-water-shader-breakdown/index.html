@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "2618",
+  "wordCount": "2617",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -282,20 +282,10 @@
 </div>
 <p>At first, I did think about using a RenderObject features with an override material/shader that flips sprites automatically. But while this can work, it&rsquo;s difficult to create accurate reflections for sprites that already have custom shaders (e.g. the swaying grass/foliage). This also doesn&rsquo;t allow you to override the texture. In my case, the pillars use an alternate sprite for reflections - so the top isn&rsquo;t reflected.</p>
 <p>Instead, it&rsquo;s better to just duplicate and rotate/flip the sprites manually, or use a <strong>C# Script</strong> to instantiate them at runtime. The script I wrote for this is shown in the foldout below. It should already work in both 2.5D and 2D scenes.</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Sprite Reflection Script</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Sprite Reflection Script</b>';
-
-    }
-"><b>⯈ Sprite Reflection Script</b></button>
-<div class="foldout">
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<details >
+  <summary  class="foldout_button">Sprite Reflection Script</summary>
+  <div class="foldout">
+    <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
@@ -448,7 +438,9 @@
 </div>
 </div>
 
-</div>
+  </div>
+</details>
+
 
 <p>So we can distort these later, capture the reflections to a <strong>Render Texture</strong> by using a second <strong>Camera</strong>.</p>
 <p>Reflection sprites are put on a specific <strong>Layer</strong> (e.g. named &ldquo;Reflection&rdquo;) and we adjust the <strong>Culling Mask</strong> on both cameras so that layer only renders to the second camera and not the main camera. Can create a <a href="https://docs.unity3d.com/Manual/class-RenderTexture.html">Render Texture Asset</a> (right-click in Project/Assets, will be somewhere under Create menu) and assign it to the <strong>Target/Output Texture</strong> field on the second camera - no scripting needed.</p>

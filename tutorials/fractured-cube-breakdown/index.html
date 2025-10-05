@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/fractured-cube-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "4824",
+  "wordCount": "4820",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -417,26 +417,16 @@
 <h3 id="obtain-baked-pivots-in-shader-graph">Obtain Baked Pivots in Shader Graph</h3>
 <p>In order to get our baked pivots, we&rsquo;ll need to access the UV data by using two <b class="node">UV</b> nodes. In the twitter gif the pivots were actually baked into <strong>UV0</strong> and <strong>UV1</strong> as I only used a total of 2 UV channels in Blender (because I didn&rsquo;t need to apply any textures).</p>
 <p>But if you have that original UV map, like in the Fractured Mesh section of this post, you can use the <strong>UV1</strong> and <strong>UV2</strong> channels instead. Either way, I&rsquo;ll be referring to these as the &ldquo;first/second Pivot UV set&rdquo;.</p>
-<button id="info-uv" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Additional notes about UV channels</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Additional notes about UV channels</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#info-uv';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Additional notes about UV channels</b></button>
-<div class="foldout">
-<p>Unity also uses the UV1 channel when objects are baked into lightmaps, so if you want to support Baked Global Illumination, you&rsquo;ll need to provide an additional UV channel for this. Or get Unity to generate them (see <a href="https://docs.unity3d.com/Manual/LightingGiUvs-GeneratingLightmappingUVs.html">Unity docs : Generating lightmap UVs</a>), but you&rsquo;ll still need to export with it in the list (or it&rsquo;ll override the pivot data).</p>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#info-uv';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="info-uv" class="foldout_button">Additional notes about UV channels</summary>
+  <div class="foldout">
+    <p>Unity also uses the UV1 channel when objects are baked into lightmaps, so if you want to support Baked Global Illumination, you&rsquo;ll need to provide an additional UV channel for this. Or get Unity to generate them (see <a href="https://docs.unity3d.com/Manual/LightingGiUvs-GeneratingLightmappingUVs.html">Unity docs : Generating lightmap UVs</a>), but you&rsquo;ll still need to export with it in the list (or it&rsquo;ll override the pivot data).</p>
 <div class="img-center">
 <a href="BlenderUVMaps3.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="335" height="165" alt="(Image)" src="BlenderUVMaps3.png" />
@@ -447,7 +437,9 @@
 <p>You also wouldn&rsquo;t be able to have any more UV maps here, as Shader Graph currently only exposes 4 channels (UV0-UV3), despite the Mesh class supporting up to 8.</p>
 <p>Though it&rsquo;s also worth noting, technically these channels can be up to Vector4 in Unity - but Blender/FBX files only deals with 2 axis in it&rsquo;s UV channels. So we&rsquo;ll only be using the X and Y axis (also labelled R and G). But if you wanted, you might be able to write a C# script (perhaps an AssetPostprocessor?) to combine them into a single UV channel. Not sure.</p>
 
-</div>
+  </div>
+</details>
+
 
 <p>Put each of these <b class="node">UV</b> into a <b class="node">Split</b> node and create a <b class="node">Vector3</b> node. Put the <strong>R</strong> output from the first Pivot UV set into <strong>X</strong>, and <strong>R</strong> output from the second UV set into <strong>Z</strong>. The <strong>Y</strong> input can be set to the <strong>G</strong> output on either Pivot UV as they should both be equivalent (since the vertical axis is the same for the front and side axis).</p>
 <p>As we used <strong>Project From View (Bounds)</strong>, we&rsquo;ll need to <b class="node">Remap</b> the values a bit. The bounds of the UV is <strong>0-1</strong>, so that&rsquo;ll be the <strong>In Min Max</strong>. The default blender cube is 2 units wide, so I&rsquo;ve set the <strong>Out Min Max</strong> to <strong>-1 and 1</strong>. I then needed to <b class="node">Multiply</b> by (-1, 1, -1) likely due to some axis differences. (Perhaps if we projected from different views we wouldn&rsquo;t have to do this).</p>
@@ -500,26 +492,16 @@
 <p>Anyway, to handle scaling around the baked pivot we first need to offset our vertex positions (<b class="node">Position</b>) using a <b class="node">Subtract</b> node, with the <strong>B</strong> input set to our Baked Pivots (output of group from earlier).</p>
 <p>One way to help visualise this, is imagining a single pivot at some point in 3D space (or even 2D/1D), by subtracting it, it shifts the space so that the pivot is now at the origin <code>(0,0,0)</code>. And our vertex positions for that fractured piece will be all around that (since the pivot is at the center of the piece).</p>
 <p>We can now apply scaling using a <b class="node">Multiply</b> node and the output from our &ldquo;Strength&rdquo; group.</p>
-<button id="info-scaling" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Additional notes about scaling</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Additional notes about scaling</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#info-scaling';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ Additional notes about scaling</b></button>
-<div class="foldout">
-<p>While many with background in maths might already know this, I thought I&rsquo;d still clarify exactly what happens when scaling/multiplying with different strength values :</p>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#info-scaling';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="info-scaling" class="foldout_button">Additional notes about scaling</summary>
+  <div class="foldout">
+    <p>While many with background in maths might already know this, I thought I&rsquo;d still clarify exactly what happens when scaling/multiplying with different strength values :</p>
 <ul>
 <li>When strength is equal to 1 : the positions remain unaffected (anything multiplied by 1 is itself).</li>
 <li>When strength is <strong>larger</strong> than 1 : the positions would move <strong>outwards</strong> (from the origin of the space, <code>(0,0,0)</code>). This won&rsquo;t happen here as the <b class="node">Smoothstep</b> only outputs values between 0 and 1, but we&rsquo;ll be doing a different scaling later which involves this.</li>
@@ -527,7 +509,9 @@
 <li>When strength is equal to 0 : all the positions would be equal to the origin (since anything multiplied by zero, is zero).</li>
 </ul>
 
-</div>
+  </div>
+</details>
+
 
 <div class="img-center">
 <a href="Graph4.png" target="_blank" rel="noopener noreferrer">
@@ -604,32 +588,24 @@
 	}
 </script>
 <p>The fracturing part of the shader here is the same as this post, but the effect uses a dome mesh rather than a cube. For more info, click foldout below.</p>
-<button id="info-fractured-forcefield" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ More Info</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ More Info</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#info-fractured-forcefield';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ More Info</b></button>
-<div class="foldout">
-<p>The dome mesh includes a base circular face, as the <strong>Cell Fracture</strong> plugin in Blender doesn&rsquo;t work great if the mesh has holes. The fractured faces for this part can be removed after. Also if you tick &ldquo;Interior VGroup&rdquo; in the Cell Fracture settings (under Mesh Data heading), you can easily delete all the interior vertices later in Edit Mode, by selecting them via the <strong>Vertex Groups</strong> list (under the <strong>Object Data Properties</strong> / green triangle).</p>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#info-fractured-forcefield';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="info-fractured-forcefield" class="foldout_button">More Info</summary>
+  <div class="foldout">
+    <p>The dome mesh includes a base circular face, as the <strong>Cell Fracture</strong> plugin in Blender doesn&rsquo;t work great if the mesh has holes. The fractured faces for this part can be removed after. Also if you tick &ldquo;Interior VGroup&rdquo; in the Cell Fracture settings (under Mesh Data heading), you can easily delete all the interior vertices later in Edit Mode, by selecting them via the <strong>Vertex Groups</strong> list (under the <strong>Object Data Properties</strong> / green triangle).</p>
 <p>The forcefield is similar to the one from my <a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/">Forcefield Shader Breakdown</a>, but I didn&rsquo;t include a <b class="node">Fresnel Effect</b> or the ripples. Partly as the dome mesh I used didn&rsquo;t have the correct normals at the time, but I also preferred the simpler look. If the mesh doesn&rsquo;t have perfect normals, may need to use a <strong>Data Transfer</strong> modifier to transfer smooth normals from an unfractured dome to fractured dome but that&rsquo;s not something I tried. We could also calculate normals in the shader by normalising the vertex positions (<b class="node">Position</b> node) since the vertices lie on a sphere.</p>
 <p>This also ignores recalculating the normals duing the vertex displacement. If that&rsquo;s something you want, should be able to use another <b class="node">Rotate About Axis</b> with the same inputs but on the normal.</p>
 <p>If you render the effect with <strong>Transparent</strong> surface mode and partial alpha, the fractured faces might be visible as faces overlap. (Especially if <strong>Render Face</strong> is set to <strong>Both</strong> or if the dome mesh itself contains some thickness). To prevent this you can do a <strong>Transparent Depth Prepass</strong> (see that heading under <a href="https://www.cyanilux.com/faq/#transparent-sorting">FAQ : Issues with sorting Transparent faces/objects</a>).</p>
 <p>If using the <b class="node">Scene Color</b> node and keeping <strong>Alpha</strong> set to <strong>1</strong> (like in the forcefield breakdown linked above) that will also prevent you seeing the fractured faces, though they will still be rendered. If many faces are overlapping you could still use a the prepass to reduce the overdraw cost.</p>
 
-</div>
+  </div>
+</details>
+
 
 <hr>
 <h3 id="fractured-plane">Fractured Plane</h3>
@@ -646,26 +622,16 @@
 	}
 </script>
 <p>The effect here is similar, but uses a plane mesh, a <strong>Render Texture</strong> as an input for strength values (rather than the <b class="node">Distance</b> to the <code>_Pos</code>) and applies some vertical displacement rather than scaling from origin. For more info, click foldout below.</p>
-<button id="info-fractured-plane" type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ More Info</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ More Info</b>';
-
-      if (history.pushState) {
-        var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        newurl = newurl + '#info-fractured-plane';
-        window.history.pushState({path:newurl}, '', newurl);
-      }
-
-    }
-"><b>⯈ More Info</b></button>
-<div class="foldout">
-<p>When creating the fractured plane mesh in Blender, we can use a <strong>Scale</strong> of <strong>(1, 1, 0)</strong> in the Cell Fracture Settings (under Point Source heading). This makes the fractured edges perfectly vertical along the up axis (which is Z in blender). When creating the Pivot Baked UV map, we only need one additional map using <strong>Project From View (Bounds)</strong> on the <strong>Top Orthographic</strong> view (numpad 7).</p>
+<details ontoggle="
+if (history.pushState) {
+    var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    newurl = newurl + '#info-fractured-plane';
+    window.history.pushState({path:newurl}, '', newurl);
+}
+">
+  <summary id="info-fractured-plane" class="foldout_button">More Info</summary>
+  <div class="foldout">
+    <p>When creating the fractured plane mesh in Blender, we can use a <strong>Scale</strong> of <strong>(1, 1, 0)</strong> in the Cell Fracture Settings (under Point Source heading). This makes the fractured edges perfectly vertical along the up axis (which is Z in blender). When creating the Pivot Baked UV map, we only need one additional map using <strong>Project From View (Bounds)</strong> on the <strong>Top Orthographic</strong> view (numpad 7).</p>
 <p>In the fractured shader (described in this post), we need an <strong>Texture2D property</strong> named &ldquo;GlobalFractureTex&rdquo; (with reference as <code>_GlobalFractureTex</code>). Untick <strong>Exposed</strong> in the property settings.</p>
 <div class="img-center">
 <a href="PlaneGraph1.png" target="_blank" rel="noopener noreferrer">
@@ -850,7 +816,9 @@
 <li><code>GREEN channel : for red pixels &gt; some threshold, add some small value</code> - Used in the fractured shader to keep destruction animated</li>
 </ul>
 
-</div>
+  </div>
+</details>
+
 
 <hr>
 <h3 id="external-links">External Links</h3>

@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "3087",
+  "wordCount": "3089",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -267,7 +267,7 @@
 </ul>
 <h2 id="breakdown">Breakdown</h2>
 <p>Before we start, we need to click on the small cog on our <b class="node">Master</b> node and switch to <strong>Transparent</strong> rendering mode, with <strong>Alpha</strong> blending and keeping it to <strong>Single Sided</strong>. These will be important, as we will be using the <b class="node">Scene Color</b> and <b class="node">Scene Depth</b> nodes.</p>
-<p>We’ll first create a <b class="node">Fresnel Effect</b> node. This will output a value based on the mesh’s surface normal and view direction, producing what looks like a “glow” around the edge of the object. We can increase the <strong>Power</strong> input to make this glow closer to the edges – I’m using a value of <strong>8</strong>. For more info about this node see the <a href="https://www.cyanilux.com/tutorials/fresnel-effect">Fresnel Effect</a> post. I’m also putting this into a <b class="node">Multiply</b> with a value of <strong>2</strong> to make it a bit brighter.</p>
+<p>We’ll first create a <b class="node">Fresnel Effect</b> node. This will output a value based on the mesh’s surface normal and view direction, producing what looks like a “glow” around the edge of the object. We can increase the <strong>Power</strong> input to make this glow closer to the edges – I’m using a value of <strong>8</strong>. For more info about this node see the <a href="https://docs.unity3d.com/Packages/com.unity.shadergraph@17.4/manual/Fresnel-Effect-Node.html">Fresnel Effect node docs page</a>. I’m also putting this into a <b class="node">Multiply</b> with a value of <strong>2</strong> to make it a bit brighter.</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="298" alt="(Image)" src="Graph1.png" />

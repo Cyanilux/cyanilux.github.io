@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "1480",
+  "wordCount": "1479",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -277,23 +277,15 @@
 <h2 id="breakdown">Breakdown</h2>
 <p>In order to create these fog effects, we need to sample the depth texture from the camera. Shadergraph has a <b class="node">Scene Depth</b> node which will handle this as well as the conversions for us. By using the <strong>Eye</strong> sampling mode it will output the linear depth in terms of eye (aka view) space units. If you aren&rsquo;t familiar with the node, you can read more in the <a href="https://www.cyanilux.com/tutorials/depth/#scene-depth-node">Depth</a> post.</p>
 <p>Next we need the depth to the surface of the plane. To do this we can take the <strong>alpha/w</strong> component of the <b class="node">Screen Position</b> node set to <strong>Raw</strong> mode.</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Why is this the depth to the object \/ mesh surface?</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Why is this the depth to the object \/ mesh surface?</b>';
-
-    }
-"><b>⯈ Why is this the depth to the object / mesh surface?</b></button>
-<div class="foldout">
-<p>It’s not too important to know why this is the object’s depth, but it’s due to how 3D object positions are converted to screen coordinates by the model-view-projection matrix. It is important that we set the node to <strong>Raw</strong> however, as in the <strong>Default</strong> mode each component is divided by this alpha/w value, including the alpha/w component itself meaning it&rsquo;ll just be 1. That&rsquo;s referred to as the &ldquo;perspective divide&rdquo; which converts clip space coordinates into the screen coordinates.</p>
+<details >
+  <summary  class="foldout_button">Why is this the depth to the object / mesh surface?</summary>
+  <div class="foldout">
+    <p>It’s not too important to know why this is the object’s depth, but it’s due to how 3D object positions are converted to screen coordinates by the model-view-projection matrix. It is important that we set the node to <strong>Raw</strong> however, as in the <strong>Default</strong> mode each component is divided by this alpha/w value, including the alpha/w component itself meaning it&rsquo;ll just be 1. That&rsquo;s referred to as the &ldquo;perspective divide&rdquo; which converts clip space coordinates into the screen coordinates.</p>
 <p>We could instead use the <b class="node">Position</b> node set to <strong>View</strong> Space, and <b class="node">Negate</b> the <strong>Z/B</strong> output from a <b class="node">Split</b> node to obtain this object depth. In a perspective projection both of these would produce the same output.</p>
 
-</div>
+  </div>
+</details>
+
 
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">

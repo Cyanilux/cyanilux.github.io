@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/depth/",
   "inLanguage": "en-gb",
-  "wordCount": "5619",
+  "wordCount": "5618",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -563,20 +563,10 @@
 <h4 id="orthographic-scene-depth">Orthographic Projection</h4>
 <p>In newer versions (tested in 2022.2+) the Raw/Linear01/Eye modes now seem to work properly in orthographic projections (same as perspective), so see above! For exact code used, may want to check generated code or <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.shadergraph/Editor/Data/Nodes/Input/Scene/SceneDepthNode.cs">SceneDepthNode.cs</a>.</p>
 <p>For older versions :</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Click to expand</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Click to expand</b>';
-
-    }
-"><b>⯈ Click to expand</b></button>
-<div class="foldout">
-<ul>
+<details >
+  <summary  class="foldout_button">Click to expand</summary>
+  <div class="foldout">
+    <ul>
 <li><strong>Raw</strong> : In orthographic, this is a linear value between 0 and 1, directly from the Depth Texture
 <ul>
 <li>Direct3D-like, Reversed-Z : Ranges from <strong>1</strong> at near plane, to <strong>0</strong> at far plane</li>
@@ -601,7 +591,9 @@
 <p class="img-text"></p>
 </div>
 
-</div>
+  </div>
+</details>
+
 
 <h3 id="notes-urp">Notes for Universal RP :</h3>
 <ul>

@@ -10,7 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=9 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
  
@@ -40,7 +40,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/god-rays-shader-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "2902",
+  "wordCount": "2900",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -300,20 +300,10 @@
 </li>
 </ul>
 <p>I won&rsquo;t go over further details of how to set these systems up as I didn&rsquo;t use them - I&rsquo;m focusing more on the Shader Graph itself. But if you can figure it out and want to use particles, you can add a <b class="node">Position</b> node set to <strong>World</strong> space to the Shader Graph and go to the next section, otherwise click the foldout below.</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Shader Graph Billboarding (if not using particles)</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Shader Graph Billboarding (if not using particles)</b>';
-
-    }
-"><b>⯈ Shader Graph Billboarding (if not using particles)</b></button>
-<div class="foldout">
-<p>For billboarding we typically want to skip using the view/camera matrix for rotation. This is fairly easy to do in shader code where the vertex shader is responsible for converting the vertex positions from object to clip space, but Shader Graph does this for us behind the scenes.</p>
+<details >
+  <summary  class="foldout_button">Shader Graph Billboarding (if not using particles)</summary>
+  <div class="foldout">
+    <p>For billboarding we typically want to skip using the view/camera matrix for rotation. This is fairly easy to do in shader code where the vertex shader is responsible for converting the vertex positions from object to clip space, but Shader Graph does this for us behind the scenes.</p>
 <p>Instead, we can use <strong>Inverse View</strong> matrix from the <b class="node">Transformation Matrix</b> node. The idea is to do the inverse of the view matrix so when it&rsquo;s applied later by Shader Graph, it cancels out. Since we only want this on the rotational parts, we should <b class="node">Multiply</b> using a 3x3 matrix, or (4x4 but set the W/A component of the input Vector4 to 0). When multiplying with matrices, the order is also important - the matrix should be in the A port in this case.</p>
 <div class="img-center">
 <a href="GraphBillboard.png" target="_blank" rel="noopener noreferrer">
@@ -337,7 +327,9 @@
 <p class="img-text"></p>
 </div>
 
-</div>
+  </div>
+</details>
+
 
 <h3 id="stretch-towards-light">Stretch Towards Light</h3>
 <p>To stretch these quads towards the light, we&rsquo;ll need the light direction. Newer versions of Shader Graph have a <b class="node">Get Main Light Direction</b> node for this that should work in URP. My <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting">Custom Lighting package</a> also contains a <strong>Main Light</strong> subgraph that outputs this. For other pipelines, another option is to use a <strong>Vector3 property</strong> (e.g. with <strong>Reference</strong> of <code>_MainLightDirection</code>, and <strong>Exposed</strong> option unticked to make it global) and a C# script on the light that uses <code>Shader.SetGlobalVector(&quot;_MainLightDirection&quot;, -transform.forward);</code></p>
@@ -432,20 +424,10 @@ If using a <strong>Color property</strong>, Under the <strong>Node Settings</str
 <h3 id="final-notes">Final Notes</h3>
 <p>The shader should now be complete. We can assign it to a material on our objects / particle systems and manually place these in areas of the scene we want to draw attention to - maybe chests, level entrance/exits, etc.</p>
 <p>We can also have these spawn around the player/camera for general ambient rays - assuming that&rsquo;s appropriate for the scenery. In my case I used a script to generate &amp; randomise the positions of the light ray quads, and teleport the rays to the opposite side as the player moves, to keep them inside a bounding box roughly the size of the screen. I&rsquo;ve shared the script I wrote in the foldout below if interested in that kind of setup (but not compatible with particle system based spawning)</p>
-<button  type="button" class="foldout_button" onclick="
-    this.classList.toggle('active');
-    var content = this.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      this.innerHTML = '<b>⯈ Script</b>';
-    } else {
-      content.style.display = 'block';
-      this.innerHTML = '<b>⯆ Script</b>';
-
-    }
-"><b>⯈ Script</b></button>
-<div class="foldout">
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<details >
+  <summary  class="foldout_button">Script</summary>
+  <div class="foldout">
+    <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
@@ -600,7 +582,9 @@ If using a <strong>Color property</strong>, Under the <strong>Node Settings</str
 </div>
 </div>
 
-</div>
+  </div>
+</details>
+
 
 <br><hr>
 
