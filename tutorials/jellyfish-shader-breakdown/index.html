@@ -10,6 +10,7 @@
 <meta name="msapplication-TileColor" content="#00aba9">
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
+<link rel="preload" href="https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
 
 
@@ -40,7 +41,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/jellyfish-shader-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "2255",
+  "wordCount": "2254",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -260,20 +261,8 @@
 <li>This is an <strong>Unlit</strong> shader. Transparent surface mode and Additive blending.</li>
 <li>You will need a mesh of a Jellyfish if you plan on recreating this shader, with the tentacles hanging straight down, and with enough vertices to make the displacement smooth. An important note is that the mesh I’m using has a scale of 2 units wide and about 5 units tall. The origin being at the base of the head of the jellyfish (or more technically, the umbrella/bell) which has a height of 1 unit, leaving 4 units of tentacles below the origin. If your mesh has a different scale or origin you may need to use different values in some of the nodes to achieve the same effect.</li>
 <li>If you are interested in a few simpler examples, look at the <a href="https://www.cyanilux.com/tutorials/vertex-displacement/">Vertex Displacement Post</a>, which includes a brief description and graph to animate a Fish and Butterfly.</li>
-<li>This shader was inspired by the amazing work by <a href="https://twitter.com/ZappForThat/status/1127296464130994176">@ZappForThat</a> :</li>
+<li>This shader was inspired by the amazing work by <a href="https://twitter.com/ZappForThat/status/1134973836586246144">@ZappForThat</a></li>
 </ul>
-<script>
-	if (cookiesAccepted){
-		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003e// A beacon for the living,\u003cbr\u003e// Atonement yet to be,\u003cbr\u003e// All adrift in this troubled sea.\u003cbr\u003e.\u003cbr\u003e.\u003cbr\u003e.\u003cbr\u003eAll animation done in shader~~~\u003cbr\u003e.\u003ca href=\"https://twitter.com/hashtag/indiedev?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#indiedev\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/gameart?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#gameart\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/gamedev?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#gamedev\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/art?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#art\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/animation?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#animation\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/MadeWithUnity?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#MadeWithUnity\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/amplify?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#amplify\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/DeepSea?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#DeepSea\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/MarineLife?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#MarineLife\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/b3d?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#b3d\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/blender3d?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#blender3d\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/screenshotsaturday?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#screenshotsaturday\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/unity3d?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3d\u003c/a\u003e \u003ca href=\"https://t.co/LGs5l69fYi\"\u003epic.twitter.com/LGs5l69fYi\u003c/a\u003e\u003c/p\u003e\u0026mdash; Steve Z (@ZappForThat) \u003ca href=\"https://twitter.com/ZappForThat/status/1134973836586246144?ref_src=twsrc%5Etfw\"\u003eJune 2, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n\n");
-	}else{
-		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1134973836586246144\">https://twitter.com/Cyanilux/status/1134973836586246144</a><p>"+
-		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
-		"<b style=\"color:#00aabb\" onclick=\""+
-		"const cookieContainer = document.querySelector('.cookie-container');" +
-		"cookieContainer.classList.add('active');" +
-		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>");
-	}
-</script>
 <h2 id="breakdown">Breakdown</h2>
 <p>We will be offsetting vertices using a Sine wave based on the jellyfish’s Y (up/down) axis to scale the X and Z parts of each vertex, pushing vertices in and out without affecting their Y position. We’ll also mask this based on the Y axis, clamped between 1 and 3, allowing the tentacles to move slightly more than the top of the jellyfish.</p>
 <p>To begin, create a <b class="node">Position</b> node set to <strong>Object</strong> space and <b class="node">Split</b> it. Create a <b class="node">Time</b> node, take the <strong>Time</strong> output and <b class="node">Multiply</b> it by a <strong>time-scaling value/property</strong> of <strong>3</strong>. Then take the <strong>Y/G</strong> output of the <b class="node">Split</b> (which should corrospond to the vertical position along the jellyfish) and <b class="node">Multiply</b> this by a value to control the frequency of our wave, we’ll also set this to <strong>3</strong>. We can then <b class="node">Add</b> the output of these two nodes together and put it into a <b class="node">Sine</b> node.</p>

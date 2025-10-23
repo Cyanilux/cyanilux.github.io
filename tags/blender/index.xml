@@ -6,7 +6,29 @@
     <description>Recent content in Blender on Cyanilux Shader Tutorials</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Tue, 07 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/blender/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 04 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cyanilux.com/tags/blender/index.xml" rel="self" type="application/rss+xml" />
+	
+    <item>
+      <title>Shoreline Shader Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/</link>
+      <pubDate>Wed, 04 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/shoreline-shader-breakdown/</guid>
+      <description>A few water shader techniques I&#39;ve used in the past for mapping ocean waves crashing into the shore/beach &amp; leaving behind wet sand</description>
+    </item>
+	
+    
+	
+    <item>
+      <title>Book (w/ Turnable Pages) Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/spellbook-breakdown/</link>
+      <pubDate>Sat, 21 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/spellbook-breakdown/</guid>
+      <description>A book with pages that flip/turn via vertex displacement, and selects a portion of a texture containing all pages.</description>
+    </item>
+	
+    
 	
     <item>
       <title>Fractured Cube Breakdown</title>
@@ -15,6 +37,17 @@
       
       <guid>https://www.cyanilux.com/tutorials/fractured-cube-breakdown/</guid>
       <description>Uses a shader which displaces (scales/rotates) vertices of a prefractured mesh with pivots baked into UV maps</description>
+    </item>
+	
+    
+	
+    <item>
+      <title>Tornado Shader Breakdown</title>
+      <link>https://www.cyanilux.com/tutorials/tornado-shader-breakdown/</link>
+      <pubDate>Wed, 26 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.cyanilux.com/tutorials/tornado-shader-breakdown/</guid>
+      <description>A shader applied to a few layers of alpha-clipped scrolling noise, with vertex displacement to make it wobble</description>
     </item>
 	
     
