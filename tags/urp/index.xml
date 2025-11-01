@@ -223,7 +223,7 @@
       <pubDate>Mon, 24 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/</guid>
-      <description>An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer)</description>
+      <description>An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites</description>
     </item>
 	
     

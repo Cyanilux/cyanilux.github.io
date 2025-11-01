@@ -26,7 +26,7 @@
   "name": "2D Water Shader Breakdown",
   "description": "A water shader intended for 2D, with pixelated highlights, distortion, reflections and simplified shoreline waves/ripples",
   "datePublished": "2024-03-28",
-  "dateModified": "2024-03-28",
+  "dateModified": "2025-11-01",
   "author": {
 	"@type": "Person",
 	"name": "Cyanilux",
@@ -41,7 +41,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "2617",
+  "wordCount": "2686",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -74,7 +74,7 @@
         
     
 <meta property="article:published_time" content="2024-03-28T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-03-28T00:00:00+00:00" />
+<meta property="article:modified_time" content="2025-11-01T00:00:00+00:00" />
 <title>2D Water Shader Breakdown | Cyanilux Shader Tutorials</title>
 <meta name="description" content="A water shader intended for 2D, with pixelated highlights, distortion, reflections and simplified shoreline waves/ripples. URP, Shader Graph, 2D | Unity Shader Tutorials, @Cyanilux" />
 <link rel="canonical" href="https://www.cyanilux.com/tutorials/2d-water-shader-breakdown/" />
@@ -249,6 +249,9 @@
 <time datetime="2024-03-28">&#128337 28 Mar 2024</time>
 
 
+<div style="width:5px"></div>
+<time datetime="2025-11-01"> (updated 1 Nov 2025)</time>
+
 </div>
 <script>
 	if (cookiesAccepted){
@@ -269,8 +272,8 @@
 <h2 id="notes">Notes</h2>
 <ul>
 <li>I used <strong>URP</strong> (though nothing pipeline specific - I avoided renderer features), and the <strong>Sprite Unlit</strong> graph (but regular Unlit also works, or even Lit graph types if you want it affected by lights)</li>
-<li>Shader is applied to a tilemap. Can work on other things (sprites, quad mesh, etc) though maybe without the shoreline/edge ripples.</li>
-<li>Sprites in the scene are from a <a href="https://assetstore.unity.com/packages/2d/environments/pixel-art-top-down-basic-187605">free asset pack by Cainos</a>, with some minor edits. Except the duck sprite, that one I drew 🦆</li>
+<li>Shader is applied to a tilemap which is important for the shoreline/edge ripples to function. But without the last couple sections the shader could work on other things (sprites, quad mesh, etc).</li>
+<li>Sprites in my scene are from a <a href="https://assetstore.unity.com/packages/2d/environments/pixel-art-top-down-basic-187605">free asset pack by Cainos</a>, with some minor edits. Except the duck, that one I drew 🦆</li>
 </ul>
 <h2 id="breakdown">Breakdown</h2>
 <h3 id="reflections">Reflections</h3>
@@ -281,7 +284,7 @@
 </a>
 <p class="img-text">Scene View (during play mode), with reflection sprites highlighted</p>
 </div>
-<p>At first, I did think about using a RenderObject features with an override material/shader that flips sprites automatically. But while this can work, it&rsquo;s difficult to create accurate reflections for sprites that already have custom shaders (e.g. the swaying grass/foliage). This also doesn&rsquo;t allow you to override the texture. In my case, the pillars use an alternate sprite for reflections - so the top isn&rsquo;t reflected.</p>
+<p>At first, I did think about using RenderObject features with an override material/shader to create flipped sprites automatically. But it would be difficult to create accurate reflections for sprites that already have custom shaders (e.g. the swaying grass/foliage) as the vertex shader would be overidden. Probably also doesn&rsquo;t allow you to override the texture - In my case, the pillars use an alternate sprite for reflections so the top isn&rsquo;t reflected.</p>
 <p>Instead, it&rsquo;s better to just duplicate and rotate/flip the sprites manually, or use a <strong>C# Script</strong> to instantiate them at runtime. The script I wrote for this is shown in the foldout below. It should already work in both 2.5D and 2D scenes.</p>
 <details >
   <summary  class="foldout_button">Sprite Reflection Script</summary>
@@ -443,8 +446,8 @@
 </details>
 
 
-<p>So we can distort these later, capture the reflections to a <strong>Render Texture</strong> by using a second <strong>Camera</strong>.</p>
-<p>Reflection sprites are put on a specific <strong>Layer</strong> (e.g. named &ldquo;Reflection&rdquo;) and we adjust the <strong>Culling Mask</strong> on both cameras so that layer only renders to the second camera and not the main camera. Can create a <a href="https://docs.unity3d.com/Manual/class-RenderTexture.html">Render Texture Asset</a> (right-click in Project/Assets, will be somewhere under Create menu) and assign it to the <strong>Target/Output Texture</strong> field on the second camera - no scripting needed.</p>
+<p>So we can distort these later, capture the reflections to a <strong>Render Texture</strong> by using a second <strong>Camera</strong> (parented to the Main Camera). Create a <a href="https://docs.unity3d.com/Manual/class-RenderTexture.html">Render Texture Asset</a> (right-click in Project/Assets, will be somewhere under Create menu) and assign it to the <strong>Target/Output Texture</strong> field on the second camera - no scripting needed.</p>
+<p>Reflection sprite GameObjects should be put on a specific <strong>Layer</strong> (e.g. named &ldquo;Reflection&rdquo;) and we adjust the <strong>Culling Mask</strong> on both cameras so that layer only renders to the second camera.</p>
 <div class="img-center">
 <a href="Camera.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="486" height="584" alt="(Image)" src="Camera.png" />
@@ -458,8 +461,8 @@
 </div>
 </div>
 <div style="margin: 5px;">
-<p>In URP, you could probably use a <strong>Custom Renderer Feature</strong> if you prefer (may avoid some overhead from an additional camera?)</p>
-<p>Although when using the <strong>2D Renderer</strong> I don&rsquo;t think you can stop layers from rendering normally (like the <strong>Universal Renderer</strong> has with it&rsquo;s &ldquo;Default Opaque/Transparent Layer Masks&rdquo;), a bit annoying.</p>
+<p>For URP specficially, you may be able to instead write a <a href="https://www.cyanilux.com/tutorials/custom-renderer-features/">Custom Renderer Feature</a> if you prefer (to potenitally avoid some overhead from the additional camera), though this tutorial won&rsquo;t go over that.</p>
+<p>In that case you&rsquo;d use the Renderer asset <strong>(Transparent) Filtering Layer Mask</strong> to prevent reflection sprites rendering instead of camera <strong>Culling Mask</strong>. If using a <strong>2D Renderer</strong>, you may need to update to 2022.3.61f1, 6000.0.42f1, or newer, to see the layer mask field.</p>
 
 </div>
 </div>
@@ -516,7 +519,17 @@
 </div>
 <p class="img-clearfix"></p>
 </div>
-<p>Use a <b class="node">Sample Texture 2D</b> node with a noise texture. In the <strong>UV</strong> port, we&rsquo;ll need a <b class="node">Tiling And Offset</b> node, where you can adjust the <strong>Tiling</strong> values and add scrolling by providing an <strong>Offset</strong> using the <strong>Time</strong> output from the <b class="node">Time</b> node and <b class="node">Multiply</b> by a <strong>Vector2</strong> (node or property) to adjust its speed in each direction. The values are up to you - but keep them quite small (ideally below <strong>0.1</strong>) as we don&rsquo;t want the water flowing by too fast.</p>
+<div class="notice">
+<div class="notice-left">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+Be sure to import these textures with <strong>Wrap Mode : Repeat</strong> so they will properly tile when UVs are outside the 0-1 range!
+</div>
+</div>
+<p>Use a <b class="node">Sample Texture 2D</b> node with a noise texture. In the <strong>UV</strong> port, we&rsquo;ll need a <b class="node">Tiling And Offset</b> node, where you can adjust the <strong>Tiling</strong> values and add scrolling by providing an <strong>Offset</strong> using the <strong>Time</strong> output from the <b class="node">Time</b> node. <b class="node">Multiply</b> the time by a <strong>Vector2</strong> (node or property) to be able to adjust the speed in each direction. The values are up to you - but keep them quite small (ideally below <strong>0.1</strong>) as we don&rsquo;t want the water flowing by too fast.</p>
 <div class="img-center">
 <a href="Graph0.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="323" alt="(Image)" src="Graph0.png" />

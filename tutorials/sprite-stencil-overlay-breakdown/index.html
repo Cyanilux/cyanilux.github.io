@@ -24,7 +24,7 @@
   "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/",
   "headline": "Sprite Stencil Overlay Breakdown",
   "name": "Sprite Stencil Overlay Breakdown",
-  "description": "An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer)",
+  "description": "An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites",
   "datePublished": "2020-02-24",
   "dateModified": "2024-03-28",
   "author": {
@@ -41,7 +41,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "1309",
+  "wordCount": "1313",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -60,10 +60,10 @@
 <meta name="twitter:card" content="summary_large_image"/>
 	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/Preview.png"/>
 <meta name="twitter:title" content="Sprite Stencil Overlay Breakdown"/>
-<meta name="twitter:description" content="An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer)"/>
+<meta name="twitter:description" content="An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites"/>
 
 <meta property="og:title" content="Sprite Stencil Overlay Breakdown" />
-<meta property="og:description" content="An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer)" />
+<meta property="og:description" content="An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/" />
 
@@ -76,7 +76,7 @@
 <meta property="article:published_time" content="2020-02-24T00:00:00+00:00" />
 <meta property="article:modified_time" content="2024-03-28T00:00:00+00:00" />
 <title>Sprite Stencil Overlay Breakdown | Cyanilux Shader Tutorials</title>
-<meta name="description" content="An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites (not compatible with the 2D renderer). URP, Shader Graph, 2D | Unity Shader Tutorials, @Cyanilux" />
+<meta name="description" content="An example of using the RenderObjects feature on the Forward Renderer to produce an overlay effect for sprites. URP, Shader Graph, 2D | Unity Shader Tutorials, @Cyanilux" />
 <link rel="canonical" href="https://www.cyanilux.com/tutorials/sprite-stencil-overlay-breakdown/" />
 <script>
 	var webStorageSupported = (typeof(Storage) !== undefined);
@@ -267,12 +267,6 @@
 </script>
 <h2 id="intro">Intro</h2>
 <p>Hey! I recently helped someone out with an effect they wanted to create, which involved creating a dithering-like overlay effect when the character is behind other sprites, (similar to the example shown in the tweet above). I thought this might provide a nice example of how to use the Universal RP’s Renderer Features to override Stencil values.</p>
-<h2 id="notes">Notes</h2>
-<ul>
-<li>This uses an <strong>Unlit Sprite</strong> shader for the checkerboard pattern overlay, but the main focus is on <strong>RenderObjects</strong> feature in URP.</li>
-<li>This example is for <strong>2D/Sprites</strong>, but a similar approach would work for 3D and opaque geometry too (though the setup may need to be slightly different). You can also achieve a similar effect in 3D using the depth overrides instead of stencil, as shown in this <a href="https://www.youtube.com/watch?v=szsWx9IQVDI">Brackeys video</a>.</li>
-<li>Due to the way the <strong>RenderObjects</strong> feature works, the objects on the Infront layer and Player overlay will always render on top of everything else transparent, regardless of the SpriteRenderer’s sorting layers / order in layer, and/or material’s Render Queue. If you want to render something after this effect you might need to set up an additional layer and RenderObjects feature.</li>
-</ul>
 <div class="notice">
 <div class="notice-left">
 <div class="notice-exclamation">
@@ -280,12 +274,18 @@
 </div>
 </div>
 <div style="margin: 5px;">
-<p>This may only be fully compatible with the <strong>Universal Renderer</strong> (aka Forward Renderer in older versions).</p>
-<p>When this post was written the <strong>2D Renderer</strong> didn&rsquo;t support features. As of Unity 2021.2+ it does, but as there is no &ldquo;Default Layer Mask&rdquo; you cannot prevent objects from rendering normally and only render them with the feature. This might be okay if using an override material with shader using <code>ColorMask 0</code>, to only render to the stencil buffer and avoid rendering to the color buffer twice. Kinda annoying to still have it a separate pass though.</p>
-<p>It is also possible to handle stencils separate from renderer features too which could work instead (though is not the focus of this tutorial). e.g. writing Stencil operations in the shaders directly (see <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil docs page</a>), or use the <a href="https://docs.unity3d.com/Manual/class-SpriteMask.html">Sprite Mask component</a>.</p>
+<p>The tutorial was written for the <strong>Universal Renderer</strong> (aka Forward Renderer in older versions). As of Unity 2021.2+ the <strong>2D Renderer</strong> also supports Renderer Features so may work with that too.</p>
+<p>Though note, the 2D Renderer only exposes the &ldquo;Default/Filtering Layer Mask&rdquo; in 2022.3.61f1, 6000.0.42f1, or newer. For older versions you could not prevent objects rendering in normal queues, meaning the &lsquo;Infront&rsquo; layer would render twice (or needed an additional override material with <code>ColorMask 0</code> to only render stencil values - which prevented writing to the color buffer twice, but would still be two passes)</p>
+<p>It is also possible to handle stencils separate from renderer features too which could work instead (though is not the focus of this tutorial). e.g. writing Stencil operations in the shaders directly (see <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">Stencil docs page</a>), or the <a href="https://docs.unity3d.com/Manual/class-SpriteMask.html">Sprite Mask component</a> may be more suitable.</p>
 
 </div>
 </div>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This uses an <strong>Unlit Sprite</strong> shader for the checkerboard pattern overlay, but the main focus is on <strong>RenderObjects</strong> feature in URP.</li>
+<li>This example is for <strong>2D/Sprites</strong>, but a similar approach would work for 3D and opaque geometry too (though the setup may need to be slightly different). You can also achieve a similar effect in 3D using the depth overrides instead of stencil, as shown in this <a href="https://www.youtube.com/watch?v=szsWx9IQVDI">Brackeys video</a>.</li>
+<li>Due to the way the <strong>RenderObjects</strong> feature works, the objects on the Infront layer and Player overlay will always render on top of everything else transparent, regardless of the SpriteRenderer’s sorting layers / order in layer, and/or material’s Render Queue. If you want to render something after this effect you might need to set up an additional layer and RenderObjects feature.</li>
+</ul>
 <h2 id="breakdown">Breakdown</h2>
 <h3 id="layer-setup">Layer Setup</h3>
 <p>To start with this effect, our <strong>Player</strong> GameObject (with the SpriteRenderer) needs to be assigned to a new <strong>Layer</strong>, which we will call “Player”.</p>

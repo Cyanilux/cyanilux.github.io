@@ -41,7 +41,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/custom-renderer-features/",
   "inLanguage": "en-gb",
-  "wordCount": "9672",
+  "wordCount": "9678",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -351,7 +351,7 @@ Join my discord! 💬
 <p>URP provides the <strong>RenderObjects</strong> feature which, as the name might suggest, can render objects (e.g. MeshRenderers, SkinnedMeshRenderers, SpriteRenderers, etc), filtered by Opaque/Transparent, Layer Mask and Shader Pass (LightMode) tags, while also providing overrides for the Material, Depth Test/Write, Stencil operations and Camera properties.</p>
 <p>Some of those overrides are particularly useful as Shader Graph doesn&rsquo;t support Stencil operations and didn&rsquo;t expose Depth Test/Write params until v12 (2021.2).</p>
 <p>The <strong>Override Material</strong> is also useful for applying a material to many objects in the scene at once, such as Outline shaders using the &ldquo;Inverted Hull&rdquo; method <a href="https://github.com/Unity-Technologies/UniversalRenderingExamples/blob/master/Assets/_CompletedDemos/ToonOutlinePostprocessCompleted/Shaders/ToonBasicOutline.shader">such as this example from UniversalRenderingExamples</a>, or X-Ray / Highlighting through walls effects also using ZTest &ldquo;Greater&rdquo; like <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@16.0/manual/containers/how-to-custom-effect-render-objects.html">this example in the Unity docs</a>.</p>
-<p>Note that when you use the feature, it is actually <em>re-rendering</em> those objects. If you only want to render once, you need to also remove the Layer(s) used in the Layer Mask from the default Opaque/Transparent Layer Mask at the top of the Universal Renderer. (The 2D Renderer seems to lack this, so not sure how to do it there&hellip;)</p>
+<p>Note that when you use the feature, it is <em>re-rendering</em> those objects. For some effects you may only want to render once, so you would need to also remove the Layer(s) used in the Layer Mask from the default Opaque/Transparent Filtering Layer Mask(s) at the top of the Universal Renderer. (The 2D Renderer should also expose a layer mask field as of 2022.3.61f1, 6000.0.42f1, or newer)</p>
 <h3 id="screen-blur">Screen Blur</h3>
 <p>We can use a custom feature to apply blur operations to the screen. This can involve either blitting back to the screen, or to a custom buffer - which could then be sampled in UI shaders for example to make them appear to blur what is behind them.</p>
 <p>There are multiple ways to blur in a shader, such as Box Blur, Gaussian, Kawase. If you use those as search terms you should be able to find example implementations in Unity shaders. These can be applied to the screen by using a <a href="#blit">Blit</a> (may require shader to be modified depending on the blit method used).</p>
