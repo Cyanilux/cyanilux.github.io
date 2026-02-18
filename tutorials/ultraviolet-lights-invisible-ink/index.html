@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
 <link rel="preload" href="https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=11 ">
 
 
  
@@ -341,8 +341,8 @@
 </div>
 </div>
 <details >
-  <summary  class="foldout_button">Can this work in DBuffer mode?</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Can this work in DBuffer mode?</summary>
+  <div  class="foldout">
     <p>In this mode the decal itself does not typically handle shading. They instead are rendered as unlit into separate buffer(s), then sampled by opaque surfaces later which applies the shading. The decal shader pass that is used isn&rsquo;t set up to properly handle lighting.</p>
 <p>But during testing, I did find a workaround for the Forward+ path (untested in builds though), which involves manually adding keywords to the graph (though this does cause some warnings about duplicate keywords). Can do this either through the Blackboard or by adding these lines to the hlsl include file that we&rsquo;ll set up below (this also creates warnings about unknown pragmas, but still works - a bit odd)</p>
 <pre tabindex="0"><code>#pragma multi_compile _ _ADDITIONAL_LIGHTS

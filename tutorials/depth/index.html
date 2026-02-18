@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
 <link rel="preload" href="https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=11 ">
 
 
  
@@ -41,7 +41,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/depth/",
   "inLanguage": "en-gb",
-  "wordCount": "5567",
+  "wordCount": "5261",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -289,7 +289,7 @@
 <li><a href="#depth-difference">Depth Difference</a></li>
 <li><a href="#reconstruct-world-pos">Reconstruct Scene World Position from Depth</a>
 <ul>
-<li><a href="#mesh-perspective">Mesh (Perspective)</a></li>
+<li><a href="#mesh">Mesh (Perspective)</a></li>
 <li><a href="#mesh-orthographic">Mesh (Orthographic)</a></li>
 <li><a href="#blit-perspective">Blit (Perspective)</a></li>
 <li><a href="#blit-orthographic">Blit (Orthographic)</a></li>
@@ -564,8 +564,8 @@
 <p>In newer versions (tested in 2022.2+) the Raw/Linear01/Eye modes now seem to work properly in orthographic projections (same as perspective), so see above! For exact code used, may want to check generated code or <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.shadergraph/Editor/Data/Nodes/Input/Scene/SceneDepthNode.cs">SceneDepthNode.cs</a>.</p>
 <p>For older versions :</p>
 <details >
-  <summary  class="foldout_button">Click to expand</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Click to expand</summary>
+  <div  class="foldout">
     <ul>
 <li><strong>Raw</strong> : In orthographic, this is a linear value between 0 and 1, directly from the Depth Texture
 <ul>
@@ -618,7 +618,7 @@
 </div>
 <p>With the <strong>Eye Depth</strong> of the Scene (from the above sections) and Fragment (see <a href="#eye-depth">View Space, Eye Depth</a> section at the beginning of the post), we can use their <strong>difference</strong> (which means to <b class="node">Subtract</b> them) to achieve some intersection-like effects.</p>
 <p>Basically, if both depths are close together, meaning the value is almost the same, then subtracting them will give us a value close to <strong>0</strong>. We can take the <b class="node">One Minus</b> of this to only give us the intersection. We also use a <b class="node">Saturate</b> node to clamp the result between 0 and 1.</p>
-<p>This &ldquo;depth-difference&rdquo; method isn&rsquo;t always accurate however, especially at shallow viewing angles.</p>
+<p>This method isn&rsquo;t always accurate however, especially at shallow viewing angles.</p>
 <div class="img-center">
 <a href="GraphDepthDifference.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="750" height="363" alt="(Image)" src="GraphDepthDifference.png" />
@@ -665,41 +665,16 @@
 </ul>
 <hr>
 <h2 id="reconstruct-world-pos">Reconstruct World Space Position from Depth</h2>
-<p>With the fragment&rsquo;s world position and eye depth values it&rsquo;s also possible to reconstruct the world position in the scene. The method we can use to do this varies a bit depending on if we&rsquo;re using a regular shader on a mesh or if the shader is a part of a image effect (e.g. using a <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Renderer Feature</a>).</p>
-<h3 id="mesh-perspective">Mesh (Perspective projection)</h3>
-<div class="img-center">
-<a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy"   alt="(Image)" src="https://www.cyanilux.com/ReconstructDepthWorldPos.png" />
-</a>
-<p class="img-text"></p>
-</div>
-<p>In the above image, we have a plane with a <strong>Transparent</strong> shader that wants to obtain the <strong>Scene Position</strong> based on the <b class="node">Scene Depth</b> (aka Depth Texture). For every fragment, this is a position that lies somewhere on a vector travelling from the camera to the fragment position.</p>
-<div class="notice">
-<div class="notice-left">
-<div class="notice-exclamation">
-!
-</div>
-</div>
-<div style="margin: 5px;">
-<p>In Shader Graph v11 (Unity 2021.1+) the <b class="node">View Direction</b> node is now normalised in all pipelines. We must use the newer <b class="node">View Vector</b> node to achieve the correct result.</p>
-<p>(Text in this post has been changed to account for this, but images have not!)</p>
-<p>If you are using prior versions of URP, continue using the <b class="node">View Direction</b>.</p>
-<p>For HDRP, the graph at the end of the <a href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown#hdrp">Fog Plane Shader Breakdown</a> may provide a better example.</p>
-
-</div>
-</div>
-<p>We want to use the <b class="node">View Vector</b> node to obtain this vector, which is equal to the <b class="node">Camera</b> <strong>Position</strong> <b class="node">Subtract</b> the fragment <b class="node">Position</b> (in Absolute World space). This vector is <strong>not normalised</strong> which is important, but it is a bit inverted from what we actually want. We don&rsquo;t have to worry about using a <b class="node">Negate</b> node though, as the inputs on the <b class="node">Subtract</b> later is reversed which has the same effect.</p>
-<p>In HDRP, we can alternatively use the <b class="node">Position</b> node in World space due to the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">Camera-Relative rendering</a>. See the fog plane shader breakdown linked above for an example.</p>
-<p>In order to reconstruct the Scene Position we need to <strong>scale</strong> this view vector, by an amount based on the two depth values. We <b class="node">Divide</b> our view vector by the <strong>Fragment&rsquo;s Eye Depth</strong> (as explained in the <a href="#eye-depth">View Space, Eye Depth</a> section) then <b class="node">Multiply</b> by the <b class="node">Scene Depth</b> (<strong>Eye</strong> mode).</p>
-<p>If we put this into a <b class="node">Fraction</b> node then output it, we can visualise the position. But the result is still be moving with the camera (if using the <b class="node">View Vector</b> that is). To fix this, take the <strong>Position</strong> output from the <b class="node">Camera</b> node and <b class="node">Subtract</b> the reconstructed position.</p>
-<p>Since we are using the <b class="node">Scene Depth</b>, the graph must also be set to use <strong>Transparent</strong> surface mode for the node to function correctly.</p>
+<p>With the fragment&rsquo;s world position and eye depth values it&rsquo;s also possible to reconstruct the world position in the scene. The method we can use to do this varies a bit depending on if we&rsquo;re applying the shader on a mesh in the scene or if the shader is a part of a image effect / fullscreen graph.</p>
+<h3 id="mesh">Mesh</h3>
 <div class="img-center">
 <a href="GraphReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="600" height="350" alt="(Image)" src="GraphReconstructDepthWorldPos.png" />
 </a>
 <p class="img-text">(update : use View Vector instead of View Direction)</p>
 </div>
-<p>For Shader Code / HLSL :</p>
+<p>For explanation, see <a href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown#example-2">Fog Plane Shader Breakdown</a></p>
+<p>In Shader Code / HLSL this should be equivalent to :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// (URP Example, untested but should be the same as the graph above)
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl&#34;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>...
@@ -715,20 +690,24 @@
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// Fragment
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> rawDepth <span style="color:#f92672">=</span> SampleSceneDepth(IN.screenPos.xy <span style="color:#f92672">/</span> IN.screenPos.w);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> sceneEyeDepth <span style="color:#f92672">=</span> LinearEyeDepth(rawDepth, _ZBufferParams);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> fragmentEyeDepth <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>IN.positionVS.z;
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> fragmentEyeDepth <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>IN.positionVS.z; <span style="color:#75715e">// or abs(IN.positionVS.z)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
 </span></span><span style="display:flex;"><span>float3 worldPos <span style="color:#f92672">=</span> _WorldSpaceCameraPos <span style="color:#f92672">-</span> ((IN.viewDirVector <span style="color:#f92672">/</span> fragmentEyeDepth) <span style="color:#f92672">*</span> sceneEyeDepth);
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// try visualising by returning : 
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">return</span> <span style="color:#a6e22e">float4</span>(frac(worldPos), <span style="color:#ae81ff">1.0</span>);</span></span></code></pre></div>
 <hr>
 <h3 id="mesh-orthographic">Mesh (Orthographic projection)</h3>
-<div class="img-right">
+<p>For versions 2022.2 or newer the above should work in both perspective and orthographic camera projections. But for older versions :</p>
+<details >
+  <summary class="foldout_button">Click to expand</summary>
+  <div  class="foldout">
+    <div class="img-right">
 <a href="ReconstructDepthWorldPosOrtho.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="400" height="235" alt="(Image)" src="ReconstructDepthWorldPosOrtho.png" />
 </a>
 <p class="img-text"></p>
 </div>
-<p>For an Orthographic projection, we need to use the <strong>Raw</strong> mode on the <b class="node">Scene Depth</b> node. The value returned still varies between platforms a bit as explained in the <a href="#orthographic-scene-depth">Scene Depth Node - Orthographic</a> section so we need to branch based on the <strong>Z Buffer Sign</strong> from the <b class="node">Camera</b> node. That gives us a value equivalent to the Linear01 depth, we then need to <b class="node">Lerp</b> between the <strong>near</strong> and <strong>far</strong> clip planes to convert it to <strong>View/Eye</strong> depth.</p>
+<p>We need to use the <strong>Raw</strong> mode on the <b class="node">Scene Depth</b> node. The value returned still varies between platforms a bit as explained in the <a href="#orthographic-scene-depth">Scene Depth Node - Orthographic</a> section so we need to branch based on the <strong>Z Buffer Sign</strong> from the <b class="node">Camera</b> node. That gives us a value equivalent to the Linear01 depth, we then need to <b class="node">Lerp</b> between the <strong>near</strong> and <strong>far</strong> clip planes to convert it to <strong>View/Eye</strong> depth.</p>
 <p>We can then plug that into the <strong>Z</strong> axis of a <b class="node">Vector3</b> node, with the <strong>X</strong> and <strong>Y</strong> axis set to the <strong>X/R</strong> and <strong>Y/G</strong> outputs from the <b class="node">Position</b> node set to <strong>View</strong> space, <b class="node">Split</b>. Finally we <b class="node">Transform</b> that from <strong>View</strong> space to <strong>World</strong> space.</p>
 <p>Since we are using <b class="node">Scene Depth</b>, the <b class="node">Master</b> node should also be set to <strong>Transparent</strong> Surface mode.</p>
 <div class="img-center">
@@ -737,9 +716,24 @@
 </a>
 <p class="img-text"></p>
 </div>
+
+  </div>
+</details>
+
+
 <hr>
 <h3 id="blit-perspective">Blit (Perspective projection)</h3>
-<p>For image effects, the above approach doesn&rsquo;t really work as we are rendering a quad to the screen. If you&rsquo;re working in Shader Code / HLSL, something like <a href="https://github.com/keijiro/DepthInverseProjection/blob/master/Assets/InverseProjection/Resources/InverseProjection.shader">keijiro&rsquo;s DepthInverseProjection</a> might help here. (Note that was written for the Post Processing v2 stack, so may need adapting to work in URP/HDRP)</p>
+<div class="notice">
+<div class="notice-left">
+<div class="notice-exclamation">
+!
+</div>
+</div>
+<div style="margin: 5px;">
+Note that Unity 2022+ adds a <strong>Fullscreen Shader Graph</strong> type in URP (that can be used with the <strong>Fullscreen Pass Renderer Feature</strong>). When using the <b class="node">Position</b> node it is already doing a similar depth-reconstruction for us - no need to calculate it manually! (Only seems to work in perspective projections though&hellip;)
+</div>
+</div>
+<p>For image effects / blit, the above approaches don&rsquo;t work as intended as we are rendering a quad to the screen. If you&rsquo;re working in Shader Code / HLSL, something like <a href="https://github.com/keijiro/DepthInverseProjection/blob/master/Assets/InverseProjection/Resources/InverseProjection.shader">keijiro&rsquo;s DepthInverseProjection</a> might help here. (Note that was written for the Post Processing v2 stack, so may need adapting to work in URP/HDRP)</p>
 <p>As for Shader Graph, I have found that the following works but it requires sending in a <code>_InverseView</code> Matrix, (set to <a href="https://docs.unity3d.com/ScriptReference/Camera-cameraToWorldMatrix.html">cam.cameraToWorldMatrix</a>). The <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Renderer Feature</a> that I shared on Github has an option for this.</p>
 <p>Since we are using the <b class="node">Scene Depth</b>, the graph should also be set to use <strong>Transparent</strong> surface mode for the node to function correctly, and the blit should occur in the Before Skybox event or any event after.</p>
 <div class="img-center">
@@ -759,16 +753,6 @@ Right note : C#, Shader.SetGlobalMatrix(&quot;_InverseView&quot;, cam.cameraToWo
 <p>In Shader Graph v12+ (Unity 2021.2+) it is now also possible to add <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#custom-interpolators">Custom Interpolators</a>.</p>
 <p>This could be used to make the graph more performant by moving half of the calculations to the vertex shader - specifically up to the output of the the first matrix multiplication (with the <b class="node">Custom Function</b>)</p>
 
-</div>
-</div>
-<div class="notice">
-<div class="notice-left">
-<div class="notice-exclamation">
-!
-</div>
-</div>
-<div style="margin: 5px;">
-Note that Unity 2022+ adds a <strong>Fullscreen Shader Graph</strong> type in URP (that can be used with the <strong>Fullscreen Pass Renderer Feature</strong>). When using the <b class="node">Position</b> node it is already doing a similar depth-reconstruction for us! (Only seems to work in perspective projections though&hellip;)
 </div>
 </div>
 <hr>
@@ -799,7 +783,7 @@ Note that Unity 2022+ adds a <strong>Fullscreen Shader Graph</strong> type in UR
 </div>
 </div>
 <div style="margin: 5px;">
-Note if using <strong>Fullscreen Shader Graph</strong> type in URP 2022+ may want to use the <b class="node">UV</b> node instead of <b class="node">Position</b>.
+Note if using <strong>Fullscreen Graph</strong> type in URP 2022.2+, may want to use the <b class="node">UV</b> node instead of <b class="node">Position</b>.
 </div>
 </div>
 <hr>

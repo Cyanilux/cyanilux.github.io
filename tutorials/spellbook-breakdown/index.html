@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
 <link rel="preload" href="https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=11 ">
 
 
  
@@ -278,8 +278,8 @@
 <p>If interested you can download a <a href="BookModel.fbx">Book Model</a> I made (CC0 License). It&rsquo;s similar to the one shown in the tweet at the start of the post, but without the pentagram decoration on the front cover. It is rigged &amp; animated - (but if you don&rsquo;t want that can disable those in the import settings). To handle the animation you&rsquo;ll probably want to create an <a href="https://docs.unity3d.com/Manual/class-AnimatorController.html">Animator Controller</a> but that&rsquo;s somewhat outside the scope of the tutorial.</p>
 <p>Alternatively you can make your own - the foldout below will go through some tips &amp; things important for the shader to work correctly, (or can look at the models I made as examples).</p>
 <details >
-  <summary  class="foldout_button">Model setup tips/info</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Model setup tips/info</summary>
+  <div  class="foldout">
     <ul>
 <li>The origin of the book (and page model) should be in the center - though it&rsquo;s only important for the X axis iirc. In my case I have it at the center along it&rsquo;s spine.</li>
 <li>Modelling the book in it&rsquo;s open state may help keep normals consistent.</li>
@@ -369,8 +369,8 @@
 <p class="img-text"></p>
 </div>
 <details >
-  <summary  class="foldout_button">Why are we avoiding <b class="node">Sample Texture 2D</b> here?</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Why are we avoiding <b class="node">Sample Texture 2D</b> here?</summary>
+  <div  class="foldout">
     <p>Technically, you could use that node instead. But as our <b class="node">Flipbook</b> node can select different Tiles for the left and right pages, it can cause a jump/seam in the UVs down the center of the book. This leads to a larger derivative (difference in values) across the 2x2 pixel blocks that fragment shaders run in.</p>
 <p>This is interpreted as <em>needing to fit more of the texture inbetween those pixels</em>, so the gpu samples a higher mipmap level (more blurry / smaller resolution). It only does this for those pixels along the seam so isn&rsquo;t a <em>huge</em> issue, but it can be noticeable and I wanted to avoid it.</p>
 <p>To fix this, there are some options:</p>
@@ -481,8 +481,8 @@ To ensure shading is correct, we&rsquo;ll also need to <a href="https://www.cyan
 <p>These two shaders should all be set up now, but currently the only way to test if they&rsquo;re working correctly is by manually adjusting properties on the materials. To handle spawning of page objects and turning them on mouse presses (left and right), I use the following C# Script. It&rsquo;s a bit long, so I&rsquo;ve put it under a foldout.</p>
 <p>Hopefully it&rsquo;s clear how it works based on the comments.</p>
 <details >
-  <summary  class="foldout_button">View Code</summary>
-  <div class="foldout">
+  <summary class="foldout_button">View Code</summary>
+  <div  class="foldout">
     <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1

@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
 <link rel="preload" href="https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=11 ">
 
 
  
@@ -566,8 +566,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="scene-magenta" class="foldout_button">Scene Materials are Magenta/Pink</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Scene Materials are Magenta/Pink</summary>
+  <div id="scene-magenta" class="foldout">
     <p>You&rsquo;ll commonly see your materials turn magenta if you&rsquo;ve tried switching to a different render pipeline. This occurs because each pipeline uses different shaders.</p>
 <p>You can automatically convert any materials using Unity&rsquo;s shaders (e.g. Standard) :</p>
 <ul>
@@ -591,8 +591,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="scene-always-refresh" class="foldout_button">Material/Shaders are animated during Play Mode but not in Editor / Scene View</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Material/Shaders are animated during Play Mode but not in Editor / Scene View</summary>
+  <div id="scene-always-refresh" class="foldout">
     <div class="img-right">
 <a href="scene-always-refresh.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="182" height="143" alt="(Image)" src="scene-always-refresh.png" />
@@ -613,8 +613,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="transparent-sorting" class="foldout_button">Issues with sorting Transparent faces/objects.</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Issues with sorting Transparent faces/objects.</summary>
+  <div id="transparent-sorting" class="foldout">
     <p>Correctly sorting transparent geometry can be difficult. It&rsquo;s basically an unsolved problem in realtime computer graphics. There usually isn&rsquo;t a single answer that can solve every case.</p>
 <p>Opaque objects don&rsquo;t have this problem as they write to the <strong>Depth Buffer</strong> (ZWrite), which allows <strong>Depth Testing</strong> (ZTest) to occur to sort on a per-fragment/pixel basis. Unity also will render opaque objects closer to the camera first, so we don&rsquo;t need to waste time rendering pixels behind others.</p>
 <p>But with the Transparent queue, shaders typically don&rsquo;t write to the depth buffer and we have to render objects further away first, in order to achieve the correct Alpha Blending. Even if depth write was enabled, it still wouldn&rsquo;t sort correctly when blending is involved.</p>
@@ -749,8 +749,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="urp-depth-priming" class="foldout_button">Material with custom shader is invisible in URP</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Material with custom shader is invisible in URP</summary>
+  <div id="urp-depth-priming" class="foldout">
     <p>2021.2+ versions of the URP have a <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@14.0/manual/urp-universal-renderer.html#rendering:~:text=.-,Depth%C2%A0Priming,-Mode">Depth Priming</a> option on the <strong>Universal Renderer Asset</strong> while using the Forward path. In the URP template this is set to Auto (enabled if URP is already doing a Depth Prepass rather than a CopyDepth pass. Can check Frame Debugger to see what is used)</p>
 <div class="img-center">
 <a href="urp-depth-priming.png" target="_blank" rel="noopener noreferrer">
@@ -775,8 +775,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="onrenderimage" class="foldout_button">OnRenderImage in URP</summary>
-  <div class="foldout">
+  <summary class="foldout_button">OnRenderImage in URP</summary>
+  <div id="onrenderimage" class="foldout">
     <p>OnRenderImage does not work in URP.</p>
 <p>If you are using it to apply image effects with <code>Graphics.Blit</code>, In 2022.2+ should use the <strong>Fullscreen Pass Renderer Feature</strong> and <strong>Fullscreen Graph</strong> - or custom shader including <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl">Blit.hlsl</a>. Use the Vert function as the vertex shader and call FragBlit in your fragment shader.</p>
 <p>For prior versions, can use my <a href="https://github.com/Cyanilux/URP_BlitRenderFeature">Blit Renderer Feature</a>.</p>
@@ -793,8 +793,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="edit-material" class="foldout_button">Material greyed out / Cannot edit properties</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Material greyed out / Cannot edit properties</summary>
+  <div id="edit-material" class="foldout">
     <p>If you want to edit materials from <strong>imported models</strong> in Unity, you need to <strong>extract</strong> those materials before they can be edited. Click on the model file in the Project window under your assets, then the <a href="https://docs.unity3d.com/Manual/FBXImporter-Materials.html">Materials tab</a> in the Inspector. Should be a button to extract there.</p>
 <p>Alternatively / For models with no materials / or for Unity default objects (Cube, Sphere, Capsule, etc) :</p>
 <ul>
@@ -812,8 +812,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="edit-sg-material" class="foldout_button">Shader Graph Material greyed out / Cannot edit properties</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Shader Graph Material greyed out / Cannot edit properties</summary>
+  <div id="edit-sg-material" class="foldout">
     <p>As of Unity 2022, Shader Graph automatically generates a <strong>Material</strong> under each graph asset. These materials cannot be edited from Unity&rsquo;s Inspector, but uses the default values assigned to properties within Shader Graph. To adjust them, select the property in the <strong>Blackboard</strong> and edit the <strong>Default</strong> field in the <strong>Graph Inspector</strong> window inside Shader Graph.</p>
 <p>If you want a Material with values different than the defaults, you need to create a new Material asset using the shader. In the Project window under your assets, right-click the Shader Graph Asset then select <strong>Create → Material</strong>.</p>
 
@@ -829,8 +829,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-magenta" class="foldout_button">Main Preview is Magenta/Pink</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Main Preview is Magenta/Pink</summary>
+  <div id="sg-magenta" class="foldout">
     <div class="img-right">
 <a href="sg-magenta.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy" width="230" height="230" alt="(Image)" src="sg-magenta.png" />
@@ -860,8 +860,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-redirect" class="foldout_button">How do I get the small redirect node?</summary>
-  <div class="foldout">
+  <summary class="foldout_button">How do I get the small redirect node?</summary>
+  <div id="sg-redirect" class="foldout">
     <p>In v10+ (Unity 2020.2+), you can obtain a redirect node by <strong>double left-clicking a connection wire</strong>. Or right-click and select &ldquo;Add Redirect&rdquo;.</p>
 <p><a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#redirect">Intro to Shader Graph post - Redirect</a></p>
 
@@ -876,8 +876,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-stretched-texture-preview" class="foldout_button">Preview on <b class="node">Sample Texture 2D</b> looks stretched out when using a texture with alpha</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Preview on <b class="node">Sample Texture 2D</b> looks stretched out when using a texture with alpha</summary>
+  <div id="sg-stretched-texture-preview" class="foldout">
     <p>This is intentional. Previews inside nodes <strong>do not show alpha/transparency</strong>, only the RGB data. It&rsquo;s common for colours to &ldquo;stretch out&rdquo; in fully transparent areas to avoid artifacts. If it was instead black in these areas, the colour might darken along the transparent edge. (That may look even worse when dealing with mipmaps, though you typically wouldn&rsquo;t have those with sprites in particular)</p>
 <p>Only the Main Preview will show transparency.</p>
 <div class="img-center">
@@ -904,8 +904,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-fragment-only" class="foldout_button">Can&rsquo;t connect node to Vertex stage ports (Position, Normal, Tangent) in Master Stack</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Can&rsquo;t connect node to Vertex stage ports (Position, Normal, Tangent) in Master Stack</summary>
+  <div id="sg-fragment-only" class="foldout">
     <p>Some nodes can only be connected to the Fragment stage.</p>
 <ul>
 <li>The <b class="node">Is Front Face</b> node uses the <code>SV_IsFrontFace</code> semantic which is only available as an input to the fragment shader. This should make sense, as the vertex shader runs on vertices - which do not have any information about how they connect or the faces yet.</li>
@@ -927,8 +927,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-vertex-displacement-normals" class="foldout_button">Vertex Displacement doesn&rsquo;t affect shading / How to update normal vectors</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Vertex Displacement doesn&rsquo;t affect shading / How to update normal vectors</summary>
+  <div id="sg-vertex-displacement-normals" class="foldout">
     <p>Editing Vertex Positions does not automatically change the Normal Vectors, which are required to affect shading.</p>
 <p>I have a few methods on how to calculate new normals listed here : <a href="https://www.cyanilux.com/tutorials/vertex-displacement/#recalculating-normals">Vertex Displacement post - Recalculating Normals</a></p>
 
@@ -943,8 +943,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-two-sided-shading" class="foldout_button">Back faces are darker when using Lit Graph &amp; Two-Sided / Render Face : Both</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Back faces are darker when using Lit Graph &amp; Two-Sided / Render Face : Both</summary>
+  <div id="sg-two-sided-shading" class="foldout">
     <p>This occurs because the <strong>Normal</strong> vectors stored in the mesh are intended for the front faces only. We can flip them for back faces by making use of the <b class="node">Is Front Face</b> and <b class="node">Branch</b> nodes.</p>
 <p>If using a Normal Map, we would use the result of our <b class="node">Sample Texture 2D</b> in the <strong>True</strong> input, and <b class="node">Multiply</b> it by (1, 1, -1) for the <strong>False</strong> input. This would then go into the <strong>Normal (Tangent Space)</strong> port on the Fragment stage of the <strong>Master Stack</strong>.</p>
 <div class="img-center">
@@ -973,8 +973,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-pixellated-seams" class="foldout_button">Pixellation along seams in UV when using <b class="node">Fraction</b> with <b class="node">Sample Texture 2D</b></summary>
-  <div class="foldout">
+  <summary class="foldout_button">Pixellation along seams in UV when using <b class="node">Fraction</b> with <b class="node">Sample Texture 2D</b></summary>
+  <div id="sg-pixellated-seams" class="foldout">
     <p>In some cases you might want to use the <b class="node">Fraction</b> node (aka <code>frac()</code> in HLSL) on the UVs (e.g. for repeating sections of a larger texture). But when using this with the <b class="node">Sample Texture 2D</b> you may notice some strange pixellation artifacts along the seam produced by the jump in the UV coordinates.</p>
 <p>This isn&rsquo;t limited to the <b class="node">Fraction</b> node, but I find that this is the most common place where it is noticeable. It occurs for anything that causes a jump in the UVs. Another fairly common example is the seam in the Y component when using the <b class="node">Polar Coordinates</b> node.</p>
 <div class="img-center">
@@ -1010,8 +1010,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-unlit-shadows" class="foldout_button">Sampling Shadows in a Unlit Graph (URP)</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Sampling Shadows in a Unlit Graph (URP)</summary>
+  <div id="sg-unlit-shadows" class="foldout">
     <p>In order to get shadows working in an Unlit Graph you need to add some important keywords which allow the ShaderLibrary to calculate shadow info.</p>
 <p>I&rsquo;ve shared a <a href="https://github.com/Cyanilux/URP_ShaderGraphCustomLighting/">Custom Lighting for Shader Graph</a> package on github, which can handle this for you. For supporting shadows, use the <strong>Main Light Shadows</strong> and <strong>Additional Lights</strong> subgraphs. Both of these will work in Unlit Graphs.</p>
 <h4 id="main-light-shadows">Main Light Shadows</h4>
@@ -1063,8 +1063,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-lit-fog" class="foldout_button">Disable Fog in a Lit Graph</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Disable Fog in a Lit Graph</summary>
+  <div id="sg-lit-fog" class="foldout">
     <p>You can disable fog entirely via Unity&rsquo;s Lighting window (under Environement tab). If you still want fog enabled, but a certain object to not include fog, you can disable fog in a Lit Graph by using a <b class="node">Custom Function</b> node.</p>
 <p>I&rsquo;d recommend using String mode, with a Vector4 Input named &ldquo;In&rdquo; and a Vector4 Output named &ldquo;Out&rdquo;. The function name can be anything (e.g. DisableFog), while the body should use :</p>
 <p>For URP Target :</p>
@@ -1108,8 +1108,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-ui" class="foldout_button">Using Shader Graphs for UI</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Using Shader Graphs for UI</summary>
+  <div id="sg-ui" class="foldout">
     <p>In Unity 2023.2+, Shader Graph has a &ldquo;Canvas&rdquo; Graph / material type to create shaders compatible with UI components. See <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@16.0/manual/canvas-shader.html">Docs Page</a></p>
 <p>For previous versions :</p>
 <p>Shader Graph does not have proper support for UI, however it is possible to still use it with some workarounds &amp; drawbacks. This is written with URP in mind, but it may work the similar in other pipelines.</p>
@@ -1201,8 +1201,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-terrain" class="foldout_button">Using Shader Graphs for Terrain</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Using Shader Graphs for Terrain</summary>
+  <div id="sg-terrain" class="foldout">
     <p>Shader Graph does not have proper support for Terrain, but it is still possible with some drawbacks. (Note this is for regular Draw mode, not Instanced Draw)</p>
 <p>A Material can be assigned in the last tab on the Terrain component (cog symbol). When using a material with a graph shader, it will always display a warning that it &ldquo;might be unsuitable&rdquo;, but this can be ignored. It&rsquo;s not possible to remove this warning afaik (without generating shader code from the graph), as we can&rsquo;t add the TerrainCompatible tag from within the graph editor.</p>
 <div class="img-center">
@@ -1259,8 +1259,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-gpu-instancing" class="foldout_button">Using GPU Instancing (DrawMeshInstanced) with Shader Graph</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Using GPU Instancing (DrawMeshInstanced) with Shader Graph</summary>
+  <div id="sg-gpu-instancing" class="foldout">
     <p>GPU Instancing is typically not required when using MeshRenderer and SkinnedMeshRenderers in URP, as these already use the SRP Batcher to optimise setup between draw calls. When using the SRP Batcher you should avoid using Material Property Blocks though and stick to multiple Materials (or instaniate materials, e.g. using <code>renderer.material</code>)</p>
 <p>But if you wish to render lots (<em>many thousands</em>) of the same mesh, you could consider using GPU Instancing via <code>Graphics.DrawMeshInstanced</code>, to remove some of the overhead of GameObjects. Or even better, <code>DrawMeshInstancedIndirect</code> (see answer below instead).</p>
 <p>To support <code>DrawMeshInstanced</code>, Materials should already have a &ldquo;Enable GPU Instancing&rdquo; tickbox which can be ticked.</p>
@@ -1315,8 +1315,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-drawmeshinstancedindirect" class="foldout_button">Using DrawMeshInstancedIndirect/Procedural with Shader Graph</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Using DrawMeshInstancedIndirect/Procedural with Shader Graph</summary>
+  <div id="sg-drawmeshinstancedindirect" class="foldout">
     <p>For supporting <code>DrawMeshInstancedIndirect</code> or <code>DrawMeshInstancedProcedural</code>, add a <strong>Boolean Keyword</strong> to the <strong>Blackboard</strong>, with reference set to <code>PROCEDURAL_INSTANCING_ON</code>. Should also be Global and using Multi-Compile.</p>
 <div class="img-center">
 <a href="sg-drawmeshinstancedindirect-1.png" target="_blank" rel="noopener noreferrer">
@@ -1369,8 +1369,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-scene-color" class="foldout_button"><b class="node">Scene Color</b> node info</summary>
-  <div class="foldout">
+  <summary class="foldout_button"><b class="node">Scene Color</b> node info</summary>
+  <div id="sg-scene-color" class="foldout">
     <p>The <b class="node">Scene Color</b> node samples a texture containing opaque geometry in the scene, allowing you to obtain the colour of opaque objects behind a transparent shader.</p>
 <p>This is useful to produce distortion effects. The default UVs input is the <b class="node">Screen Position</b> node, so you can <b class="node">Add</b> or <b class="node">Subtract</b> to that to distort the view, for example with a noise texture. Can find examples in the following posts :</p>
 <ul>
@@ -1405,8 +1405,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-scene-depth-lod" class="foldout_button"><b class="node">Scene Depth</b> LOD (for sampling in Vertex Stage)</summary>
-  <div class="foldout">
+  <summary class="foldout_button"><b class="node">Scene Depth</b> LOD (for sampling in Vertex Stage)</summary>
+  <div id="sg-scene-depth-lod" class="foldout">
     <p>For URP, the <b class="node">Scene Depth</b> node includes <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl">this file</a> which uses regular texture sampling and prevents connecting to the Vertex Stage ports (for reasons explained briefly in the <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#fragment-only-nodes">fragment-only nodes</a> section of the Intro to Shader Graph post)</p>
 <p>To handle that we&rsquo;d need to use the LOD sample in a <b class="node">Custom Function</b> node :</p>
 <ul>
@@ -1486,8 +1486,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-layering-textures" class="foldout_button">Layering Textures/Colors using Alpha/Mask</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Layering Textures/Colors using Alpha/Mask</summary>
+  <div id="sg-layering-textures" class="foldout">
     <p>If you want to layer a texture containing an alpha channel onto another texture/colour, you can do so using a <b class="node">Lerp</b>, where the A output from the <b class="node">Sample Texture 2D</b> is connected to the T input. The A input would be the colour of the Base/Background while B input would be the colour of what you want to Layer on top.</p>
 <div class="img-center">
 <a href="sg-layer.png" target="_blank" rel="noopener noreferrer">
@@ -1515,8 +1515,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-sine-time" class="foldout_button">Change frequency of Sine Time</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Change frequency of Sine Time</summary>
+  <div id="sg-sine-time" class="foldout">
     <p>It is not possible to change the frequency/wavelength or adjust the phase of the <strong>Sine Time</strong> output from the <b class="node">Time</b> node. You can only remap values, such as using a <b class="node">Multiply</b> to adjust the amplitude of the wave.</p>
 <p>If you need to control the frequency, use the <strong>Time</strong> output instead, <b class="node">Multiply</b> by your frequency. To adjust phase use <b class="node">Add</b> or <b class="node">Subtract</b>. You would then put into a <b class="node">Sine</b> node. Can also <b class="node">Multiply</b> again after this to adjust amplitude, same as before.</p>
 <div class="img-center">
@@ -1537,8 +1537,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-billboard" class="foldout_button">Billboarding (rotating mesh to face camera)</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Billboarding (rotating mesh to face camera)</summary>
+  <div id="sg-billboard" class="foldout">
     <p>While it&rsquo;s possible to rotate meshes in C# to produce billboarding (e.g. with <code>transform.LookAt</code>), it&rsquo;s usually cheaper to handle effects like this in the shader - especially if many objects require billboarding.</p>
 <p>Billboarding usually requires the vertex shader to ignore using the view matrix for rotations, but Shader Graph makes it a little trickier to handle as it does space conversions behind the scenes. The <strong>Position</strong> port in the <strong>Master Stack</strong> is intended to be in <strong>Object</strong> space, rather than the clip space output a written vertex shader would usually have. So instead, we need to apply an inverse view matrix to cancel out the rotation Shader Graph applies later.</p>
 <p>First up, we need a matrix to handle the effect. Can use one of the following.</p>
@@ -1574,8 +1574,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-planar-mapping" class="foldout_button">Worldspace Planar Mapping</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Worldspace Planar Mapping</summary>
+  <div id="sg-planar-mapping" class="foldout">
     <p>Textures are typically applied to the mesh using UV coordinates stored in the vertex data. But we can also use other coordinates.</p>
 <p>In a technique usually referred to as &ldquo;Worldspace Planar Mapping&rdquo; (sometimes also called &ldquo;Worldspace Projected UV&rdquo;), we use the <b class="node">Position</b> node set to World space. This is a Vector3 output but nodes that take a UV port use a Vector2 though, so we first need to <b class="node">Swizzle</b> (or <b class="node">Split</b> and recombine into a <b class="node">Vector2</b> node), where we can also reorder the components. For example, we can use RB (aka XZ) axis.</p>
 <ul>
@@ -1609,8 +1609,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-custom-function-textures" class="foldout_button">Sampling Textures in <b class="node">Custom Function</b> node</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Sampling Textures in <b class="node">Custom Function</b> node</summary>
+  <div id="sg-custom-function-textures" class="foldout">
     Moved to <a href="https://www.cyanilux.com/tutorials/intro-to-shader-graph/#better-texture-data-types">Intro to Shader Graph - Sampling Textures in a Custom Function</a>
   </div>
 </details>
@@ -1623,8 +1623,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-arrays" class="foldout_button">Using Float/Vector Arrays in Shader Graph</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Using Float/Vector Arrays in Shader Graph</summary>
+  <div id="sg-arrays" class="foldout">
     <p>Unity supports fixed-size Float and Vector(4) arrays in shaders. We can define them in Shader Graph by using a <b class="node">Custom Function</b> node. In this case, we <em>must</em> use the File mode as the array has to be defined outside the function scope - and this is not possible using String mode.</p>
 <p>Here is some example code, defining an array named <code>_ExampleArray</code>, containing 10 floats. Note that the <code>[10]</code> is put after the name, not after <code>float</code>. We can then index the array inside the function, in this case using a loop to add the contents together.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
@@ -1665,8 +1665,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-lod-crossfade" class="foldout_button">LOD Crossfade using dithering</summary>
-  <div class="foldout">
+  <summary class="foldout_button">LOD Crossfade using dithering</summary>
+  <div id="sg-lod-crossfade" class="foldout">
     <p>The following graph can be used to support <strong>Fade Mode</strong> : &ldquo;Cross Fade&rdquo; on the <strong>LOD Group</strong> component.</p>
 <p>This requires using a built-in variable, <code>unity_LODFade</code>. Shader Graph doesn&rsquo;t provide access to it but we can use a <b class="node">Custom Function</b> node (<strong>String</strong> mode). Add a single <strong>Float</strong> output named &ldquo;Out&rdquo; and set <strong>Body</strong> to <code>Out = unity_LODFade.x;</code>. The function&rsquo;s name isn&rsquo;t that important but needs to be set to something.</p>
 <p>For use with the <b class="node">Dither</b> node, we first need to <b class="node">Absolute</b> to bring any negative values into the positive range. However to make sure it fades in the correct direction, we also need to take the <b class="node">Sign</b> of <code>unity_LODFade.x</code>, and <b class="node">Multiply</b> by the dither result.</p>
@@ -1715,8 +1715,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-stabilised-screenpos" class="foldout_button">Per-Object Stabilised Screen Position</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Per-Object Stabilised Screen Position</summary>
+  <div id="sg-stabilised-screenpos" class="foldout">
     <p>For some effects it can be useful to project a texture/noise/etc from screen space (using the <b class="node">Screen Position</b> node into UV ports). When the object or camera moves the texture stays in place relative to the screen, so changes on the model. That isn&rsquo;t always the desired effect - it could be useful if the texture stayed relative to the object itself.</p>
 <p>One easy way to achieve something like this is to use View Space instead, and offset it by the object&rsquo;s origin in the same space. I do this in my <a href="https://www.cyanilux.com/tutorials/dissolve-shader-breakdown/#view-position-uvs">Dissolve Shader Breakdown</a> :</p>
 <div class="img-center">
@@ -1752,8 +1752,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-flowmap" class="foldout_button">Distorting Textures in Multiple Directions / Flowmaps</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Distorting Textures in Multiple Directions / Flowmaps</summary>
+  <div id="sg-flowmap" class="foldout">
     <p>There may be cases where you want to displace/distort a texture in multiple directions. But just using <code>Direction * Time</code> to offset the UV coordinates will mean the difference in values grows larger between where the directions change - tilling and stretching the texture more and more in that gap.</p>
 <p>There may be multiple methods to solve this - sampling a texture multiple times with displacements in each cardinal direction and blending between them comes to mind, but that isn&rsquo;t ideal. The below technique provides a better solution that only uses 2 samples so should also be fairly performant.</p>
 <p>The idea is to have the time repeat, by using the <b class="node">Fraction</b> node to only take the decimal part of the value. The displacement will jump back to 0 when time reaches 1, but to avoid seeing this <em>we fade the texture out</em> while fading another version in that uses a different <em>phase</em> (time offset by 0.5).</p>
@@ -1786,8 +1786,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="multi-pass" class="foldout_button">Multi-pass shaders</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Multi-pass shaders</summary>
+  <div id="multi-pass" class="foldout">
     <p>Shader code can contain multiple passes that define LightMode tags. See <a href="https://docs.unity3d.com/Manual/SL-PassTags.html#lightmode-tag">here for related docs page</a> which also links to lists of LightMode values used by Built-in &amp; URP.</p>
 <p>In the <strong>Built-in Render Pipeline</strong>, you can also have multiple passes <strong>without a LightMode tag</strong> (or <code>&quot;LightMode&quot;=&quot;Always&quot;</code>) which are rendered without lighting/shadows. Unity will render each one as a separate draw call, though the exact render order also depends on the queue :</p>
 <ul>
@@ -1829,8 +1829,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="shaderlab-operation-properties" class="foldout_button">Using properties with ShaderLab operations (ZWrite / ZTest / Cull / ColorMask / Blend / Stencil)</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Using properties with ShaderLab operations (ZWrite / ZTest / Cull / ColorMask / Blend / Stencil)</summary>
+  <div id="shaderlab-operation-properties" class="foldout">
     <p>Rather than hardcoding ShaderLab operations, it is possible to specify a <strong>Property</strong> so they can be changed on the material or at runtime (e.g. through <code>material.SetFloat</code>)</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// (in Properties)
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>[Enum(Off, <span style="color:#ae81ff">0</span>, On, <span style="color:#ae81ff">1</span>)] _ZWrite(<span style="color:#e6db74">&#34;Z Write&#34;</span>, Float) <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
@@ -1885,8 +1885,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="tangent-space" class="foldout_button">What is Tangent Space?</summary>
-  <div class="foldout">
+  <summary class="foldout_button">What is Tangent Space?</summary>
+  <div id="tangent-space" class="foldout">
     <p>Tangent space uses vectors from the mesh data to stay relative to the surface of the mesh. It can be difficult to visualise for an entire model as unlike other spaces, it can be different per-pixel.</p>
 <div class="img-center">
 <a href="tangent-space.png" target="_blank" rel="noopener noreferrer">
@@ -1910,8 +1910,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="particle-color" class="foldout_button">How do I get color of Particle System, Line/Trail Renderer &amp; Sprite Renderer</summary>
-  <div class="foldout">
+  <summary class="foldout_button">How do I get color of Particle System, Line/Trail Renderer &amp; Sprite Renderer</summary>
+  <div id="particle-color" class="foldout">
     <h4 id="particle-system-linetrail-renderer-">Particle System, Line/Trail Renderer :</h4>
 <p>Colors for these are usually passed into vertex colors - data stored in each vertex of the mesh. To obtain this :</p>
 <ul>
@@ -1934,8 +1934,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sprite-local-uv" class="foldout_button">How to obtain Local Sprite UVs (0-1 across each sprite) for sprite sheets / sprite atlas</summary>
-  <div class="foldout">
+  <summary class="foldout_button">How to obtain Local Sprite UVs (0-1 across each sprite) for sprite sheets / sprite atlas</summary>
+  <div id="sprite-local-uv" class="foldout">
     See <a href="https://www.cyanilux.com/tutorials/sprite-local-uv/">Local UVs for Sprites in Sprite Sheet/Atlas</a> post.
   </div>
 </details>
@@ -1948,8 +1948,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="mesh-origin" class="foldout_button">How do you get the origin of a Mesh in the shader?</summary>
-  <div class="foldout">
+  <summary class="foldout_button">How do you get the origin of a Mesh in the shader?</summary>
+  <div id="mesh-origin" class="foldout">
     <p>The origin of a mesh is (0,0,0) in object space. To calculate this in world space we could use a matrix multiplciation, like <code>float3 originWS = mul(UNITY_MATRIX_M, float4(0,0,0,1)).xyz</code>, however a cheaper method is to extract the translation data from the matrix :</p>
 <ul>
 <li><code>UNITY_MATRIX_M._m03_m13_m23</code></li>
@@ -1968,8 +1968,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sprite-batching" class="foldout_button">Why does the Object space (&amp; <b class="node">Object</b> node) not work correctly for Sprites?</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Why does the Object space (&amp; <b class="node">Object</b> node) not work correctly for Sprites?</summary>
+  <div id="sprite-batching" class="foldout">
     <p>Note : Unity 2023.1+ now uses SRP Batching for sprites (in play mode at least) which somewhat fixes this.</p>
 <p>For prior versions (and if SRP batching is disabled) :</p>
 <p>To save on drawcalls (and performance), Sprites on the screen that use the same material, are batched so they can be drawn together. It shows as &ldquo;Draw Dynamic&rdquo; in the Frame Debugger window. When this batching occurs, meshes for each sprite are transformed into World space and combined into a single object. The model matrix (<code>UNITY_MATRIX_M</code>) is cleared to an identity matrix (scale of 1, no rotation/translation)</p>
@@ -1989,8 +1989,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="samplers" class="foldout_button">Error : <code>maximum ps_5_0 sampler register index (16) exceeded</code></summary>
-  <div class="foldout">
+  <summary class="foldout_button">Error : <code>maximum ps_5_0 sampler register index (16) exceeded</code></summary>
+  <div id="samplers" class="foldout">
     <p>This error means the shader is using more than 16 samplers. While shaders can support more textures (DX11 supports 128), it has a much lower limit to the number of samplers. To get around this, we can <strong>re-use samplers from other textures</strong> or use <strong>inline sampler states</strong>.</p>
 <ul>
 <li>Note this requires using the DX11-style syntax where samplers are separated from textures (e.g. <code>Texture2D</code> and <code>SamplerState</code>, rather than <code>sampler2D</code>).</li>
@@ -2009,8 +2009,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="glsl-mod" class="foldout_button">HLSL fmod vs GLSL mod</summary>
-  <div class="foldout">
+  <summary class="foldout_button">HLSL fmod vs GLSL mod</summary>
+  <div id="glsl-mod" class="foldout">
     <p>Be aware that the GLSL <code>mod</code> function is not an exact equivalent to <code>fmod</code> function in HLSL, the result will be different when dealing with negative values.</p>
 <ul>
 <li>HLSL fmod is equivalent to <code>x - y * trunc(x/y)</code></li>
@@ -2029,8 +2029,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="cg-vs-hlsl" class="foldout_button">CG vs HLSL</summary>
-  <div class="foldout">
+  <summary class="foldout_button">CG vs HLSL</summary>
+  <div id="cg-vs-hlsl" class="foldout">
     <p>While many shaders in the Built-in RP use <code>CGPROGRAM</code> and <code>ENDCG</code> in their shader code, they are still actually written (and compiled) using <strong>HLSL</strong>. Unity used to use Nvidia&rsquo;s <strong>CG</strong> language, but it was deprecated and is no longer used.</p>
 <p>When using the <code>CGPROGRAM</code> tag, Unity automatically includes some files from the Built-in RP shader includes (such as <code>HLSLSupport.cginc</code> and <code>UnityShaderVariables.cginc</code>). This can cause conflicts with other shader libraries - so shaders written for the Post Processing package, URP, and HDRP, should all use <code>HLSLPROGRAM</code> and <code>ENDHLSL</code> instead.</p>
 <p>Even if it is all HLSL, it&rsquo;s important to note that the code written for each pipeline can still vary quite a lot as they use separate include files, which can contain different functions and macros. Can view the ShaderLibrary code via :</p>
@@ -2052,8 +2052,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="fullscreen-shader" class="foldout_button">Writing Shader for Fullscreen Pass Renderer Feature</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Writing Shader for Fullscreen Pass Renderer Feature</summary>
+  <div id="fullscreen-shader" class="foldout">
     <p>Unity 2022 introduced the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@14.0/manual/renderer-features/renderer-feature-full-screen-pass.html">Fullscreen Pass Renderer Feature</a> to draw fullscreen effects to the screen. You typically use a material using the <strong>Fullscreen Graph</strong>, like the greyscale example shown in this <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@14.0/manual/post-processing/post-processing-custom-effect-low-code.html">Docs Page</a>.</p>
 <p>If instead you want to use Shader Code, it needs to use the <code>Vert</code> vertex shader (or similar copy) from the <a href="https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl">Blit.hlsl include</a>. For example, this should invert the screen colours :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// For use on materials intended for Fullscreen Pass Renderer Feature (or similar)

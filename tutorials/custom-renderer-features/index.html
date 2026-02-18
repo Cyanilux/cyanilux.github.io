@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
 <link rel="preload" href="https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=11 ">
 
 
  
@@ -339,8 +339,8 @@ Join my discord! 💬
 <h2 id="examples">Example Uses</h2>
 <p>First up, I thought I&rsquo;d provide some examples so you can get an idea of why you might use a Renderer Feature. I&rsquo;ve put most of these sections in a foldout so it&rsquo;s easier to skip if you&rsquo;d prefer.</p>
 <details >
-  <summary  class="foldout_button">Examples</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Examples</summary>
+  <div  class="foldout">
     <h3 id="fullscreen">Fullscreen / Post Process Effect</h3>
 <p>A very common use for renderer features is <strong>applying shaders/materials as a fullscreen effect</strong>, since URP&rsquo;s Post Processing Volumes do not support custom effects (as of 2022 at least).</p>
 <p>Applying fullscreen effects is sometimes referred to as a &ldquo;blit&rdquo;. There are various ways to handle it, such as <code>CommandBuffer.Blit</code>, using <code>CommandBuffer.DrawMesh</code>/<code>CommandBuffer.DrawProcedural</code> (either with custom vertex shader, or overriding view/projection matrices), or using the newer Blitter API (Unity 2022+), e.g. <code>Blitter.BlitCameraTexture</code>.</p>
@@ -1213,8 +1213,8 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 </li>
 </ul>
 <details >
-  <summary  class="foldout_button">Alternative blit methods</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Alternative blit methods</summary>
+  <div  class="foldout">
     <p>For older versions, these methods could be used :</p>
 <ul>
 <li><code>CoreUtils.DrawFullScreen</code> (uses <code>CommandBuffer.DrawProcedural</code>)
@@ -1456,8 +1456,8 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 <h2 id="full-example">Full Renderer Feature Example (Unity 2022)</h2>
 <p>Here&rsquo;s a full code example based on snippets mentioned in this post. It involves rendering objects to a custom texture, then a fullscreen pass on the camera which also uses that texture. (The usage foldout below also provides example shaders that the materials could use)</p>
 <details >
-  <summary  class="foldout_button">Feature Example Code</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Feature Example Code</summary>
+  <div  class="foldout">
     <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Collections.Generic;
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine;
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> UnityEngine.Rendering;
@@ -1601,8 +1601,8 @@ The github links here are for the &ldquo;master&rdquo; branch so may not be accu
 
 
 <details >
-  <summary  class="foldout_button">Usage</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Usage</summary>
+  <div  class="foldout">
     <p>The feature can be used to render objects with a given material, into a custom buffer (specified by Color Target Destination ID setting). This texture reference can be sampled as a global/unexposed Texture2D in a blit/fullscreen material.</p>
 <p>For example, feature could be used with materials using the following graphs (click images to view full screen) :</p>
 <div class="img-center">

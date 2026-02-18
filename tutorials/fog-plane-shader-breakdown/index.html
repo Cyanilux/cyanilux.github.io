@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
 <link rel="preload" href="https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=11 ">
 
 
  
@@ -24,9 +24,9 @@
   "mainEntityOfPage" : "https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/",
   "headline": "Fog Plane Shader Breakdown",
   "name": "Fog Plane Shader Breakdown",
-  "description": "Two examples of vertical fog effects produced using the depth texture (scene depth)",
+  "description": "Examples of fog plane effects produced using the depth texture (scene depth), commonly used to create vertical fog or fake darkness/light for entrances and exits in third person games.",
   "datePublished": "2019-12-05",
-  "dateModified": "2019-12-05",
+  "dateModified": "2026-02-18",
   "author": {
 	"@type": "Person",
 	"name": "Cyanilux",
@@ -41,7 +41,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "1479",
+  "wordCount": "1129",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -59,10 +59,10 @@
 <meta name="twitter:card" content="summary_large_image"/>
 	<meta name="twitter:image" content="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/Preview.png"/>
 <meta name="twitter:title" content="Fog Plane Shader Breakdown"/>
-<meta name="twitter:description" content="Two examples of vertical fog effects produced using the depth texture (scene depth)"/>
+<meta name="twitter:description" content="Examples of fog plane effects produced using the depth texture (scene depth), commonly used to create vertical fog or fake darkness/light for entrances and exits in third person games."/>
 
 <meta property="og:title" content="Fog Plane Shader Breakdown" />
-<meta property="og:description" content="Two examples of vertical fog effects produced using the depth texture (scene depth)" />
+<meta property="og:description" content="Examples of fog plane effects produced using the depth texture (scene depth), commonly used to create vertical fog or fake darkness/light for entrances and exits in third person games." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/" />
 
@@ -73,9 +73,9 @@
         
     
 <meta property="article:published_time" content="2019-12-05T00:00:00+00:00" />
-<meta property="article:modified_time" content="2019-12-05T00:00:00+00:00" />
+<meta property="article:modified_time" content="2026-02-18T00:00:00+00:00" />
 <title>Fog Plane Shader Breakdown | Cyanilux Shader Tutorials</title>
-<meta name="description" content="Two examples of vertical fog effects produced using the depth texture (scene depth). URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
+<meta name="description" content="Examples of fog plane effects produced using the depth texture (scene depth), commonly used to create vertical fog or fake darkness/light for entrances and exits in third person games.. URP, Shader Graph | Unity Shader Tutorials, @Cyanilux" />
 <link rel="canonical" href="https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/" />
 <script>
 	var webStorageSupported = (typeof(Storage) !== undefined);
@@ -241,6 +241,9 @@
 <time datetime="2019-12-05">&#128337 5 Dec 2019</time>
 
 
+<div style="width:5px"></div>
+<time datetime="2026-02-18"> (updated 18 Feb 2026)</time>
+
 </div>
 <script>
 	if (cookiesAccepted){
@@ -255,8 +258,9 @@
 	}
 </script>
 <h2 id="intro">Intro</h2>
-<p>This post includes two examples to produce fog shader effects. In both cases, the shader is applied to a flat plane or quad where the alpha of the surface is altered based on depth values to produce a fog effect. As shown in the tweet above, It can be used to produce a vertical fog effect or used in doorways or cave exits/entrances to fade into white/black (or any other colour).</p>
-<p>The first example is simpler, but seems to have some inaccuracies at very shallow angles (between the camera’s view direction and plane surface) where the fog can look squashed / more dense. The second example is more complicated but doesn’t have this issue, so looks better if the camera can get close to the fog effect. Note however, in both examples the camera cannot pass through the quad/plane, or the fog effect will disappear, so it is best for 3rd person / top-down / fixed camera angles.</p>
+<p>This post includes examples to produce fog shader effects. In both cases, the shader is applied to a flat plane or quad where the alpha of the surface is altered based on depth values to produce a fog effect. As shown in the tweet/image above, it is commonly used to produce a vertical fog effect or used in exits/entrances to fade into white/black (or any other colour).</p>
+<p>The first example is simpler, but seems to have some inaccuracies at very shallow angles (between the camera’s view direction and plane surface) where the fog can look warped/flattened. The second example is a bit more complex but avoids that issue.</p>
+<p>Note that in both examples the camera cannot pass through the quad/plane, or the fog effect will disappear. This effect is intended for third person / top-down / fixed camera angles.</p>
 <div class="notice">
 <div class="notice-left">
 <div class="notice-exclamation">
@@ -264,48 +268,39 @@
 </div>
 </div>
 <div style="margin: 5px;">
-<p>The graphs provided will also only work in a <strong>Perspective</strong> camera projection.</p>
-<p>For <strong>Orthographic</strong>, a slightly different method will be required. See the <strong>Depth Difference</strong> and <strong>Reconstruct World Pos from Depth</strong> sections near the end of the <a href="https://www.cyanilux.com/tutorials/depth">Depth</a> post for some insight on how to handle that.</p>
+<p>Depth-based effects can sometimes produce different results for <strong>Perspective</strong> vs <strong>Orthographic</strong> camera projections. But as of 2022.2+ the shader graphs below should work for both due to changes to the <b class="node">Scene Depth</b> node. The graphs should also work in any render pipeline.</p>
+<p>For versions earlier than v11 / Unity 2021.1 be aware that the <b class="node">View Vector</b> node did not exist, but <b class="node">View Direction</b> wasn&rsquo;t normalised in URP at that time so can be used in its place. For HDRP, <b class="node">Position</b> set to <strong>World</strong> space → <b class="node">Negate</b> should be equivalent due to the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">camera-relative rendering</a>.</p>
 
 </div>
 </div>
 <h2 id="notes">Notes</h2>
 <ul>
-<li>This is an <strong>Unlit</strong> shader. <strong>Transparent</strong> surface mode and <strong>Alpha</strong> blending.</li>
-<li><strong>AlphaClipThreshold</strong> should be set to 0 as we don&rsquo;t want to discard any pixels.</li>
-<li>On the Universal Render Pipeline Asset, the <strong>Depth Texture</strong> option needs to be enabled for the <b class="node">Scene Depth</b> node to work (and make sure it is not overriden on the Camera).</li>
+<li>This is an <strong>Unlit</strong> shader. <strong>Transparent</strong> surface mode and <strong>Alpha</strong> blending. May also want to disable <strong>Cast Shadows</strong> (either in shader for URP/BiRP or via Mesh Renderer component)</li>
+<li>On the Universal Render Pipeline Asset, the <strong>Depth Texture</strong> option needs to be enabled for the <b class="node">Scene Depth</b> node to work (and make sure it is not overriden on the Camera)</li>
 </ul>
 <h2 id="breakdown">Breakdown</h2>
-<p>In order to create these fog effects, we need to sample the depth texture from the camera. Shadergraph has a <b class="node">Scene Depth</b> node which will handle this as well as the conversions for us. By using the <strong>Eye</strong> sampling mode it will output the linear depth in terms of eye (aka view) space units. If you aren&rsquo;t familiar with the node, you can read more in the <a href="https://www.cyanilux.com/tutorials/depth/#scene-depth-node">Depth</a> post.</p>
-<p>Next we need the depth to the surface of the plane. To do this we can take the <strong>alpha/w</strong> component of the <b class="node">Screen Position</b> node set to <strong>Raw</strong> mode.</p>
-<details >
-  <summary  class="foldout_button">Why is this the depth to the object / mesh surface?</summary>
-  <div class="foldout">
-    <p>It’s not too important to know why this is the object’s depth, but it’s due to how 3D object positions are converted to screen coordinates by the model-view-projection matrix. It is important that we set the node to <strong>Raw</strong> however, as in the <strong>Default</strong> mode each component is divided by this alpha/w value, including the alpha/w component itself meaning it&rsquo;ll just be 1. That&rsquo;s referred to as the &ldquo;perspective divide&rdquo; which converts clip space coordinates into the screen coordinates.</p>
-<p>We could instead use the <b class="node">Position</b> node set to <strong>View</strong> Space, and <b class="node">Negate</b> the <strong>Z/B</strong> output from a <b class="node">Split</b> node to obtain this object depth. In a perspective projection both of these would produce the same output.</p>
-
-  </div>
-</details>
-
-
+<p>In order to create these fog effects, we need to sample the depth texture from the camera. Shader Graph includes a <b class="node">Scene Depth</b> node which will handle this as well as the conversions into appropiate units for us. By using the <strong>Eye</strong> sampling mode it will output the &ldquo;linear depth&rdquo; in terms of metres/units from the camera plane. If you aren&rsquo;t familiar with the node, you can read more in the <a href="https://www.cyanilux.com/tutorials/depth/#scene-depth-node">Depth</a> post.</p>
+<p>Next we need the depth to the plane (fragment positions) being drawn (in the same space/units), which can be obtained using <b class="node">Position</b> node set to <strong>View</strong> space. The camera looks down the negative Z axis of this space, therefore to obtain the depth we can <b class="node">Split</b> and use <b class="node">Absolute</b> (or <b class="node">Negate</b>) on the <strong>B</strong> output (aka Z axis)</p>
+<p>(You could alternatively take the <strong>alpha/w</strong> component of the <b class="node">Screen Position</b> node set to <strong>Raw</strong> mode - also used in an earlier version of this post. But that only returns the correct value for <strong>perspective</strong> cameras due to how the projection matrices work. For orthographic it would just be 1 and break the effect)</p>
 <div class="img-center">
 <a href="Graph1.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="739" height="243" alt="(Image)" src="Graph1.png" />
+<img loading="lazy" width="750" height="218" alt="(Image)" src="Graph1.png" />
 </a>
 <p class="img-text"></p>
 </div>
-<p>With these to depth values, we can now move onto producing the fog shaders.</p>
+<p>With both of these to depth values, we can move on to creating the fog plane shaders.</p>
 <hr>
-<h3 id="example-1-simple">Example 1 (Simple)</h3>
-<p>We can <b class="node">Subtract</b> the two depth values to obtain the difference in depth between the object’s surface and the scene depth. The further apart these two depth values are, the larger the output value is, producing a fog effect.</p>
-<p>Before we plug that into the alpha, it would be good if we could control the density of the fog somehow. We can do this by using a <b class="node">Multiply</b> node (or <b class="node">Divide</b>, if you prefer to use density values like 2 or 3 instead of 0.5 and 0.33). We should also put the output into a <b class="node">Saturate</b> node, to clamp values to be between 0 and 1, as values larger than 1 may produce very bright artifacts – especially when using bloom post processing.</p>
-<p>Finally, in order to change the colour of the fog, we create a <strong>Color property</strong> to use as the <strong>Color</strong> input on the <b class="node">Master</b> node. I’m also taking the alpha component of our property and multiplying it with the saturated output so the alpha value of our colour is taken into account.</p>
+<h3 id="example-1">Example 1 (Simple)</h3>
+<p>We can <b class="node">Subtract</b> the two depth values to obtain the difference in depth between the object’s surface and the scene depth. This produces a value of 0 at the surface, and increasing values the further apart these two depth values are - producing the fog effect.</p>
+<p>However before we plug that into the alpha, we can do additional calculations to control the density of the fog by using a <b class="node">Multiply</b> node (or <b class="node">Divide</b> if you prefer to use density values like 2 or 3 instead of 0.5 and 0.33, though dividing may be a slightly more expensive operation than multiplication)</p>
+<p>We then need to <b class="node">Saturate</b> to clamp values to be between 0 and 1, as values outside that range can create artifacts with alpha blending and unwanted brightness/glow if bloom post processing is active.</p>
 <div class="img-center">
 <a href="Graph2.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="214" alt="(Image)" src="Graph2.png" />
+<img loading="lazy" width="750" height="224" alt="(Image)" src="Graph2.png" />
 </a>
 <p class="img-text"></p>
 </div>
+<p>As shown above we can also use a <strong>Color property</strong> in the <strong>Base Color</strong> output in the <strong>Master Stack</strong>, which allows us to adjust the colour of the fog. And can optionally <b class="node">Split</b> to take the alpha component and <b class="node">Multiply</b> it with the saturate output so the fog can be faded by adjusting the colour property.</p>
 <div class="notice">
 <div class="notice-left">
 <div class="notice-exclamation">
@@ -313,48 +308,34 @@
 </div>
 </div>
 <div style="margin: 5px;">
-<p>Make sure to set the alpha component of the <strong>Fog Colour</strong> in the shadergraph blackboard (and in the material inspector!) to <strong>1</strong> (or 255 if using the 0-255 range), otherwise the effect will be invisible. Can use other values if you don&rsquo;t want fog to be fully opaque at a distance.</p>
-<p>If you don’t want the alpha to be taken into account you can remove the last <b class="node">Multiply</b></p>
-
+Be sure to set Default values of properties in Blackboard / Node Settings. Density and alpha channel of Color should be <strong>1</strong> to ensure fog is visible.
 </div>
 </div>
 <hr>
-<h3 id="example-2-accurate">Example 2 (Accurate)</h3>
-<h4 id="urp--built-in">URP / Built-in</h4>
-<p>For a more accurate fog, we can calculate the world position of the scene depth coordinate and use that to produce the fog instead, using the normal direction of the plane/quad to have the fog in the correct direction. Note that this will likely be less performant than the simpler version.</p>
-<div class="notice">
-<div class="notice-left">
-<div class="notice-exclamation">
-!
-</div>
-</div>
-<div style="margin: 5px;">
-<p>In Shader Graph v11 (Unity 2021.1+) the <b class="node">View Direction</b> node is now normalised in all pipelines. We must use the newer <b class="node">View Vector</b> node to achieve the correct result.</p>
-<p>(Text in this post has been changed to account for this, but images have not!)</p>
-
-</div>
-</div>
-<p>Create a <b class="node">View Vector</b> node set to <strong>World</strong> space. This obtains a vector from the pixel/fragment position to the camera. The magnitude of this vector is the distance (between the camera and fragment), but this is not the same as depth – The depth is a distance from the fragment position to a plane that is perpendicular to the camera, not the camera position itself. This creates a triangle as shown in the image.</p>
+<h3 id="example-2">Example 2 (Accurate)</h3>
+<p>For a more accurate fog, we can reconstruct world space positions using the depth, which involves using the <b class="node">View Vector</b> node set to <strong>World</strong> space.</p>
+<p>This obtains a vector from the pixel/fragment position to the camera. The magnitude of this vector is the <strong>distance</strong> between these points, but that is slightly different from <em>depth</em> – which is to a <strong>plane that is perpendicular to the camera</strong> rather than the camera position itself. This creates the inner triangle in the below diagram :</p>
 <div class="img-center">
 <a href="https://www.cyanilux.com/ReconstructDepthWorldPos.png" target="_blank" rel="noopener noreferrer">
 <img loading="lazy"   alt="(Image)" src="https://www.cyanilux.com/ReconstructDepthWorldPos.png" />
 </a>
 <p class="img-text"></p>
 </div>
-<p>In order to reconstruct the world position we need to scale this vector to the scene position, behind the quad/plane. The <b class="node">Scene Depth</b> and &ldquo;Scene Pos&rdquo; we want creates another triangle as shown in the image. We can use the scale factor of the two triangles to obtain the vector to the scene position, which can be achieved by dividing the <b class="node">View Vector</b> by the <strong>Raw Screen Position W/A depth</strong> and then multiplying by the <b class="node">Scene Depth</b>. We can then <b class="node">Subtract</b> the camera’s world <strong>Position</strong> from the <b class="node">Camera</b> node to get the scene world position.</p>
+<p><b class="node">Scene Depth</b> set to <strong>Eye</strong> mode gives us the depth to the &ldquo;Scene Pos&rdquo; (the position we are trying to calculate) creating another triangle (shown larger for this visualisation, but these scene positions may be on either side of the mesh being drawn)</p>
+<p>To reconstruct the &ldquo;Scene Pos&rdquo; we need to scale the view vector, which can be achieved by dividing the <b class="node">View Vector</b> by the &ldquo;Fragment Depth&rdquo; and then multiplying by the <b class="node">Scene Depth</b>.</p>
+<p>We can then <b class="node">Subtract</b> this from the camera position, obtained via <strong>Position</strong> output from the <b class="node">Camera</b> node. (For HDRP this can be skipped due to the <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">camera-relative rendering</a>, could instead just <b class="node">Negate</b> and use <strong>World</strong> space in the <b class="node">Transform</b> below)</p>
 <div class="img-center">
 <a href="Graph3.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="323" alt="(Image)" src="Graph3.png" />
+<img loading="lazy" width="750" height="232" alt="(Image)" src="Graph3.png" />
 </a>
 <p class="img-text"></p>
 </div>
-<p>With this scene world position, we can now handle the fog. To make sure the fog is in the correct direction, we can <b class="node">Transform</b> the position to <strong>Object</strong> space and take the <b class="node">Dot Product</b> between it and the normalized <b class="node">Normal Vector</b> in <strong>Object</strong> space. Since the normal vector points outwards from the plane though, we also need to <b class="node">Negate</b> the result of the <b class="node">Dot Product</b> (or negate the normal vector going into the dot product).</p>
-<p>A side effect of using the <b class="node">Transform</b> to <strong>Object</strong> space, is that we don’t need a property to control the density of the fog like in the first example. We can change it by just scaling the quad/plane in the normal’s direction instead.</p>
-<p>We then <b class="node">Saturate</b> our output to clamp values above 1, as values larger than 1 may produce very bright artifacts – especially when using bloom post processing.</p>
-<p>Finally, in order to change the colour of the fog, we create a <strong>Color property</strong> to use as the <strong>Color</strong> input on the <b class="node">Master</b> node. I’m also taking the alpha component of our property and multiplying it with the saturated output so the alpha value of our colour is taken into account.</p>
+<p>To handle the fog we can <b class="node">Transform</b> our reconstructed positions from <strong>Absolute World</strong> to <strong>Object</strong> space, then <b class="node">Dot Product</b> with the <b class="node">Normal Vector</b> also set to <strong>Object</strong> space. As that vector points <em>outwards</em> from the plane, we also need to <b class="node">Negate</b> the result to make sure the fog is in the correct direction.</p>
+<p>A side effect of this method is that scaling the GameObject can affect the density of the fog. If this is unwanted, <b class="node">Multiply</b> by the <strong>Scale</strong> output from an <b class="node">Object</b> node between the <b class="node">Transform</b> and <b class="node">Dot Product</b>.</p>
+<p>And finally, like the earlier example, we can also add a <strong>Float property</strong> and <b class="node">Multiply</b> (or <b class="node">Divide</b>) to control the density of the fog, must <b class="node">Saturate</b> to avoid artifacts with alpha blending / bloom and can add a <strong>Color property</strong> to control the colour.</p>
 <div class="img-center">
 <a href="Graph4.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="194" alt="(Image)" src="Graph4.png" />
+<img loading="lazy" width="750" height="230" alt="(Image)" src="Graph4.png" />
 </a>
 <p class="img-text"></p>
 </div>
@@ -365,22 +346,9 @@
 </div>
 </div>
 <div style="margin: 5px;">
-<p>Make sure to set the alpha component of the <strong>Fog Colour</strong> in the shadergraph blackboard (and material inspector!) to <strong>1</strong> (or 255 if using the 0-255 range), otherwise the effect will be invisible. Can use other values if you don&rsquo;t want fog to be fully opaque at a distance.</p>
-<p>If you don’t want the alpha to be taken into account you can remove the last <b class="node">Multiply</b></p>
-<p>To control the density of the fog, adjust the <strong>Y</strong> scale of the plane. We can do this as we transform to object space, rather than needing to use an additional property.</p>
-
+Be sure to set Default values of properties in Blackboard / Node Settings. Density and alpha channel of Color should be <strong>1</strong> to ensure fog is visible.
 </div>
 </div>
-<hr>
-<h4 id="hdrp">HDRP</h4>
-<p>If you are working in <strong>HDRP</strong>, the following graph should work instead. It doesn&rsquo;t include the <strong>Fog Colour property</strong>, but it should be easy to add that in and connect it to the <strong>Color</strong> input on the <b class="node">Master</b> node, or <strong>Master Stack</strong> in newer versions)</p>
-<div class="img-center">
-<a href="GraphHDRP.png" target="_blank" rel="noopener noreferrer">
-<img loading="lazy" width="750" height="233" alt="(Image)" src="GraphHDRP.png" />
-</a>
-<p class="img-text"></p>
-</div>
-<p>We don&rsquo;t use the <b class="node">View Direction</b> node here as in HDRP it was always normalised which isn&rsquo;t what we want. It may be possible to use the same <b class="node">View Vector</b> setup above if in Unity 2021.1+, but otherwise this method using the <b class="node">Position</b> node in <strong>World</strong> space should work too. Due to <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@8.2/manual/Camera-Relative-Rendering.html">Camera-Relative</a> rendering we also don&rsquo;t need to worry about subtracting this from the camera&rsquo;s position.
 <br><hr>
 
 <div style="display:block;text-align: center">
@@ -408,7 +376,7 @@ Join my discord! 💬
 </div>
 </a>
 
-</div></p>
+</div>
 
 
         <script>

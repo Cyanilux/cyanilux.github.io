@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
 <link rel="preload" href="https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=11 ">
 
 
  
@@ -425,8 +425,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="info-uv" class="foldout_button">Additional notes about UV channels</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Additional notes about UV channels</summary>
+  <div id="info-uv" class="foldout">
     <p>Unity also uses the UV1 channel when objects are baked into lightmaps, so if you want to support Baked Global Illumination, you&rsquo;ll need to provide an additional UV channel for this. Or get Unity to generate them (see <a href="https://docs.unity3d.com/Manual/LightingGiUvs-GeneratingLightmappingUVs.html">Unity docs : Generating lightmap UVs</a>), but you&rsquo;ll still need to export with it in the list (or it&rsquo;ll override the pivot data).</p>
 <div class="img-center">
 <a href="BlenderUVMaps3.png" target="_blank" rel="noopener noreferrer">
@@ -500,8 +500,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="info-scaling" class="foldout_button">Additional notes about scaling</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Additional notes about scaling</summary>
+  <div id="info-scaling" class="foldout">
     <p>While many with background in maths might already know this, I thought I&rsquo;d still clarify exactly what happens when scaling/multiplying with different strength values :</p>
 <ul>
 <li>When strength is equal to 1 : the positions remain unaffected (anything multiplied by 1 is itself).</li>
@@ -596,8 +596,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="info-fractured-forcefield" class="foldout_button">More Info</summary>
-  <div class="foldout">
+  <summary class="foldout_button">More Info</summary>
+  <div id="info-fractured-forcefield" class="foldout">
     <p>The dome mesh includes a base circular face, as the <strong>Cell Fracture</strong> plugin in Blender doesn&rsquo;t work great if the mesh has holes. The fractured faces for this part can be removed after. Also if you tick &ldquo;Interior VGroup&rdquo; in the Cell Fracture settings (under Mesh Data heading), you can easily delete all the interior vertices later in Edit Mode, by selecting them via the <strong>Vertex Groups</strong> list (under the <strong>Object Data Properties</strong> / green triangle).</p>
 <p>The forcefield is similar to the one from my <a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/">Forcefield Shader Breakdown</a>, but I didn&rsquo;t include a <b class="node">Fresnel Effect</b> or the ripples. Partly as the dome mesh I used didn&rsquo;t have the correct normals at the time, but I also preferred the simpler look. If the mesh doesn&rsquo;t have perfect normals, may need to use a <strong>Data Transfer</strong> modifier to transfer smooth normals from an unfractured dome to fractured dome but that&rsquo;s not something I tried. We could also calculate normals in the shader by normalising the vertex positions (<b class="node">Position</b> node) since the vertices lie on a sphere.</p>
 <p>This also ignores recalculating the normals duing the vertex displacement. If that&rsquo;s something you want, should be able to use another <b class="node">Rotate About Axis</b> with the same inputs but on the normal.</p>
@@ -630,8 +630,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="info-fractured-plane" class="foldout_button">More Info</summary>
-  <div class="foldout">
+  <summary class="foldout_button">More Info</summary>
+  <div id="info-fractured-plane" class="foldout">
     <p>When creating the fractured plane mesh in Blender, we can use a <strong>Scale</strong> of <strong>(1, 1, 0)</strong> in the Cell Fracture Settings (under Point Source heading). This makes the fractured edges perfectly vertical along the up axis (which is Z in blender). When creating the Pivot Baked UV map, we only need one additional map using <strong>Project From View (Bounds)</strong> on the <strong>Top Orthographic</strong> view (numpad 7).</p>
 <p>In the fractured shader (described in this post), we need an <strong>Texture2D property</strong> named &ldquo;GlobalFractureTex&rdquo; (with reference as <code>_GlobalFractureTex</code>). Untick <strong>Exposed</strong> in the property settings.</p>
 <div class="img-center">

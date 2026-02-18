@@ -256,7 +256,7 @@
       <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/</guid>
-      <description>Two examples of vertical fog effects produced using the depth texture (scene depth)</description>
+      <description>Examples of fog plane effects produced using the depth texture (scene depth), commonly used to create vertical fog or fake darkness/light for entrances and exits in third person games.</description>
     </item>
 	
     

@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
 <link rel="preload" href="https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=11 ">
 
 
  
@@ -413,8 +413,8 @@
 <li><strong>Surface</strong> : Can be <strong>Opaque</strong> or <strong>Transparent</strong></li>
 <li><strong>Blend</strong> : If <strong>Transparent</strong> is selected, a <strong>Blend</strong> type option will appear which determines how the transparency is handled. 
 <details >
-  <summary  class="foldout_button">Details about each Blend option</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Details about each Blend option</summary>
+  <div  class="foldout">
     <p>The options here are :</p>
 <ul>
 <li><strong>Alpha</strong> : Regular alpha blending. Is equivalent to <code>Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha</code> in ShaderLab (Shader code), where the first term (<code>SrcAlpha</code>, referring to the <strong>Alpha</strong> port of the <strong>Master Stack</strong>) is multiplied by the <strong>Base Color</strong> output and the second term (<code>OneMinusSrcAlpha</code>) is multiplied by the colour already on screen. These two are added together which is then written to the screen. (The other two terms after the comma are used for the alpha channel only)
@@ -704,8 +704,8 @@
 <p>The values are currently something that gets <strong>hardcoded into the generated shader code</strong>, so the Gradient type (created from the Blackboard at least) <strong>cannot be exposed</strong> or set by C# scripts.</p>
 <p>If you need to expose something similar to a gradient, the foldout below has a few alternatives :</p>
 <details >
-  <summary  class="foldout_button">Alternatives</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Alternatives</summary>
+  <div  class="foldout">
     <h4 id="color-properties--lerp">Color properties &amp; Lerp</h4>
 <p>If you only need two colours, you can create a gradient quite easily from two <strong>Color properties</strong> and a <b class="node">Lerp</b> node. Same with three, perhaps four, but you&rsquo;ll need to link together multiple lerps and remap the <strong>T</strong> inputs. The below image provides an example for a 3-colour gradient.</p>
 <div class="img-center">
@@ -1003,8 +1003,8 @@
 </div>
 <p>Some properties will have different &ldquo;<strong>Modes</strong>&rdquo;, with options shown in these foldouts :</p>
 <details >
-  <summary  class="foldout_button">Float</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Float</summary>
+  <div  class="foldout">
     <ul>
 <li><strong>Default</strong> : Shows a regular float field in the Material Inspector.</li>
 <li><strong>Slider</strong> : Equivalent of the &ldquo;Range&rdquo; property in shader code. Can set a <strong>Minimum</strong> and <strong>Maximum</strong> value. The property will appear with a slider in the inspector. Setting from C# can still cause the value to go outside the slider&rsquo;s range. If this isn&rsquo;t intended you&rsquo;ll need to clamp the value manually. In 2019.3+ you can obtain the min/max from the property, see an example <a href="https://twitter.com/Cyanilux/status/1337181494729699328">here</a>.</li>
@@ -1017,8 +1017,8 @@
 
 
 <details >
-  <summary  class="foldout_button">Color</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Color</summary>
+  <div  class="foldout">
     <ul>
 <li><strong>Default</strong> : A regular colour. From the Material Inspector it can only be set to values between 0 and 1. From C# it can be set outside that range, though be aware that the final shader won&rsquo;t be able to output values outside the range unless HDR is enabled on the URP Asset.</li>
 <li><strong>HDR</strong> (High Dynamic Range) : A colour where values can be outside the 0-1 range. The inspector shows this by having an <strong>Intensity</strong> slider added to the Colour Picker UI. In terms of setting this from C#, you can multiply the Color with a float if you want a brighter result e.g. <code>material.SetColor(&quot;_Color&quot;, Color.red * 5f);</code>. If you care about keeping it using the same result as the UI, multiply by <code>2^Intensity</code> (aka <code>color * Mathf.Pow(2, intensity</code>) instead.</li>
@@ -1029,8 +1029,8 @@
 
 
 <details >
-  <summary  class="foldout_button">Texture2D</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Texture2D</summary>
+  <div  class="foldout">
     <ul>
 <li><strong>White</strong> : Defaults to white (1,1,1,1) when a texture isn&rsquo;t assigned.</li>
 <li><strong>Black</strong> : Defaults to black (0,0,0,0) when a texture isn&rsquo;t assigned.</li>
@@ -1339,8 +1339,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="scene-depth-lod" class="foldout_button">Scene Depth LOD Custom Function (URP)</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Scene Depth LOD Custom Function (URP)</summary>
+  <div id="scene-depth-lod" class="foldout">
     <ul>
 <li>Inputs :
 <ul>
@@ -1647,8 +1647,8 @@ Join my discord! 💬
 <h4 id="better-texture-data-types">Sampling Textures in a Custom Function</h4>
 <p>In shader code online you might typically see <code>sampler2D</code> and <code>tex2D()</code> functions being used. This is the older DX9 syntax, but with Shader Graph we mostly use the newer DX11+ syntax which has <a href="https://docs.unity3d.com/Manual/SL-SamplerStates.html">separate objects for the texture and sampler</a>. This isn&rsquo;t supported in all platforms though (GLES2), so Unity provides a bunch of <strong>macros</strong> which can generate different code. These macros are defined in files found under <a href="https://github.com/Unity-Technologies/Graphics/tree/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/API">render-pipelines.core/ShaderLibrary/API</a>. The foldout below also lists some.</p>
 <details >
-  <summary  class="foldout_button">Texture Sampling Macros</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Texture Sampling Macros</summary>
+  <div  class="foldout">
     <p>Common macros for sampling textures :</p>
 <ul>
 <li>
@@ -1736,8 +1736,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="sg-custom-function-textures-old" class="foldout_button">Pre-v10 examples</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Pre-v10 examples</summary>
+  <div id="sg-custom-function-textures-old" class="foldout">
     <p>In case you are still on older versions or using Bare types, the above functions would instead typically look like this. Where a <b class="node">Sampler State</b> node would have to be used.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -1798,8 +1798,8 @@ if (history.pushState) {
 </div>
 <p>In the above example, a loop has been used to sum the values. Typically you&rsquo;ll need a loop inside the function in order to handle the array (unless you just need a single value at a given index). Another example can be found in my <a href="https://www.cyanilux.com/tutorials/forcefield-shader-breakdown/">Forcefield Shader Breakdown</a> that uses an array to produce ripples on the forcefield surface.</p>
 <details >
-  <summary  class="foldout_button">What is <code>[unroll]</code> ?</summary>
-  <div class="foldout">
+  <summary class="foldout_button">What is <code>[unroll]</code> ?</summary>
+  <div  class="foldout">
     <p><code>[unroll]</code> is specified in the above code before the loop, which tells the compiler that we&rsquo;ve written the loop more out of <em>convienience</em> and it shouldn&rsquo;t actually be handled on the gpu as an actual loop. It would be equivalent to writing :</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">

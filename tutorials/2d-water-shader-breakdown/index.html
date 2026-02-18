@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
 <link rel="preload" href="https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=11 ">
 
 
  
@@ -287,8 +287,8 @@
 <p>At first, I did think about using RenderObject features with an override material/shader to create flipped sprites automatically. But it would be difficult to create accurate reflections for sprites that already have custom shaders (e.g. the swaying grass/foliage) as the vertex shader would be overidden. Probably also doesn&rsquo;t allow you to override the texture - In my case, the pillars use an alternate sprite for reflections so the top isn&rsquo;t reflected.</p>
 <p>Instead, it&rsquo;s better to just duplicate and rotate/flip the sprites manually, or use a <strong>C# Script</strong> to instantiate them at runtime. The script I wrote for this is shown in the foldout below. It should already work in both 2.5D and 2D scenes.</p>
 <details >
-  <summary  class="foldout_button">Sprite Reflection Script</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Sprite Reflection Script</summary>
+  <div  class="foldout">
     <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1

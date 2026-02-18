@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
 <link rel="preload" href="https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=11 ">
 
 
  
@@ -295,8 +295,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="lerp-color-space" class="foldout_button">Additional notes about colour spaces</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Additional notes about colour spaces</summary>
+  <div id="lerp-color-space" class="foldout">
     <p>The above examples are interpolating through sRGB/linear color space (depending on the colour space set under project settings, see the docs page : <a href="https://docs.unity3d.com/Manual/LinearRendering-LinearOrGammaWorkflow.html">Linear or gamma workflow</a>). But there are other colour spaces we could interpolate through for different results. There&rsquo;s no &ldquo;correct&rdquo; space to use here really, it depends on the result you want. These conversions between different colour spaces would make the shader slightly more expensive though.</p>
 <p>For example, we could interpolate in HSV space. In shader graph, this could be handled with the <b class="node">Colorspace Conversion</b> node. For example compare the following results :</p>
 <div class="img-center">
@@ -363,8 +363,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="mask-texture-transparent" class="foldout_button">Additional notes about sprites / transparent textures</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Additional notes about sprites / transparent textures</summary>
+  <div id="mask-texture-transparent" class="foldout">
     <p>When importing Sprites (or Default textures where &ldquo;Alpha Is Transparency&rdquo;) colours in fully transparent areas can stretch out in previews in Shader Graph. Don&rsquo;t be worried - this is intentional as it helps to avoid artifacts, <a href="https://www.cyanilux.com/faq/#sg-stretched-texture-preview">as explained here in faq</a>.</p>
 <p>If you&rsquo;re wondering why this hasn&rsquo;t occurred in these examples, I imported the main texture without an alpha channel as I wanted the example to be clearer. But even with an alpha channel and this colour stretching, the final result should look correct provided the <strong>A</strong> output from the <b class="node">Sample Texture 2D</b> is connected to the <strong>Alpha</strong> port on the <strong>Master Stack</strong>.</p>
 <p>However, the <em>mask texture</em> should still stay with a <strong>black background</strong> to avoid the colours stretching out. Though if it did have an alpha channel we could instead <b class="node">Multiply</b> the <strong>R</strong> and <strong>A</strong> outputs before applying the tint.</p>
@@ -383,8 +383,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="replace-color-hlsl" class="foldout_button">HLSL</summary>
-  <div class="foldout">
+  <summary class="foldout_button">HLSL</summary>
+  <div id="replace-color-hlsl" class="foldout">
     <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -480,8 +480,8 @@ if (history.pushState) {
     window.history.pushState({path:newurl}, '', newurl);
 }
 ">
-  <summary id="palette-array" class="foldout_button">Additional notes if storing the palette as an array</summary>
-  <div class="foldout">
+  <summary class="foldout_button">Additional notes if storing the palette as an array</summary>
+  <div id="palette-array" class="foldout">
     <p>If storing the palette as an array :</p>
 <ul>
 <li>Would need to convert the 0-1 greyscale value to an index.

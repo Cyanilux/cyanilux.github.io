@@ -649,6 +649,15 @@ video {
 	/*border-radius : 10px;*/
 }
 
+.foldout_button:has(+ :target) {
+	box-shadow: 0 0 3px #64c5eb;
+}
+
+.foldout:target {
+	box-shadow: 0 0 3px #64c5eb;
+	scroll-margin-block-start: 4rem;
+}
+
 /* Tab Panel */
 
 .tabs {

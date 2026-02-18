@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
 <link rel="preload" href="https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=10 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=11 ">
 
 
  
@@ -424,8 +424,8 @@
 </div>
 <p>We now need to combine this Float output with our SDF position.</p>
 <details >
-  <summary  class="foldout_button">(click for some ramblings / older methods I used for this)</summary>
-  <div class="foldout">
+  <summary class="foldout_button">(click for some ramblings / older methods I used for this)</summary>
+  <div  class="foldout">
     <p>Since the positions used in the SDF calculations are in world space we can&rsquo;t just put our float into an axis of the <b class="node">Vector3</b> node and <b class="node">Add</b>/<b class="node">Subtract</b> it, as that would remain orientated to the world axis even if the waterfall was rotated - try it and you&rsquo;ll see the problem.</p>
 <p>In my original graph from 2019 I feel like I made quite a mess of this. After a bit of trial and error I ended up using the inverse-model matrix (<code>UNITY_MATRIX_I_M</code>) but in a matrix multiplication as the second parameter (same as the matrix being transposed). In graph form, it would look like this :</p>
 <div class="img-center">
