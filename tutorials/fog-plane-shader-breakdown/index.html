@@ -34,14 +34,14 @@
   },
   "image": {
     "@type": "ImageObject",
-    "@id": "https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/Preview_hu4186ede643289d7e4280576ff06d315e_148888_300x0_resize_box_3.png",
-    "url": "https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/Preview_hu4186ede643289d7e4280576ff06d315e_148888_300x0_resize_box_3.png",
-    "height": "200",
+    "@id": "https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/Preview_hue372859959fff58ab598875b9d8304db_1395564_300x0_resize_box_3.png",
+    "url": "https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/Preview_hue372859959fff58ab598875b9d8304db_1395564_300x0_resize_box_3.png",
+    "height": "186",
     "width": "300"
   },
   "url": "https://www.cyanilux.com/tutorials/fog-plane-shader-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "1129",
+  "wordCount": "1140",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -245,20 +245,119 @@
 <time datetime="2026-02-18"> (updated 18 Feb 2026)</time>
 
 </div>
-<script>
-	if (cookiesAccepted){
-		document.write("\u003cblockquote class=\"twitter-tweet\" data-dnt=\"true\" data-theme=\"dark\"\u003e\u003cp lang=\"en\" dir=\"ltr\"\u003eWorking on a new \u003ca href=\"https://twitter.com/hashtag/shadergraph?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shadergraph\u003c/a\u003e blog post / tutorial that uses depth to produce a fog shader effect. 👀 \u003ca href=\"https://twitter.com/hashtag/unity3D?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#unity3D\u003c/a\u003e \u003ca href=\"https://twitter.com/hashtag/shaders?src=hash\u0026amp;ref_src=twsrc%5Etfw\"\u003e#shaders\u003c/a\u003e \u003ca href=\"https://t.co/ggQfff9GE0\"\u003epic.twitter.com/ggQfff9GE0\u003c/a\u003e\u003c/p\u003e\u0026mdash; Cyan ✨ (@Cyanilux) \u003ca href=\"https://twitter.com/Cyanilux/status/1202301115808833538?ref_src=twsrc%5Etfw\"\u003eDecember 4, 2019\u003c/a\u003e\u003c/blockquote\u003e\n\u003cscript async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"\u003e\u003c/script\u003e\n\n");
-	}else{
-		document.write("<hr><p><a href=\"https://twitter.com/Cyanilux/status/1202301115808833538\">https://twitter.com/Cyanilux/status/1202301115808833538</a><p>"+
-		"<p style=\"color:#aaaaaa\">Cookies are not accepted so cannot show embedded tweet.<br>"+
-		"<b style=\"color:#00aabb\" onclick=\""+
-		"const cookieContainer = document.querySelector('.cookie-container');" +
-		"cookieContainer.classList.add('active');" +
-		"\">Click here</b> to show cookie dialog if you want to change that</p><hr>\r\n\u003cdiv class=\u0022img-center\u0022\u003e\r\n\u003ca href=\u0022Preview.png\u0022 target=\u0022_blank\u0022 rel=\u0022noopener noreferrer\u0022\u003e\r\n\u003cimg  width=\u0022600\u0022 height=\u0022400\u0022 alt=\u0022(Image)\u0022 src=\u0022Preview.png\u0022 \/\u003e\r\n\u003c\/a\u003e\r\n\u003cp class=\u0022img-text\u0022\u003e\u003c\/p\u003e\r\n\u003c\/div\u003e\r\n");
-	}
-</script>
 <h2 id="intro">Intro</h2>
-<p>This post includes examples to produce fog shader effects. In both cases, the shader is applied to a flat plane or quad where the alpha of the surface is altered based on depth values to produce a fog effect. As shown in the tweet/image above, it is commonly used to produce a vertical fog effect or used in exits/entrances to fade into white/black (or any other colour).</p>
+<p>This post includes examples to produce fog shader effects. In both cases, the shader is applied to a flat plane or quad where the alpha of the surface is altered based on depth values.</p>
+<p>As shown in the screenshot below, it is commonly used to produce vertical fog or used in exits/entrances to fade into white/black (or any other colour). The two fog planes here can be toggled with these tabs to better show the setup/result :</p>
+
+<script>
+  function Test(textContent){
+    return textContent.replace("+","").replace(" ","");
+  }
+
+  function ProcessTabGroup(tabGroup, textContent){
+    for (let j = 0; j < tabGroup.children.length; j++) {
+        var tab = tabGroup.children[j];
+        
+        var tabContent = Test(tab.textContent);
+        if (j == 0 && (textContent == null || textContent == "")){
+          
+          textContent = tabContent;
+        }
+
+        if (tabContent == textContent){
+          
+          tab.className = 'tab';
+          
+          
+          for (let k = 0; k < tabGroup.children.length; k++) {
+            var tab = tabGroup.children[k];
+            if (j == k) continue;
+            tab.className = 'tab-grey';
+          }
+          
+          
+          var tabpanel = tab.parentElement.nextElementSibling;
+          for (let l = 0; l < tabpanel.children.length; l++) {
+            var child = tabpanel.children[l];
+            if (child.className == "All" || (child.className == "" && l == j) || child.className.includes(textContent)) { 
+              child.style.display = 'block';
+            } else {
+              child.style.display = 'none';
+            }
+          }
+
+          break;
+        }
+      }
+  }
+
+  function OnTabClick(element) {
+    var textContent = Test(element.textContent);
+    var tabGroups = document.getElementsByClassName("tabs");
+    
+    if (history.pushState) {
+      var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+      newurl = newurl + '?tab=' + textContent;
+      newurl += window.location.hash;
+      window.history.pushState({path:newurl}, '', newurl);
+    }
+
+    var tabGroupThatElementBelongsTo = element.parentElement;
+    var tabGroupFound = false;
+    for (let i = 0; i < tabGroups.length; i++) {
+      var tabGroup = tabGroups[i];
+      if (tabGroup == tabGroupThatElementBelongsTo){
+        tabGroupFound = true;
+      }
+      if (!tabGroupFound) continue;
+      
+      
+      ProcessTabGroup(tabGroup, textContent);
+    }
+  }
+
+  function OnPageLoad(textContent) {
+    var tabGroups = document.getElementsByClassName("tabs");
+    
+
+
+    for (let i = 0; i < tabGroups.length; i++) {
+      ProcessTabGroup(tabGroups[i], textContent);
+    }
+  }
+
+  window.onload = function (){
+    setTimeout(() => {
+      var search = new URLSearchParams(document.location.search);
+      OnPageLoad(search.get("tab"));
+    }, 100);
+  }
+</script>
+
+
+
+<div class="tabs">
+<button type="button" class="tab" onclick="OnTabClick(this);"><b>On</b></button><button type="button" class="tab-grey" onclick="OnTabClick(this);"><b>Off</b></button></div>
+
+<div class="tabpanel">
+<div>
+<div class="img-center">
+<a href="Preview.png" target="_blank" rel="noopener noreferrer">
+<img  width="900" height="400" alt="(Image)" src="Preview.png" />
+</a>
+<p class="img-text"></p>
+</div>
+</div>
+<div>
+<div class="img-center">
+<a href="Scene.png" target="_blank" rel="noopener noreferrer">
+<img  width="900" height="400" alt="(Image)" src="Scene.png" />
+</a>
+<p class="img-text"></p>
+</div>
+</div>
+
+</div>
 <p>The first example is simpler, but seems to have some inaccuracies at very shallow angles (between the camera’s view direction and plane surface) where the fog can look warped/flattened. The second example is a bit more complex but avoids that issue.</p>
 <p>Note that in both examples the camera cannot pass through the quad/plane, or the fog effect will disappear. This effect is intended for third person / top-down / fixed camera angles.</p>
 <div class="notice">
