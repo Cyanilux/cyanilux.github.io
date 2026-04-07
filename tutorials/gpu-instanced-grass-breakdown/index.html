@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.cyanilux.com/index.xml"> 
 <link rel="preload" href="https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=11 ">
+<link rel="stylesheet" type="text/css" href="https://www.cyanilux.com/css/style.css?v=12 ">
 
 
  
@@ -41,7 +41,7 @@
   },
   "url": "https://www.cyanilux.com/tutorials/gpu-instanced-grass-breakdown/",
   "inLanguage": "en-gb",
-  "wordCount": "8800",
+  "wordCount": "8780",
   "isPartOf": {
     "@type" : "Blog",
     "@id": "https://www.cyanilux.com",
@@ -651,19 +651,11 @@ Note : This tutorial requires the target platform to support <a href="https://do
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Alternatively, if instanced matrices are stored in world space we can override matrix :
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">//objectToWorld = data.m;
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// This would avoid needing an additional World-&gt;Object conversion in the graph
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// This may avoid needing an additional World-&gt;Object conversion in the graph
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
 </span></span><span style="display:flex;"><span>		<span style="color:#75715e">// ----------
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// If World-&gt;Object transforms are required :
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//worldToObject = transpose(objectToWorld);
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">/*
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			Assuming an orthogonal matrix (no scaling), 
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			the above would be a cheap way to calculate an inverse matrix
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        	Otherwise, use the below :
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		*/</span>
-</span></span><span style="display:flex;"><span>			
-</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Calculate Inverse transform matrix :
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// If World-&gt;Object transforms are required by shader,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// can use this to calculate the inverse matrix :
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		float3x3 w2oRotation;
 </span></span><span style="display:flex;"><span>		w2oRotation[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> objectToWorld[<span style="color:#ae81ff">1</span>].yzx <span style="color:#f92672">*</span> objectToWorld[<span style="color:#ae81ff">2</span>].zxy <span style="color:#f92672">-</span> objectToWorld[<span style="color:#ae81ff">1</span>].zxy <span style="color:#f92672">*</span> objectToWorld[<span style="color:#ae81ff">2</span>].yzx;
 </span></span><span style="display:flex;"><span>		w2oRotation[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> objectToWorld[<span style="color:#ae81ff">0</span>].zxy <span style="color:#f92672">*</span> objectToWorld[<span style="color:#ae81ff">2</span>].yzx <span style="color:#f92672">-</span> objectToWorld[<span style="color:#ae81ff">0</span>].yzx <span style="color:#f92672">*</span> objectToWorld[<span style="color:#ae81ff">2</span>].zxy;
@@ -680,10 +672,10 @@ Note : This tutorial requires the target platform to support <a href="https://do
 </span></span><span style="display:flex;"><span>		worldToObject._14_24_34_44 <span style="color:#f92672">=</span> float4(w2oPosition, <span style="color:#ae81ff">1.0f</span>);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>        <span style="color:#75715e">/*
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			This may be quite expensive and this function runs in both vertex and fragment shader
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			(Though if the matrix is unused the compiler might remove? Unsure)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			This may be somewhat expensive and this function runs in both vertex and fragment shader
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			(Though if the matrix is unused the compiler might optimise this away? Unsure)
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">			Could instead calculate inverse matrices on the CPU side and pass them in too
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			(Though would mean double the GPU memory is needed)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			(But would mean additional GPU memory is needed in struct/buffer)
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">		*/</span>
 </span></span><span style="display:flex;"><span>	}
 </span></span><span style="display:flex;"><span>
@@ -1719,7 +1711,7 @@ Join my discord! 💬
         </div>
         </br>
 
-<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2025 Cyanilux</a></p>
+<p class="footer"><a class="small-text" href="https://twitter.com/Cyanilux">© 2019-2026 Cyanilux</a></p>
 
 <p class="small-text" style="text-align:center;">
 

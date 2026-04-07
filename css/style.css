@@ -32,7 +32,7 @@
 /* Large Screen (PC) */
 @media screen and (min-width: 1200px) {
   .header, .footer, .content {
-    width: 50%;
+    width: 60%;
   }
 }
 
@@ -85,7 +85,7 @@
 
 body {
 	font-family: 'Lato', sans-serif;
-	background-color: #08151f; /* #252830 */
+	background-color: #05323a; /* #252830 */
 	/*
 	background: repeating-linear-gradient(
 	0deg,
@@ -95,8 +95,8 @@ body {
 	);
 	*/
 
-	background: linear-gradient(#00000000 50%, rgb(0,0,0) 100%),
-				repeating-conic-gradient(#07151a 0% 25%, #021a22 5% 50%) 0% / 50px 50px;
+	background: linear-gradient(#00000000 0%, rgb(0,0,0) 120%),
+				repeating-conic-gradient(#062835 0% 25%, #042e3b 5% 50%) 0% / 60px 60px;
 
 	/*background: repeating-conic-gradient(#07151a 0% 25%, #021a22 5% 50%);*/
 	/*background-size: 60px 60px;*/
